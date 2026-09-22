@@ -1,186 +1,104 @@
-# 行醒 · 每日复盘与成长工具
+# 行醒（XingXing）· 个人复盘与成长工具
 
-个人成长工具 Web App：每日复盘 + OKR 追踪 + 错题本 + 点灯人 + 知识库。小说语录风格，有生活味儿。
+> 一个「有生活味儿」的个人成长 Web 应用：每日复盘 · OKR 追踪 · 错题本 · 点灯人 · 知识库。
+> 深色星空主题 + 行星桌宠 + 小说语录，把「复盘」做成一件每天想做的事。
 
-## 快速启动
+## 这是什么
+
+行醒把「每日复盘、目标管理、错题整理、知识收藏」收进一个安静、有温度的地方。它不是冷冰冰的效率软件，更像每天陪你省身、记道途、写札记的老朋友。
+
+核心场景：
+
+- 每日复盘（省身）：三省吾身 + 心境记录
+- OKR 管理（道途）：目标与关键结果跟踪
+- 错题本：记录错题与反思
+- 点灯人：AI 对话助手（当前为本地演示模式）
+- 知识库：个人资源收藏
+- 每日计划：当日任务规划
+
+## 主要特性
+
+- 离线优先：前端 localStorage 本地存储 + 待同步队列，断网可用、恢复联网自动合并
+- 多用户：注册 / 登录（JWT 认证），用户数据互相隔离
+- 双轨同步：每 30 秒后台增量同步（pull / push），冲突保留
+- 11 个页面：登录、看板、复盘、OKR、错题本、点灯人、知识库、每日计划、批注、个人中心
+- 独特视觉与文案：深色星空主题、行星桌宠、83 条小说语录（雪中悍刀行等）
+- 纯 JS 全栈：无需构建步骤，`npm install` + `npm start` 即可运行
+
+## 技术栈
+
+| 层 | 技术 |
+|------|------|
+| 前端 | 原生 HTML / CSS / JavaScript + Tailwind CSS（CDN）+ Lucide 图标 |
+| 后端 | Node.js + Express |
+| 数据库 | sql.js（SQLite 的 WebAssembly 版，纯 JS 无需编译） |
+| 认证 | JWT（jsonwebtoken + bcryptjs） |
+
+## 快速开始
 
 ```bash
-# 安装依赖
 npm install
-
-# 启动服务
 npm start
 ```
 
 打开 http://localhost:3000/pages/login.html 注册账号即可使用。
 
-默认端口 3000，可通过环境变量 `PORT` 修改：
-```bash
-PORT=8080 npm start
-```
+- 默认端口 `3000`，可用环境变量 `PORT` 修改
+- 生产环境请设置 `JWT_SECRET`
 
-## 功能模块
-
-| 模块 | 说明 | 数据持久化 |
-|------|------|-----------|
-| 每日复盘 | 三省吾身 + 心境记录 | ✅ SQLite |
-| OKR 管理 | 目标与关键结果追踪 | ✅ SQLite |
-| 错题本 | 记录错题与反思 | ✅ SQLite |
-| 点灯人 | AI 对话助手 | 本地 |
-| 知识库 | 个人资源收藏 | ✅ SQLite |
-| 每日计划 | 当日任务规划 | 本地 |
-
-## 数据同步机制
-
-- 前端使用 localStorage 本地存储 + 服务端云端同步双轨制
-- 登录后自动开启后台同步（每 10 秒推送一次待同步数据）
-- 页面加载时从云端拉取最新数据并合并到本地
-- 离线时数据保留在本地，恢复联网后自动同步
-
-## 数据库
-
-- 使用 sql.js（SQLite 的 WebAssembly 版本）
-- 数据库文件：`server/xingxing.db`
-- 首次启动自动创建表结构
-
-## 部署到服务器
-
-### 方式一：Node.js 直部署
-
-```bash
-# 上传整个项目到服务器
-# 在服务器上执行
-npm install
-npm start
-```
-
-建议使用 PM2 守护进程：
-```bash
-npm install -g pm2
-pm2 start server/server.js --name xingxing
-pm2 save
-```
-
-### 方式二：Docker
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --production
-COPY . .
-EXPOSE 3000
-CMD ["node", "server/server.js"]
-```
-
-### 方式三：支持 Node.js 的平台
-
-- **Vercel / Railway / Render / 腾讯云 CloudBase** 等支持 Node.js 的平台
-- 启动命令：`npm start`
-- 构建命令：`npm install`
-- 监听端口由平台环境变量 `PORT` 决定
-
-## 环境变量
-
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| `PORT` | 3000 | 服务监听端口 |
-| `JWT_SECRET` | xingxing-secret-key | JWT 签名密钥（生产环境务必修改） |
-
-## 目录结构
+## 项目结构
 
 ```
 daily-okr/
-├── package.json          # 根目录 package（部署用）
-├── server/               # 后端服务
-│   ├── server.js         # 服务入口
-│   ├── database.js       # 数据库初始化
-│   ├── routes/           # API 路由
-│   │   ├── auth.js       # 认证（注册/登录）
-│   │   ├── api.js        # 业务数据 API
-│   │   └── sync.js       # 数据同步 API
-│   ├── middleware/
-│   │   └── auth.js       # JWT 鉴权中间件
-│   └── xingxing.db       # SQLite 数据库文件
-├── pages/                # 前端页面
-│   ├── login.html        # 登录/注册
-│   ├── dashboard.html    # 首页看板
-│   ├── review.html       # 每日复盘
-│   ├── okrs.html         # OKR 列表
-│   ├── okr-detail.html   # OKR 详情
-│   ├── error-book.html   # 错题本
-│   ├── light-keeper.html # 点灯人
-│   ├── resources.html    # 知识库
-│   ├── daily-plan.html   # 每日计划
-│   ├── annotate.html     # 批注
-│   └── profile.html      # 个人中心
-├── assets/               # 前端资源
-│   ├── common.js         # 通用工具函数
-│   ├── api.js            # API 封装 + 同步机制
-│   ├── quotes.js         # 每日语录库
-│   ├── page-nav.js       # 页面导航
-│   ├── user-module.js    # 用户模块
-│   ├── tailwind.min.js   # Tailwind CSS
-│   ├── lucide.min.js     # Lucide 图标
-│   └── app-icon.png      # App 图标
-└── app/                  # 移动端打包（Capacitor）
-    ├── www/              # Web 资源（自动同步）
-    └── android/          # Android 工程
+├── server/               # 后端
+│   ├── server.js         # 服务入口（Express + 静态文件）
+│   ├── database.js       # sql.js 封装 + 表结构
+│   ├── routes/           # auth / api / sync 路由
+│   └── middleware/       # JWT 鉴权中间件
+├── pages/                # 前端页面（11 个）
+├── assets/               # 前端资源（api.js / common.js / quotes.js 等）
+├── package.json
+└── README.md
 ```
 
-## API 接口
+## 核心设计：离线优先的数据同步
 
-### 认证
-- `POST /api/auth/register` - 注册
-- `POST /api/auth/login` - 登录
-- `GET /api/auth/me` - 获取当前用户
+这是本项目最有意思的工程点。前端劫持 `localStorage.setItem / removeItem`，自动追踪以 `xingxing_` 前缀的业务数据：
 
-### 复盘
-- `GET /api/reviews?limit=20&offset=0` - 复盘列表
-- `GET /api/reviews/:date` - 单天复盘
-- `PUT /api/reviews/:date` - 保存/更新复盘
-- `DELETE /api/reviews/:date` - 删除复盘
+1. 写入时记录时间戳；已登录则加入待同步队列
+2. 每 30 秒后台推送增量变更；页面回到前台立即同步
+3. 拉取时按时间戳做冲突裁决（云端更新才覆盖本地）
+4. 离线时数据留在本地，恢复联网自动合并
 
-### OKR
-- `GET /api/okrs` - OKR 列表
-- `POST /api/okrs` - 创建 OKR
-- `PUT /api/okrs/:id` - 更新 OKR
-- `DELETE /api/okrs/:id` - 删除 OKR
+服务端用 `user_data` 表做键值对存储，配合增量 `pull / push / full` 三个同步接口。
 
-### 错题本
-- `GET /api/error-books` - 错题列表
-- `POST /api/error-books` - 添加错题
-- `PUT /api/error-books/:id` - 更新错题
-- `DELETE /api/error-books/:id` - 删除错题
+## 数据模型
 
-### 同步
-- `GET /api/sync/pull` - 拉取所有数据
-- `POST /api/sync/push` - 推送本地数据
-- `POST /api/sync/full` - 全量同步
+- `users`：用户表（用户名 / 邮箱 / 密码哈希 / 偏好）
+- `user_data`：用户业务数据（键值对，支持软删除、时间戳同步）
+- `daily_stats`：每日统计（能量 / 状态 / 完成度）
 
-## 移动端打包
+## API 一览
 
-项目使用 Capacitor 打包 Android App。
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/api/auth/register` | 注册 |
+| POST | `/api/auth/login` | 登录 |
+| GET | `/api/auth/me` | 当前用户 |
+| GET | `/api/reviews` | 复盘列表 |
+| PUT | `/api/reviews/:date` | 保存 / 更新复盘 |
+| GET / POST | `/api/okrs` | OKR 列表 / 创建 |
+| GET / POST | `/api/error-books` | 错题列表 / 添加 |
+| GET | `/api/sync/pull` | 增量拉取 |
+| POST | `/api/sync/push` | 增量推送 |
 
-```bash
-cd app
-npm install
-npx cap sync android
-npx cap open android
-```
+## 路线图
 
-在 Android Studio 中 Build APK 即可。
-
-## 常见问题
-
-**Q: 数据库文件在哪？**
-A: `server/xingxing.db`，删除后重启服务会重新创建空数据库。
-
-**Q: 如何备份数据？**
-A: 直接复制 `server/xingxing.db` 文件即可。也可以通过同步 API 导出 JSON。
-
-**Q: 忘记密码怎么办？**
-A: 目前没有找回密码功能，需要在数据库中手动更新或注册新账号。
-
-**Q: 可以多人使用吗？**
-A: 支持多用户注册，每个用户的数据互相隔离。
+- [x] 复盘模块前后端打通
+- [x] 用户注册 / 登录 / JWT
+- [x] 离线同步机制
+- [ ] OKR / 错题本 / 知识库接入后端
+- [ ] 数据导出 / 导入
+- [ ] 统计可视化（复盘热力图、连续打卡）
+- [ ] 点灯人接入真实 AI
+- [ ] 移动端打包（Capacitor）
