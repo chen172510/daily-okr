@@ -3,8 +3,10 @@
    ============================================ */
 
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'xingxing-secret-key-change-in-production';
+// 生产环境务必通过环境变量 JWT_SECRET 注入；未设置时生成随机密钥（重启后登录态会失效）
+const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(32).toString('hex');
 const JWT_EXPIRES_IN = '30d';
 
 function generateToken(userId, username) {
