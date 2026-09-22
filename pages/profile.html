@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行醒 · 个人中心</title>
+    <style>
+/* ============================================
+   行醒 - 个人中心样式
+   ============================================ */
+
+:root {
+  --okr-ink-50: #faf8f5;
+  --okr-ink-100: #f0ebe3;
+  --okr-ink-200: #e0d8cc;
+  --okr-ink-300: #c9bda8;
+  --okr-ink-400: #a89880;
+  --okr-ink-500: #8a7a5e;
+  --okr-ink-600: #6b5d44;
+  --okr-ink-700: #4f4430;
+  --okr-ink-800: #362e1f;
+  --okr-ink-900: #1f1a10;
+  --okr-paper-light: #f7f2e8;
+  --okr-paper: #ede4d3;
+  --okr-paper-dark: #d9cbae;
+  --okr-cyan-500: #3d7a74;
+  --okr-gold-500: #c9a227;
+  --okr-gold-700: #8b6914;
+  --okr-vermilion: #c0392b;
+  --okr-state-success: #2d6a4f;
+  --okr-state-success-bg: #d8f3dc;
+  --okr-state-error: #922b21;
+  --okr-state-error-bg: #fde2e2;
+  --okr-state-warning-bg: #fef3c7;
+  --okr-font-sans: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', 'PingFang SC', 'Microsoft YaHei', serif;
+  --okr-font-display: 'Noto Serif SC', 'Source Han Serif SC', 'STKaiti', 'KaiTi', '楷体', serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--okr-font-sans);
+  background: var(--okr-paper-light);
+  color: var(--okr-ink-900);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(127, 179, 173, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(232, 201, 122, 0.08) 0%, transparent 50%);
+}
+
+/* ---------- 顶部导航 ---------- */
+.topbar {
+  background: #fdfbf5;
+  border-bottom: 1px solid var(--okr-ink-200);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--okr-ink-200);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--okr-ink-700);
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: var(--okr-paper);
+}
+
+.back-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.topbar-title {
+  font-family: var(--okr-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+}
+
+/* ---------- 主容器 ---------- */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* ---------- 用户卡片 ---------- */
+.profile-card {
+  background: #fdfbf5;
+  border: 1px solid var(--okr-ink-200);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(31, 26, 16, 0.06);
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, var(--okr-ink-800), var(--okr-ink-600));
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--okr-gold-500);
+  font-size: 36px;
+  font-weight: 600;
+  font-family: var(--okr-font-display);
+  position: relative;
+}
+
+.profile-avatar::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  background: var(--okr-vermilion);
+  border-radius: 3px;
+  transform: rotate(45deg);
+  border: 3px solid #fdfbf5;
+}
+
+.profile-name {
+  font-family: var(--okr-font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+  margin-bottom: 4px;
+}
+
+.profile-username {
+  font-size: 14px;
+  color: var(--okr-ink-500);
+  margin-bottom: 16px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--okr-ink-100);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--okr-ink-500);
+  margin-top: 2px;
+}
+
+/* ---------- 分区 ---------- */
+.section {
+  background: #fdfbf5;
+  border: 1px solid var(--okr-ink-200);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.section-title {
+  padding: 16px 20px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--okr-ink-700);
+  border-bottom: 1px solid var(--okr-ink-100);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title svg {
+  width: 18px;
+  height: 18px;
+  color: var(--okr-gold-700);
+}
+
+/* ---------- 列表项 ---------- */
+.list-item {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--okr-ink-100);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item:hover {
+  background: var(--okr-paper-light);
+}
+
+.list-item-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--okr-ink-800);
+}
+
+.list-item-label svg {
+  width: 18px;
+  height: 18px;
+  color: var(--okr-ink-500);
+}
+
+.list-item-value {
+  font-size: 14px;
+  color: var(--okr-ink-500);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.list-item-value .arrow {
+  color: var(--okr-ink-300);
+  font-size: 18px;
+}
+
+/* ---------- 同步状态 ---------- */
+.sync-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 12px 20px;
+  background: var(--okr-paper-light);
+  border-bottom: 1px solid var(--okr-ink-100);
+}
+
+.sync-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--okr-ink-300);
+}
+
+.sync-dot.ok {
+  background: var(--okr-state-success);
+}
+
+.sync-dot.syncing {
+  background: var(--okr-gold-500);
+  animation: syncPulse 1s infinite;
+}
+
+.sync-dot.error {
+  background: var(--okr-state-error);
+}
+
+@keyframes syncPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.sync-text {
+  flex: 1;
+  color: var(--okr-ink-600);
+}
+
+.sync-btn {
+  padding: 6px 12px;
+  background: var(--okr-cyan-500);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sync-btn:hover {
+  opacity: 0.9;
+}
+
+/* ---------- 按钮 ---------- */
+.btn-danger {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: var(--okr-vermilion);
+  border: 1px solid var(--okr-vermilion);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.btn-danger:hover {
+  background: rgba(192, 57, 43, 0.08);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 13px 24px;
+  background: linear-gradient(135deg, var(--okr-ink-800), var(--okr-ink-700));
+  color: var(--okr-paper-light);
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(31, 26, 16, 0.15);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------- 表单弹窗 ---------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(31, 26, 16, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal {
+  background: #fdfbf5;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  padding: 28px;
+  box-shadow: 0 16px 48px rgba(31, 26, 16, 0.2);
+}
+
+.modal-title {
+  font-family: var(--okr-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  color: var(--okr-ink-700);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--okr-ink-200);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--okr-paper-light);
+  color: var(--okr-ink-900);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: var(--okr-cyan-500);
+  background: #fff;
+}
+
+.form-error {
+  color: var(--okr-vermilion);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.modal-actions button {
+  flex: 1;
+}
+
+.btn-cancel {
+  padding: 12px;
+  background: transparent;
+  color: var(--okr-ink-600);
+  border: 1px solid var(--okr-ink-200);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: var(--okr-paper);
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--okr-font-sans);
+  z-index: 2000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(31, 26, 16, 0.15);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+  background: var(--okr-state-success-bg);
+  color: var(--okr-state-success);
+  border: 1px solid var(--okr-state-success);
+}
+
+.toast.error {
+  background: var(--okr-state-error-bg);
+  color: var(--okr-state-error);
+  border: 1px solid var(--okr-state-error);
+}
+
+.toast.info {
+  background: var(--okr-paper);
+  color: var(--okr-ink-800);
+  border: 1px solid var(--okr-ink-300);
+}
+    </style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="topbar">
+  <button class="back-btn" onclick="history.back()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+  </button>
+  <div class="topbar-title">个人中心</div>
+</div>
+
+<div class="container">
+
+  <!-- 用户信息卡片 -->
+  <div class="profile-card">
+    <div class="profile-avatar" id="profileAvatar">行</div>
+    <div class="profile-name" id="profileName">行醒学子</div>
+    <div class="profile-username" id="profileUsername">@xingxing</div>
+    <div class="profile-stats">
+      <div class="stat-item">
+        <div class="stat-value" id="statPoints">0</div>
+        <div class="stat-label">积分</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statReviews">0</div>
+        <div class="stat-label">复盘</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="statDays">0</div>
+        <div class="stat-label">连续天数</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 同步状态 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12a9 9 0 1 1-3-6.7L21 8"/>
+        <polyline points="21 3 21 9 15 9"/>
+      </svg>
+      数据同步
+    </div>
+    <div class="sync-status">
+      <span class="sync-dot" id="syncDot"></span>
+      <span class="sync-text" id="syncText">正在检查同步状态...</span>
+      <button class="sync-btn" id="syncNowBtn">立即同步</button>
+    </div>
+    <div class="list-item" id="lastSyncItem">
+      <div class="list-item-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        上次同步
+      </div>
+      <div class="list-item-value">
+        <span id="lastSyncTime">--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 账号设置 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      账号设置
+    </div>
+    <div class="list-item" id="editProfileBtn">
+      <div class="list-item-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        修改昵称
+      </div>
+      <div class="list-item-value">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+    <div class="list-item" id="changePasswordBtn">
+      <div class="list-item-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        修改密码
+      </div>
+      <div class="list-item-value">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 数据管理 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+      </svg>
+      数据管理
+    </div>
+    <div class="list-item" id="exportDataBtn">
+      <div class="list-item-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        导出全部数据
+      </div>
+      <div class="list-item-value">
+        <span class="arrow">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 退出登录 -->
+  <button class="btn-danger" id="logoutBtn">退出登录</button>
+
+</div>
+
+<!-- 修改昵称弹窗 -->
+<div class="modal-overlay" id="nicknameModal">
+  <div class="modal">
+    <div class="modal-title">修改昵称</div>
+    <div class="form-group">
+      <label class="form-label">新昵称</label>
+      <input type="text" class="form-input" id="newNickname" placeholder="请输入新昵称" maxlength="20">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('nicknameModal')">取消</button>
+      <button class="btn-primary" id="saveNicknameBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 修改密码弹窗 -->
+<div class="modal-overlay" id="passwordModal">
+  <div class="modal">
+    <div class="modal-title">修改密码</div>
+    <div class="form-group">
+      <label class="form-label">原密码</label>
+      <input type="password" class="form-input" id="oldPassword" placeholder="请输入原密码">
+    </div>
+    <div class="form-group">
+      <label class="form-label">新密码</label>
+      <input type="password" class="form-input" id="newPassword" placeholder="至少 6 位">
+    </div>
+    <div class="form-group">
+      <label class="form-label">确认新密码</label>
+      <input type="password" class="form-input" id="confirmPassword" placeholder="再次输入新密码">
+    </div>
+    <div class="form-error" id="pwdError" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('passwordModal')">取消</button>
+      <button class="btn-primary" id="savePasswordBtn">确认修改</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../assets/api.js"></script>
+<script>
+/* ============================================
+   个人中心逻辑
+   ============================================ */
+
+// 未登录跳转
+if (!XingXingAPI.isLoggedIn()) {
+  window.location.href = 'login.html';
+}
+
+const user = XingXingAPI.getUser();
+
+// ---------- 填充用户信息 ----------
+document.getElementById('profileName').textContent = user.nickname || user.username;
+document.getElementById('profileUsername').textContent = '@' + user.username;
+document.getElementById('profileAvatar').textContent = (user.nickname || user.username).charAt(0);
+
+// 从 localStorage 读统计数据
+function loadStats() {
+  const points = parseInt(localStorage.getItem('xingxing_points') || '0', 10);
+  const reviews = parseInt(localStorage.getItem('xingxing_total_reviews') || '0', 10);
+  const streak = parseInt(localStorage.getItem('xingxing_streak') || '0', 10);
+
+  document.getElementById('statPoints').textContent = points;
+  document.getElementById('statReviews').textContent = reviews;
+  document.getElementById('statDays').textContent = streak;
+}
+loadStats();
+
+// ---------- Toast ----------
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + (type || 'info');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ---------- 同步状态 ----------
+let syncTimer = null;
+
+async function checkSyncStatus() {
+  const dot = document.getElementById('syncDot');
+  const text = document.getElementById('syncText');
+  const lastSync = XingXingAPI.getLastSyncTime();
+
+  if (lastSync) {
+    document.getElementById('lastSyncTime').textContent = formatTime(lastSync);
+  }
+
+  try {
+    const status = await XingXingAPI.get('/sync/status');
+    dot.className = 'sync-dot ok';
+    text.textContent = '已连接服务器 · 共 ' + status.totalItems + ' 条数据';
+  } catch (e) {
+    dot.className = 'sync-dot error';
+    text.textContent = '连接服务器失败';
+  }
+}
+
+function formatTime(iso) {
+  try {
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = now - d;
+    if (diff < 60000) return '刚刚';
+    if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+    return d.toLocaleDateString();
+  } catch (e) {
+    return '--';
+  }
+}
+
+document.getElementById('syncNowBtn').addEventListener('click', async () => {
+  const dot = document.getElementById('syncDot');
+  const text = document.getElementById('syncText');
+  const btn = document.getElementById('syncNowBtn');
+
+  dot.className = 'sync-dot syncing';
+  text.textContent = '正在同步...';
+  btn.disabled = true;
+
+  try {
+    const result = await XingXingAPI.syncAll();
+    dot.className = 'sync-dot ok';
+    text.textContent = '同步完成 · 拉取 ' + result.pullMerged + ' 条，推送 ' + result.pushUpdated + ' 条';
+    document.getElementById('lastSyncTime').textContent = '刚刚';
+    loadStats();
+    showToast('同步成功', 'success');
+  } catch (e) {
+    dot.className = 'sync-dot error';
+    text.textContent = '同步失败：' + e.message;
+    showToast('同步失败', 'error');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+checkSyncStatus();
+
+// ---------- 弹窗控制 ----------
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+// 点击遮罩关闭
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+});
+
+// ---------- 修改昵称 ----------
+document.getElementById('editProfileBtn').addEventListener('click', () => {
+  document.getElementById('newNickname').value = user.nickname || user.username;
+  openModal('nicknameModal');
+});
+
+document.getElementById('saveNicknameBtn').addEventListener('click', async () => {
+  const nickname = document.getElementById('newNickname').value.trim();
+  if (!nickname) {
+    showToast('昵称不能为空', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('saveNicknameBtn');
+  btn.disabled = true;
+
+  try {
+    const result = await XingXingAPI.put('/user/profile', { nickname });
+    // 更新本地缓存
+    const updatedUser = XingXingAPI.getUser();
+    updatedUser.nickname = result.nickname;
+    localStorage.setItem('xingxing_user', JSON.stringify(updatedUser));
+
+    // 更新 UI
+    document.getElementById('profileName').textContent = result.nickname;
+    document.getElementById('profileAvatar').textContent = result.nickname.charAt(0);
+
+    closeModal('nicknameModal');
+    showToast('昵称已更新', 'success');
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ---------- 修改密码 ----------
+document.getElementById('changePasswordBtn').addEventListener('click', () => {
+  document.getElementById('oldPassword').value = '';
+  document.getElementById('newPassword').value = '';
+  document.getElementById('confirmPassword').value = '';
+  document.getElementById('pwdError').style.display = 'none';
+  openModal('passwordModal');
+});
+
+document.getElementById('savePasswordBtn').addEventListener('click', async () => {
+  const oldPassword = document.getElementById('oldPassword').value;
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const errorEl = document.getElementById('pwdError');
+
+  if (!oldPassword || !newPassword) {
+    errorEl.textContent = '请填写完整';
+    errorEl.style.display = 'block';
+    return;
+  }
+  if (newPassword.length < 6) {
+    errorEl.textContent = '新密码至少 6 位';
+    errorEl.style.display = 'block';
+    return;
+  }
+  if (newPassword !== confirmPassword) {
+    errorEl.textContent = '两次密码不一致';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  errorEl.style.display = 'none';
+  const btn = document.getElementById('savePasswordBtn');
+  btn.disabled = true;
+
+  try {
+    await XingXingAPI.put('/user/password', { oldPassword, newPassword });
+    closeModal('passwordModal');
+    showToast('密码修改成功', 'success');
+  } catch (e) {
+    errorEl.textContent = e.message;
+    errorEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ---------- 导出数据 ----------
+document.getElementById('exportDataBtn').addEventListener('click', async () => {
+  if (!confirm('将导出所有数据为 JSON 文件，确定要继续吗？')) return;
+
+  try {
+    const data = await XingXingAPI.get('/export');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '行醒数据导出_' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('导出成功', 'success');
+  } catch (e) {
+    showToast('导出失败：' + e.message, 'error');
+  }
+});
+
+// ---------- 退出登录 ----------
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  if (!confirm('确定要退出登录吗？')) return;
+  XingXingAPI.logout();
+  XingXingAPI.stopAutoSync();
+  window.location.href = 'login.html';
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3068 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行醒 · 标注工具</title>
+    <style id="theme-vars">
+/* ============================================
+   Daily OKR - Brand Design Tokens
+   Style: 国风水墨 (Chinese Ink Painting / Jian Lai inspired)
+   ============================================ */
+
+:root {
+  /* ---------- Ink Palette ---------- */
+  --okr-ink-50: #faf8f5;
+  --okr-ink-100: #f0ebe3;
+  --okr-ink-200: #e0d8cc;
+  --okr-ink-300: #c9bda8;
+  --okr-ink-400: #a89880;
+  --okr-ink-500: #8a7a5e;
+  --okr-ink-600: #6b5d44;
+  --okr-ink-700: #4f4430;
+  --okr-ink-800: #362e1f;
+  --okr-ink-900: #1f1a10;
+
+  /* ---------- Rice Paper (宣纸) ---------- */
+  --okr-paper-light: #f7f2e8;
+  --okr-paper: #ede4d3;
+  --okr-paper-dark: #d9cbae;
+
+  /* ---------- Cyan Ink (青黛) ---------- */
+  --okr-cyan-100: #e8f1f0;
+  --okr-cyan-300: #7fb3ad;
+  --okr-cyan-500: #3d7a74;
+  --okr-cyan-700: #244f4b;
+  --okr-cyan-900: #122b29;
+
+  /* ---------- Gold Accent (描金) ---------- */
+  --okr-gold-100: #f7ecd0;
+  --okr-gold-300: #e8c97a;
+  --okr-gold-500: #c9a227;
+  --okr-gold-700: #8b6914;
+  --okr-gold-900: #5c4508;
+
+  /* ---------- Vermilion (朱砂) ---------- */
+  --okr-vermilion: #c0392b;
+  --okr-vermilion-light: #e74c3c;
+  --okr-vermilion-dark: #922b21;
+
+  /* ---------- State Colors ---------- */
+  --okr-state-success: #2d6a4f;
+  --okr-state-success-bg: #d8f3dc;
+  --okr-state-warning: #b07d1e;
+  --okr-state-warning-bg: #fef3c7;
+  --okr-state-error: #922b21;
+  --okr-state-error-bg: #fde2e2;
+
+  /* ---------- Semantic Aliases ---------- */
+  --okr-background: var(--okr-paper-light);
+  --okr-foreground: var(--okr-ink-900);
+  --okr-card: #fdfbf5;
+  --okr-card-foreground: var(--okr-ink-900);
+  --okr-popover: #fdfbf5;
+  --okr-popover-foreground: var(--okr-ink-900);
+  --okr-primary: var(--okr-ink-800);
+  --okr-primary-foreground: var(--okr-paper-light);
+  --okr-muted: var(--okr-paper);
+  --okr-muted-foreground: var(--okr-ink-500);
+  --okr-destructive: var(--okr-vermilion);
+  --okr-destructive-foreground: #ffffff;
+  --okr-border: var(--okr-ink-200);
+  --okr-input: var(--okr-ink-200);
+  --okr-ring: var(--okr-ink-700);
+
+  /* ---------- Radius Scale ---------- */
+  --okr-radius-sm: 4px;
+  --okr-radius-md: 8px;
+  --okr-radius-lg: 12px;
+  --okr-radius-xl: 16px;
+  --okr-radius-full: 9999px;
+
+  /* ---------- Typography ---------- */
+  --okr-font-sans: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', 'PingFang SC', 'Microsoft YaHei', serif;
+  --okr-font-display: 'Noto Serif SC', 'Source Han Serif SC', 'STKaiti', 'KaiTi', '楷体', serif;
+  --okr-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  --okr-text-xs: 12px;
+  --okr-text-sm: 14px;
+  --okr-text-base: 15px;
+  --okr-text-lg: 18px;
+  --okr-text-xl: 22px;
+  --okr-text-2xl: 28px;
+  --okr-text-3xl: 36px;
+  --okr-text-4xl: 48px;
+
+  /* ---------- Spacing ---------- */
+  --okr-space-1: 4px;
+  --okr-space-2: 8px;
+  --okr-space-3: 12px;
+  --okr-space-4: 16px;
+  --okr-space-5: 20px;
+  --okr-space-6: 24px;
+  --okr-space-8: 32px;
+  --okr-space-10: 40px;
+  --okr-space-12: 48px;
+  --okr-space-16: 64px;
+
+  /* ---------- Shadow (subtle ink wash) ---------- */
+  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+
+  /* ---------- Transition ---------- */
+  --okr-transition-fast: 150ms ease;
+  --okr-transition-base: 250ms ease;
+  --okr-transition-slow: 400ms ease;
+}
+
+/* ---------- Base Styles ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--okr-font-sans);
+  font-size: var(--okr-text-base);
+  line-height: 1.7;
+  color: var(--okr-foreground);
+  background-color: var(--okr-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+}
+
+/* ---------- Utility Classes ---------- */
+.text-primary { color: var(--okr-primary); }
+.text-muted { color: var(--okr-muted-foreground); }
+.text-gold { color: var(--okr-gold-500); }
+.text-vermilion { color: var(--okr-vermilion); }
+.text-ink-light { color: var(--okr-ink-500); }
+
+.bg-primary { background-color: var(--okr-primary); }
+.bg-card { background-color: var(--okr-card); }
+.bg-paper { background-color: var(--okr-paper); }
+.bg-muted { background-color: var(--okr-muted); }
+
+.border-default { border-color: var(--okr-border); }
+.border-gold { border-color: var(--okr-gold-300); }
+.border-ink { border-color: var(--okr-ink-400); }
+
+.rounded-sm { border-radius: var(--okr-radius-sm); }
+.rounded-md { border-radius: var(--okr-radius-md); }
+.rounded-lg { border-radius: var(--okr-radius-lg); }
+.rounded-xl { border-radius: var(--okr-radius-xl); }
+.rounded-full { border-radius: var(--okr-radius-full); }
+
+.shadow-sm { box-shadow: var(--okr-shadow-sm); }
+.shadow-md { box-shadow: var(--okr-shadow-md); }
+.shadow-lg { box-shadow: var(--okr-shadow-lg); }
+
+.transition { transition: all var(--okr-transition-base); }
+.transition-fast { transition: all var(--okr-transition-fast); }
+
+/* ---------- Ink decorative helpers ---------- */
+.ink-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--okr-ink-300), transparent);
+  border: none;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, var(--okr-gold-300), var(--okr-gold-500), var(--okr-gold-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--okr-vermilion);
+  color: #fff;
+  font-family: var(--okr-font-display);
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+}
+
+    </style>
+    <script src="../assets/tailwind.min.js"></script>
+    <script src="../assets/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--okr-background);
+    --color-foreground: var(--okr-foreground);
+    --color-card: var(--okr-card);
+    --color-card-foreground: var(--okr-card-foreground);
+    --color-popover: var(--okr-popover);
+    --color-popover-foreground: var(--okr-popover-foreground);
+    --color-primary: var(--okr-primary);
+    --color-primary-foreground: var(--okr-primary-foreground);
+    --color-muted: var(--okr-muted);
+    --color-muted-foreground: var(--okr-muted-foreground);
+    --color-destructive: var(--okr-destructive);
+    --color-destructive-foreground: var(--okr-destructive-foreground);
+    --color-border: var(--okr-border);
+    --color-input: var(--okr-input);
+    --color-ring: var(--okr-ring);
+    --radius-sm: var(--okr-radius-sm);
+    --radius-md: var(--okr-radius-md);
+    --radius-lg: var(--okr-radius-lg);
+    --radius-xl: var(--okr-radius-xl);
+  }
+  @layer base {
+    body { background: var(--okr-background); color: var(--okr-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--okr-background); }
+      .text-background { color: var(--okr-background); }
+      .border-background { border-color: var(--okr-background); }
+      .ring-background { --tw-ring-color: var(--okr-background); }
+      .bg-foreground { background-color: var(--okr-foreground); }
+      .text-foreground { color: var(--okr-foreground); }
+      .border-foreground { border-color: var(--okr-foreground); }
+      .ring-foreground { --tw-ring-color: var(--okr-foreground); }
+      .bg-card { background-color: var(--okr-card); }
+      .text-card { color: var(--okr-card); }
+      .border-card { border-color: var(--okr-card); }
+      .ring-card { --tw-ring-color: var(--okr-card); }
+      .bg-card-foreground { background-color: var(--okr-card-foreground); }
+      .text-card-foreground { color: var(--okr-card-foreground); }
+      .border-card-foreground { border-color: var(--okr-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--okr-card-foreground); }
+      .bg-popover { background-color: var(--okr-popover); }
+      .text-popover { color: var(--okr-popover); }
+      .border-popover { border-color: var(--okr-popover); }
+      .ring-popover { --tw-ring-color: var(--okr-popover); }
+      .bg-popover-foreground { background-color: var(--okr-popover-foreground); }
+      .text-popover-foreground { color: var(--okr-popover-foreground); }
+      .border-popover-foreground { border-color: var(--okr-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--okr-popover-foreground); }
+      .bg-primary { background-color: var(--okr-primary); }
+      .text-primary { color: var(--okr-primary); }
+      .border-primary { border-color: var(--okr-primary); }
+      .ring-primary { --tw-ring-color: var(--okr-primary); }
+      .bg-primary-foreground { background-color: var(--okr-primary-foreground); }
+      .text-primary-foreground { color: var(--okr-primary-foreground); }
+      .border-primary-foreground { border-color: var(--okr-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--okr-primary-foreground); }
+      .bg-muted { background-color: var(--okr-muted); }
+      .text-muted { color: var(--okr-muted); }
+      .border-muted { border-color: var(--okr-muted); }
+      .ring-muted { --tw-ring-color: var(--okr-muted); }
+      .bg-muted-foreground { background-color: var(--okr-muted-foreground); }
+      .text-muted-foreground { color: var(--okr-muted-foreground); }
+      .border-muted-foreground { border-color: var(--okr-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--okr-muted-foreground); }
+      .bg-destructive { background-color: var(--okr-destructive); }
+      .text-destructive { color: var(--okr-destructive); }
+      .border-destructive { border-color: var(--okr-destructive); }
+      .ring-destructive { --tw-ring-color: var(--okr-destructive); }
+      .bg-destructive-foreground { background-color: var(--okr-destructive-foreground); }
+      .text-destructive-foreground { color: var(--okr-destructive-foreground); }
+      .border-destructive-foreground { border-color: var(--okr-destructive-foreground); }
+      .ring-destructive-foreground { --tw-ring-color: var(--okr-destructive-foreground); }
+      .bg-border { background-color: var(--okr-border); }
+      .text-border { color: var(--okr-border); }
+      .border-border { border-color: var(--okr-border); }
+      .ring-border { --tw-ring-color: var(--okr-border); }
+      .bg-input { background-color: var(--okr-input); }
+      .text-input { color: var(--okr-input); }
+      .border-input { border-color: var(--okr-input); }
+      .ring-input { --tw-ring-color: var(--okr-input); }
+      .bg-ring { background-color: var(--okr-ring); }
+      .text-ring { color: var(--okr-ring); }
+      .border-ring { border-color: var(--okr-ring); }
+      .ring-ring { --tw-ring-color: var(--okr-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+<script src="../assets/api.js"></script>
+<script src="../assets/page-nav.js"></script>
+<script src="../assets/common.js"></script>
+<script src="../assets/user-module.js"></script>
+<script>
+  if (window.XingxingCommon) XingxingCommon.checkDailyReset();
+</script>
+</head>
+<body>
+
+<!-- 水墨晕染装饰 SVG -->
+<svg class="ink-wash-decoration ink-wash-top" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="inkWash1" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#1f1a10" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="180" cy="120" rx="160" ry="100" fill="url(#inkWash1)"/>
+  <ellipse cx="350" cy="80" rx="120" ry="70" fill="url(#inkWash1)"/>
+</svg>
+
+<svg class="ink-wash-decoration ink-wash-bottom" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="inkWash2" cx="60%" cy="70%" r="50%">
+      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#1f1a10" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="300" cy="250" rx="200" ry="80" fill="url(#inkWash2)"/>
+</svg>
+
+<svg class="mountain-footer" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,80 L0,60 Q100,30 200,50 T400,20 T600,45 T800,15 T1000,40 T1200,25 T1440,50 L1440,80 Z" fill="#1f1a10"/>
+  <path d="M0,80 L0,70 Q150,50 300,65 T600,55 T900,70 T1200,60 T1440,72 L1440,80 Z" fill="#1f1a10" opacity="0.6"/>
+</svg>
+
+<!-- ========== 顶部状态栏 ========== -->
+<header class="topbar">
+    <div class="topbar-left">
+        <div class="seal-logo">日</div>
+        <span class="topbar-brand">行醒</span>
+    </div>
+    <div class="topbar-center"><span class="daily-quote" id="topbarQuote" title="点击换一条">圈点批注，精益求精。</span></div>
+    <div class="topbar-right">
+        <div class="weather-info">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <span>晴 · 26°C</span>
+        </div>
+        <div class="time-display" id="topbarTime">辰时</div>
+        <div class="user-avatar">侠</div>
+    </div>
+</header>
+
+<div class="app-layout">
+    <!-- ========== 左侧导航 ========== -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">行醒</div>
+            <div class="sidebar-subtitle">知行合一</div>
+            <div class="sidebar-date" id="sidebarDate">丙午年 八月初三</div>
+            <div class="sidebar-weekday" id="sidebarWeekday">星期一</div>
+            <div class="streak-seal">
+                <div class="streak-number">12<span>日</span></div>
+                <div class="streak-label">不辍</div>
+            </div>
+        </div>
+
+        <div class="brush-divider">
+            <svg viewBox="0 0 200 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10,8 Q50,2 100,8 T190,8" stroke="#1f1a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
+                <path d="M20,10 Q60,6 100,10 T180,10" stroke="#c9a227" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.3"/>
+            </svg>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item" data-dom-id="nav-dashboard">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                今日修行
+            </a>
+            <a href="okrs.html" class="nav-item" data-dom-id="nav-okrs">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2"/>
+                </svg>
+                目标名册
+            </a>
+            <a href="review.html" class="nav-item" data-dom-id="nav-review">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                省身日记
+            </a>
+            <a href="error-book.html" class="nav-item" data-dom-id="nav-errorbook">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    <path d="M10 8h6M10 12h6M10 16h4"/>
+                </svg>
+                省身错题
+            </a>
+            <a href="daily-plan.html" class="nav-item" data-dom-id="nav-todo">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                每日计划
+            </a>
+            <a href="light-keeper.html" class="nav-item" data-dom-id="nav-lightkeeper">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v6"/>
+                    <path d="M12 22v-4"/>
+                    <circle cx="12" cy="14" r="4"/>
+                    <path d="M4.93 4.93l4.24 4.24"/>
+                    <path d="M14.83 14.83l4.24 4.24"/>
+                    <path d="M2 12h6"/>
+                    <path d="M16 12h6"/>
+                    <path d="M4.93 19.07l4.24-4.24"/>
+                    <path d="M14.83 9.17l4.24-4.24"/>
+                </svg>
+                点灯人
+            </a>
+            <a href="resources.html" class="nav-item" data-dom-id="nav-resources">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    <path d="M12 7v10"/>
+                    <path d="M9 10h6"/>
+                </svg>
+                个人知识库
+            </a>
+            <a href="annotate.html" class="nav-item active">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                    <path d="M2 2l7.586 7.586"/>
+                    <circle cx="11" cy="11" r="2"/>
+                </svg>
+                标注工具
+            </a>
+            <a href="profile.html" class="nav-item" data-dom-id="nav-settings">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                设置
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ========== 主内容区 ========== -->
+    <main class="main-content">
+        <div class="page-header">
+            <div class="page-seal-tag">圈点</div>
+            <h1 class="page-title">标注工具</h1>
+            <p class="page-subtitle">上传截图，圈点批注，如古卷批阅，精益求精。</p>
+        </div>
+
+        <div class="annotate-container">
+            <!-- 左侧画布区 -->
+            <div class="canvas-section">
+                <!-- 工具栏 -->
+                <div class="toolbar">
+                    <div class="tool-group">
+                        <span class="tool-group-label">工具</span>
+                        <button class="tool-btn active" data-tool="rect" title="矩形框选 (R)">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" data-tool="arrow" title="箭头标注 (A)">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="19" x2="19" y2="5"/>
+                                <polyline points="12 5 19 5 19 12"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" data-tool="pen" title="自由画笔 (P)">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" data-tool="text" title="文字标注 (T)">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="4 7 4 4 20 4 20 7"/>
+                                <line x1="9" y1="20" x2="15" y2="20"/>
+                                <line x1="12" y1="4" x2="12" y2="20"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" data-tool="circle" title="圆形/椭圆标注 (C)">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <ellipse cx="12" cy="12" rx="9" ry="7"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" data-tool="highlight" title="高亮标注 (H)">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 11l-6 6v3h3l6-6"/>
+                                <path d="M22 12l-6 6-3-3 6-6 3 3z" opacity="0.3"/>
+                                <line x1="9" y1="11" x2="13" y2="7"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" data-tool="number" title="序号标注 (N)">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"/>
+                                <text x="12" y="16" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor" stroke="none" style="font-family:serif;">1</text>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="tool-group">
+                        <span class="tool-group-label">颜色</span>
+                        <button class="color-btn cinnabar active" data-color="cinnabar" title="朱砂红·问题"></button>
+                        <button class="color-btn gold" data-color="gold" title="金色·建议"></button>
+                        <button class="color-btn ink" data-color="ink" title="墨色·备注"></button>
+                    </div>
+
+                    <div class="tool-group">
+                        <span class="tool-group-label">粗细</span>
+                        <button class="line-width-btn" data-width="2"><span></span></button>
+                        <button class="line-width-btn active" data-width="3"><span></span></button>
+                        <button class="line-width-btn" data-width="5"><span></span></button>
+                    </div>
+
+                    <div class="tool-group">
+                        <span class="tool-group-label">线型</span>
+                        <button class="line-style-btn active" data-style="solid">实线</button>
+                        <button class="line-style-btn" data-style="dashed">虚线</button>
+                    </div>
+
+                    <div class="tool-group">
+                        <span class="tool-group-label">操作</span>
+                        <button class="tool-btn" id="btnUndo" title="撤销" disabled>
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 1 10 7 10"/>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" id="btnRedo" title="重做" disabled>
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"/>
+                                <path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn danger" id="btnClear" title="清空全部">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" id="btnUpload" title="上传图片">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </button>
+                        <button class="tool-btn" id="btnResetNumber" title="重置序号">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                                <path d="M3 3v5h5"/>
+                                <text x="12" y="15" text-anchor="middle" font-size="8" font-weight="bold" fill="currentColor" stroke="none" style="font-family:serif;">1</text>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 画布 -->
+                <div class="canvas-wrapper" id="canvasWrapper">
+                    <!-- 上传区 -->
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <div class="upload-text">拖拽图片到此处，或点击上传</div>
+                        <div class="upload-hint">支持 <kbd>Ctrl</kbd> + <kbd>V</kbd> 粘贴剪贴板图片</div>
+                    </div>
+                    <!-- SVG 画布（初始隐藏） -->
+                    <div class="canvas-svg-container" id="svgContainer" style="display:none; width:100%; height:100%;">
+                        <svg class="annotate-svg" id="annotateSvg" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <!-- 毛笔笔触滤镜 -->
+                                <filter id="inkBrush" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/>
+                                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+                                </filter>
+                                <!-- 朱砂印章效果 -->
+                                <filter id="sealEffect" x="-10%" y="-10%" width="120%" height="120%">
+                                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise"/>
+                                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" xChannelSelector="R" yChannelSelector="G"/>
+                                </filter>
+                            </defs>
+                            <image id="bgImage" href="" x="0" y="0"/>
+                            <g class="annotation-layer" id="annotationLayer"></g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧标注面板 -->
+            <div class="annotation-panel">
+                <!-- 常用批注模板 -->
+                <div class="panel-card template-panel">
+                    <div class="panel-header template-header" id="templateHeader">
+                        <span class="panel-title">常用批注模板</span>
+                        <svg class="template-toggle-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                    <div class="template-body" id="templateBody">
+                        <div class="template-pills">
+                            <span class="template-pill" data-text="配色不协调，建议调整">配色不协调</span>
+                            <span class="template-pill" data-text="间距太大，建议收紧">间距太大</span>
+                            <span class="template-pill" data-text="间距太小，建议增加留白">间距太小</span>
+                            <span class="template-pill" data-text="字体层级不清晰，建议优化字号对比">字体层级不清</span>
+                            <span class="template-pill" data-text="交互反馈缺失，点击无明显响应">交互反馈缺失</span>
+                            <span class="template-pill" data-text="信息层级混乱，重点不突出">信息层级混乱</span>
+                            <span class="template-pill" data-text="对齐方式不统一，建议对齐基准线">对齐不统一</span>
+                            <span class="template-pill" data-text="图标风格不统一，建议统一线性/面性风格">图标风格不统一</span>
+                            <span class="template-pill" data-text="圆角大小不一致，建议统一圆角规范">圆角不一致</span>
+                            <span class="template-pill" data-text="需要增加留白，内容过于拥挤">增加留白</span>
+                            <span class="template-pill" data-text="重点不够突出，视觉层级需加强">重点不突出</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <span class="panel-title">批注清单</span>
+                        <span class="panel-count" id="annoCount">0</span>
+                    </div>
+                    <div class="panel-body" id="annotationList">
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            <p>暂无批注</p>
+                            <p style="font-size:12px; margin-top:4px; opacity:0.7;">上传图片后开始圈点</p>
+                        </div>
+                    </div>
+                    <div class="export-section">
+                        <button class="export-btn primary" id="btnExportImage">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                            导出批注图
+                        </button>
+                        <button class="export-btn" id="btnCopyImage">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                            复制到剪贴板
+                        </button>
+                        <button class="export-btn" id="btnExportMarkdown">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                            导出批注文
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Toast 提示 -->
+<div class="toast" id="toast"></div>
+
+<input type="file" id="fileInput" accept="image/*" style="display:none;">
+
+<script>
+(function() {
+    'use strict';
+
+    // ========== 状态管理 ==========
+    const state = {
+        tool: 'rect',           // rect, arrow, pen, text, circle, highlight, number
+        color: 'cinnabar',      // cinnabar, gold, ink
+        lineWidth: 3,
+        lineStyle: 'solid',     // solid, dashed
+        annotations: [],        // 标注数组
+        history: [],            // 历史记录（用于撤销重做）
+        historyIndex: -1,
+        selectedId: null,
+        imageLoaded: false,
+        imgWidth: 0,
+        imgHeight: 0,
+        imageDataUrl: null,
+        nextNumber: 1           // 序号标注计数器
+    };
+
+    // 颜色映射
+    const colorMap = {
+        cinnabar: '#c0392b',
+        gold: '#c9a227',
+        ink: '#1f1a10'
+    };
+
+    const typeNames = {
+        rect: '矩形标注',
+        arrow: '箭头标注',
+        pen: '画笔标注',
+        text: '文字标注',
+        circle: '圆形标注',
+        highlight: '高亮标注',
+        number: '序号标注'
+    };
+
+    const colorNames = {
+        cinnabar: '问题·朱砂',
+        gold: '建议·描金',
+        ink: '备注·墨色'
+    };
+
+    // ========== DOM 元素 ==========
+    const uploadArea = document.getElementById('uploadArea');
+    const svgContainer = document.getElementById('svgContainer');
+    const svg = document.getElementById('annotateSvg');
+    const annotationLayer = document.getElementById('annotationLayer');
+    const bgImage = document.getElementById('bgImage');
+    const canvasWrapper = document.getElementById('canvasWrapper');
+    const annotationList = document.getElementById('annotationList');
+    const annoCount = document.getElementById('annoCount');
+    const fileInput = document.getElementById('fileInput');
+    const toastEl = document.getElementById('toast');
+
+    // ========== 工具函数 ==========
+    function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toastEl.classList.remove('show'), 2000);
+    }
+
+    function generateId() {
+        return 'anno_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    }
+
+    function svgPoint(x, y) {
+        const pt = svg.createSVGPoint();
+        pt.x = x;
+        pt.y = y;
+        return pt.matrixTransform(svg.getScreenCTM().inverse());
+    }
+
+    function dashArray() {
+        return state.lineStyle === 'dashed' ? `${state.lineWidth * 3},${state.lineWidth * 2}` : 'none';
+    }
+
+    // ========== 历史记录（撤销/重做）==========
+    function saveHistory() {
+        state.history = state.history.slice(0, state.historyIndex + 1);
+        state.history.push(JSON.stringify(state.annotations.map(a => ({
+            id: a.id, type: a.type, color: a.color, lineWidth: a.lineWidth,
+            lineStyle: a.lineStyle, data: a.data, text: a.text || '',
+            numberValue: a.numberValue || 0
+        }))));
+        state.historyIndex++;
+        updateUndoRedoBtns();
+    }
+
+    function undo() {
+        if (state.historyIndex > 0) {
+            state.historyIndex--;
+            state.annotations = JSON.parse(state.history[state.historyIndex]).map(a => ({
+                ...a, data: {...a.data}, numberValue: a.numberValue || 0
+            }));
+            state.selectedId = null;
+            renderAll();
+            updateUndoRedoBtns();
+        }
+    }
+
+    function redo() {
+        if (state.historyIndex < state.history.length - 1) {
+            state.historyIndex++;
+            state.annotations = JSON.parse(state.history[state.historyIndex]).map(a => ({
+                ...a, data: {...a.data}, numberValue: a.numberValue || 0
+            }));
+            state.selectedId = null;
+            renderAll();
+            updateUndoRedoBtns();
+        }
+    }
+
+    function updateUndoRedoBtns() {
+        document.getElementById('btnUndo').disabled = state.historyIndex <= 0;
+        document.getElementById('btnRedo').disabled = state.historyIndex >= state.history.length - 1;
+    }
+
+    // ========== 图片上传 ==========
+    function loadImage(src) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+            state.imgWidth = img.naturalWidth;
+            state.imgHeight = img.naturalHeight;
+            state.imageDataUrl = src;
+            state.imageLoaded = true;
+
+            svg.setAttribute('viewBox', `0 0 ${state.imgWidth} ${state.imgHeight}`);
+            svg.setAttribute('width', state.imgWidth);
+            svg.setAttribute('height', state.imgHeight);
+            bgImage.setAttribute('href', src);
+            bgImage.setAttribute('width', state.imgWidth);
+            bgImage.setAttribute('height', state.imgHeight);
+
+            uploadArea.style.display = 'none';
+            svgContainer.style.display = 'flex';
+            svgContainer.style.alignItems = 'center';
+            svgContainer.style.justifyContent = 'center';
+
+            // 重置标注
+            state.annotations = [];
+            state.history = [];
+            state.historyIndex = -1;
+            state.selectedId = null;
+            state.nextNumber = 1;
+            saveHistory();
+            renderAnnotationList();
+            showToast('图片加载成功，开始批注吧');
+        };
+        img.onerror = function() {
+            showToast('图片加载失败');
+        };
+        img.src = src;
+    }
+
+    // 点击上传
+    uploadArea.addEventListener('click', () => fileInput.click());
+    document.getElementById('btnUpload').addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            loadImage(ev.target.result);
+        };
+        reader.readAsDataURL(file);
+        fileInput.value = '';
+    });
+
+    // 拖拽上传
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.classList.add('drag-over');
+    });
+    uploadArea.addEventListener('dragleave', function() {
+        uploadArea.classList.remove('drag-over');
+    });
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                loadImage(ev.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 粘贴上传
+    document.addEventListener('paste', function(e) {
+        const items = e.clipboardData && e.clipboardData.items;
+        if (!items) return;
+        for (let item of items) {
+            if (item.type.startsWith('image/')) {
+                const file = item.getAsFile();
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    loadImage(ev.target.result);
+                };
+                reader.readAsDataURL(file);
+                e.preventDefault();
+                break;
+            }
+        }
+    });
+
+    // ========== 工具栏交互 ==========
+    // 工具切换
+    document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            state.tool = this.dataset.tool;
+        });
+    });
+
+    // 颜色切换
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            state.color = this.dataset.color;
+        });
+    });
+
+    // 线宽切换
+    document.querySelectorAll('.line-width-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.line-width-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            state.lineWidth = parseInt(this.dataset.width);
+        });
+    });
+
+    // 线型切换
+    document.querySelectorAll('.line-style-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.line-style-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            state.lineStyle = this.dataset.style;
+        });
+    });
+
+    // 撤销
+    document.getElementById('btnUndo').addEventListener('click', undo);
+    // 重做
+    document.getElementById('btnRedo').addEventListener('click', redo);
+    // 清空
+    document.getElementById('btnClear').addEventListener('click', function() {
+        if (state.annotations.length === 0) return;
+        if (!confirm('确定要清空所有批注吗？')) return;
+        state.annotations = [];
+        state.selectedId = null;
+        state.nextNumber = 1;
+        saveHistory();
+        renderAll();
+        showToast('已清空全部批注');
+    });
+
+    // 重置序号
+    document.getElementById('btnResetNumber').addEventListener('click', function() {
+        state.nextNumber = 1;
+        showToast('序号已重置为 1');
+    });
+
+    // 模板面板折叠
+    document.getElementById('templateHeader').addEventListener('click', function() {
+        const body = document.getElementById('templateBody');
+        const icon = this.querySelector('.template-toggle-icon');
+        body.classList.toggle('collapsed');
+        icon.classList.toggle('rotated');
+    });
+
+    // 模板 pill 点击
+    document.querySelectorAll('.template-pill').forEach(pill => {
+        pill.addEventListener('click', function() {
+            const text = this.dataset.text;
+            if (!state.selectedId) {
+                showToast('请先选中一个标注');
+                return;
+            }
+            const anno = state.annotations.find(a => a.id === state.selectedId);
+            if (!anno) return;
+            if (anno.text) {
+                anno.text += '\n' + text;
+            } else {
+                anno.text = text;
+            }
+            saveHistory();
+            renderAnnotationList();
+            // 保持选中
+            const item = document.querySelector(`.annotation-item[data-id="${state.selectedId}"]`);
+            if (item) item.classList.add('active');
+            showToast('已添加模板批注');
+        });
+    });
+
+    // ========== SVG 绘制交互 ==========
+    let isDrawing = false;
+    let startX = 0, startY = 0;
+    let currentShape = null;
+    let penPoints = [];
+
+    svg.addEventListener('mousedown', function(e) {
+        if (!state.imageLoaded) return;
+        // 如果点击的不是标注层（比如点在了图片上），继续处理
+        if (e.target.closest('.annotation-group')) {
+            // 点击已有标注，选中它
+            const group = e.target.closest('.annotation-group');
+            selectAnnotation(group.dataset.id);
+            return;
+        }
+        // 点击空白处，取消选中
+        if (state.selectedId) {
+            deselectAnnotation();
+        }
+
+        const pt = svgPoint(e.clientX, e.clientY);
+        startX = pt.x;
+        startY = pt.y;
+        isDrawing = true;
+        penPoints = [];
+
+        const id = generateId();
+        const color = colorMap[state.color];
+        const lw = state.lineWidth;
+        const dash = dashArray();
+
+        if (state.tool === 'rect') {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'annotation-group');
+            g.setAttribute('data-id', id);
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('class', 'annotation-shape');
+            rect.setAttribute('x', startX);
+            rect.setAttribute('y', startY);
+            rect.setAttribute('width', 0);
+            rect.setAttribute('height', 0);
+            rect.setAttribute('fill', 'none');
+            rect.setAttribute('stroke', color);
+            rect.setAttribute('stroke-width', lw);
+            rect.setAttribute('stroke-dasharray', dash);
+            rect.setAttribute('rx', 2);
+            g.appendChild(rect);
+            annotationLayer.appendChild(g);
+            currentShape = g;
+
+        } else if (state.tool === 'arrow') {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'annotation-group');
+            g.setAttribute('data-id', id);
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'annotation-shape');
+            line.setAttribute('x1', startX);
+            line.setAttribute('y1', startY);
+            line.setAttribute('x2', startX);
+            line.setAttribute('y2', startY);
+            line.setAttribute('stroke', color);
+            line.setAttribute('stroke-width', lw);
+            line.setAttribute('stroke-dasharray', dash);
+            line.setAttribute('stroke-linecap', 'round');
+            g.appendChild(line);
+
+            // 箭头头部
+            const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            arrow.setAttribute('class', 'annotation-shape');
+            arrow.setAttribute('fill', color);
+            arrow.setAttribute('points', `${startX},${startY} ${startX},${startY} ${startX},${startY}`);
+            g.appendChild(arrow);
+
+            annotationLayer.appendChild(g);
+            currentShape = g;
+
+        } else if (state.tool === 'pen') {
+            penPoints.push([startX, startY]);
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'annotation-group');
+            g.setAttribute('data-id', id);
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('class', 'annotation-shape');
+            path.setAttribute('d', `M ${startX} ${startY}`);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', color);
+            path.setAttribute('stroke-width', lw);
+            path.setAttribute('stroke-dasharray', dash);
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            g.appendChild(path);
+            annotationLayer.appendChild(g);
+            currentShape = g;
+
+        } else if (state.tool === 'text') {
+            // 文字工具：点击后创建输入框
+            createTextAnnotation(startX, startY);
+            isDrawing = false;
+
+        } else if (state.tool === 'circle') {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'annotation-group');
+            g.setAttribute('data-id', id);
+            const ellipse = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+            ellipse.setAttribute('class', 'annotation-shape');
+            ellipse.setAttribute('cx', startX);
+            ellipse.setAttribute('cy', startY);
+            ellipse.setAttribute('rx', 0);
+            ellipse.setAttribute('ry', 0);
+            ellipse.setAttribute('fill', 'none');
+            ellipse.setAttribute('stroke', color);
+            ellipse.setAttribute('stroke-width', lw);
+            ellipse.setAttribute('stroke-dasharray', dash);
+            g.appendChild(ellipse);
+            annotationLayer.appendChild(g);
+            currentShape = g;
+
+        } else if (state.tool === 'highlight') {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'annotation-group');
+            g.setAttribute('data-id', id);
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('class', 'annotation-shape');
+            rect.setAttribute('x', startX);
+            rect.setAttribute('y', startY);
+            rect.setAttribute('width', 0);
+            rect.setAttribute('height', 0);
+            rect.setAttribute('fill', color);
+            rect.setAttribute('fill-opacity', '0.25');
+            rect.setAttribute('stroke', color);
+            rect.setAttribute('stroke-width', 1);
+            rect.setAttribute('stroke-dasharray', 'none');
+            rect.setAttribute('rx', 2);
+            g.appendChild(rect);
+            annotationLayer.appendChild(g);
+            currentShape = g;
+
+        } else if (state.tool === 'number') {
+            // 序号工具：点击放置带数字的圆
+            createNumberAnnotation(startX, startY);
+            isDrawing = false;
+        }
+    });
+
+    svg.addEventListener('mousemove', function(e) {
+        if (!isDrawing || !currentShape) return;
+        const pt = svgPoint(e.clientX, e.clientY);
+        const x = pt.x, y = pt.y;
+
+        if (state.tool === 'rect') {
+            const rect = currentShape.querySelector('rect');
+            const rx = Math.min(startX, x);
+            const ry = Math.min(startY, y);
+            const rw = Math.abs(x - startX);
+            const rh = Math.abs(y - startY);
+            rect.setAttribute('x', rx);
+            rect.setAttribute('y', ry);
+            rect.setAttribute('width', rw);
+            rect.setAttribute('height', rh);
+
+        } else if (state.tool === 'arrow') {
+            const line = currentShape.querySelector('line');
+            line.setAttribute('x2', x);
+            line.setAttribute('y2', y);
+
+            // 计算箭头头部
+            const angle = Math.atan2(y - startY, x - startX);
+            const headLen = 12 + state.lineWidth * 2;
+            const headAngle = Math.PI / 6;
+            const p1x = x - headLen * Math.cos(angle - headAngle);
+            const p1y = y - headLen * Math.sin(angle - headAngle);
+            const p2x = x - headLen * Math.cos(angle + headAngle);
+            const p2y = y - headLen * Math.sin(angle + headAngle);
+            const arrow = currentShape.querySelector('polygon');
+            arrow.setAttribute('points', `${x},${y} ${p1x},${p1y} ${p2x},${p2y}`);
+
+        } else if (state.tool === 'pen') {
+            penPoints.push([x, y]);
+            const path = currentShape.querySelector('path');
+            let d = `M ${penPoints[0][0]} ${penPoints[0][1]}`;
+            for (let i = 1; i < penPoints.length; i++) {
+                d += ` L ${penPoints[i][0]} ${penPoints[i][1]}`;
+            }
+            path.setAttribute('d', d);
+
+        } else if (state.tool === 'circle') {
+            const ellipse = currentShape.querySelector('ellipse');
+            const cx = (startX + x) / 2;
+            const cy = (startY + y) / 2;
+            const rx = Math.abs(x - startX) / 2;
+            const ry = Math.abs(y - startY) / 2;
+            ellipse.setAttribute('cx', cx);
+            ellipse.setAttribute('cy', cy);
+            ellipse.setAttribute('rx', rx);
+            ellipse.setAttribute('ry', ry);
+
+        } else if (state.tool === 'highlight') {
+            const rect = currentShape.querySelector('rect');
+            const rx = Math.min(startX, x);
+            const ry = Math.min(startY, y);
+            const rw = Math.abs(x - startX);
+            const rh = Math.abs(y - startY);
+            rect.setAttribute('x', rx);
+            rect.setAttribute('y', ry);
+            rect.setAttribute('width', rw);
+            rect.setAttribute('height', rh);
+        }
+    });
+
+    svg.addEventListener('mouseup', function(e) {
+        if (!isDrawing || !currentShape) return;
+        isDrawing = false;
+
+        const id = currentShape.dataset.id;
+        const pt = svgPoint(e.clientX, e.clientY);
+        let data = {};
+
+        if (state.tool === 'rect') {
+            const rect = currentShape.querySelector('rect');
+            const w = parseFloat(rect.getAttribute('width'));
+            const h = parseFloat(rect.getAttribute('height'));
+            if (w < 5 || h < 5) {
+                currentShape.remove();
+                currentShape = null;
+                return;
+            }
+            data = {
+                x: parseFloat(rect.getAttribute('x')),
+                y: parseFloat(rect.getAttribute('y')),
+                width: w,
+                height: h
+            };
+        } else if (state.tool === 'arrow') {
+            const line = currentShape.querySelector('line');
+            data = {
+                x1: parseFloat(line.getAttribute('x1')),
+                y1: parseFloat(line.getAttribute('y1')),
+                x2: parseFloat(line.getAttribute('x2')),
+                y2: parseFloat(line.getAttribute('y2'))
+            };
+            const dx = data.x2 - data.x1;
+            const dy = data.y2 - data.y1;
+            if (Math.sqrt(dx*dx + dy*dy) < 10) {
+                currentShape.remove();
+                currentShape = null;
+                return;
+            }
+        } else if (state.tool === 'pen') {
+            if (penPoints.length < 2) {
+                currentShape.remove();
+                currentShape = null;
+                return;
+            }
+            data = { points: [...penPoints] };
+
+        } else if (state.tool === 'circle') {
+            const ellipse = currentShape.querySelector('ellipse');
+            const rx = parseFloat(ellipse.getAttribute('rx'));
+            const ry = parseFloat(ellipse.getAttribute('ry'));
+            if (rx < 5 || ry < 5) {
+                currentShape.remove();
+                currentShape = null;
+                return;
+            }
+            data = {
+                cx: parseFloat(ellipse.getAttribute('cx')),
+                cy: parseFloat(ellipse.getAttribute('cy')),
+                rx: rx,
+                ry: ry
+            };
+
+        } else if (state.tool === 'highlight') {
+            const rect = currentShape.querySelector('rect');
+            const w = parseFloat(rect.getAttribute('width'));
+            const h = parseFloat(rect.getAttribute('height'));
+            if (w < 5 || h < 5) {
+                currentShape.remove();
+                currentShape = null;
+                return;
+            }
+            data = {
+                x: parseFloat(rect.getAttribute('x')),
+                y: parseFloat(rect.getAttribute('y')),
+                width: w,
+                height: h
+            };
+        }
+
+        // 添加编号标签
+        const labelNum = state.annotations.length + 1;
+        addAnnotationLabel(currentShape, state.tool, data, labelNum);
+
+        // 保存标注数据
+        const annotation = {
+            id: id,
+            type: state.tool,
+            color: state.color,
+            lineWidth: state.lineWidth,
+            lineStyle: state.lineStyle,
+            data: data,
+            text: '',
+            labelNum: labelNum
+        };
+        state.annotations.push(annotation);
+        saveHistory();
+
+        currentShape = null;
+        penPoints = [];
+        selectAnnotation(id);
+        renderAnnotationList();
+    });
+
+    // 鼠标离开取消绘制
+    svg.addEventListener('mouseleave', function() {
+        if (isDrawing && currentShape) {
+            currentShape.remove();
+            currentShape = null;
+            isDrawing = false;
+            penPoints = [];
+        }
+    });
+
+    // 添加编号标签
+    function addAnnotationLabel(group, type, data, num) {
+        const color = colorMap[state.color];
+        let lx, ly;
+        if (type === 'rect') {
+            lx = data.x - 2;
+            ly = data.y - 2;
+        } else if (type === 'arrow') {
+            lx = data.x2 + 8;
+            ly = data.y2 - 8;
+        } else if (type === 'pen') {
+            const pts = data.points;
+            lx = pts[pts.length - 1][0] + 8;
+            ly = pts[pts.length - 1][1] - 8;
+        } else if (type === 'circle') {
+            lx = data.cx - data.rx;
+            ly = data.cy - data.ry;
+        } else if (type === 'highlight') {
+            lx = data.x - 2;
+            ly = data.y - 2;
+        } else {
+            return;
+        }
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'anno-label-group');
+
+        // 背景圆
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', lx);
+        circle.setAttribute('cy', ly);
+        circle.setAttribute('r', 10);
+        circle.setAttribute('fill', color);
+        circle.setAttribute('stroke', '#fdfbf5');
+        circle.setAttribute('stroke-width', 1.5);
+        g.appendChild(circle);
+
+        // 编号文字
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', lx);
+        text.setAttribute('y', ly);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'central');
+        text.setAttribute('fill', '#fff');
+        text.setAttribute('class', 'anno-label');
+        text.textContent = num;
+        g.appendChild(text);
+
+        group.appendChild(g);
+    }
+
+    // ========== 序号标注 ==========
+    function createNumberAnnotation(x, y) {
+        const id = generateId();
+        const color = colorMap[state.color];
+        const num = state.nextNumber;
+        const radius = 14;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'annotation-group');
+        g.setAttribute('data-id', id);
+
+        // 背景圆（朱砂色）
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('class', 'annotation-shape number-badge');
+        circle.setAttribute('cx', x);
+        circle.setAttribute('cy', y);
+        circle.setAttribute('r', radius);
+        circle.setAttribute('fill', '#c0392b');
+        circle.setAttribute('stroke', '#fdfbf5');
+        circle.setAttribute('stroke-width', 2);
+        g.appendChild(circle);
+
+        // 数字
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('class', 'annotation-shape');
+        text.setAttribute('x', x);
+        text.setAttribute('y', y);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'central');
+        text.setAttribute('fill', '#fff');
+        text.setAttribute('font-family', '"STKaiti", "KaiTi", "楷体", serif');
+        text.setAttribute('font-size', '14px');
+        text.setAttribute('font-weight', '700');
+        text.textContent = num;
+        g.appendChild(text);
+
+        annotationLayer.appendChild(g);
+
+        const annotation = {
+            id: id,
+            type: 'number',
+            color: state.color,
+            lineWidth: state.lineWidth,
+            lineStyle: state.lineStyle,
+            data: { x: x, y: y, radius: radius },
+            text: '',
+            numberValue: num,
+            labelNum: state.annotations.length + 1
+        };
+        state.annotations.push(annotation);
+        state.nextNumber++;
+        saveHistory();
+        selectAnnotation(id);
+        renderAnnotationList();
+    }
+
+    // ========== 文字标注 ==========
+    function createTextAnnotation(x, y) {
+        const id = generateId();
+        const color = colorMap[state.color];
+
+        // 创建输入框
+        const input = document.createElement('textarea');
+        input.className = 'text-annotation-input';
+        input.style.left = (svgContainer.offsetLeft + x - 40) + 'px';
+        input.style.top = (svgContainer.offsetTop + y - 20) + 'px';
+        input.placeholder = '输入文字...';
+        input.style.color = color;
+        canvasWrapper.appendChild(input);
+        input.focus();
+
+        function finishText() {
+            const txt = input.value.trim();
+            input.remove();
+            if (!txt) return;
+
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'annotation-group');
+            g.setAttribute('data-id', id);
+
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('class', 'annotation-shape');
+            text.setAttribute('x', x);
+            text.setAttribute('y', y);
+            text.setAttribute('fill', color);
+            text.setAttribute('font-size', 16 + state.lineWidth * 2);
+            text.setAttribute('font-family', '"STKaiti", "KaiTi", "楷体", serif');
+            text.setAttribute('font-weight', '600');
+            text.setAttribute('paint-order', 'stroke');
+            text.setAttribute('stroke', 'rgba(253,251,245,0.9)');
+            text.setAttribute('stroke-width', '3');
+            text.setAttribute('stroke-linejoin', 'round');
+            text.textContent = txt;
+            g.appendChild(text);
+
+            annotationLayer.appendChild(g);
+
+            const annotation = {
+                id: id,
+                type: 'text',
+                color: state.color,
+                lineWidth: state.lineWidth,
+                lineStyle: state.lineStyle,
+                data: { x: x, y: y, content: txt },
+                text: '',
+                labelNum: state.annotations.length + 1
+            };
+            state.annotations.push(annotation);
+            saveHistory();
+            selectAnnotation(id);
+            renderAnnotationList();
+        }
+
+        input.addEventListener('blur', finishText);
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                input.value = '';
+                input.blur();
+            }
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                input.blur();
+            }
+        });
+    }
+
+    // ========== 选中标注 ==========
+    function selectAnnotation(id) {
+        state.selectedId = id;
+        // 更新 SVG 选中态
+        document.querySelectorAll('.annotation-group').forEach(g => {
+            g.classList.toggle('selected', g.dataset.id === id);
+        });
+        // 更新列表选中态
+        document.querySelectorAll('.annotation-item').forEach(item => {
+            item.classList.toggle('active', item.dataset.id === id);
+        });
+
+        // 滚动到对应列表项
+        const item = document.querySelector(`.annotation-item[data-id="${id}"]`);
+        if (item) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function deselectAnnotation() {
+        state.selectedId = null;
+        document.querySelectorAll('.annotation-group').forEach(g => g.classList.remove('selected'));
+        document.querySelectorAll('.annotation-item').forEach(item => item.classList.remove('active'));
+    }
+
+    // 点击空白处取消选中
+    canvasWrapper.addEventListener('click', function(e) {
+        if (e.target === canvasWrapper || e.target === svgContainer || e.target === svg || e.target.tagName === 'image') {
+            deselectAnnotation();
+        }
+    });
+
+    // ========== 渲染全部 ==========
+    function renderAll() {
+        // 清空 SVG 标注层（保留 image）
+        while (annotationLayer.firstChild) {
+            annotationLayer.removeChild(annotationLayer.firstChild);
+        }
+
+        // 重新渲染所有标注
+        state.annotations.forEach((anno, idx) => {
+            anno.labelNum = idx + 1;
+            const color = colorMap[anno.color];
+            const lw = anno.lineWidth;
+            const dash = anno.lineStyle === 'dashed' ? `${lw * 3},${lw * 2}` : 'none';
+
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'annotation-group' + (anno.id === state.selectedId ? ' selected' : ''));
+            g.setAttribute('data-id', anno.id);
+
+            if (anno.type === 'rect') {
+                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('class', 'annotation-shape');
+                rect.setAttribute('x', anno.data.x);
+                rect.setAttribute('y', anno.data.y);
+                rect.setAttribute('width', anno.data.width);
+                rect.setAttribute('height', anno.data.height);
+                rect.setAttribute('fill', 'none');
+                rect.setAttribute('stroke', color);
+                rect.setAttribute('stroke-width', lw);
+                rect.setAttribute('stroke-dasharray', dash);
+                rect.setAttribute('rx', 2);
+                g.appendChild(rect);
+                addAnnotationLabel(g, 'rect', anno.data, idx + 1);
+
+            } else if (anno.type === 'arrow') {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('class', 'annotation-shape');
+                line.setAttribute('x1', anno.data.x1);
+                line.setAttribute('y1', anno.data.y1);
+                line.setAttribute('x2', anno.data.x2);
+                line.setAttribute('y2', anno.data.y2);
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', lw);
+                line.setAttribute('stroke-dasharray', dash);
+                line.setAttribute('stroke-linecap', 'round');
+                g.appendChild(line);
+
+                const angle = Math.atan2(anno.data.y2 - anno.data.y1, anno.data.x2 - anno.data.x1);
+                const headLen = 12 + lw * 2;
+                const headAngle = Math.PI / 6;
+                const p1x = anno.data.x2 - headLen * Math.cos(angle - headAngle);
+                const p1y = anno.data.y2 - headLen * Math.sin(angle - headAngle);
+                const p2x = anno.data.x2 - headLen * Math.cos(angle + headAngle);
+                const p2y = anno.data.y2 - headLen * Math.sin(angle + headAngle);
+                const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                arrow.setAttribute('class', 'annotation-shape');
+                arrow.setAttribute('fill', color);
+                arrow.setAttribute('points', `${anno.data.x2},${anno.data.y2} ${p1x},${p1y} ${p2x},${p2y}`);
+                g.appendChild(arrow);
+
+                addAnnotationLabel(g, 'arrow', anno.data, idx + 1);
+
+            } else if (anno.type === 'pen') {
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('class', 'annotation-shape');
+                let d = `M ${anno.data.points[0][0]} ${anno.data.points[0][1]}`;
+                for (let i = 1; i < anno.data.points.length; i++) {
+                    d += ` L ${anno.data.points[i][0]} ${anno.data.points[i][1]}`;
+                }
+                path.setAttribute('d', d);
+                path.setAttribute('fill', 'none');
+                path.setAttribute('stroke', color);
+                path.setAttribute('stroke-width', lw);
+                path.setAttribute('stroke-dasharray', dash);
+                path.setAttribute('stroke-linecap', 'round');
+                path.setAttribute('stroke-linejoin', 'round');
+                g.appendChild(path);
+                addAnnotationLabel(g, 'pen', anno.data, idx + 1);
+
+            } else if (anno.type === 'text') {
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('class', 'annotation-shape');
+                text.setAttribute('x', anno.data.x);
+                text.setAttribute('y', anno.data.y);
+                text.setAttribute('fill', color);
+                text.setAttribute('font-size', 16 + lw * 2);
+                text.setAttribute('font-family', '"STKaiti", "KaiTi", "楷体", serif');
+                text.setAttribute('font-weight', '600');
+                text.setAttribute('paint-order', 'stroke');
+                text.setAttribute('stroke', 'rgba(253,251,245,0.9)');
+                text.setAttribute('stroke-width', '3');
+                text.setAttribute('stroke-linejoin', 'round');
+                text.textContent = anno.data.content;
+                g.appendChild(text);
+
+            } else if (anno.type === 'circle') {
+                const ellipse = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+                ellipse.setAttribute('class', 'annotation-shape');
+                ellipse.setAttribute('cx', anno.data.cx);
+                ellipse.setAttribute('cy', anno.data.cy);
+                ellipse.setAttribute('rx', anno.data.rx);
+                ellipse.setAttribute('ry', anno.data.ry);
+                ellipse.setAttribute('fill', 'none');
+                ellipse.setAttribute('stroke', color);
+                ellipse.setAttribute('stroke-width', lw);
+                ellipse.setAttribute('stroke-dasharray', dash);
+                g.appendChild(ellipse);
+                addAnnotationLabel(g, 'circle', anno.data, idx + 1);
+
+            } else if (anno.type === 'highlight') {
+                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('class', 'annotation-shape');
+                rect.setAttribute('x', anno.data.x);
+                rect.setAttribute('y', anno.data.y);
+                rect.setAttribute('width', anno.data.width);
+                rect.setAttribute('height', anno.data.height);
+                rect.setAttribute('fill', color);
+                rect.setAttribute('fill-opacity', '0.25');
+                rect.setAttribute('stroke', color);
+                rect.setAttribute('stroke-width', 1);
+                rect.setAttribute('rx', 2);
+                g.appendChild(rect);
+                addAnnotationLabel(g, 'highlight', anno.data, idx + 1);
+
+            } else if (anno.type === 'number') {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('class', 'annotation-shape number-badge');
+                circle.setAttribute('cx', anno.data.x);
+                circle.setAttribute('cy', anno.data.y);
+                circle.setAttribute('r', anno.data.radius);
+                circle.setAttribute('fill', '#c0392b');
+                circle.setAttribute('stroke', '#fdfbf5');
+                circle.setAttribute('stroke-width', 2);
+                g.appendChild(circle);
+
+                const numText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                numText.setAttribute('class', 'annotation-shape');
+                numText.setAttribute('x', anno.data.x);
+                numText.setAttribute('y', anno.data.y);
+                numText.setAttribute('text-anchor', 'middle');
+                numText.setAttribute('dominant-baseline', 'central');
+                numText.setAttribute('fill', '#fff');
+                numText.setAttribute('font-family', '"STKaiti", "KaiTi", "楷体", serif');
+                numText.setAttribute('font-size', '14px');
+                numText.setAttribute('font-weight', '700');
+                numText.textContent = anno.numberValue;
+                g.appendChild(numText);
+            }
+
+            annotationLayer.appendChild(g);
+        });
+
+        renderAnnotationList();
+    }
+
+    // ========== 渲染标注列表 ==========
+    function renderAnnotationList() {
+        annoCount.textContent = state.annotations.length;
+
+        if (state.annotations.length === 0) {
+            annotationList.innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    <p>暂无批注</p>
+                    <p style="font-size:12px; margin-top:4px; opacity:0.7;">上传图片后开始圈点</p>
+                </div>
+            `;
+            return;
+        }
+
+        annotationList.innerHTML = state.annotations.map((anno, idx) => {
+            const displayNum = anno.type === 'number' ? anno.numberValue : (idx + 1);
+            return `
+            <div class="annotation-item ${anno.id === state.selectedId ? 'active' : ''}" data-id="${anno.id}">
+                <div class="anno-item-header">
+                    <div class="anno-number ${anno.color}">${displayNum}</div>
+                    <span class="anno-type">${typeNames[anno.type]} · ${colorNames[anno.color]}</span>
+                    <button class="anno-delete" data-id="${anno.id}" title="删除">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="anno-text" data-id="${anno.id}">${anno.text || ''}</div>
+            </div>
+        `;}).join('');
+
+        // 绑定事件
+        annotationList.querySelectorAll('.annotation-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.closest('.anno-delete')) return;
+                if (e.target.classList.contains('anno-text')) return;
+                selectAnnotation(this.dataset.id);
+            });
+        });
+
+        annotationList.querySelectorAll('.anno-delete').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                deleteAnnotation(this.dataset.id);
+            });
+        });
+
+        annotationList.querySelectorAll('.anno-text').forEach(el => {
+            el.addEventListener('click', function() {
+                const id = this.dataset.id;
+                selectAnnotation(id);
+                openTextEditor(id, this);
+            });
+        });
+    }
+
+    // 删除标注
+    function deleteAnnotation(id) {
+        state.annotations = state.annotations.filter(a => a.id !== id);
+        if (state.selectedId === id) state.selectedId = null;
+        saveHistory();
+        renderAll();
+        showToast('已删除批注');
+    }
+
+    // 打开文字编辑器
+    function openTextEditor(id, el) {
+        const anno = state.annotations.find(a => a.id === id);
+        if (!anno) return;
+
+        const textarea = document.createElement('textarea');
+        textarea.className = 'anno-text-input';
+        textarea.value = anno.text || '';
+        textarea.placeholder = '输入修改建议...';
+        el.replaceWith(textarea);
+        textarea.focus();
+        textarea.select();
+
+        function save() {
+            const txt = textarea.value.trim();
+            anno.text = txt;
+            saveHistory();
+            renderAnnotationList();
+            // 保持选中
+            const item = document.querySelector(`.annotation-item[data-id="${id}"]`);
+            if (item) item.classList.add('active');
+        }
+
+        textarea.addEventListener('blur', save);
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                textarea.blur();
+            }
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                textarea.blur();
+            }
+        });
+    }
+
+    // ========== 导出功能 ==========
+    // 合成带标注的 Canvas
+    function buildCompositedCanvas(callback) {
+        const canvas = document.createElement('canvas');
+        canvas.width = state.imgWidth;
+        canvas.height = state.imgHeight;
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+
+            // 绘制所有标注
+            state.annotations.forEach((anno, idx) => {
+                const color = colorMap[anno.color];
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = anno.lineWidth;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                if (anno.lineStyle === 'dashed') {
+                    ctx.setLineDash([anno.lineWidth * 3, anno.lineWidth * 2]);
+                } else {
+                    ctx.setLineDash([]);
+                }
+
+                if (anno.type === 'rect') {
+                    ctx.strokeRect(anno.data.x, anno.data.y, anno.data.width, anno.data.height);
+                    drawLabel(ctx, anno.data.x - 2, anno.data.y - 2, idx + 1, color);
+                } else if (anno.type === 'arrow') {
+                    // 画箭线
+                    ctx.beginPath();
+                    ctx.moveTo(anno.data.x1, anno.data.y1);
+                    ctx.lineTo(anno.data.x2, anno.data.y2);
+                    ctx.stroke();
+
+                    // 画箭头
+                    const angle = Math.atan2(anno.data.y2 - anno.data.y1, anno.data.x2 - anno.data.x1);
+                    const headLen = 12 + anno.lineWidth * 2;
+                    const headAngle = Math.PI / 6;
+                    ctx.beginPath();
+                    ctx.moveTo(anno.data.x2, anno.data.y2);
+                    ctx.lineTo(anno.data.x2 - headLen * Math.cos(angle - headAngle), anno.data.y2 - headLen * Math.sin(angle - headAngle));
+                    ctx.lineTo(anno.data.x2 - headLen * Math.cos(angle + headAngle), anno.data.y2 - headLen * Math.sin(angle + headAngle));
+                    ctx.closePath();
+                    ctx.fill();
+
+                    drawLabel(ctx, anno.data.x2 + 8, anno.data.y2 - 8, idx + 1, color);
+                } else if (anno.type === 'pen') {
+                    ctx.beginPath();
+                    const pts = anno.data.points;
+                    ctx.moveTo(pts[0][0], pts[0][1]);
+                    for (let i = 1; i < pts.length; i++) {
+                        ctx.lineTo(pts[i][0], pts[i][1]);
+                    }
+                    ctx.stroke();
+                    const last = pts[pts.length - 1];
+                    drawLabel(ctx, last[0] + 8, last[1] - 8, idx + 1, color);
+                } else if (anno.type === 'text') {
+                    ctx.setLineDash([]);
+                    ctx.font = `600 ${16 + anno.lineWidth * 2}px "STKaiti", "KaiTi", "楷体", serif`;
+                    ctx.textBaseline = 'alphabetic';
+                    // 文字描边
+                    ctx.strokeStyle = 'rgba(253,251,245,0.9)';
+                    ctx.lineWidth = 4;
+                    ctx.strokeText(anno.data.content, anno.data.x, anno.data.y);
+                    ctx.fillStyle = color;
+                    ctx.fillText(anno.data.content, anno.data.x, anno.data.y);
+
+                } else if (anno.type === 'circle') {
+                    ctx.beginPath();
+                    ctx.ellipse(anno.data.cx, anno.data.cy, anno.data.rx, anno.data.ry, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                    drawLabel(ctx, anno.data.cx - anno.data.rx, anno.data.cy - anno.data.ry, idx + 1, color);
+
+                } else if (anno.type === 'highlight') {
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = color;
+                    ctx.globalAlpha = 0.25;
+                    ctx.fillRect(anno.data.x, anno.data.y, anno.data.width, anno.data.height);
+                    ctx.globalAlpha = 1;
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(anno.data.x, anno.data.y, anno.data.width, anno.data.height);
+                    drawLabel(ctx, anno.data.x - 2, anno.data.y - 2, idx + 1, color);
+
+                } else if (anno.type === 'number') {
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.arc(anno.data.x, anno.data.y, anno.data.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#c0392b';
+                    ctx.fill();
+                    ctx.strokeStyle = '#fdfbf5';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '700 14px "STKaiti", "KaiTi", "楷体", serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(String(anno.numberValue), anno.data.x, anno.data.y);
+                }
+            });
+
+            callback(canvas);
+        };
+        img.onerror = function() {
+            showToast('图片加载失败');
+        };
+        img.src = state.imageDataUrl;
+    }
+
+    // 导出图片（Canvas 合成）
+    document.getElementById('btnExportImage').addEventListener('click', function() {
+        if (!state.imageLoaded) {
+            showToast('请先上传图片');
+            return;
+        }
+        if (state.annotations.length === 0) {
+            showToast('暂无批注可导出');
+            return;
+        }
+
+        buildCompositedCanvas(function(canvas) {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '标注图_' + new Date().toLocaleDateString('zh-CN').replace(/\//g, '-') + '.png';
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('图片已导出');
+            }, 'image/png');
+        });
+    });
+
+    // 复制到剪贴板
+    document.getElementById('btnCopyImage').addEventListener('click', function() {
+        if (!state.imageLoaded) {
+            showToast('请先上传图片');
+            return;
+        }
+        if (state.annotations.length === 0) {
+            showToast('暂无批注可复制');
+            return;
+        }
+
+        buildCompositedCanvas(function(canvas) {
+            canvas.toBlob(function(blob) {
+                if (!blob) {
+                    showToast('复制失败');
+                    return;
+                }
+                try {
+                    navigator.clipboard.write([
+                        new ClipboardItem({ 'image/png': blob })
+                    ]).then(function() {
+                        showToast('已复制到剪贴板');
+                    }).catch(function() {
+                        showToast('复制失败，请重试');
+                    });
+                } catch (e) {
+                    showToast('当前浏览器不支持复制图片');
+                }
+            }, 'image/png');
+        });
+    });
+
+    function drawLabel(ctx, x, y, num, color) {
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.strokeStyle = '#fdfbf5';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 12px "STKaiti", "KaiTi", "楷体", serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(num), x, y);
+    }
+
+    // 导出 Markdown
+    document.getElementById('btnExportMarkdown').addEventListener('click', function() {
+        if (state.annotations.length === 0) {
+            showToast('暂无批注可导出');
+            return;
+        }
+
+        let md = '# 标注说明\n\n';
+        md += '> 生成时间：' + new Date().toLocaleString('zh-CN') + '\n\n';
+        md += '---\n\n';
+        md += '## 截图参考\n\n';
+        md += '![标注截图](标注图_' + new Date().toLocaleDateString('zh-CN').replace(/\//g, '-') + '.png)\n\n';
+        md += '---\n\n';
+
+        state.annotations.forEach((anno, idx) => {
+            const iconMap = {
+                rect: '🔲', arrow: '➡️', pen: '✏️', text: '📝',
+                circle: '⭕', highlight: '🖍️', number: '🔢'
+            };
+            const icon = iconMap[anno.type] || '📍';
+            const typeLabel = typeNames[anno.type] || '标注';
+            const numDisplay = anno.type === 'number' ? `（序号 ${anno.numberValue}）` : '';
+            md += `## ${idx + 1}. ${icon} ${typeLabel}${numDisplay} · ${colorNames[anno.color]}\n\n`;
+            if (anno.type === 'text') {
+                md += `**内容**：${anno.data.content}\n\n`;
+            }
+            if (anno.text) {
+                md += `**修改建议**：\n\n${anno.text}\n\n`;
+            } else {
+                md += `*（暂无修改建议）*\n\n`;
+            }
+            md += '---\n\n';
+        });
+
+        // 下载
+        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '标注说明_' + new Date().toLocaleDateString('zh-CN').replace(/\//g, '-') + '.md';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('标注说明已导出');
+    });
+
+    // ========== 实时时间 ==========
+    (function() {
+        function updateTime() {
+            const now = new Date();
+            const h = now.getHours();
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const shichen = [
+                ['子时', 23, 1], ['丑时', 1, 3], ['寅时', 3, 5],
+                ['卯时', 5, 7], ['辰时', 7, 9], ['巳时', 9, 11],
+                ['午时', 11, 13], ['未时', 13, 15], ['申时', 15, 17],
+                ['酉时', 17, 19], ['戌时', 19, 21], ['亥时', 21, 23]
+            ];
+            let currentShichen = '子时';
+            for (let s of shichen) {
+                if (s[1] < s[2]) {
+                    if (h >= s[1] && h < s[2]) { currentShichen = s[0]; break; }
+                } else {
+                    if (h >= s[1] || h < s[2]) { currentShichen = s[0]; break; }
+                }
+            }
+            const timeEl = document.getElementById('topbarTime');
+            if (timeEl) timeEl.textContent = currentShichen + ' · ' + String(h).padStart(2, '0') + ':' + m;
+
+            const weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+            const dateEl = document.getElementById('sidebarDate');
+            const weekdayEl = document.getElementById('sidebarWeekday');
+            if (dateEl) dateEl.textContent = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
+            if (weekdayEl) weekdayEl.textContent = weekdays[now.getDay()];
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+    })();
+
+    // 快捷键
+    document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        // Ctrl+Z 撤销
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+            e.preventDefault();
+            undo();
+        }
+        // Ctrl+Shift+Z / Ctrl+Y 重做
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+            e.preventDefault();
+            redo();
+        }
+        // Delete 删除选中
+        if ((e.key === 'Delete' || e.key === 'Backspace') && state.selectedId) {
+            e.preventDefault();
+            deleteAnnotation(state.selectedId);
+        }
+        // 工具快捷键
+        if (e.key === 'r' || e.key === 'R') {
+            document.querySelector('.tool-btn[data-tool="rect"]').click();
+        } else if (e.key === 'a' || e.key === 'A') {
+            document.querySelector('.tool-btn[data-tool="arrow"]').click();
+        } else if (e.key === 'p' || e.key === 'P') {
+            document.querySelector('.tool-btn[data-tool="pen"]').click();
+        } else if (e.key === 't' || e.key === 'T') {
+            document.querySelector('.tool-btn[data-tool="text"]').click();
+        } else if (e.key === 'c' || e.key === 'C') {
+            document.querySelector('.tool-btn[data-tool="circle"]').click();
+        } else if (e.key === 'h' || e.key === 'H') {
+            document.querySelector('.tool-btn[data-tool="highlight"]').click();
+        } else if (e.key === 'n' || e.key === 'N') {
+            document.querySelector('.tool-btn[data-tool="number"]').click();
+        }
+    });
+
+})();
+</script>
+
+
+    <style>
+/* ============================================
+   每日 OKR · 国风水墨设计系统
+   风格：剑来 / 仙侠 / 水墨山水
+   ============================================ */
+
+:root {
+  --ink-paper: #f7f2e8;
+  --ink-paper-light: #fdfbf5;
+  --ink-paper-dark: #ede6d6;
+  --ink-100: #e8e2d5;
+  --ink-300: #a89f8e;
+  --ink-500: #5c554a;
+  --ink-700: #3a3328;
+  --ink-900: #1f1a10;
+  --ink-gold: #c9a227;
+  --ink-gold-light: #e0c158;
+  --ink-gold-dark: #a8851a;
+  --ink-cinnabar: #c0392b;
+  --ink-cinnabar-light: #d65445;
+  --ink-cinnabar-dark: #9b2d20;
+  --bg-page: var(--ink-paper);
+  --bg-card: var(--ink-paper-light);
+  --text-primary: var(--ink-900);
+  --text-secondary: var(--ink-500);
+  --text-muted: var(--ink-300);
+  --border-ink: rgba(31, 26, 16, 0.15);
+  --border-ink-strong: rgba(31, 26, 16, 0.3);
+  --font-serif: "STSong", "SimSun", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --font-kai: "STKaiti", "KaiTi", "楷体", "Noto Serif SC", serif;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-ink: 0 2px 12px rgba(31, 26, 16, 0.06);
+  --shadow-ink-lg: 0 8px 24px rgba(31, 26, 16, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 1200px;
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(31, 26, 16, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(31, 26, 16, 0.025) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.02) 0%, transparent 60%);
+}
+
+/* 水墨晕染装饰 */
+.ink-wash-decoration {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+}
+.ink-wash-top { top: 0; right: 0; width: 600px; height: 400px; }
+.ink-wash-bottom { bottom: 0; left: 0; width: 500px; height: 350px; }
+
+/* 底部山脉剪影 */
+.mountain-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+}
+
+/* ---------- 顶部状态栏 ---------- */
+.topbar {
+  height: 60px;
+  background: var(--ink-paper-light);
+  border-bottom: 1px solid var(--border-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+}
+.topbar::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(31, 26, 16, 0.1), transparent);
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.seal-logo {
+  width: 36px; height: 36px;
+  background: var(--ink-cinnabar);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-paper-light);
+  font-family: var(--font-kai);
+  font-size: 18px; font-weight: bold;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(192, 57, 43, 0.3);
+}
+.seal-logo::before {
+  content: "";
+  position: absolute; inset: 2px;
+  border: 1px solid rgba(253, 251, 245, 0.4);
+  border-radius: 2px;
+}
+.topbar-brand {
+  font-family: var(--font-kai);
+  font-size: 20px; font-weight: 600;
+  color: var(--ink-900);
+  letter-spacing: 0.1em;
+}
+.topbar-center {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-300);
+  letter-spacing: 0.3em;
+  opacity: 0.7;
+}
+.daily-quote { cursor: pointer; transition: opacity 0.2s; }
+.daily-quote:hover { opacity: 0.7; }
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+.weather-info {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-serif);
+  font-size: 13px; color: var(--ink-500);
+}
+.weather-info svg {
+  width: 18px; height: 18px;
+  stroke: var(--ink-gold);
+  stroke-width: 1.5; fill: none;
+}
+.time-display {
+  font-family: var(--font-serif);
+  font-size: 15px; font-weight: 600;
+  color: var(--ink-700);
+  font-variant-numeric: tabular-nums;
+  padding: 6px 16px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-md);
+  background: var(--ink-paper);
+}
+.user-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--ink-900);
+  color: var(--ink-paper-light);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-kai);
+  font-size: 14px; font-weight: 600;
+  position: relative;
+}
+.user-avatar::before {
+  content: "";
+  position: absolute; inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-gold);
+  opacity: 0.6;
+}
+
+/* ---------- 布局 ---------- */
+.app-layout {
+  display: flex;
+  padding-top: 60px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 左侧导航 ---------- */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--ink-paper-light);
+  border-right: 1px solid var(--border-ink);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 60px; left: 0; bottom: 0;
+  z-index: 90;
+}
+.sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0; right: -1px; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(31, 26, 16, 0.08), transparent);
+}
+.sidebar-header {
+  padding: 28px 24px 20px;
+  text-align: center;
+}
+.sidebar-title {
+  font-family: var(--font-kai);
+  font-size: 28px; font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.2em;
+  margin-bottom: 4px;
+  position: relative;
+}
+.sidebar-title::after {
+  content: "";
+  display: block;
+  width: 40px; height: 2px;
+  background: var(--ink-gold);
+  margin: 10px auto 0;
+  opacity: 0.5;
+}
+.sidebar-subtitle {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-500);
+  letter-spacing: 0.2em;
+  margin-top: -2px; margin-bottom: 8px;
+}
+.sidebar-date {
+  font-size: 13px; color: var(--ink-500);
+  margin-top: 12px; letter-spacing: 0.05em;
+}
+.sidebar-weekday {
+  font-size: 12px; color: var(--ink-300);
+  margin-top: 2px;
+}
+.streak-seal {
+  width: 80px; height: 80px;
+  margin: 16px auto 0;
+  border-radius: 50%;
+  border: 2px solid var(--ink-gold);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative;
+  background: var(--ink-paper);
+}
+.streak-seal::before {
+  content: "";
+  position: absolute; inset: 4px;
+  border-radius: 50%;
+  border: 1px dashed var(--ink-gold);
+  opacity: 0.5;
+}
+.streak-number {
+  font-family: var(--font-kai);
+  font-size: 24px; font-weight: 700;
+  color: var(--ink-900);
+  line-height: 1;
+}
+.streak-number span { font-size: 12px; font-weight: 400; }
+.streak-label {
+  font-family: var(--font-kai);
+  font-size: 11px; color: var(--ink-gold-dark);
+  margin-top: 4px; letter-spacing: 0.2em;
+}
+.brush-divider {
+  height: 16px;
+  margin: 12px 20px;
+  position: relative;
+  display: flex; align-items: center;
+}
+.brush-divider svg { width: 100%; height: 16px; }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 8px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--ink-500);
+  font-family: var(--font-kai);
+  font-size: 15px; font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  position: relative;
+  letter-spacing: 0.05em;
+}
+.nav-item:hover {
+  background: rgba(31, 26, 16, 0.04);
+  color: var(--ink-700);
+}
+.nav-item.active {
+  background: var(--ink-900);
+  color: var(--ink-gold-light);
+  font-weight: 600;
+  box-shadow: var(--shadow-ink);
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -16px; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 20px;
+  background: var(--ink-gold);
+  border-radius: 0 2px 2px 0;
+}
+.nav-item svg {
+  width: 18px; height: 18px;
+  stroke: currentColor;
+  stroke-width: 1.8; fill: none;
+  flex-shrink: 0;
+}
+
+/* ---------- 主内容区 ---------- */
+.main-content {
+  flex: 1;
+  margin-left: 240px;
+  padding: 28px 32px;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 页面标题区 */
+.page-header {
+  position: relative;
+}
+.page-seal-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--ink-cinnabar);
+  color: var(--ink-paper-light);
+  font-family: var(--font-kai);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  border-radius: 2px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.page-seal-tag::before,
+.page-seal-tag::after {
+  content: "";
+  position: absolute;
+  width: 6px; height: 6px;
+  border: 1px solid var(--ink-cinnabar);
+}
+.page-seal-tag::before { top: -3px; left: -3px; border-right: none; border-bottom: none; }
+.page-seal-tag::after { bottom: -3px; right: -3px; border-left: none; border-top: none; }
+.page-title {
+  font-family: var(--font-kai);
+  font-size: 36px; font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.page-subtitle {
+  font-family: var(--font-kai);
+  font-size: 14px;
+  color: var(--ink-500);
+  line-height: 1.8;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- 标注工具布局 ---------- */
+.annotate-container {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* 左侧画布区 */
+.canvas-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* 工具栏 */
+.toolbar {
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-ink);
+  position: relative;
+}
+.toolbar::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ink-cinnabar), var(--ink-gold), var(--ink-900));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  opacity: 0.4;
+}
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-right: 1px solid var(--border-ink);
+}
+.tool-group:last-child { border-right: none; }
+.tool-group-label {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  color: var(--ink-300);
+  margin-right: 4px;
+  letter-spacing: 0.1em;
+}
+
+/* 印章式工具按钮 */
+.tool-btn {
+  width: 38px; height: 38px;
+  border: 1.5px solid var(--border-ink-strong);
+  border-radius: var(--radius-sm);
+  background: var(--ink-paper);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  position: relative;
+}
+.tool-btn svg {
+  width: 18px; height: 18px;
+  stroke: var(--ink-700);
+  stroke-width: 1.8; fill: none;
+}
+.tool-btn:hover {
+  border-color: var(--ink-gold);
+  background: var(--ink-paper-light);
+}
+.tool-btn.active {
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+}
+.tool-btn.active svg { stroke: var(--ink-gold-light); }
+.tool-btn.danger:hover {
+  border-color: var(--ink-cinnabar);
+  background: rgba(192, 57, 43, 0.05);
+}
+.tool-btn.danger:hover svg { stroke: var(--ink-cinnabar); }
+.tool-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 颜色选择 */
+.color-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+.color-btn.cinnabar { background: var(--ink-cinnabar); }
+.color-btn.gold { background: var(--ink-gold); }
+.color-btn.ink { background: var(--ink-900); }
+.color-btn.active {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px var(--ink-paper), 0 0 0 5px currentColor;
+}
+.color-btn.cinnabar.active { box-shadow: 0 0 0 3px var(--ink-paper), 0 0 0 5px var(--ink-cinnabar); }
+.color-btn.gold.active { box-shadow: 0 0 0 3px var(--ink-paper), 0 0 0 5px var(--ink-gold); }
+.color-btn.ink.active { box-shadow: 0 0 0 3px var(--ink-paper), 0 0 0 5px var(--ink-900); }
+
+/* 线宽选择 */
+.line-width-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  background: var(--ink-paper);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.line-width-btn span {
+  background: var(--ink-700);
+  border-radius: 50%;
+  display: block;
+}
+.line-width-btn.active {
+  border-color: var(--ink-900);
+  background: var(--ink-paper-light);
+}
+.line-width-btn[data-width="2"] span { width: 2px; height: 2px; }
+.line-width-btn[data-width="4"] span { width: 4px; height: 4px; }
+.line-width-btn[data-width="6"] span { width: 6px; height: 6px; }
+
+/* 虚实线切换 */
+.line-style-btn {
+  width: 44px; height: 32px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  background: var(--ink-paper);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  font-family: var(--font-kai);
+  font-size: 12px;
+  color: var(--ink-500);
+}
+.line-style-btn.active {
+  border-color: var(--ink-900);
+  background: var(--ink-900);
+  color: var(--ink-gold-light);
+}
+
+/* 画布容器 */
+.canvas-wrapper {
+  flex: 1;
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-ink);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+}
+
+/* 上传区域 */
+.upload-area {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.upload-area.drag-over {
+  background: rgba(201, 162, 39, 0.08);
+}
+.upload-icon {
+  width: 80px; height: 80px;
+  border: 2px dashed var(--ink-300);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+}
+.upload-area:hover .upload-icon {
+  border-color: var(--ink-gold);
+}
+.upload-icon svg {
+  width: 36px; height: 36px;
+  stroke: var(--ink-300);
+  stroke-width: 1.5; fill: none;
+}
+.upload-area:hover .upload-icon svg { stroke: var(--ink-gold); }
+.upload-text {
+  font-family: var(--font-kai);
+  font-size: 18px;
+  color: var(--ink-500);
+  letter-spacing: 0.1em;
+}
+.upload-hint {
+  font-size: 13px;
+  color: var(--ink-300);
+}
+.upload-hint kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--ink-paper);
+  border: 1px solid var(--border-ink);
+  border-radius: 3px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: var(--ink-700);
+}
+
+/* SVG 画布 */
+.annotate-svg {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+.annotate-svg image {
+  pointer-events: none;
+}
+.canvas-svg-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.annotate-svg .annotation-shape {
+  pointer-events: none;
+}
+.annotate-svg .annotation-group.selected .annotation-shape {
+  pointer-events: stroke;
+  cursor: move;
+}
+
+/* 标注编号标签 */
+.anno-label {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* 文字标注 */
+.text-annotation-input {
+  position: absolute;
+  border: 1px dashed var(--ink-gold);
+  background: rgba(253, 251, 245, 0.95);
+  padding: 4px 8px;
+  font-family: var(--font-kai);
+  font-size: 14px;
+  outline: none;
+  border-radius: var(--radius-sm);
+  min-width: 80px;
+  z-index: 10;
+}
+
+/* ---------- 右侧标注面板 ---------- */
+.annotation-panel {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel-card {
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-ink);
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background: linear-gradient(180deg, rgba(31, 26, 16, 0.02), transparent);
+}
+.panel-title {
+  font-family: var(--font-kai);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.15em;
+}
+.panel-count {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  border: 2px solid var(--ink-cinnabar);
+  border-radius: 50%;
+  font-family: var(--font-kai);
+  font-size: 12px; font-weight: 700;
+  color: var(--ink-cinnabar);
+}
+
+.panel-body {
+  padding: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* 标注列表项 */
+.annotation-item {
+  padding: 12px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--ink-paper);
+  position: relative;
+}
+.annotation-item:last-child { margin-bottom: 0; }
+.annotation-item:hover {
+  border-color: var(--ink-gold);
+  background: var(--ink-paper-light);
+}
+.annotation-item.active {
+  border-color: var(--ink-900);
+  background: var(--ink-paper-light);
+  box-shadow: 0 0 0 2px rgba(31, 26, 16, 0.1);
+}
+.anno-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.anno-number {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-kai);
+  font-size: 12px; font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.anno-number.cinnabar { background: var(--ink-cinnabar); }
+.anno-number.gold { background: var(--ink-gold); }
+.anno-number.ink { background: var(--ink-900); }
+.anno-type {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  color: var(--ink-500);
+  flex: 1;
+}
+.anno-delete {
+  width: 24px; height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm);
+}
+.annotation-item:hover .anno-delete { opacity: 1; }
+.anno-delete:hover { background: rgba(192, 57, 43, 0.1); }
+.anno-delete svg {
+  width: 14px; height: 14px;
+  stroke: var(--ink-300);
+  stroke-width: 1.8; fill: none;
+}
+.anno-delete:hover svg { stroke: var(--ink-cinnabar); }
+
+.anno-text {
+  font-size: 13px;
+  color: var(--ink-700);
+  line-height: 1.6;
+  word-break: break-word;
+}
+.anno-text:empty::before {
+  content: "点击添加修改建议...";
+  color: var(--ink-300);
+  font-style: italic;
+}
+
+.anno-text-input {
+  width: 100%;
+  border: 1px solid var(--border-ink-strong);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--ink-700);
+  background: var(--ink-paper-light);
+  outline: none;
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.6;
+}
+.anno-text-input:focus {
+  border-color: var(--ink-gold);
+}
+
+/* 导出按钮区 */
+.export-section {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.export-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1.5px solid var(--border-ink-strong);
+  border-radius: var(--radius-md);
+  background: var(--ink-paper);
+  font-family: var(--font-kai);
+  font-size: 14px;
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.1em;
+}
+.export-btn svg {
+  width: 16px; height: 16px;
+  stroke: currentColor;
+  stroke-width: 1.8; fill: none;
+}
+.export-btn:hover {
+  border-color: var(--ink-gold);
+  background: var(--ink-paper-light);
+  color: var(--ink-900);
+}
+.export-btn.primary {
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+  color: var(--ink-gold-light);
+}
+.export-btn.primary:hover {
+  background: var(--ink-700);
+  border-color: var(--ink-700);
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--ink-300);
+}
+.empty-state svg {
+  width: 48px; height: 48px;
+  stroke: var(--ink-200, #d9ceb8);
+  stroke-width: 1.2; fill: none;
+  margin-bottom: 12px;
+}
+.empty-state p {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+
+/* 选中状态的调整手柄 */
+.resize-handle {
+  fill: #fff;
+  stroke: var(--ink-900);
+  stroke-width: 1.5;
+  cursor: nwse-resize;
+}
+
+/* 选中状态金色光晕 */
+.annotate-svg .annotation-group.selected .annotation-shape {
+  filter: drop-shadow(0 0 4px rgba(201, 162, 39, 0.8)) drop-shadow(0 0 8px rgba(201, 162, 39, 0.4));
+}
+
+/* 序号标注特殊样式 */
+.annotation-group .number-badge {
+  pointer-events: stroke;
+}
+
+/* ---------- 模板面板 ---------- */
+.template-panel .template-header {
+  cursor: pointer;
+  user-select: none;
+}
+.template-panel .template-header:hover {
+  background: linear-gradient(180deg, rgba(31, 26, 16, 0.04), transparent);
+}
+.template-toggle-icon {
+  width: 18px;
+  height: 18px;
+  stroke: var(--ink-500);
+  stroke-width: 2;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+.template-toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+.template-body {
+  padding: 12px;
+  max-height: 240px;
+  overflow-y: auto;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+.template-body.collapsed {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+.template-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.template-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--ink-paper);
+  border: 1px solid var(--border-ink);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-kai);
+  letter-spacing: 0.05em;
+}
+.template-pill:hover {
+  background: var(--ink-gold);
+  border-color: var(--ink-gold);
+  color: var(--ink-paper-light);
+  transform: translateY(-1px);
+}
+.template-pill:active {
+  transform: translateY(0);
+}
+
+/* 提示 toast */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--ink-900);
+  color: var(--ink-gold-light);
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-kai);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  z-index: 1000;
+  box-shadow: var(--shadow-ink-lg);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--ink-paper); }
+::-webkit-scrollbar-thumb { background: var(--ink-300); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-500); }
+
+@media (max-width: 1200px) {
+  body { overflow-x: auto; }
+}
+    </style>
+</body>
+</html>

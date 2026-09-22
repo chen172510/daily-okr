@@ -1,0 +1,2006 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行醒 · 目标图谱</title>
+    <style id="theme-vars">
+/* ============================================
+   Daily OKR - Brand Design Tokens
+   Style: 国风水墨 (Chinese Ink Painting / Jian Lai inspired)
+   ============================================ */
+
+:root {
+  /* ---------- Ink Palette ---------- */
+  --okr-ink-50: #faf8f5;
+  --okr-ink-100: #f0ebe3;
+  --okr-ink-200: #e0d8cc;
+  --okr-ink-300: #c9bda8;
+  --okr-ink-400: #a89880;
+  --okr-ink-500: #8a7a5e;
+  --okr-ink-600: #6b5d44;
+  --okr-ink-700: #4f4430;
+  --okr-ink-800: #362e1f;
+  --okr-ink-900: #1f1a10;
+
+  /* ---------- Rice Paper (宣纸) ---------- */
+  --okr-paper-light: #f7f2e8;
+  --okr-paper: #ede4d3;
+  --okr-paper-dark: #d9cbae;
+
+  /* ---------- Cyan Ink (青黛) ---------- */
+  --okr-cyan-100: #e8f1f0;
+  --okr-cyan-300: #7fb3ad;
+  --okr-cyan-500: #3d7a74;
+  --okr-cyan-700: #244f4b;
+  --okr-cyan-900: #122b29;
+
+  /* ---------- Gold Accent (描金) ---------- */
+  --okr-gold-100: #f7ecd0;
+  --okr-gold-300: #e8c97a;
+  --okr-gold-500: #c9a227;
+  --okr-gold-700: #8b6914;
+  --okr-gold-900: #5c4508;
+
+  /* ---------- Vermilion (朱砂) ---------- */
+  --okr-vermilion: #c0392b;
+  --okr-vermilion-light: #e74c3c;
+  --okr-vermilion-dark: #922b21;
+
+  /* ---------- State Colors ---------- */
+  --okr-state-success: #2d6a4f;
+  --okr-state-success-bg: #d8f3dc;
+  --okr-state-warning: #b07d1e;
+  --okr-state-warning-bg: #fef3c7;
+  --okr-state-error: #922b21;
+  --okr-state-error-bg: #fde2e2;
+
+  /* ---------- Semantic Aliases ---------- */
+  --okr-background: var(--okr-paper-light);
+  --okr-foreground: var(--okr-ink-900);
+  --okr-card: #fdfbf5;
+  --okr-card-foreground: var(--okr-ink-900);
+  --okr-popover: #fdfbf5;
+  --okr-popover-foreground: var(--okr-ink-900);
+  --okr-primary: var(--okr-ink-800);
+  --okr-primary-foreground: var(--okr-paper-light);
+  --okr-muted: var(--okr-paper);
+  --okr-muted-foreground: var(--okr-ink-500);
+  --okr-destructive: var(--okr-vermilion);
+  --okr-destructive-foreground: #ffffff;
+  --okr-border: var(--okr-ink-200);
+  --okr-input: var(--okr-ink-200);
+  --okr-ring: var(--okr-ink-700);
+
+  /* ---------- Radius Scale ---------- */
+  --okr-radius-sm: 4px;
+  --okr-radius-md: 8px;
+  --okr-radius-lg: 12px;
+  --okr-radius-xl: 16px;
+  --okr-radius-full: 9999px;
+
+  /* ---------- Typography ---------- */
+  --okr-font-sans: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', 'PingFang SC', 'Microsoft YaHei', serif;
+  --okr-font-display: 'Noto Serif SC', 'Source Han Serif SC', 'STKaiti', 'KaiTi', '楷体', serif;
+  --okr-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  --okr-text-xs: 12px;
+  --okr-text-sm: 14px;
+  --okr-text-base: 15px;
+  --okr-text-lg: 18px;
+  --okr-text-xl: 22px;
+  --okr-text-2xl: 28px;
+  --okr-text-3xl: 36px;
+  --okr-text-4xl: 48px;
+
+  /* ---------- Spacing ---------- */
+  --okr-space-1: 4px;
+  --okr-space-2: 8px;
+  --okr-space-3: 12px;
+  --okr-space-4: 16px;
+  --okr-space-5: 20px;
+  --okr-space-6: 24px;
+  --okr-space-8: 32px;
+  --okr-space-10: 40px;
+  --okr-space-12: 48px;
+  --okr-space-16: 64px;
+
+  /* ---------- Shadow (subtle ink wash) ---------- */
+  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+
+  /* ---------- Transition ---------- */
+  --okr-transition-fast: 150ms ease;
+  --okr-transition-base: 250ms ease;
+  --okr-transition-slow: 400ms ease;
+}
+
+/* ---------- Base Styles ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--okr-font-sans);
+  font-size: var(--okr-text-base);
+  line-height: 1.7;
+  color: var(--okr-foreground);
+  background-color: var(--okr-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+}
+
+/* ---------- Utility Classes ---------- */
+.text-primary { color: var(--okr-primary); }
+.text-muted { color: var(--okr-muted-foreground); }
+.text-gold { color: var(--okr-gold-500); }
+.text-vermilion { color: var(--okr-vermilion); }
+.text-ink-light { color: var(--okr-ink-500); }
+
+.bg-primary { background-color: var(--okr-primary); }
+.bg-card { background-color: var(--okr-card); }
+.bg-paper { background-color: var(--okr-paper); }
+.bg-muted { background-color: var(--okr-muted); }
+
+.border-default { border-color: var(--okr-border); }
+.border-gold { border-color: var(--okr-gold-300); }
+.border-ink { border-color: var(--okr-ink-400); }
+
+.rounded-sm { border-radius: var(--okr-radius-sm); }
+.rounded-md { border-radius: var(--okr-radius-md); }
+.rounded-lg { border-radius: var(--okr-radius-lg); }
+.rounded-xl { border-radius: var(--okr-radius-xl); }
+.rounded-full { border-radius: var(--okr-radius-full); }
+
+.shadow-sm { box-shadow: var(--okr-shadow-sm); }
+.shadow-md { box-shadow: var(--okr-shadow-md); }
+.shadow-lg { box-shadow: var(--okr-shadow-lg); }
+
+.transition { transition: all var(--okr-transition-base); }
+.transition-fast { transition: all var(--okr-transition-fast); }
+
+/* ---------- Ink decorative helpers ---------- */
+.ink-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--okr-ink-300), transparent);
+  border: none;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, var(--okr-gold-300), var(--okr-gold-500), var(--okr-gold-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--okr-vermilion);
+  color: #fff;
+  font-family: var(--okr-font-display);
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+}
+
+    </style>
+    <script src="../assets/tailwind.min.js"></script>
+    <script src="../assets/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--okr-background);
+    --color-foreground: var(--okr-foreground);
+    --color-card: var(--okr-card);
+    --color-card-foreground: var(--okr-card-foreground);
+    --color-popover: var(--okr-popover);
+    --color-popover-foreground: var(--okr-popover-foreground);
+    --color-primary: var(--okr-primary);
+    --color-primary-foreground: var(--okr-primary-foreground);
+    --color-muted: var(--okr-muted);
+    --color-muted-foreground: var(--okr-muted-foreground);
+    --color-destructive: var(--okr-destructive);
+    --color-destructive-foreground: var(--okr-destructive-foreground);
+    --color-border: var(--okr-border);
+    --color-input: var(--okr-input);
+    --color-ring: var(--okr-ring);
+    --radius-sm: var(--okr-radius-sm);
+    --radius-md: var(--okr-radius-md);
+    --radius-lg: var(--okr-radius-lg);
+    --radius-xl: var(--okr-radius-xl);
+  }
+  @layer base {
+    body { background: var(--okr-background); color: var(--okr-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--okr-background); }
+      .text-background { color: var(--okr-background); }
+      .border-background { border-color: var(--okr-background); }
+      .ring-background { --tw-ring-color: var(--okr-background); }
+      .bg-foreground { background-color: var(--okr-foreground); }
+      .text-foreground { color: var(--okr-foreground); }
+      .border-foreground { border-color: var(--okr-foreground); }
+      .ring-foreground { --tw-ring-color: var(--okr-foreground); }
+      .bg-card { background-color: var(--okr-card); }
+      .text-card { color: var(--okr-card); }
+      .border-card { border-color: var(--okr-card); }
+      .ring-card { --tw-ring-color: var(--okr-card); }
+      .bg-card-foreground { background-color: var(--okr-card-foreground); }
+      .text-card-foreground { color: var(--okr-card-foreground); }
+      .border-card-foreground { border-color: var(--okr-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--okr-card-foreground); }
+      .bg-popover { background-color: var(--okr-popover); }
+      .text-popover { color: var(--okr-popover); }
+      .border-popover { border-color: var(--okr-popover); }
+      .ring-popover { --tw-ring-color: var(--okr-popover); }
+      .bg-popover-foreground { background-color: var(--okr-popover-foreground); }
+      .text-popover-foreground { color: var(--okr-popover-foreground); }
+      .border-popover-foreground { border-color: var(--okr-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--okr-popover-foreground); }
+      .bg-primary { background-color: var(--okr-primary); }
+      .text-primary { color: var(--okr-primary); }
+      .border-primary { border-color: var(--okr-primary); }
+      .ring-primary { --tw-ring-color: var(--okr-primary); }
+      .bg-primary-foreground { background-color: var(--okr-primary-foreground); }
+      .text-primary-foreground { color: var(--okr-primary-foreground); }
+      .border-primary-foreground { border-color: var(--okr-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--okr-primary-foreground); }
+      .bg-muted { background-color: var(--okr-muted); }
+      .text-muted { color: var(--okr-muted); }
+      .border-muted { border-color: var(--okr-muted); }
+      .ring-muted { --tw-ring-color: var(--okr-muted); }
+      .bg-muted-foreground { background-color: var(--okr-muted-foreground); }
+      .text-muted-foreground { color: var(--okr-muted-foreground); }
+      .border-muted-foreground { border-color: var(--okr-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--okr-muted-foreground); }
+      .bg-destructive { background-color: var(--okr-destructive); }
+      .text-destructive { color: var(--okr-destructive); }
+      .border-destructive { border-color: var(--okr-destructive); }
+      .ring-destructive { --tw-ring-color: var(--okr-destructive); }
+      .bg-destructive-foreground { background-color: var(--okr-destructive-foreground); }
+      .text-destructive-foreground { color: var(--okr-destructive-foreground); }
+      .border-destructive-foreground { border-color: var(--okr-destructive-foreground); }
+      .ring-destructive-foreground { --tw-ring-color: var(--okr-destructive-foreground); }
+      .bg-border { background-color: var(--okr-border); }
+      .text-border { color: var(--okr-border); }
+      .border-border { border-color: var(--okr-border); }
+      .ring-border { --tw-ring-color: var(--okr-border); }
+      .bg-input { background-color: var(--okr-input); }
+      .text-input { color: var(--okr-input); }
+      .border-input { border-color: var(--okr-input); }
+      .ring-input { --tw-ring-color: var(--okr-input); }
+      .bg-ring { background-color: var(--okr-ring); }
+      .text-ring { color: var(--okr-ring); }
+      .border-ring { border-color: var(--okr-ring); }
+      .ring-ring { --tw-ring-color: var(--okr-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+<script src="../assets/quotes.js"></script>
+<script src="../assets/api.js"></script>
+<script src="../assets/page-nav.js"></script>
+<script src="../assets/common.js"></script>
+<script src="../assets/user-module.js"></script>
+<script>
+  if (window.XingxingCommon) XingxingCommon.checkDailyReset();
+</script>
+</head>
+<body>
+  <!-- 水墨装饰 -->
+  <div class="ink-splash top-right"></div>
+  <div class="ink-splash bottom-left"></div>
+
+  <div class="app">
+    <!-- ========== 左侧竹简导航 ========== -->
+    <aside class="sidebar">
+      <div class="sidebar-date-section">
+        <div class="sidebar-date">丙午年 · 八月初四</div>
+        <button class="btn-checkin" data-dom-id="btn-checkin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          今日打卡
+        </button>
+        <div class="checkin-streak">已连续打卡 <strong>十二</strong> 日</div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">导 航</div>
+
+        <a class="nav-item" data-dom-id="nav-dashboard" href="dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>今日行醒</span>
+        </a>
+
+        <a class="nav-item active" data-dom-id="nav-okrs" href="okrs.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+          <span>目标图谱</span>
+        </a>
+
+        <a class="nav-item" data-dom-id="nav-review" href="review.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          <span>省身日记</span>
+        </a>
+
+        <a class="nav-item" data-dom-id="nav-errorbook" href="error-book.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            <path d="M10 8h6M10 12h6M10 16h4"></path>
+          </svg>
+          <span>省身错题</span>
+        </a>
+
+        <a class="nav-item" data-dom-id="nav-todo" href="daily-plan.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          <span>每日计划</span>
+        </a>
+
+        <a class="nav-item" data-dom-id="nav-lightkeeper" href="light-keeper.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v6"/><path d="M12 22v-4"/>
+            <circle cx="12" cy="14" r="4"/>
+            <path d="M4.93 4.93l4.24 4.24"/><path d="M14.83 14.83l4.24 4.24"/>
+            <path d="M2 12h6"/><path d="M16 12h6"/>
+            <path d="M4.93 19.07l4.24-4.24"/><path d="M14.83 9.17l4.24-4.24"/>
+          </svg>
+          <span>点灯人</span>
+        </a>
+
+        <a class="nav-item" data-dom-id="nav-resources" href="resources.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            <path d="M12 7v10"></path>
+            <path d="M9 10h6"></path>
+          </svg>
+          <span>个人知识库</span>
+        </a>
+
+        <a class="nav-item" data-dom-id="nav-annotate" href="annotate.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            <line x1="10" y1="10" x2="14" y2="14"/>
+          </svg>
+          <span>标注工具</span>
+        </a>
+
+        <a class="nav-item" data-dom-id="nav-settings" href="profile.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>设置</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">刘</div>
+          <div class="user-info">
+            <div class="user-name">刘家豪</div>
+            <div class="user-role">修行者</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ========== 主区域 ========== -->
+    <main class="main">
+      <!-- 顶部状态栏 -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <span class="topbar-brand">行醒</span>
+        </div>
+        <div class="topbar-center"><span class="daily-quote" id="topbarQuote" title="点击换一条">志不立，天下无可成之事。</span></div>
+        <div class="topbar-right">
+          <div class="weather-info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <span>晴 · 26°C</span>
+          </div>
+          <div class="time-display" id="topbarTime">未时三刻</div>
+          <button class="theme-btn" data-dom-id="btn-theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 内容区 -->
+      <div class="content">
+        <div class="content-inner">
+          <!-- 页面标题 -->
+          <div class="page-header">
+            <div class="page-badge">目 标</div>
+            <h1 class="page-title">目 标 图 谱</h1>
+            <p class="page-subtitle">君子务本，本立而道生。知止而后有定。</p>
+          </div>
+
+          <!-- 操作栏 -->
+          <div class="action-bar">
+            <div class="action-bar-left">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" placeholder="搜寻目标典籍...">
+              </div>
+            </div>
+            <div class="action-bar-right">
+              <button class="filter-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                筛 选
+              </button>
+              <button class="period-selector">
+                <span>2026 · 秋季</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <button class="btn-new-okr" data-dom-id="btn-new-okr">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>立新志</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 分类标签行 -->
+          <div class="filter-row">
+            <div class="filter-row-left">
+              <span class="filter-label">全部门派</span>
+              <span class="filter-count-badge">五</span>
+            </div>
+            <div class="filter-row-right">
+              <div class="filter-pill active" data-dom-id="filter-all">全 部</div>
+              <div class="filter-pill" data-dom-id="filter-active">修行中</div>
+              <div class="filter-pill" data-dom-id="filter-done">已圆满</div>
+              <div class="filter-pill" data-dom-id="filter-risk">有阻滞</div>
+            </div>
+          </div>
+
+          <!-- 目标卷轴列表 -->
+          <div class="okr-list-card">
+            <!-- 卷轴轴端 -->
+            <div class="okr-scroll-cap left"></div>
+            <div class="okr-scroll-cap right"></div>
+            <div class="okr-scroll-cap left bottom"></div>
+            <div class="okr-scroll-cap right bottom"></div>
+
+            <div class="okr-scroll-content">
+              <!-- 目标 1：雅思总分 7.0 -->
+              <div class="okr-item" data-dom-id="okr-card-1">
+                <div class="progress-ring-wrapper">
+                  <svg width="68" height="68" viewBox="0 0 68 68">
+                    <circle class="progress-ring-bg" cx="34" cy="34" r="30"></circle>
+                    <circle class="progress-ring-fill" cx="34" cy="34" r="30"
+                      stroke-dasharray="188.5"
+                      stroke-dashoffset="71.63"></circle>
+                  </svg>
+                  <div class="progress-ring-text">62%</div>
+                </div>
+                <div class="okr-content">
+                  <div class="okr-title">雅思总分 7.0</div>
+                  <div class="okr-desc">关键结果：Reading 7.5 / Listening 7.0 / Writing 6.5 / Speaking 6.5</div>
+                  <div class="okr-meta-row">
+                    <span class="category-tag">英语·核心</span>
+                    <span class="kr-count"><strong>四关</strong> KR</span>
+                    <span class="due-date">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      冬至为期
+                    </span>
+                  </div>
+                </div>
+                <div class="okr-right">
+                  <span class="status-badge status-active">修行中</span>
+                  <button class="more-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="1.5"></circle>
+                      <circle cx="19" cy="12" r="1.5"></circle>
+                      <circle cx="5" cy="12" r="1.5"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 目标 2：逻辑学筑基与结构化表达 -->
+              <div class="okr-item" data-dom-id="okr-card-2">
+                <div class="progress-ring-wrapper">
+                  <svg width="68" height="68" viewBox="0 0 68 68">
+                    <circle class="progress-ring-bg" cx="34" cy="34" r="30"></circle>
+                    <circle class="progress-ring-fill" cx="34" cy="34" r="30"
+                      stroke-dasharray="188.5"
+                      stroke-dashoffset="103.68"></circle>
+                  </svg>
+                  <div class="progress-ring-text">45%</div>
+                </div>
+                <div class="okr-content">
+                  <div class="okr-title">逻辑学筑基与结构化表达</div>
+                  <div class="okr-desc">关键结果：读完陈波《逻辑学导论》/ 每日结构化表达练习 / 30 次即兴演讲</div>
+                  <div class="okr-meta-row">
+                    <span class="category-tag">思维·核心</span>
+                    <span class="kr-count"><strong>三关</strong> KR</span>
+                    <span class="due-date">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      冬至为期
+                    </span>
+                  </div>
+                </div>
+                <div class="okr-right">
+                  <span class="status-badge status-active">修行中</span>
+                  <button class="more-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="1.5"></circle>
+                      <circle cx="19" cy="12" r="1.5"></circle>
+                      <circle cx="5" cy="12" r="1.5"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 目标 3：心理学认知体系搭建 -->
+              <div class="okr-item" data-dom-id="okr-card-3">
+                <div class="progress-ring-wrapper">
+                  <svg width="68" height="68" viewBox="0 0 68 68">
+                    <circle class="progress-ring-bg" cx="34" cy="34" r="30"></circle>
+                    <circle class="progress-ring-fill" cx="34" cy="34" r="30"
+                      stroke-dasharray="188.5"
+                      stroke-dashoffset="122.53"></circle>
+                  </svg>
+                  <div class="progress-ring-text">35%</div>
+                </div>
+                <div class="okr-content">
+                  <div class="okr-title">心理学认知体系搭建</div>
+                  <div class="okr-desc">关键结果：李玫瑾犯罪心理学 / 武志红心理学课 / 行为经济学入门</div>
+                  <div class="okr-meta-row">
+                    <span class="category-tag">心理·拓展</span>
+                    <span class="kr-count"><strong>三关</strong> KR</span>
+                    <span class="due-date">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      冬至为期
+                    </span>
+                  </div>
+                </div>
+                <div class="okr-right">
+                  <span class="status-badge status-active">修行中</span>
+                  <button class="more-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="1.5"></circle>
+                      <circle cx="19" cy="12" r="1.5"></circle>
+                      <circle cx="5" cy="12" r="1.5"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 目标 4：知识库错题本 -->
+              <div class="okr-item" data-dom-id="okr-card-4">
+                <div class="progress-ring-wrapper">
+                  <svg width="68" height="68" viewBox="0 0 68 68">
+                    <circle class="progress-ring-bg" cx="34" cy="34" r="30"></circle>
+                    <circle class="progress-ring-fill" cx="34" cy="34" r="30"
+                      stroke-dasharray="188.5"
+                      stroke-dashoffset="150.8"></circle>
+                  </svg>
+                  <div class="progress-ring-text">20%</div>
+                </div>
+                <div class="okr-content">
+                  <div class="okr-title">知识库错题本</div>
+                  <div class="okr-desc">关键结果：记录 100 个错题 / 事不过三标记机制 / 每月复习</div>
+                  <div class="okr-meta-row">
+                    <span class="category-tag">工具·基础</span>
+                    <span class="kr-count"><strong>三关</strong> KR</span>
+                    <span class="due-date">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      冬至为期
+                    </span>
+                  </div>
+                </div>
+                <div class="okr-right">
+                  <span class="status-badge status-risk">有阻滞</span>
+                  <button class="more-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="1.5"></circle>
+                      <circle cx="19" cy="12" r="1.5"></circle>
+                      <circle cx="5" cy="12" r="1.5"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 目标 5：身体素质提升 -->
+              <div class="okr-item" data-dom-id="okr-card-5">
+                <div class="progress-ring-wrapper">
+                  <svg width="68" height="68" viewBox="0 0 68 68">
+                    <circle class="progress-ring-bg" cx="34" cy="34" r="30"></circle>
+                    <circle class="progress-ring-fill" cx="34" cy="34" r="30"
+                      stroke-dasharray="188.5"
+                      stroke-dashoffset="84.83"></circle>
+                  </svg>
+                  <div class="progress-ring-text">55%</div>
+                </div>
+                <div class="okr-content">
+                  <div class="okr-title">身体素质提升</div>
+                  <div class="okr-desc">关键结果：每周跑步 3 次 / 每日拉伸 / 睡眠 7 小时</div>
+                  <div class="okr-meta-row">
+                    <span class="category-tag">身体·基础</span>
+                    <span class="kr-count"><strong>三关</strong> KR</span>
+                    <span class="due-date">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      冬至为期
+                    </span>
+                  </div>
+                </div>
+                <div class="okr-right">
+                  <span class="status-badge status-active">修行中</span>
+                  <button class="more-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="1.5"></circle>
+                      <circle cx="19" cy="12" r="1.5"></circle>
+                      <circle cx="5" cy="12" r="1.5"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // 分类标签交互
+    const filterPills = document.querySelectorAll('.filter-pill');
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', function() {
+        filterPills.forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // 进度环动画
+    window.addEventListener('DOMContentLoaded', () => {
+      const rings = document.querySelectorAll('.progress-ring-fill');
+      rings.forEach(ring => {
+        const targetOffset = ring.getAttribute('stroke-dashoffset');
+        ring.setAttribute('stroke-dashoffset', '188.5');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            ring.setAttribute('stroke-dashoffset', targetOffset);
+          });
+        });
+      });
+    });
+
+    // 目标条目点击
+    const items = document.querySelectorAll('.okr-item');
+    items.forEach(item => {
+      item.addEventListener('click', function(e) {
+        if (e.target.closest('.more-btn')) return;
+        const id = this.getAttribute('data-dom-id');
+        console.log('Clicked OKR:', id);
+      });
+    });
+
+    // 导航切换
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href === '#' || !href) { e.preventDefault(); }
+        navItems.forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // 十二时辰显示
+    (function() {
+      function updateTime() {
+        const now = new Date();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        const shichenNames = ['子时', '丑时', '寅时', '卯时', '辰时', '巳时', '午时', '未时', '申时', '酉时', '戌时', '亥时'];
+        const idx = Math.floor((hour + 1) % 24 / 2);
+        const ke = Math.floor((minute + (hour % 2) * 60) / 30) + 1;
+        const timeEl = document.getElementById('topbarTime');
+        const hh = String(hour).padStart(2, '0');
+        const mm = String(minute).padStart(2, '0');
+        if (timeEl) timeEl.textContent = shichenNames[idx] + ke + '刻 · ' + hh + ':' + mm;
+      }
+      updateTime();
+      setInterval(updateTime, 60000);
+    })();
+  </script>
+
+    <style>
+/* ============================================
+   国风水墨 · 目标名册
+   剑来 / 仙侠风格设计系统
+   ============================================ */
+
+:root {
+  /* 宣纸底色 */
+  --ink-paper: #f4ede0;
+  --ink-paper-light: #f8f3e8;
+  --ink-paper-dark: #e8dfce;
+
+  /* 墨色阶 */
+  --ink-1: #1a1a1a;      /* 浓墨 */
+  --ink-2: #3a3a3a;      /* 重墨 */
+  --ink-3: #5a5a5a;      /* 中墨 */
+  --ink-4: #8a8a8a;      /* 淡墨 */
+  --ink-5: #b5b0a5;      /* 清墨 */
+
+  /* 描金 */
+  --gold-1: #c9a962;
+  --gold-2: #d4b86a;
+  --gold-3: #e6cf8b;
+  --gold-light: #f5e6c8;
+
+  /* 朱砂 */
+  --cinnabar-1: #b82e1f;
+  --cinnabar-2: #c23a2b;
+  --cinnabar-light: #f0d8d4;
+
+  /* 竹青 */
+  --bamboo: #5a7247;
+  --bamboo-light: #e8ede3;
+
+  /* 字体 */
+  --font-song: "STSong", "SimSun", "Noto Serif SC", "Source Han Serif SC", "FangSong", serif;
+  --font-kai: "STKaiti", "KaiTi", "楷体", "Noto Serif SC", serif;
+
+  /* 间距 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 20px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* 圆角 - 国风偏方正，仅用小圆角 */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-seal: 4px;  /* 印章圆角 */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: var(--font-kai);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  background-color: var(--ink-paper);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 宣纸纹理背景 */
+body {
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(201, 169, 98, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(184, 46, 31, 0.03) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* ========== 整体布局 ========== */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ========== 左侧导航（竹简卷轴风） ========== */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--ink-paper-light);
+  border-right: 2px solid var(--ink-5);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+/* 竹简侧边装饰线 */
+.sidebar::before {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--gold-1) 15%,
+    var(--gold-1) 85%,
+    transparent 100%
+  );
+}
+
+.sidebar-date-section {
+  padding: 28px 20px 24px;
+  border-bottom: 1px dashed var(--ink-5);
+  text-align: center;
+}
+
+.sidebar-date {
+  font-family: var(--font-song);
+  font-size: 13px;
+  color: var(--ink-3);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+/* 打卡按钮 - 朱砂印章风 */
+.btn-checkin {
+  width: 100%;
+  padding: 11px 20px;
+  background: var(--cinnabar-2);
+  color: var(--ink-paper-light);
+  border: none;
+  font-family: var(--font-song);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  /* 印章效果 */
+  border: 2px solid var(--cinnabar-1);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.1),
+    0 2px 8px rgba(184, 46, 31, 0.2);
+  border-radius: 3px;
+}
+
+.btn-checkin::before,
+.btn-checkin::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border: 1.5px solid var(--cinnabar-1);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--cinnabar-2);
+}
+
+.btn-checkin::before { left: 6px; }
+.btn-checkin::after { right: 6px; }
+
+.btn-checkin:hover {
+  background: var(--cinnabar-1);
+  transform: translateY(-1px);
+}
+
+.btn-checkin svg {
+  width: 14px;
+  height: 14px;
+}
+
+.checkin-streak {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--ink-4);
+  font-family: var(--font-kai);
+}
+
+.checkin-streak strong {
+  color: var(--cinnabar-2);
+  font-weight: 700;
+  font-family: var(--font-song);
+}
+
+/* 导航区 */
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-section-label {
+  font-family: var(--font-song);
+  font-size: 11px;
+  color: var(--ink-4);
+  letter-spacing: 0.3em;
+  padding: 12px 12px 8px;
+  position: relative;
+  text-align: center;
+}
+
+.nav-section-label::before,
+.nav-section-label::after {
+  content: '—';
+  color: var(--gold-1);
+  margin: 0 6px;
+  font-size: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  color: var(--ink-3);
+  font-size: 14px;
+  font-family: var(--font-song);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  user-select: none;
+  position: relative;
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  background: rgba(201, 169, 98, 0.08);
+  color: var(--ink-1);
+  border-left-color: var(--gold-1);
+}
+
+.nav-item.active {
+  background: var(--ink-1);
+  color: var(--gold-3);
+  font-weight: 700;
+  border-left-color: var(--gold-2);
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--gold-2);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--gold-2);
+}
+
+.nav-item svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* 底部用户信息 */
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px dashed var(--ink-5);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--ink-1);
+  color: var(--gold-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-song);
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+  position: relative;
+  /* 印章风格头像 */
+  border: 2px solid var(--gold-1);
+}
+
+.user-avatar::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(201, 169, 98, 0.3);
+}
+
+.user-info { flex: 1; min-width: 0; }
+
+.user-name {
+  font-family: var(--font-song);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.user-role {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+/* ========== 主内容区 ========== */
+.main {
+  flex: 1;
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ========== 顶部状态栏 ========== */
+.topbar {
+  height: 64px;
+  background: var(--ink-paper-light);
+  border-bottom: 1px solid var(--ink-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  position: relative;
+}
+
+/* 顶部金线装饰 */
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--gold-1) 20%,
+    var(--gold-1) 80%,
+    transparent 100%
+  );
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hamburger-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ink-5);
+  background: var(--ink-paper-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--ink-2);
+}
+
+.hamburger-btn:hover {
+  border-color: var(--gold-1);
+  color: var(--ink-1);
+}
+
+.hamburger-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.topbar-brand {
+  font-family: var(--font-song);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-1);
+  letter-spacing: 0.1em;
+  position: relative;
+}
+
+.topbar-brand::before,
+.topbar-brand::after {
+  content: '❖';
+  font-size: 10px;
+  color: var(--gold-1);
+  margin: 0 8px;
+  vertical-align: middle;
+}
+
+.topbar-center {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-4);
+  letter-spacing: 0.15em;
+}
+        .daily-quote { cursor: pointer; transition: opacity 0.2s; }
+        .daily-quote:hover { opacity: 0.7; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--font-kai);
+}
+
+.weather-info svg {
+  width: 15px;
+  height: 15px;
+  color: var(--gold-1);
+}
+
+.time-display {
+  font-family: var(--font-song);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-1);
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border: 1px solid var(--ink-5);
+  position: relative;
+}
+
+.time-display::before,
+.time-display::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--gold-1);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.time-display::before { left: -2px; }
+.time-display::after { right: -2px; }
+
+.theme-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ink-5);
+  background: var(--ink-paper-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--ink-3);
+}
+
+.theme-btn:hover {
+  border-color: var(--gold-1);
+  color: var(--ink-1);
+}
+
+.theme-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* ========== 内容区 ========== */
+.content {
+  flex: 1;
+  padding: 36px 40px;
+}
+
+.content-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ========== 页面标题区 ========== */
+.page-header {
+  margin-bottom: 32px;
+  text-align: center;
+  position: relative;
+  padding: 20px 0;
+}
+
+/* 标题两侧水墨装饰 */
+.page-header::before,
+.page-header::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--ink-4), transparent);
+}
+
+.page-header::before { left: 0; }
+.page-header::after { right: 0; }
+
+.page-badge {
+  display: inline-block;
+  font-family: var(--font-song);
+  font-size: 12px;
+  color: var(--cinnabar-2);
+  letter-spacing: 0.3em;
+  padding: 4px 14px;
+  border: 1px solid var(--cinnabar-2);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.page-badge::before,
+.page-badge::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 6px;
+  color: var(--cinnabar-2);
+}
+
+.page-badge::before { left: 4px; }
+.page-badge::after { right: 4px; }
+
+.page-title {
+  font-family: var(--font-song);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--ink-1);
+  letter-spacing: 0.2em;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  text-shadow: 1px 1px 0 rgba(201, 169, 98, 0.1);
+}
+
+.page-subtitle {
+  font-family: var(--font-kai);
+  font-size: 15px;
+  color: var(--ink-3);
+  letter-spacing: 0.1em;
+  font-style: italic;
+}
+
+/* ========== 操作栏 ========== */
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 20px;
+}
+
+.action-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 搜索框 - 竹简书卷风 */
+.search-box {
+  position: relative;
+  width: 300px;
+}
+
+.search-box svg {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: var(--ink-3);
+  z-index: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 16px 10px 42px;
+  border: 1.5px solid var(--ink-3);
+  background: var(--ink-paper-light);
+  font-size: 13px;
+  font-family: var(--font-kai);
+  color: var(--ink-1);
+  transition: all 0.15s ease;
+  outline: none;
+  position: relative;
+}
+
+/* 竹简书卷两端装饰 */
+.search-box::before,
+.search-box::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: calc(100% + 6px);
+  background: var(--ink-2);
+  z-index: 2;
+  border-radius: 2px;
+}
+
+.search-box::before { left: -3px; }
+.search-box::after { right: -3px; }
+
+.search-input:focus {
+  border-color: var(--ink-1);
+  background: #fff;
+}
+
+.search-input::placeholder {
+  color: var(--ink-4);
+}
+
+.action-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 筛选按钮 */
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border: 1.5px solid var(--ink-3);
+  background: var(--ink-paper-light);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-family: var(--font-song);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--ink-1);
+  color: var(--ink-1);
+  background: var(--ink-paper);
+}
+
+.filter-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* 周期选择 */
+.period-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: 1.5px solid var(--ink-3);
+  background: var(--ink-paper-light);
+  color: var(--ink-1);
+  font-size: 13px;
+  font-family: var(--font-song);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.period-selector:hover {
+  border-color: var(--ink-1);
+}
+
+.period-selector svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* 立新志按钮 - 墨色金字 */
+.btn-new-okr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: var(--ink-1);
+  color: var(--gold-3);
+  border: 2px solid var(--gold-1);
+  font-size: 14px;
+  font-family: var(--font-song);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 169, 98, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-new-okr::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(201, 169, 98, 0.25);
+  pointer-events: none;
+}
+
+.btn-new-okr:hover {
+  background: var(--ink-2);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 169, 98, 0.3),
+    0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-new-okr svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ========== 分类标签行 ========== */
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filter-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-label {
+  font-family: var(--font-song);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: 0.15em;
+}
+
+.filter-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 8px;
+  background: var(--ink-1);
+  color: var(--gold-3);
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--gold-1);
+}
+
+.filter-row-right {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.filter-pill {
+  padding: 7px 20px;
+  font-size: 13px;
+  font-family: var(--font-song);
+  font-weight: 500;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+  border: 1.5px solid var(--ink-4);
+  background: var(--ink-paper-light);
+  margin-right: -1px; /* 重叠边框 */
+}
+
+.filter-pill:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.filter-pill:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+.filter-pill:hover {
+  color: var(--ink-1);
+  border-color: var(--ink-2);
+  position: relative;
+  z-index: 1;
+}
+
+.filter-pill.active {
+  background: var(--ink-1);
+  color: var(--gold-3);
+  border-color: var(--ink-1);
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+}
+
+/* ========== 目标卷轴列表 ========== */
+.okr-list-card {
+  background: var(--ink-paper-light);
+  border: 2px solid var(--ink-2);
+  position: relative;
+  /* 卷轴效果 */
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.06),
+    inset 0 0 0 1px var(--gold-light);
+}
+
+/* 卷轴上下轴 */
+.okr-list-card::before,
+.okr-list-card::after {
+  content: '';
+  position: absolute;
+  left: -12px;
+  right: -12px;
+  height: 20px;
+  background: linear-gradient(
+    to bottom,
+    var(--ink-2) 0%,
+    var(--ink-1) 40%,
+    var(--ink-2) 60%,
+    var(--ink-3) 100%
+  );
+  z-index: 1;
+  border-radius: 3px;
+}
+
+.okr-list-card::before { top: -10px; }
+.okr-list-card::after { bottom: -10px; }
+
+/* 卷轴轴端装饰 */
+.okr-scroll-cap {
+  position: absolute;
+  top: -14px;
+  width: 28px;
+  height: 28px;
+  background: var(--gold-1);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow:
+    inset 0 0 0 2px var(--gold-3),
+    inset 0 0 0 4px var(--gold-1),
+    0 2px 6px rgba(0,0,0,0.15);
+}
+
+.okr-scroll-cap.left { left: -18px; }
+.okr-scroll-cap.right { right: -18px; }
+
+.okr-scroll-cap.bottom { top: auto; bottom: -14px; }
+
+/* 卷轴内容区域 */
+.okr-scroll-content {
+  padding: 8px 0;
+  position: relative;
+}
+
+/* OKR 条目 - 竹简风 */
+.okr-item {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 22px 32px;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background: transparent;
+}
+
+/* 竹简接缝 */
+.okr-item + .okr-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--ink-5) 20%,
+    var(--ink-4) 50%,
+    var(--ink-5) 80%,
+    transparent 100%
+  );
+}
+
+.okr-item:hover {
+  background: rgba(201, 169, 98, 0.06);
+}
+
+/* 环形进度 - 墨玉风格 */
+.progress-ring-wrapper {
+  flex-shrink: 0;
+  width: 68px;
+  height: 68px;
+  position: relative;
+}
+
+.progress-ring-wrapper svg {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  fill: none;
+  stroke: var(--ink-5);
+  stroke-width: 3;
+  opacity: 0.4;
+}
+
+.progress-ring-fill {
+  fill: none;
+  stroke: var(--ink-1);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 墨玉光泽效果 */
+  filter: drop-shadow(0 0 1px rgba(201, 169, 98, 0.3));
+}
+
+.progress-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-song);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-1);
+  letter-spacing: -0.02em;
+}
+
+/* OKR 内容区 */
+.okr-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.okr-title {
+  font-family: var(--font-song);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-1);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.okr-desc {
+  font-size: 13px;
+  color: var(--ink-4);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-kai);
+}
+
+.okr-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* 分类标签 - 浅金底深金字 */
+.category-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  background: var(--gold-light);
+  color: #8a6d2a;
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--gold-3);
+  position: relative;
+}
+
+.kr-count {
+  font-size: 12px;
+  color: var(--ink-4);
+  font-family: var(--font-kai);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.kr-count strong {
+  color: var(--ink-2);
+  font-weight: 700;
+  font-family: var(--font-song);
+  font-size: 13px;
+}
+
+.due-date {
+  font-size: 12px;
+  color: var(--ink-4);
+  font-family: var(--font-kai);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.due-date svg {
+  width: 13px;
+  height: 13px;
+  color: var(--ink-3);
+}
+
+/* OKR 右侧 */
+.okr-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* 状态标签 - 印章风格 */
+.status-badge {
+  padding: 6px 16px;
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  position: relative;
+  text-align: center;
+  min-width: 72px;
+  /* 印章边框效果 */
+  border: 2px solid;
+}
+
+/* 朱砂印章 - 修行中 */
+.status-active {
+  background: var(--cinnabar-2);
+  color: var(--ink-paper-light);
+  border-color: var(--cinnabar-1);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+.status-active::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+/* 金印 - 已圆满 */
+.status-done {
+  background: var(--gold-2);
+  color: var(--ink-1);
+  border-color: var(--gold-1);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+}
+
+.status-done::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(26, 26, 26, 0.15);
+  pointer-events: none;
+}
+
+/* 灰色 - 有阻滞 */
+.status-risk {
+  background: var(--ink-4);
+  color: var(--ink-paper-light);
+  border-color: var(--ink-3);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.status-risk::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+/* 更多按钮 */
+.more-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--ink-5);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink-3);
+  transition: all 0.15s ease;
+}
+
+.more-btn:hover {
+  border-color: var(--ink-3);
+  background: var(--ink-paper);
+  color: var(--ink-1);
+}
+
+.more-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ========== 水墨装饰元素 ========== */
+
+/* 角落墨点装饰 */
+.ink-splash {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0.04;
+  z-index: 0;
+}
+
+.ink-splash.top-right {
+  top: 80px;
+  right: 40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(ellipse at 30% 40%, var(--ink-1) 0%, transparent 60%);
+  transform: rotate(15deg);
+}
+
+.ink-splash.bottom-left {
+  bottom: 60px;
+  left: 280px;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(ellipse at 70% 60%, var(--cinnabar-1) 0%, transparent 55%);
+  transform: rotate(-10deg);
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 1100px) {
+  .content {
+    padding: 24px 28px;
+  }
+  .action-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .action-bar-right {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    width: 100%;
+  }
+}
+    </style>
+
+<script>
+  (function() {
+    function renderQuote() {
+      try {
+        var q = getDailyQuote();
+        var el = document.getElementById('topbarQuote');
+        if (el) {
+          el.textContent = q.text;
+          el.title = q.text + ' —— ' + q.source;
+        }
+      } catch(e) {}
+    }
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.id === 'topbarQuote') {
+        try { changeQuote(); renderQuote(); } catch(err) {}
+      }
+    });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderQuote);
+    } else {
+      renderQuote();
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,2249 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行醒 · 目标精研</title>
+    <style id="theme-vars">
+/* ============================================
+   Daily OKR - Brand Design Tokens
+   Style: 国风水墨 (Chinese Ink Painting / Jian Lai inspired)
+   ============================================ */
+
+:root {
+  /* ---------- Ink Palette ---------- */
+  --okr-ink-50: #faf8f5;
+  --okr-ink-100: #f0ebe3;
+  --okr-ink-200: #e0d8cc;
+  --okr-ink-300: #c9bda8;
+  --okr-ink-400: #a89880;
+  --okr-ink-500: #8a7a5e;
+  --okr-ink-600: #6b5d44;
+  --okr-ink-700: #4f4430;
+  --okr-ink-800: #362e1f;
+  --okr-ink-900: #1f1a10;
+
+  /* ---------- Rice Paper (宣纸) ---------- */
+  --okr-paper-light: #f7f2e8;
+  --okr-paper: #ede4d3;
+  --okr-paper-dark: #d9cbae;
+
+  /* ---------- Cyan Ink (青黛) ---------- */
+  --okr-cyan-100: #e8f1f0;
+  --okr-cyan-300: #7fb3ad;
+  --okr-cyan-500: #3d7a74;
+  --okr-cyan-700: #244f4b;
+  --okr-cyan-900: #122b29;
+
+  /* ---------- Gold Accent (描金) ---------- */
+  --okr-gold-100: #f7ecd0;
+  --okr-gold-300: #e8c97a;
+  --okr-gold-500: #c9a227;
+  --okr-gold-700: #8b6914;
+  --okr-gold-900: #5c4508;
+
+  /* ---------- Vermilion (朱砂) ---------- */
+  --okr-vermilion: #c0392b;
+  --okr-vermilion-light: #e74c3c;
+  --okr-vermilion-dark: #922b21;
+
+  /* ---------- State Colors ---------- */
+  --okr-state-success: #2d6a4f;
+  --okr-state-success-bg: #d8f3dc;
+  --okr-state-warning: #b07d1e;
+  --okr-state-warning-bg: #fef3c7;
+  --okr-state-error: #922b21;
+  --okr-state-error-bg: #fde2e2;
+
+  /* ---------- Semantic Aliases ---------- */
+  --okr-background: var(--okr-paper-light);
+  --okr-foreground: var(--okr-ink-900);
+  --okr-card: #fdfbf5;
+  --okr-card-foreground: var(--okr-ink-900);
+  --okr-popover: #fdfbf5;
+  --okr-popover-foreground: var(--okr-ink-900);
+  --okr-primary: var(--okr-ink-800);
+  --okr-primary-foreground: var(--okr-paper-light);
+  --okr-muted: var(--okr-paper);
+  --okr-muted-foreground: var(--okr-ink-500);
+  --okr-destructive: var(--okr-vermilion);
+  --okr-destructive-foreground: #ffffff;
+  --okr-border: var(--okr-ink-200);
+  --okr-input: var(--okr-ink-200);
+  --okr-ring: var(--okr-ink-700);
+
+  /* ---------- Radius Scale ---------- */
+  --okr-radius-sm: 4px;
+  --okr-radius-md: 8px;
+  --okr-radius-lg: 12px;
+  --okr-radius-xl: 16px;
+  --okr-radius-full: 9999px;
+
+  /* ---------- Typography ---------- */
+  --okr-font-sans: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', 'PingFang SC', 'Microsoft YaHei', serif;
+  --okr-font-display: 'Noto Serif SC', 'Source Han Serif SC', 'STKaiti', 'KaiTi', '楷体', serif;
+  --okr-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  --okr-text-xs: 12px;
+  --okr-text-sm: 14px;
+  --okr-text-base: 15px;
+  --okr-text-lg: 18px;
+  --okr-text-xl: 22px;
+  --okr-text-2xl: 28px;
+  --okr-text-3xl: 36px;
+  --okr-text-4xl: 48px;
+
+  /* ---------- Spacing ---------- */
+  --okr-space-1: 4px;
+  --okr-space-2: 8px;
+  --okr-space-3: 12px;
+  --okr-space-4: 16px;
+  --okr-space-5: 20px;
+  --okr-space-6: 24px;
+  --okr-space-8: 32px;
+  --okr-space-10: 40px;
+  --okr-space-12: 48px;
+  --okr-space-16: 64px;
+
+  /* ---------- Shadow (subtle ink wash) ---------- */
+  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+
+  /* ---------- Transition ---------- */
+  --okr-transition-fast: 150ms ease;
+  --okr-transition-base: 250ms ease;
+  --okr-transition-slow: 400ms ease;
+}
+
+/* ---------- Base Styles ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--okr-font-sans);
+  font-size: var(--okr-text-base);
+  line-height: 1.7;
+  color: var(--okr-foreground);
+  background-color: var(--okr-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+}
+
+/* ---------- Utility Classes ---------- */
+.text-primary { color: var(--okr-primary); }
+.text-muted { color: var(--okr-muted-foreground); }
+.text-gold { color: var(--okr-gold-500); }
+.text-vermilion { color: var(--okr-vermilion); }
+.text-ink-light { color: var(--okr-ink-500); }
+
+.bg-primary { background-color: var(--okr-primary); }
+.bg-card { background-color: var(--okr-card); }
+.bg-paper { background-color: var(--okr-paper); }
+.bg-muted { background-color: var(--okr-muted); }
+
+.border-default { border-color: var(--okr-border); }
+.border-gold { border-color: var(--okr-gold-300); }
+.border-ink { border-color: var(--okr-ink-400); }
+
+.rounded-sm { border-radius: var(--okr-radius-sm); }
+.rounded-md { border-radius: var(--okr-radius-md); }
+.rounded-lg { border-radius: var(--okr-radius-lg); }
+.rounded-xl { border-radius: var(--okr-radius-xl); }
+.rounded-full { border-radius: var(--okr-radius-full); }
+
+.shadow-sm { box-shadow: var(--okr-shadow-sm); }
+.shadow-md { box-shadow: var(--okr-shadow-md); }
+.shadow-lg { box-shadow: var(--okr-shadow-lg); }
+
+.transition { transition: all var(--okr-transition-base); }
+.transition-fast { transition: all var(--okr-transition-fast); }
+
+/* ---------- Ink decorative helpers ---------- */
+.ink-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--okr-ink-300), transparent);
+  border: none;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, var(--okr-gold-300), var(--okr-gold-500), var(--okr-gold-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--okr-vermilion);
+  color: #fff;
+  font-family: var(--okr-font-display);
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+}
+
+    </style>
+    <script src="../assets/tailwind.min.js"></script>
+    <script src="../assets/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--okr-background);
+    --color-foreground: var(--okr-foreground);
+    --color-card: var(--okr-card);
+    --color-card-foreground: var(--okr-card-foreground);
+    --color-popover: var(--okr-popover);
+    --color-popover-foreground: var(--okr-popover-foreground);
+    --color-primary: var(--okr-primary);
+    --color-primary-foreground: var(--okr-primary-foreground);
+    --color-muted: var(--okr-muted);
+    --color-muted-foreground: var(--okr-muted-foreground);
+    --color-destructive: var(--okr-destructive);
+    --color-destructive-foreground: var(--okr-destructive-foreground);
+    --color-border: var(--okr-border);
+    --color-input: var(--okr-input);
+    --color-ring: var(--okr-ring);
+    --radius-sm: var(--okr-radius-sm);
+    --radius-md: var(--okr-radius-md);
+    --radius-lg: var(--okr-radius-lg);
+    --radius-xl: var(--okr-radius-xl);
+  }
+  @layer base {
+    body { background: var(--okr-background); color: var(--okr-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--okr-background); }
+      .text-background { color: var(--okr-background); }
+      .border-background { border-color: var(--okr-background); }
+      .ring-background { --tw-ring-color: var(--okr-background); }
+      .bg-foreground { background-color: var(--okr-foreground); }
+      .text-foreground { color: var(--okr-foreground); }
+      .border-foreground { border-color: var(--okr-foreground); }
+      .ring-foreground { --tw-ring-color: var(--okr-foreground); }
+      .bg-card { background-color: var(--okr-card); }
+      .text-card { color: var(--okr-card); }
+      .border-card { border-color: var(--okr-card); }
+      .ring-card { --tw-ring-color: var(--okr-card); }
+      .bg-card-foreground { background-color: var(--okr-card-foreground); }
+      .text-card-foreground { color: var(--okr-card-foreground); }
+      .border-card-foreground { border-color: var(--okr-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--okr-card-foreground); }
+      .bg-popover { background-color: var(--okr-popover); }
+      .text-popover { color: var(--okr-popover); }
+      .border-popover { border-color: var(--okr-popover); }
+      .ring-popover { --tw-ring-color: var(--okr-popover); }
+      .bg-popover-foreground { background-color: var(--okr-popover-foreground); }
+      .text-popover-foreground { color: var(--okr-popover-foreground); }
+      .border-popover-foreground { border-color: var(--okr-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--okr-popover-foreground); }
+      .bg-primary { background-color: var(--okr-primary); }
+      .text-primary { color: var(--okr-primary); }
+      .border-primary { border-color: var(--okr-primary); }
+      .ring-primary { --tw-ring-color: var(--okr-primary); }
+      .bg-primary-foreground { background-color: var(--okr-primary-foreground); }
+      .text-primary-foreground { color: var(--okr-primary-foreground); }
+      .border-primary-foreground { border-color: var(--okr-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--okr-primary-foreground); }
+      .bg-muted { background-color: var(--okr-muted); }
+      .text-muted { color: var(--okr-muted); }
+      .border-muted { border-color: var(--okr-muted); }
+      .ring-muted { --tw-ring-color: var(--okr-muted); }
+      .bg-muted-foreground { background-color: var(--okr-muted-foreground); }
+      .text-muted-foreground { color: var(--okr-muted-foreground); }
+      .border-muted-foreground { border-color: var(--okr-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--okr-muted-foreground); }
+      .bg-destructive { background-color: var(--okr-destructive); }
+      .text-destructive { color: var(--okr-destructive); }
+      .border-destructive { border-color: var(--okr-destructive); }
+      .ring-destructive { --tw-ring-color: var(--okr-destructive); }
+      .bg-destructive-foreground { background-color: var(--okr-destructive-foreground); }
+      .text-destructive-foreground { color: var(--okr-destructive-foreground); }
+      .border-destructive-foreground { border-color: var(--okr-destructive-foreground); }
+      .ring-destructive-foreground { --tw-ring-color: var(--okr-destructive-foreground); }
+      .bg-border { background-color: var(--okr-border); }
+      .text-border { color: var(--okr-border); }
+      .border-border { border-color: var(--okr-border); }
+      .ring-border { --tw-ring-color: var(--okr-border); }
+      .bg-input { background-color: var(--okr-input); }
+      .text-input { color: var(--okr-input); }
+      .border-input { border-color: var(--okr-input); }
+      .ring-input { --tw-ring-color: var(--okr-input); }
+      .bg-ring { background-color: var(--okr-ring); }
+      .text-ring { color: var(--okr-ring); }
+      .border-ring { border-color: var(--okr-ring); }
+      .ring-ring { --tw-ring-color: var(--okr-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+<script src="../assets/quotes.js"></script>
+<script src="../assets/api.js"></script>
+<script src="../assets/page-nav.js"></script>
+<script src="../assets/common.js"></script>
+<script src="../assets/user-module.js"></script>
+<script>
+  if (window.XingxingCommon) XingxingCommon.checkDailyReset();
+</script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- ========== 左侧卷轴导航 ========== -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">行</div>
+        <span class="sidebar-logo-text">行醒</span>
+      </div>
+
+      <div class="sidebar-date-section">
+        <div class="sidebar-date" id="sidebarDate">丙午年九月十四</div>
+        <div class="sidebar-weekday" id="sidebarWeekday">月曜日</div>
+        <div class="streak-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2s5 3 5 9a5 5 0 0 1-10 0c0-2 1.5-4 3-5.5"/>
+            <path d="M12 22v-4"/>
+          </svg>
+          连续 <strong>十二日</strong>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item" data-dom-id="nav-dashboard">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          今日行醒
+        </a>
+        <a href="okrs.html" class="nav-item active" data-dom-id="nav-okrs">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+          目标图谱
+        </a>
+        <a href="review.html" class="nav-item" data-dom-id="nav-review">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          省身日记
+        </a>
+        <a href="error-book.html" class="nav-item" data-dom-id="nav-errorbook">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            <path d="M10 8h6M10 12h6M10 16h4"></path>
+          </svg>
+          省身错题
+        </a>
+        <a href="daily-plan.html" class="nav-item" data-dom-id="nav-todo">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          每日计划
+        </a>
+        <a href="light-keeper.html" class="nav-item" data-dom-id="nav-lightkeeper">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v6"/><path d="M12 22v-4"/>
+            <circle cx="12" cy="14" r="4"/>
+            <path d="M4.93 4.93l4.24 4.24"/><path d="M14.83 14.83l4.24 4.24"/>
+            <path d="M2 12h6"/><path d="M16 12h6"/>
+            <path d="M4.93 19.07l4.24-4.24"/><path d="M14.83 9.17l4.24-4.24"/>
+          </svg>
+          点灯人
+        </a>
+        <a href="resources.html" class="nav-item" data-dom-id="nav-resources">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            <path d="M12 7v10"></path>
+            <path d="M9 10h6"></path>
+          </svg>
+          个人知识库
+        </a>
+        <a href="annotate.html" class="nav-item" data-dom-id="nav-annotate">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            <line x1="10" y1="10" x2="14" y2="14"/>
+          </svg>
+          标注工具
+        </a>
+        <a href="profile.html" class="nav-item" data-dom-id="nav-settings">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          设置
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">劉</div>
+          <div class="user-info">
+            <div class="user-name">刘家豪</div>
+            <div class="user-role">行醒 · 求知者</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ========== 主内容区 ========== -->
+    <main class="main-wrapper">
+      <!-- 顶部状态栏 -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="topbar-date">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            丙午年九月十四日 · 月曜
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="weather-info">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <span>晴 · 二十六度</span>
+          </div>
+          <div class="time-display" id="topbarTime">未时三刻</div>
+          <button class="theme-btn">
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 内容 -->
+      <div class="content">
+        <!-- 面包屑 -->
+        <div class="breadcrumb">
+          <a href="#">修行录</a>
+          <span class="breadcrumb-separator">／</span>
+          <a href="#">目标名册</a>
+          <span class="breadcrumb-separator">／</span>
+          <span class="breadcrumb-current">详情</span>
+        </div>
+
+        <!-- 返回按钮 -->
+        <button class="btn-back" data-dom-id="btn-back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          返回名册
+        </button>
+
+        <!-- 目标卷轴卡片 -->
+        <div class="scroll-card">
+          <!-- 顶部卷轴轴 -->
+          <div class="scroll-rod-top">
+            <div class="scroll-rod-end left"></div>
+            <div class="scroll-rod-middle"></div>
+            <div class="scroll-rod-end right"></div>
+          </div>
+
+          <!-- 卷轴主体 -->
+          <div class="scroll-body">
+            <!-- 朱砂印章 -->
+            <div class="cinnabar-seal">
+              <div class="seal-inner">
+                修行<br>中
+              </div>
+            </div>
+
+            <!-- 分类标签 -->
+            <span class="category-tag">英语·核心</span>
+
+            <!-- 大标题 -->
+            <h1 class="objective-title">目标精研 · 雅思 7.0</h1>
+
+            <!-- 描述 -->
+            <p class="objective-description">
+              听说读写四项并进，以词汇为基，以技巧为翼，
+              登雅思七分高峰，叩开世界学府之门。
+            </p>
+
+            <!-- 底部元信息 -->
+            <div class="objective-meta">
+              <div class="meta-item">
+                <span class="meta-dot"></span>
+                <span>开创之日 · 三月之初</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-dot"></span>
+                <span>最后精进 · 两日前</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-dot"></span>
+                <span>圆满之期 · 腊月之末</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 底部卷轴轴 -->
+          <div class="scroll-rod-bottom">
+            <div class="scroll-rod-end left"></div>
+            <div class="scroll-rod-middle"></div>
+            <div class="scroll-rod-end right"></div>
+          </div>
+        </div>
+
+        <!-- 四重境界卡片行 -->
+        <div class="realms-row">
+          <div class="realm-card">
+            <div class="realm-big-number">72%</div>
+            <div class="realm-label">OVERALL</div>
+            <div class="realm-label-cn">总体修为</div>
+            <div class="ink-mountain">
+              <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                <path d="M0,50 L0,40 Q20,25 40,35 Q60,15 80,30 Q100,10 120,25 Q140,15 160,30 Q180,20 200,35 L200,50 Z" fill="#1A1A1A"/>
+              </svg>
+            </div>
+          </div>
+          <div class="realm-card">
+            <div class="realm-big-number">1/3</div>
+            <div class="realm-label">COMPLETED</div>
+            <div class="realm-label-cn">已成关卡</div>
+            <div class="ink-mountain">
+              <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                <path d="M0,50 L0,42 Q30,30 50,38 Q70,20 90,32 Q110,18 130,28 Q150,22 170,35 Q185,28 200,40 L200,50 Z" fill="#1A1A1A"/>
+              </svg>
+            </div>
+          </div>
+          <div class="realm-card">
+            <div class="realm-big-number">一〇八日</div>
+            <div class="realm-label">REMAINING</div>
+            <div class="realm-label-cn">余日可期</div>
+            <div class="ink-mountain">
+              <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                <path d="M0,50 L0,38 Q25,28 45,35 Q65,18 85,30 Q105,12 125,26 Q150,16 175,32 Q190,26 200,38 L200,50 Z" fill="#1A1A1A"/>
+              </svg>
+            </div>
+          </div>
+          <div class="realm-card">
+            <div class="realm-big-number">微</div>
+            <div class="realm-label">RISK</div>
+            <div class="realm-label-cn">心魔风险</div>
+            <div class="ink-mountain">
+              <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                <path d="M0,50 L0,45 Q20,35 40,40 Q60,28 80,36 Q100,22 120,32 Q145,25 165,38 Q180,32 200,42 L200,50 Z" fill="#1A1A1A"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 关键关卡区域 -->
+        <section class="kr-section">
+          <div class="section-header">
+            <div class="section-title-group">
+              <span class="section-title-main">关键四关</span>
+              <span class="section-title-sub">听说读写，逐项突破</span>
+            </div>
+            <button class="btn-add-kr">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              加一关
+            </button>
+          </div>
+
+          <div class="kr-list">
+            <!-- KR1: Reading -->
+            <div class="kr-card">
+              <div class="kr-header">
+                <div class="kr-title-group">
+                  <h3 class="kr-title">KR1 · Reading 7.5 分</h3>
+                  <p class="kr-description">精读真题，掌握各题型技巧，Heading / Matching / True-False 全面突破。</p>
+                </div>
+                <span class="kr-status-tag in-progress">
+                  <span class="status-dot"></span>
+                  修行中
+                </span>
+              </div>
+              <div class="kr-progress-section">
+                <div class="kr-progress-numbers">
+                  <span class="kr-progress-current">6.5 / 7.5</span>
+                  <span class="kr-progress-unit">分</span>
+                  <span class="kr-progress-percent">六成</span>
+                </div>
+                <div class="ink-progress-bar">
+                  <div class="ink-progress-track"></div>
+                  <div class="ink-progress-fill" style="width: 60%"></div>
+                </div>
+              </div>
+              <div class="kr-footer">
+                <span class="kr-last-update">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  上次精进 · 两日前
+                </span>
+                <button class="btn-update-kr" data-dom-id="btn-update-kr-1">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  精进
+                </button>
+              </div>
+            </div>
+
+            <!-- KR2: Listening -->
+            <div class="kr-card">
+              <div class="kr-header">
+                <div class="kr-title-group">
+                  <h3 class="kr-title">KR2 · Listening 7.0 分</h3>
+                  <p class="kr-description">精听训练，攻克 Section 3/4 选择题与填空题，熟悉各国口音。</p>
+                </div>
+                <span class="kr-status-tag in-progress">
+                  <span class="status-dot"></span>
+                  修行中
+                </span>
+              </div>
+              <div class="kr-progress-section">
+                <div class="kr-progress-numbers">
+                  <span class="kr-progress-current">6.0 / 7.0</span>
+                  <span class="kr-progress-unit">分</span>
+                  <span class="kr-progress-percent">五成</span>
+                </div>
+                <div class="ink-progress-bar">
+                  <div class="ink-progress-track"></div>
+                  <div class="ink-progress-fill" style="width: 50%"></div>
+                </div>
+              </div>
+              <div class="kr-footer">
+                <span class="kr-last-update">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  上次精进 · 昨日
+                </span>
+                <button class="btn-update-kr" data-dom-id="btn-update-kr-2">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  精进
+                </button>
+              </div>
+            </div>
+
+            <!-- KR3: Writing -->
+            <div class="kr-card">
+              <div class="kr-header">
+                <div class="kr-title-group">
+                  <h3 class="kr-title">KR3 · Writing 6.5 分</h3>
+                  <p class="kr-description">小作文图表描述 + 大作文论点展开，积累高分句型与逻辑连接词。</p>
+                </div>
+                <span class="kr-status-tag in-progress">
+                  <span class="status-dot"></span>
+                  修行中
+                </span>
+              </div>
+              <div class="kr-progress-section">
+                <div class="kr-progress-numbers">
+                  <span class="kr-progress-current">5.5 / 6.5</span>
+                  <span class="kr-progress-unit">分</span>
+                  <span class="kr-progress-percent">四成</span>
+                </div>
+                <div class="ink-progress-bar">
+                  <div class="ink-progress-track"></div>
+                  <div class="ink-progress-fill" style="width: 40%"></div>
+                </div>
+              </div>
+              <div class="kr-footer">
+                <span class="kr-last-update">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  上次精进 · 三日前
+                </span>
+                <button class="btn-update-kr" data-dom-id="btn-update-kr-3">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  精进
+                </button>
+              </div>
+            </div>
+
+            <!-- KR4: Speaking -->
+            <div class="kr-card">
+              <div class="kr-header">
+                <div class="kr-title-group">
+                  <h3 class="kr-title">KR4 · Speaking 6.5 分</h3>
+                  <p class="kr-description">Part 1/2/3 逐项训练，积累话题语料，提升流利度与发音准确度。</p>
+                </div>
+                <span class="kr-status-tag in-progress">
+                  <span class="status-dot"></span>
+                  修行中
+                </span>
+              </div>
+              <div class="kr-progress-section">
+                <div class="kr-progress-numbers">
+                  <span class="kr-progress-current">6.0 / 6.5</span>
+                  <span class="kr-progress-unit">分</span>
+                  <span class="kr-progress-percent">五成五</span>
+                </div>
+                <div class="ink-progress-bar">
+                  <div class="ink-progress-track"></div>
+                  <div class="ink-progress-fill" style="width: 55%"></div>
+                </div>
+              </div>
+              <div class="kr-footer">
+                <span class="kr-last-update">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  上次精进 · 昨日
+                </span>
+                <button class="btn-update-kr" data-dom-id="btn-update-kr-4">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  精进
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 省身记录 -->
+        <section class="reviews-section">
+          <div class="reviews-header">
+            <div class="reviews-title-group">
+              <span class="reviews-title-main">省身记录</span>
+              <span class="reviews-title-sub">吾日三省吾身</span>
+            </div>
+            <a class="link-reviews" data-dom-id="link-reviews">
+              查看全部
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <div class="review-cards">
+            <div class="review-card">
+              <div class="review-date-row">
+                <span class="review-date">九月十二日 · 土曜</span>
+                <span class="review-mood">😊</span>
+              </div>
+              <p class="review-summary">完成第十五篇技术博客，深入解析 React Hooks 底层运转之理与最佳实践，剑心通明。</p>
+              <div class="review-targets">关联目标 · 二项</div>
+            </div>
+            <div class="review-card">
+              <div class="review-date-row">
+                <span class="review-date">九月初十日 · 火曜</span>
+                <span class="review-mood">😐</span>
+              </div>
+              <p class="review-summary">第二个 React 项目顺利交付，工程化与组件设计之道大有进境，然仍有瑕疵待磨。</p>
+              <div class="review-targets">关联目标 · 一项</div>
+            </div>
+            <div class="review-card">
+              <div class="review-date-row">
+                <span class="review-date">九月初八日 · 月曜</span>
+                <span class="review-mood">😔</span>
+              </div>
+              <p class="review-summary">刷题百日圆满达成！持之以恒，滴水穿石。算法思维已有质的飞跃，此关已过。</p>
+              <div class="review-targets">关联目标 · 三项</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Simple interactivity: log clicks on elements with data-dom-id
+    document.querySelectorAll('[data-dom-id]').forEach(el => {
+      el.addEventListener('click', function(e) {
+        const id = this.getAttribute('data-dom-id');
+        console.log('Clicked:', id);
+      });
+    });
+  </script>
+
+  <script>
+    (function() {
+      function updateTime() {
+        const now = new Date();
+        const h = now.getHours();
+        const m = now.getMinutes();
+
+        // 十二时辰转换
+        const shichenMap = {
+          23: '子时', 0: '子时',
+          1: '丑时', 2: '丑时',
+          3: '寅时', 4: '寅时',
+          5: '卯时', 6: '卯时',
+          7: '辰时', 8: '辰时',
+          9: '巳时', 10: '巳时',
+          11: '午时', 12: '午时',
+          13: '未时', 14: '未时',
+          15: '申时', 16: '申时',
+          17: '酉时', 18: '酉时',
+          19: '戌时', 20: '戌时',
+          21: '亥时', 22: '亥时'
+        };
+
+        const ke = Math.floor(m / 15) + 1;
+        const shichen = shichenMap[h] || '子时';
+        const timeEl = document.getElementById('topbarTime');
+        const hh = String(h).padStart(2, '0');
+        const mm = String(m).padStart(2, '0');
+        if (timeEl) timeEl.textContent = shichen + ke + '刻 · ' + hh + ':' + mm;
+
+        const weekdays = ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
+        const weekdayEl = document.getElementById('sidebarWeekday');
+        if (weekdayEl) weekdayEl.textContent = weekdays[now.getDay()];
+      }
+      updateTime();
+      setInterval(updateTime, 60000);
+    })();
+  </script>
+
+
+    <style>
+/* ============================================
+   修行录 · 国风水墨设计系统
+   风格：剑来仙侠 · 宣纸水墨 · 描金朱砂
+   ============================================ */
+
+:root {
+  /* 宣纸底色 */
+  --xuan-paper: #F2E9D8;
+  --xuan-paper-deep: #E8DDC8;
+  --xuan-paper-light: #F7F1E3;
+
+  /* 墨色 */
+  --ink-black: #1A1A1A;
+  --ink-deep: #2D2D2D;
+  --ink-medium: #4A4A4A;
+  --ink-light: #7A7A7A;
+  --ink-faint: #A8A8A8;
+  --ink-pale: #D4CFC4;
+
+  /* 描金 */
+  --gold-primary: #B8860B;
+  --gold-light: #D4A84B;
+  --gold-faint: #E8C97A;
+  --gold-pale: #F5DFA3;
+
+  /* 朱砂印章 */
+  --cinnabar: #C23A2B;
+  --cinnabar-deep: #9B2C20;
+  --cinnabar-light: #D45443;
+
+  /* 字体 */
+  --font-song: "STSong", "SimSun", "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-kai: "KaiTi", "STKaiti", "Noto Serif SC", "Source Han Serif SC", serif;
+
+  /* 间距 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-kai);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-black);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--xuan-paper);
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(184, 134, 11, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(194, 58, 43, 0.03) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-blend-mode: multiply;
+  position: relative;
+}
+
+/* 宣纸纹理叠加 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 119, 82, 0.015) 2px,
+      rgba(139, 119, 82, 0.015) 3px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========== 布局 ========== */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  min-width: 1280px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== 左侧卷轴导航 ========== */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--xuan-paper-light) 0%, var(--xuan-paper) 100%);
+  border-right: 2px solid var(--ink-black);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  box-shadow: 3px 0 12px rgba(0, 0, 0, 0.06);
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 4px;
+  bottom: 0;
+  width: 1px;
+  background: var(--gold-primary);
+  opacity: 0.5;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-6);
+  border-bottom: 1px solid var(--ink-faint);
+  position: relative;
+}
+
+.sidebar-logo-icon {
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--ink-black);
+  background: var(--xuan-paper-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-black);
+  font-family: var(--font-song);
+  font-weight: 900;
+  font-size: 20px;
+  position: relative;
+}
+
+.sidebar-logo-icon::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border: 1px solid var(--gold-primary);
+  opacity: 0.6;
+}
+
+.sidebar-logo-text {
+  font-family: var(--font-song);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink-black);
+  letter-spacing: 0.15em;
+}
+
+/* 日期区域 */
+.sidebar-date-section {
+  padding: var(--space-5) var(--space-6);
+  text-align: center;
+  border-bottom: 1px solid var(--ink-faint);
+}
+
+.sidebar-date {
+  font-family: var(--font-song);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-deep);
+  margin-bottom: 2px;
+}
+
+.sidebar-weekday {
+  font-size: 12px;
+  color: var(--ink-light);
+  margin-bottom: var(--space-3);
+}
+
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-primary);
+  font-size: 12px;
+  font-family: var(--font-song);
+}
+
+.streak-badge svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--gold-primary);
+}
+
+.streak-badge strong {
+  color: var(--cinnabar);
+  font-weight: 700;
+}
+
+/* 导航 */
+.sidebar-nav {
+  flex: 1;
+  padding: var(--space-4) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-primary);
+  padding: var(--space-4) var(--space-3) var(--space-2);
+  letter-spacing: 0.2em;
+  position: relative;
+  padding-left: var(--space-5);
+}
+
+.nav-section-label::before {
+  content: '◆';
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8px;
+  color: var(--gold-primary);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px var(--space-4);
+  color: var(--ink-medium);
+  font-size: 14px;
+  font-family: var(--font-song);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+  text-decoration: none;
+  position: relative;
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  background: rgba(184, 134, 11, 0.08);
+  color: var(--ink-black);
+}
+
+.nav-item.active {
+  background: rgba(26, 26, 26, 0.06);
+  color: var(--ink-black);
+  font-weight: 700;
+  border-left-color: var(--ink-black);
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--cinnabar);
+  border-radius: 50%;
+}
+
+.nav-item svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+/* 底部用户 */
+.sidebar-footer {
+  padding: var(--space-4);
+  border-top: 1px solid var(--ink-faint);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.user-profile:hover {
+  background: rgba(184, 134, 11, 0.06);
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--ink-black);
+  background: var(--xuan-paper-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-black);
+  font-family: var(--font-song);
+  font-weight: 700;
+  font-size: 16px;
+  position: relative;
+}
+
+.user-avatar::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 1px solid var(--gold-primary);
+  opacity: 0.5;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-family: var(--font-song);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-black);
+}
+
+.user-role {
+  font-size: 12px;
+  color: var(--ink-light);
+}
+
+/* ========== 主内容区 ========== */
+.main-wrapper {
+  flex: 1;
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ========== 顶部状态栏 ========== */
+.topbar {
+  height: 60px;
+  background: var(--xuan-paper-light);
+  border-bottom: 1px solid var(--ink-faint);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-10);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  opacity: 0.4;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.topbar-date {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-song);
+  font-size: 13px;
+  color: var(--ink-medium);
+  font-weight: 500;
+}
+
+.topbar-date svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold-primary);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-light);
+}
+
+.weather-info svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold-primary);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.time-display {
+  font-family: var(--font-song);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-black);
+  letter-spacing: 0.05em;
+}
+
+.theme-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ink-faint);
+  background: var(--xuan-paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 200ms ease;
+  color: var(--ink-medium);
+}
+
+.theme-btn:hover {
+  border-color: var(--gold-primary);
+  color: var(--gold-primary);
+}
+
+.theme-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* ========== 内容区 ========== */
+.content {
+  flex: 1;
+  padding: var(--space-10);
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ========== 面包屑 ========== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-song);
+  font-size: 12px;
+  color: var(--ink-light);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.1em;
+}
+
+.breadcrumb a {
+  color: var(--ink-light);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--gold-primary);
+}
+
+.breadcrumb-separator {
+  color: var(--ink-faint);
+  font-size: 10px;
+}
+
+.breadcrumb-current {
+  color: var(--ink-deep);
+  font-weight: 600;
+}
+
+/* ========== 返回按钮 ========== */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-kai);
+  font-size: 14px;
+  color: var(--ink-light);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: var(--space-8);
+  transition: all 200ms ease;
+}
+
+.btn-back:hover {
+  color: var(--ink-black);
+}
+
+.btn-back svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* ========== 目标卷轴卡片 ========== */
+.scroll-card {
+  position: relative;
+  margin-bottom: var(--space-10);
+}
+
+/* 卷轴轴头 */
+.scroll-rod-top {
+  height: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.scroll-rod-end {
+  position: absolute;
+  top: 0;
+  width: 28px;
+  height: 24px;
+  background: linear-gradient(180deg,
+    #D4A84B 0%,
+    #B8860B 25%,
+    #8B6914 50%,
+    #B8860B 75%,
+    #D4A84B 100%
+  );
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.scroll-rod-end.left {
+  left: -4px;
+}
+
+.scroll-rod-end.right {
+  right: -4px;
+}
+
+.scroll-rod-end::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #F5DFA3, #B8860B);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.scroll-rod-middle {
+  margin: 0 24px;
+  height: 16px;
+  margin-top: 4px;
+  background: linear-gradient(180deg,
+    #C9A961 0%,
+    #B8860B 50%,
+    #8B6914 100%
+  );
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 卷轴主体 */
+.scroll-body {
+  background: var(--xuan-paper-light);
+  border-left: 1px solid var(--ink-faint);
+  border-right: 1px solid var(--ink-faint);
+  padding: var(--space-10) var(--space-12);
+  position: relative;
+  box-shadow:
+    inset 12px 0 20px -12px rgba(0, 0, 0, 0.06),
+    inset -12px 0 20px -12px rgba(0, 0, 0, 0.06);
+}
+
+.scroll-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  opacity: 0.5;
+}
+
+.scroll-body::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  opacity: 0.5;
+}
+
+/* 朱砂印章 */
+.cinnabar-seal {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-8);
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-6deg);
+  z-index: 3;
+}
+
+.seal-inner {
+  width: 56px;
+  height: 56px;
+  border: 3px solid var(--cinnabar);
+  background: rgba(194, 58, 43, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-song);
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--cinnabar);
+  line-height: 1.2;
+  text-align: center;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.seal-inner::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border: 1px solid var(--cinnabar);
+  opacity: 0.5;
+}
+
+/* 分类标签 */
+.category-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-primary);
+  font-family: var(--font-song);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--space-5);
+  position: relative;
+}
+
+.category-tag::before,
+.category-tag::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 6px;
+  color: var(--gold-primary);
+}
+
+.category-tag::before { left: 4px; }
+.category-tag::after { right: 4px; }
+
+/* 目标大标题 */
+.objective-title {
+  font-family: var(--font-song);
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--ink-black);
+  line-height: 1.3;
+  margin-bottom: var(--space-5);
+  letter-spacing: 0.08em;
+  position: relative;
+}
+
+.objective-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 36px;
+  background: var(--cinnabar);
+  margin-right: var(--space-3);
+  vertical-align: middle;
+  margin-top: -4px;
+}
+
+/* 目标描述 */
+.objective-description {
+  font-family: var(--font-kai);
+  font-size: 16px;
+  color: var(--ink-medium);
+  line-height: 1.9;
+  max-width: 600px;
+  margin-bottom: var(--space-8);
+  font-style: italic;
+}
+
+/* 底部元信息 */
+.objective-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: 1px dashed var(--ink-faint);
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-light);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.meta-item .meta-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--gold-primary);
+  border-radius: 50%;
+}
+
+/* 卷轴底部轴 */
+.scroll-rod-bottom {
+  height: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.scroll-rod-bottom .scroll-rod-middle {
+  margin-top: 4px;
+}
+
+/* ========== 四重境界卡片 ========== */
+.realms-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-12);
+}
+
+.realm-card {
+  background: var(--xuan-paper-light);
+  border: 1px solid var(--ink-faint);
+  padding: var(--space-6) var(--space-5);
+  position: relative;
+  overflow: hidden;
+  transition: all 300ms ease;
+  cursor: default;
+}
+
+.realm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--gold-light);
+}
+
+.realm-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--ink-black);
+  opacity: 0.8;
+}
+
+.realm-big-number {
+  font-family: var(--font-song);
+  font-size: 44px;
+  font-weight: 900;
+  color: var(--ink-black);
+  line-height: 1;
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.02em;
+}
+
+.realm-card:nth-child(1) .realm-big-number { color: var(--cinnabar); }
+.realm-card:nth-child(4) .realm-big-number { color: var(--gold-primary); font-size: 36px; }
+
+.realm-label {
+  font-family: var(--font-song);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-light);
+  letter-spacing: 0.15em;
+  margin-bottom: 2px;
+}
+
+.realm-label-cn {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-medium);
+}
+
+/* 水墨山影装饰 */
+.ink-mountain {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.ink-mountain svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ========== 关键关卡区域 ========== */
+.kr-section {
+  margin-bottom: var(--space-12);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  position: relative;
+}
+
+.section-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.section-title-main {
+  font-family: var(--font-song);
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--ink-black);
+  letter-spacing: 0.1em;
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.section-title-main::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 24px;
+  background: var(--cinnabar);
+}
+
+.section-title-sub {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-light);
+}
+
+.btn-add-kr {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 20px;
+  background: var(--xuan-paper-light);
+  color: var(--ink-black);
+  border: 1px solid var(--ink-black);
+  font-family: var(--font-kai);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  position: relative;
+}
+
+.btn-add-kr:hover {
+  background: var(--ink-black);
+  color: var(--gold-pale);
+}
+
+.btn-add-kr svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* 关卡列表 */
+.kr-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.kr-card {
+  background: var(--xuan-paper-light);
+  border: 1px solid var(--ink-faint);
+  padding: var(--space-6) var(--space-8);
+  position: relative;
+  transition: all 300ms ease;
+}
+
+.kr-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border-color: var(--ink-light);
+}
+
+.kr-card.completed {
+  border: 2px solid var(--gold-primary);
+  background: linear-gradient(135deg, rgba(212, 168, 75, 0.05), var(--xuan-paper-light) 30%);
+  position: relative;
+}
+
+.kr-card.completed::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 1px solid var(--gold-light);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* 关卡头部 */
+.kr-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+
+.kr-title-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.kr-title {
+  font-family: var(--font-song);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink-black);
+  margin-bottom: var(--space-2);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+.kr-description {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-light);
+  line-height: 1.8;
+}
+
+.kr-status-tag {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  font-family: var(--font-song);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.kr-status-tag.in-progress {
+  border: 1px solid var(--ink-medium);
+  color: var(--ink-medium);
+  background: rgba(26, 26, 26, 0.03);
+}
+
+.kr-status-tag.in-progress .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-medium);
+}
+
+.kr-status-tag.completed {
+  background: var(--gold-primary);
+  color: var(--xuan-paper-light);
+  border: 1px solid var(--gold-primary);
+}
+
+.kr-status-tag.completed svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 3;
+  fill: none;
+}
+
+/* 进度区域 */
+.kr-progress-section {
+  margin-bottom: var(--space-5);
+}
+
+.kr-progress-numbers {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.kr-progress-current {
+  font-family: var(--font-song);
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--ink-black);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.kr-progress-unit {
+  font-family: var(--font-kai);
+  font-size: 16px;
+  color: var(--ink-light);
+}
+
+.kr-progress-percent {
+  font-family: var(--font-song);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold-primary);
+  margin-left: auto;
+  font-style: italic;
+}
+
+/* 墨色笔触进度条 */
+.ink-progress-bar {
+  width: 100%;
+  height: 14px;
+  position: relative;
+  background: transparent;
+}
+
+.ink-progress-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 8px;
+  transform: translateY(-50%);
+  background: var(--ink-pale);
+  opacity: 0.5;
+  border-radius: 4px;
+}
+
+.ink-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg,
+    var(--ink-black) 0%,
+    var(--ink-deep) 70%,
+    var(--ink-medium) 90%,
+    transparent 100%
+  );
+  border-radius: 4px 0 0 4px;
+  transition: width 0.8s ease;
+}
+
+.ink-progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--ink-black);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(26, 26, 26, 0.3);
+}
+
+.kr-card.completed .ink-progress-fill {
+  background: linear-gradient(90deg,
+    var(--gold-primary) 0%,
+    var(--gold-light) 70%,
+    var(--gold-faint) 90%,
+    transparent 100%
+  );
+}
+
+.kr-card.completed .ink-progress-fill::after {
+  background: var(--gold-primary);
+  box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
+}
+
+/* 关卡底部 */
+.kr-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-5);
+  border-top: 1px dashed var(--ink-faint);
+}
+
+.kr-last-update {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  color: var(--ink-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kr-last-update svg {
+  width: 13px;
+  height: 13px;
+  stroke: var(--gold-primary);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.btn-update-kr {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 18px;
+  background: var(--ink-black);
+  color: var(--gold-pale);
+  border: none;
+  border-radius: 2px;
+  font-family: var(--font-kai);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
+  letter-spacing: 0.1em;
+  position: relative;
+}
+
+.btn-update-kr:hover {
+  background: var(--cinnabar);
+  color: var(--xuan-paper-light);
+  transform: translateY(-1px);
+}
+
+.btn-update-kr svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* ========== 省身记录 ========== */
+.reviews-section {
+  margin-bottom: var(--space-12);
+}
+
+.reviews-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.reviews-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.reviews-title-main {
+  font-family: var(--font-song);
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--ink-black);
+  letter-spacing: 0.1em;
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.reviews-title-main::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 24px;
+  background: var(--cinnabar);
+}
+
+.reviews-title-sub {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-light);
+}
+
+.link-reviews {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-medium);
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 200ms ease;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+}
+
+.link-reviews:hover {
+  color: var(--gold-primary);
+  border-bottom-color: var(--gold-primary);
+}
+
+.link-reviews svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.review-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.review-card {
+  background: var(--xuan-paper-light);
+  border: 1px solid var(--ink-faint);
+  padding: var(--space-5) var(--space-5);
+  cursor: pointer;
+  transition: all 300ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  border-color: var(--gold-light);
+}
+
+.review-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--cinnabar);
+  opacity: 0.6;
+}
+
+.review-date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.review-date {
+  font-family: var(--font-song);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-deep);
+  letter-spacing: 0.05em;
+}
+
+.review-mood {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.review-summary {
+  font-family: var(--font-kai);
+  font-size: 14px;
+  color: var(--ink-medium);
+  line-height: 1.7;
+  margin-bottom: var(--space-3);
+}
+
+.review-targets {
+  font-family: var(--font-kai);
+  font-size: 11px;
+  color: var(--ink-light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--ink-faint);
+}
+
+.review-targets::before {
+  content: '📜';
+  font-size: 12px;
+}
+
+/* ========== 装饰元素 ========== */
+.ink-splash {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 1440px) {
+  .content {
+    padding: var(--space-8);
+  }
+  .topbar {
+    padding: 0 var(--space-8);
+  }
+}
+    </style>
+
+<script>
+  (function() {
+    function renderQuote() {
+      try {
+        var q = getDailyQuote();
+        var el = document.getElementById('topbarQuote');
+        if (el) {
+          el.textContent = q.text;
+          el.title = q.text + ' —— ' + q.source;
+        }
+      } catch(e) {}
+    }
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.id === 'topbarQuote') {
+        try { changeQuote(); renderQuote(); } catch(err) {}
+      }
+    });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderQuote);
+    } else {
+      renderQuote();
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,692 @@
+/* ============================================
+   Dashboard Enhance Styles
+   ============================================ */
+
+/* ---------- 今日重点攻克模块 ---------- */
+.focus-errors-section {
+  margin-bottom: 24px;
+}
+
+.section-more-link {
+  font-size: 13px;
+  color: var(--okr-ink-500);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.section-more-link:hover {
+  color: var(--okr-gold-500);
+}
+
+.focus-errors-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.focus-error-item {
+  background: var(--okr-card);
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.focus-error-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--okr-vermilion);
+}
+
+.focus-error-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--okr-shadow-md);
+  border-color: var(--okr-gold-300);
+}
+
+.focus-error-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.focus-error-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--okr-radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--okr-font-display);
+}
+
+.focus-error-badge.critical {
+  background: var(--okr-state-error-bg);
+  color: var(--okr-state-error);
+}
+
+.focus-error-badge.warning {
+  background: var(--okr-state-warning-bg);
+  color: var(--okr-state-warning);
+}
+
+.focus-error-cat {
+  font-size: 12px;
+  color: var(--okr-ink-500);
+}
+
+.focus-error-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+  margin-bottom: 10px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.focus-error-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--okr-ink-500);
+  padding-top: 8px;
+  border-top: 1px solid var(--okr-ink-100);
+}
+
+.focus-empty {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--okr-ink-400);
+  background: var(--okr-card);
+  border: 1px dashed var(--okr-border);
+  border-radius: var(--okr-radius-lg);
+  grid-column: 1 / -1;
+}
+
+.focus-empty-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.focus-empty-text {
+  display: block;
+  font-size: 14px;
+  color: var(--okr-ink-600);
+  margin-bottom: 4px;
+}
+
+.focus-empty-hint {
+  display: block;
+  font-size: 12px;
+  color: var(--okr-ink-400);
+}
+
+/* ---------- 详情弹窗通用 ---------- */
+.detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(31, 26, 16, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.detail-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.detail-modal {
+  background: var(--okr-card);
+  border-radius: var(--okr-radius-xl);
+  box-shadow: var(--okr-shadow-xl);
+  width: 90%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s ease;
+  border: 1px solid var(--okr-border);
+}
+
+.detail-overlay.show .detail-modal {
+  transform: translateY(0) scale(1);
+}
+
+.detail-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--okr-ink-100);
+}
+
+.detail-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+  font-family: var(--okr-font-display);
+  margin: 0;
+}
+
+.detail-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--okr-ink-400);
+  padding: 4px;
+  border-radius: var(--okr-radius-sm);
+  transition: all 0.2s;
+}
+
+.detail-modal-close:hover {
+  color: var(--okr-ink-700);
+  background: var(--okr-ink-100);
+}
+
+.detail-modal-body {
+  padding: 20px 24px 24px;
+}
+
+/* ---------- 四环详情弹窗 ---------- */
+.ring-detail-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.ring-detail-big-value {
+  font-size: 48px;
+  font-weight: 700;
+  font-family: var(--okr-font-display);
+  color: var(--okr-ink-800);
+  line-height: 1;
+  background: linear-gradient(135deg, var(--okr-gold-300), var(--okr-gold-500), var(--okr-gold-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ring-detail-level {
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: var(--okr-radius-full);
+  background: var(--okr-ink-100);
+  color: var(--okr-ink-600);
+}
+
+.ring-detail-level.level-high {
+  background: var(--okr-state-success-bg);
+  color: var(--okr-state-success);
+}
+
+.ring-detail-level.level-critical {
+  background: var(--okr-state-error-bg);
+  color: var(--okr-state-error);
+}
+
+.ring-detail-level.level-low {
+  background: var(--okr-state-warning-bg);
+  color: var(--okr-state-warning);
+}
+
+.ring-detail-change {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.change-positive {
+  color: var(--okr-state-success);
+  font-weight: 600;
+}
+
+.change-negative {
+  color: var(--okr-state-error);
+  font-weight: 600;
+}
+
+.change-neutral {
+  color: var(--okr-ink-500);
+}
+
+.ring-detail-desc {
+  font-size: 14px;
+  color: var(--okr-ink-600);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: var(--okr-paper);
+  border-radius: var(--okr-radius-md);
+}
+
+.ring-detail-factors {
+  border-top: 1px solid var(--okr-ink-100);
+  padding-top: 16px;
+}
+
+.factors-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--okr-ink-700);
+  margin-bottom: 12px;
+}
+
+.factors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.factor-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--okr-paper-light);
+  border-radius: var(--okr-radius-md);
+  font-size: 13px;
+}
+
+.factor-icon {
+  font-size: 16px;
+}
+
+.factor-name {
+  flex: 1;
+  color: var(--okr-ink-700);
+}
+
+.factor-impact {
+  font-weight: 600;
+}
+
+.factor-impact.positive {
+  color: var(--okr-state-success);
+}
+
+.factor-impact.negative {
+  color: var(--okr-state-error);
+}
+
+/* ---------- 青蛙任务增强 ---------- */
+.vitality-frog-mini {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.frog-mini-checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.frog-mini-checkbox input {
+  display: none;
+}
+
+.frog-checkmark {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--okr-ink-300);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.frog-mini-checkbox input:checked + .frog-checkmark {
+  background: var(--okr-gold-500);
+  border-color: var(--okr-gold-500);
+}
+
+.frog-mini-checkbox input:checked + .frog-checkmark::after {
+  content: '✓';
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.frog-mini-title {
+  font-size: 13px;
+  color: var(--okr-ink-700);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.frog-mini-title:hover {
+  color: var(--okr-gold-500);
+}
+
+.frog-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--okr-ink-400);
+  padding: 2px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  opacity: 0;
+}
+
+.vitality-frog-mini:hover .frog-edit-btn {
+  opacity: 1;
+}
+
+.frog-edit-btn:hover {
+  color: var(--okr-gold-500);
+  background: var(--okr-ink-100);
+}
+
+/* 青蛙任务完成状态 */
+.vitality-frog-mini.frog-done {
+  opacity: 0.7;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.08), rgba(76, 175, 80, 0.03));
+}
+
+.vitality-frog-mini.frog-done .frog-mini-title {
+  color: var(--okr-ink-400);
+}
+
+/* ---------- 青蛙编辑弹窗 ---------- */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--okr-ink-700);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--okr-paper-light);
+  color: var(--okr-ink-800);
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--okr-gold-300);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--okr-paper-light);
+  color: var(--okr-ink-800);
+  resize: vertical;
+  transition: all 0.2s;
+  line-height: 1.6;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--okr-gold-300);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+}
+
+.duration-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.duration-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--okr-border);
+  background: var(--okr-paper-light);
+  border-radius: var(--okr-radius-md);
+  font-size: 13px;
+  color: var(--okr-ink-600);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.duration-btn:hover {
+  border-color: var(--okr-gold-300);
+  color: var(--okr-gold-700);
+}
+
+.duration-btn.active {
+  background: var(--okr-gold-100);
+  border-color: var(--okr-gold-500);
+  color: var(--okr-gold-700);
+  font-weight: 600;
+}
+
+.frog-editor-tip {
+  font-size: 12px;
+  color: var(--okr-ink-500);
+  padding: 10px 12px;
+  background: var(--okr-gold-100);
+  border-radius: var(--okr-radius-md);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.frog-save-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--okr-gold-300), var(--okr-gold-500));
+  color: var(--okr-gold-900);
+  border: none;
+  border-radius: var(--okr-radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.frog-save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
+}
+
+/* ---------- 内外耗添加按钮 ---------- */
+.drain-add-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+
+.drain-add-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px dashed var(--okr-border);
+  background: transparent;
+  border-radius: var(--okr-radius-md);
+  font-size: 12px;
+  color: var(--okr-ink-500);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.drain-add-btn:hover {
+  border-style: solid;
+}
+
+.drain-add-btn.external:hover {
+  border-color: var(--okr-cyan-500);
+  color: var(--okr-cyan-500);
+  background: var(--okr-cyan-100);
+}
+
+.drain-add-btn.internal:hover {
+  border-color: var(--okr-vermilion);
+  color: var(--okr-vermilion);
+  background: var(--okr-state-error-bg);
+}
+
+/* 删除按钮 */
+.drain-event-item {
+  position: relative;
+}
+
+.drain-event-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--okr-ink-300);
+  padding: 2px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.drain-event-item:hover .drain-event-delete {
+  opacity: 1;
+}
+
+.drain-event-delete:hover {
+  color: var(--okr-vermilion);
+  background: var(--okr-state-error-bg);
+}
+
+.drain-event-reason {
+  font-size: 12px;
+  color: var(--okr-ink-500);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--okr-ink-100);
+  line-height: 1.5;
+}
+
+/* ---------- 添加内外耗弹窗 ---------- */
+.drain-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.drain-preset-tag {
+  padding: 6px 12px;
+  background: var(--okr-paper);
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-full);
+  font-size: 12px;
+  color: var(--okr-ink-600);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.drain-preset-tag:hover {
+  border-color: var(--okr-gold-300);
+  background: var(--okr-gold-100);
+  color: var(--okr-gold-700);
+}
+
+.drain-impact-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--okr-ink-200);
+  border-radius: 3px;
+  outline: none;
+}
+
+.drain-impact-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--okr-gold-500);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(201, 162, 39, 0.3);
+  transition: transform 0.2s;
+}
+
+.drain-impact-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.drain-save-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--okr-ink-600), var(--okr-ink-800));
+  color: var(--okr-paper-light);
+  border: none;
+  border-radius: var(--okr-radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.drain-save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(31, 26, 16, 0.2);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 768px) {
+  .focus-errors-container {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-modal {
+    max-width: 92%;
+    margin: 20px;
+  }
+
+  .drain-add-buttons {
+    flex-direction: column;
+  }
+
+  .frog-edit-btn {
+    opacity: 1;
+  }
+
+  .ring-detail-big-value {
+    font-size: 40px;
+  }
+}

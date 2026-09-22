@@ -1,0 +1,4276 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行醒 · 个人知识库</title>
+    <style id="theme-vars">
+/* ============================================
+   Daily OKR - Brand Design Tokens
+   Style: 国风水墨 (Chinese Ink Painting / Jian Lai inspired)
+   ============================================ */
+
+:root {
+  /* ---------- Ink Palette ---------- */
+  --okr-ink-50: #faf8f5;
+  --okr-ink-100: #f0ebe3;
+  --okr-ink-200: #e0d8cc;
+  --okr-ink-300: #c9bda8;
+  --okr-ink-400: #a89880;
+  --okr-ink-500: #8a7a5e;
+  --okr-ink-600: #6b5d44;
+  --okr-ink-700: #4f4430;
+  --okr-ink-800: #362e1f;
+  --okr-ink-900: #1f1a10;
+
+  /* ---------- Rice Paper (宣纸) ---------- */
+  --okr-paper-light: #f7f2e8;
+  --okr-paper: #ede4d3;
+  --okr-paper-dark: #d9cbae;
+
+  /* ---------- Cyan Ink (青黛) ---------- */
+  --okr-cyan-100: #e8f1f0;
+  --okr-cyan-300: #7fb3ad;
+  --okr-cyan-500: #3d7a74;
+  --okr-cyan-700: #244f4b;
+  --okr-cyan-900: #122b29;
+
+  /* ---------- Gold Accent (描金) ---------- */
+  --okr-gold-100: #f7ecd0;
+  --okr-gold-300: #e8c97a;
+  --okr-gold-500: #c9a227;
+  --okr-gold-700: #8b6914;
+  --okr-gold-900: #5c4508;
+
+  /* ---------- Vermilion (朱砂) ---------- */
+  --okr-vermilion: #c0392b;
+  --okr-vermilion-light: #e74c3c;
+  --okr-vermilion-dark: #922b21;
+
+  /* ---------- State Colors ---------- */
+  --okr-state-success: #2d6a4f;
+  --okr-state-success-bg: #d8f3dc;
+  --okr-state-warning: #b07d1e;
+  --okr-state-warning-bg: #fef3c7;
+  --okr-state-error: #922b21;
+  --okr-state-error-bg: #fde2e2;
+
+  /* ---------- Semantic Aliases ---------- */
+  --okr-background: var(--okr-paper-light);
+  --okr-foreground: var(--okr-ink-900);
+  --okr-card: #fdfbf5;
+  --okr-card-foreground: var(--okr-ink-900);
+  --okr-popover: #fdfbf5;
+  --okr-popover-foreground: var(--okr-ink-900);
+  --okr-primary: var(--okr-ink-800);
+  --okr-primary-foreground: var(--okr-paper-light);
+  --okr-muted: var(--okr-paper);
+  --okr-muted-foreground: var(--okr-ink-500);
+  --okr-destructive: var(--okr-vermilion);
+  --okr-destructive-foreground: #ffffff;
+  --okr-border: var(--okr-ink-200);
+  --okr-input: var(--okr-ink-200);
+  --okr-ring: var(--okr-ink-700);
+
+  /* ---------- Radius Scale ---------- */
+  --okr-radius-sm: 4px;
+  --okr-radius-md: 8px;
+  --okr-radius-lg: 12px;
+  --okr-radius-xl: 16px;
+  --okr-radius-full: 9999px;
+
+  /* ---------- Typography ---------- */
+  --okr-font-sans: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', 'PingFang SC', 'Microsoft YaHei', serif;
+  --okr-font-display: 'Noto Serif SC', 'Source Han Serif SC', 'STKaiti', 'KaiTi', '楷体', serif;
+  --okr-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  --okr-text-xs: 12px;
+  --okr-text-sm: 14px;
+  --okr-text-base: 15px;
+  --okr-text-lg: 18px;
+  --okr-text-xl: 22px;
+  --okr-text-2xl: 28px;
+  --okr-text-3xl: 36px;
+  --okr-text-4xl: 48px;
+
+  /* ---------- Spacing ---------- */
+  --okr-space-1: 4px;
+  --okr-space-2: 8px;
+  --okr-space-3: 12px;
+  --okr-space-4: 16px;
+  --okr-space-5: 20px;
+  --okr-space-6: 24px;
+  --okr-space-8: 32px;
+  --okr-space-10: 40px;
+  --okr-space-12: 48px;
+  --okr-space-16: 64px;
+
+  /* ---------- Shadow (subtle ink wash) ---------- */
+  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+
+  /* ---------- Transition ---------- */
+  --okr-transition-fast: 150ms ease;
+  --okr-transition-base: 250ms ease;
+  --okr-transition-slow: 400ms ease;
+}
+
+/* ---------- Base Styles ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--okr-font-sans);
+  font-size: var(--okr-text-base);
+  line-height: 1.7;
+  color: var(--okr-foreground);
+  background-color: var(--okr-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+}
+
+/* ---------- Utility Classes ---------- */
+.text-primary { color: var(--okr-primary); }
+.text-muted { color: var(--okr-muted-foreground); }
+.text-gold { color: var(--okr-gold-500); }
+.text-vermilion { color: var(--okr-vermilion); }
+.text-ink-light { color: var(--okr-ink-500); }
+
+.bg-primary { background-color: var(--okr-primary); }
+.bg-card { background-color: var(--okr-card); }
+.bg-paper { background-color: var(--okr-paper); }
+.bg-muted { background-color: var(--okr-muted); }
+
+.border-default { border-color: var(--okr-border); }
+.border-gold { border-color: var(--okr-gold-300); }
+.border-ink { border-color: var(--okr-ink-400); }
+
+.rounded-sm { border-radius: var(--okr-radius-sm); }
+.rounded-md { border-radius: var(--okr-radius-md); }
+.rounded-lg { border-radius: var(--okr-radius-lg); }
+.rounded-xl { border-radius: var(--okr-radius-xl); }
+.rounded-full { border-radius: var(--okr-radius-full); }
+
+.shadow-sm { box-shadow: var(--okr-shadow-sm); }
+.shadow-md { box-shadow: var(--okr-shadow-md); }
+.shadow-lg { box-shadow: var(--okr-shadow-lg); }
+
+.transition { transition: all var(--okr-transition-base); }
+.transition-fast { transition: all var(--okr-transition-fast); }
+
+/* ---------- Ink decorative helpers ---------- */
+.ink-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--okr-ink-300), transparent);
+  border: none;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, var(--okr-gold-300), var(--okr-gold-500), var(--okr-gold-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--okr-vermilion);
+  color: #fff;
+  font-family: var(--okr-font-display);
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+}
+
+    </style>
+    <script src="../assets/tailwind.min.js"></script>
+    <script src="../assets/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--okr-background);
+    --color-foreground: var(--okr-foreground);
+    --color-card: var(--okr-card);
+    --color-card-foreground: var(--okr-card-foreground);
+    --color-popover: var(--okr-popover);
+    --color-popover-foreground: var(--okr-popover-foreground);
+    --color-primary: var(--okr-primary);
+    --color-primary-foreground: var(--okr-primary-foreground);
+    --color-muted: var(--okr-muted);
+    --color-muted-foreground: var(--okr-muted-foreground);
+    --color-destructive: var(--okr-destructive);
+    --color-destructive-foreground: var(--okr-destructive-foreground);
+    --color-border: var(--okr-border);
+    --color-input: var(--okr-input);
+    --color-ring: var(--okr-ring);
+    --radius-sm: var(--okr-radius-sm);
+    --radius-md: var(--okr-radius-md);
+    --radius-lg: var(--okr-radius-lg);
+    --radius-xl: var(--okr-radius-xl);
+  }
+  @layer base {
+    body { background: var(--okr-background); color: var(--okr-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--okr-background); }
+      .text-background { color: var(--okr-background); }
+      .border-background { border-color: var(--okr-background); }
+      .ring-background { --tw-ring-color: var(--okr-background); }
+      .bg-foreground { background-color: var(--okr-foreground); }
+      .text-foreground { color: var(--okr-foreground); }
+      .border-foreground { border-color: var(--okr-foreground); }
+      .ring-foreground { --tw-ring-color: var(--okr-foreground); }
+      .bg-card { background-color: var(--okr-card); }
+      .text-card { color: var(--okr-card); }
+      .border-card { border-color: var(--okr-card); }
+      .ring-card { --tw-ring-color: var(--okr-card); }
+      .bg-card-foreground { background-color: var(--okr-card-foreground); }
+      .text-card-foreground { color: var(--okr-card-foreground); }
+      .border-card-foreground { border-color: var(--okr-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--okr-card-foreground); }
+      .bg-popover { background-color: var(--okr-popover); }
+      .text-popover { color: var(--okr-popover); }
+      .border-popover { border-color: var(--okr-popover); }
+      .ring-popover { --tw-ring-color: var(--okr-popover); }
+      .bg-popover-foreground { background-color: var(--okr-popover-foreground); }
+      .text-popover-foreground { color: var(--okr-popover-foreground); }
+      .border-popover-foreground { border-color: var(--okr-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--okr-popover-foreground); }
+      .bg-primary { background-color: var(--okr-primary); }
+      .text-primary { color: var(--okr-primary); }
+      .border-primary { border-color: var(--okr-primary); }
+      .ring-primary { --tw-ring-color: var(--okr-primary); }
+      .bg-primary-foreground { background-color: var(--okr-primary-foreground); }
+      .text-primary-foreground { color: var(--okr-primary-foreground); }
+      .border-primary-foreground { border-color: var(--okr-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--okr-primary-foreground); }
+      .bg-muted { background-color: var(--okr-muted); }
+      .text-muted { color: var(--okr-muted); }
+      .border-muted { border-color: var(--okr-muted); }
+      .ring-muted { --tw-ring-color: var(--okr-muted); }
+      .bg-muted-foreground { background-color: var(--okr-muted-foreground); }
+      .text-muted-foreground { color: var(--okr-muted-foreground); }
+      .border-muted-foreground { border-color: var(--okr-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--okr-muted-foreground); }
+      .bg-destructive { background-color: var(--okr-destructive); }
+      .text-destructive { color: var(--okr-destructive); }
+      .border-destructive { border-color: var(--okr-destructive); }
+      .ring-destructive { --tw-ring-color: var(--okr-destructive); }
+      .bg-destructive-foreground { background-color: var(--okr-destructive-foreground); }
+      .text-destructive-foreground { color: var(--okr-destructive-foreground); }
+      .border-destructive-foreground { border-color: var(--okr-destructive-foreground); }
+      .ring-destructive-foreground { --tw-ring-color: var(--okr-destructive-foreground); }
+      .bg-border { background-color: var(--okr-border); }
+      .text-border { color: var(--okr-border); }
+      .border-border { border-color: var(--okr-border); }
+      .ring-border { --tw-ring-color: var(--okr-border); }
+      .bg-input { background-color: var(--okr-input); }
+      .text-input { color: var(--okr-input); }
+      .border-input { border-color: var(--okr-input); }
+      .ring-input { --tw-ring-color: var(--okr-input); }
+      .bg-ring { background-color: var(--okr-ring); }
+      .text-ring { color: var(--okr-ring); }
+      .border-ring { border-color: var(--okr-ring); }
+      .ring-ring { --tw-ring-color: var(--okr-ring); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+<script src="../assets/api.js"></script>
+<script src="../assets/page-nav.js"></script>
+<script src="../assets/common.js"></script>
+<script src="../assets/user-module.js"></script>
+<script>
+  if (window.XingxingCommon) XingxingCommon.checkDailyReset();
+</script>
+</head>
+<body>
+
+<!-- 水墨晕染装饰 SVG -->
+<svg class="ink-wash-decoration ink-wash-top" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="inkWash1" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#1f1a10" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="180" cy="120" rx="160" ry="100" fill="url(#inkWash1)"/>
+  <ellipse cx="350" cy="80" rx="120" ry="70" fill="url(#inkWash1)"/>
+</svg>
+
+<svg class="ink-wash-decoration ink-wash-bottom" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="inkWash2" cx="60%" cy="70%" r="50%">
+      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#1f1a10" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="300" cy="250" rx="200" ry="80" fill="url(#inkWash2)"/>
+</svg>
+
+<!-- 底部山脉剪影 -->
+<svg class="mountain-footer" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,80 L0,60 Q100,30 200,50 T400,20 T600,45 T800,15 T1000,40 T1200,25 T1440,50 L1440,80 Z" fill="#1f1a10"/>
+  <path d="M0,80 L0,70 Q150,50 300,65 T600,55 T900,70 T1200,60 T1440,72 L1440,80 Z" fill="#1f1a10" opacity="0.6"/>
+</svg>
+
+<div class="app-container">
+    <!-- ========== 侧边栏 ========== -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">行醒</div>
+            <div class="sidebar-subtitle">知行合一</div>
+            <div class="sidebar-date" id="sidebarDate">丙午年 八月初三</div>
+            <div class="sidebar-weekday" id="sidebarWeekday">星期一</div>
+            <div class="streak-seal">
+                <div class="streak-number">12<span>日</span></div>
+                <div class="streak-label">不辍</div>
+            </div>
+        </div>
+
+        <!-- 用户区域 - 行星桌宠 -->
+        <div class="sidebar-user sidebar-pet" id="sidebarUser" onclick="openSettings()">
+            <div class="pet-avatar planet-pet" id="petAvatar">
+                <div class="planet-wrap">
+                    <div class="planet-body">
+                        <div class="planet-surface planet-surface-1"></div>
+                        <div class="planet-surface planet-surface-2"></div>
+                        <div class="planet-surface planet-surface-3"></div>
+                        <div class="planet-highlight"></div>
+                        <div class="planet-atmosphere"></div>
+                    </div>
+                    <div class="planet-ring">
+                        <div class="planet-ring-inner"></div>
+                        <div class="planet-ring-outer"></div>
+                    </div>
+                    <div class="planet-moon">
+                        <div class="moon-body"></div>
+                    </div>
+                    <div class="planet-star star-a">✦</div>
+                    <div class="planet-star star-b">✧</div>
+                    <div class="planet-star star-c">·</div>
+                </div>
+            </div>
+            <div class="pet-bubble">
+                <div class="pet-settings-icon pet-settings-inline">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                </div>
+                <div class="pet-welcome" id="petWelcome">欢迎加入行醒宇宙</div>
+                <div class="pet-name" id="petName">成就真我 · 行醒学子</div>
+            </div>
+        </div>
+
+        <!-- 毛笔笔触分割线 -->
+        <div class="brush-divider">
+            <svg viewBox="0 0 200 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10,8 Q50,2 100,8 T190,8" stroke="#1f1a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
+                <path d="M20,10 Q60,6 100,10 T180,10" stroke="#c9a227" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.3"/>
+            </svg>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item" data-dom-id="nav-dashboard">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                今日行醒
+            </a>
+            <a href="okrs.html" class="nav-item" data-dom-id="nav-okrs">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2"/>
+                </svg>
+                目标图谱
+            </a>
+            <a href="review.html" class="nav-item" data-dom-id="nav-review">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                省身日记
+            </a>
+            <a href="error-book.html" class="nav-item" data-dom-id="nav-errorbook">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    <path d="M10 8h6M10 12h6M10 16h4"/>
+                </svg>
+                省身错题
+            </a>
+            <a href="daily-plan.html" class="nav-item" data-dom-id="nav-todo">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                每日计划
+            </a>
+            <a href="light-keeper.html" class="nav-item" data-dom-id="nav-lightkeeper">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v6"/>
+                    <path d="M12 22v-4"/>
+                    <circle cx="12" cy="14" r="4"/>
+                    <path d="M4.93 4.93l4.24 4.24"/>
+                    <path d="M14.83 14.83l4.24 4.24"/>
+                    <path d="M2 12h6"/>
+                    <path d="M16 12h6"/>
+                    <path d="M4.93 19.07l4.24-4.24"/>
+                    <path d="M14.83 9.17l4.24-4.24"/>
+                </svg>
+                点灯人
+            </a>
+            <a href="resources.html" class="nav-item active" data-dom-id="nav-resources">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    <path d="M12 7v10"/>
+                    <path d="M9 10h6"/>
+                </svg>
+                个人知识库
+            </a>
+            <a href="annotate.html" class="nav-item" data-dom-id="nav-annotate">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                    <line x1="10" y1="10" x2="14" y2="14"/>
+                </svg>
+                标注工具
+            </a>
+            <a href="profile.html" class="nav-item" data-dom-id="nav-settings">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                设置
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ========== 主内容区 ========== -->
+    <main class="main-content">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <div class="page-seal-tag">藏珍</div>
+            <h1 class="page-title">个人知识库</h1>
+            <p class="page-subtitle">收藏学习资源，积跬步以至千里。</p>
+        </div>
+
+        <!-- 资源库头部 -->
+        <div class="resources-header">
+            <div class="resources-title-row">
+                <!-- 筛选标签将在JS中渲染 -->
+            </div>
+            <div class="resources-header-actions">
+                <button class="add-folder-btn" onclick="openNewFolder()">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    新建文件夹
+                </button>
+                <button class="add-resource-btn" onclick="openAddResource()">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    添加资源
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端文件夹标签（横向滚动） -->
+        <div class="mobile-folder-tags" id="mobileFolderTags">
+            <!-- 动态生成 -->
+        </div>
+
+        <!-- 主体内容：文件夹侧栏 + 资源区域 -->
+        <div class="resources-main">
+            <!-- 左侧文件夹侧栏 -->
+            <aside class="folder-sidebar" id="folderSidebar">
+                <div class="folder-list" id="folderList">
+                    <!-- 动态生成 -->
+                </div>
+                <div class="folder-sidebar-footer">
+                    <button class="new-folder-btn-side" onclick="openNewFolder()">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        新建文件夹
+                    </button>
+                </div>
+            </aside>
+
+            <!-- 右侧资源内容 -->
+            <div class="resources-content">
+                <!-- 筛选标签 -->
+                <div class="filter-tags" id="filterTags">
+                    <span class="filter-tag active" data-type="all">全部</span>
+                    <span class="filter-tag" data-type="link">链接</span>
+                    <span class="filter-tag" data-type="doc">文档</span>
+                    <span class="filter-tag" data-type="image">图片</span>
+                    <span class="filter-tag" data-type="video">视频</span>
+                    <span class="filter-tag" data-type="note">笔记</span>
+                </div>
+
+                <!-- 资源卡片网格 -->
+                <div class="resources-grid" id="resourcesGrid">
+                    <!-- 资源卡片将在JS中渲染 -->
+                </div>
+
+                <!-- 空状态 -->
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    <div class="empty-state-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <div class="empty-state-text" id="emptyStateText">暂无资源，点击「添加资源」开始收藏</div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- 添加资源弹窗 -->
+<div class="modal-overlay" id="addResourceOverlay" onclick="closeAddResourceOverlay(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h2 class="modal-title">添加资源</h2>
+            <button class="modal-close" onclick="closeAddResource()">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- 类型选择 -->
+            <div class="form-group">
+                <label>资源类型</label>
+                <div class="type-selector" id="typeSelector">
+                    <div class="type-option active" data-type="link">
+                        <div class="type-option-icon" style="background: var(--ink-cyan-dark);">
+                            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                        </div>
+                        <span class="type-option-label">链接</span>
+                    </div>
+                    <div class="type-option" data-type="doc">
+                        <div class="type-option-icon" style="background: var(--ink-700);">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        </div>
+                        <span class="type-option-label">文档</span>
+                    </div>
+                    <div class="type-option" data-type="image">
+                        <div class="type-option-icon" style="background: var(--ink-gold-dark);">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        </div>
+                        <span class="type-option-label">图片</span>
+                    </div>
+                    <div class="type-option" data-type="video">
+                        <div class="type-option-icon" style="background: var(--ink-cinnabar-dark);">
+                            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                        </div>
+                        <span class="type-option-label">视频</span>
+                    </div>
+                    <div class="type-option" data-type="note">
+                        <div class="type-option-icon" style="background: var(--ink-cinnabar);">
+                            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </div>
+                        <span class="type-option-label">笔记</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 标题 -->
+            <div class="form-group">
+                <label>标题</label>
+                <input type="text" class="form-input" id="resourceTitle" placeholder="请输入资源标题">
+            </div>
+
+            <!-- URL / 文件上传 -->
+            <div class="form-group" id="urlGroup">
+                <label>链接地址</label>
+                <input type="url" class="form-input" id="resourceUrl" placeholder="https://...">
+            </div>
+
+            <div class="form-group" id="uploadGroup" style="display:none;">
+                <label>文件上传</label>
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                    </div>
+                    <div class="upload-text" id="uploadText">点击或拖拽文件到此处</div>
+                    <div class="upload-hint" id="uploadHint">支持图片、文档等文件</div>
+                    <input type="file" id="fileInput" style="display:none" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+
+            <!-- 笔记内容 -->
+            <div class="form-group" id="noteContentGroup" style="display:none;">
+                <label>笔记内容</label>
+                <textarea class="form-textarea" id="resourceNoteContent" placeholder="在这里写下你的笔记内容..." style="min-height: 180px;"></textarea>
+            </div>
+
+            <!-- 标签 -->
+            <div class="form-group">
+                <label>标签（逗号分隔）</label>
+                <input type="text" class="form-input" id="resourceTags" placeholder="例如：学习, 心理学, 必看">
+            </div>
+
+            <!-- 所属文件夹 -->
+            <div class="form-group">
+                <label>所属文件夹</label>
+                <select class="form-select" id="resourceFolder">
+                    <!-- 动态生成 -->
+                </select>
+            </div>
+
+            <!-- 描述 -->
+            <div class="form-group">
+                <label>备注 / 描述</label>
+                <textarea class="form-textarea" id="resourceDesc" placeholder="添加一些备注信息..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeAddResource()">取消</button>
+            <button class="btn-save" onclick="saveResource()">保存</button>
+        </div>
+    </div>
+</div>
+
+<!-- 新建文件夹弹窗 -->
+<div class="modal-overlay" id="newFolderOverlay" onclick="closeNewFolderOverlay(event)">
+    <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+        <div class="modal-header">
+            <h2 class="modal-title">新建文件夹</h2>
+            <button class="modal-close" onclick="closeNewFolder()">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>文件夹名称</label>
+                <input type="text" class="form-input" id="newFolderName" placeholder="请输入文件夹名称">
+            </div>
+            <div class="form-group">
+                <label>选择图标</label>
+                <div class="folder-icon-picker" id="folderIconPicker">
+                    <span class="icon-option active" data-icon="📊">📊</span>
+                    <span class="icon-option" data-icon="🧠">🧠</span>
+                    <span class="icon-option" data-icon="📝">📝</span>
+                    <span class="icon-option" data-icon="❤️">❤️</span>
+                    <span class="icon-option" data-icon="💪">💪</span>
+                    <span class="icon-option" data-icon="📚">📚</span>
+                    <span class="icon-option" data-icon="💡">💡</span>
+                    <span class="icon-option" data-icon="🎯">🎯</span>
+                    <span class="icon-option" data-icon="🌱">🌱</span>
+                    <span class="icon-option" data-icon="🎨">🎨</span>
+                    <span class="icon-option" data-icon="💻">💻</span>
+                    <span class="icon-option" data-icon="🎵">🎵</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>选择颜色</label>
+                <div class="folder-color-picker" id="folderColorPicker">
+                    <span class="color-option active" data-color="#e67e22" style="background:#e67e22;"></span>
+                    <span class="color-option" data-color="#8e44ad" style="background:#8e44ad;"></span>
+                    <span class="color-option" data-color="#3498db" style="background:#3498db;"></span>
+                    <span class="color-option" data-color="#e74c3c" style="background:#e74c3c;"></span>
+                    <span class="color-option" data-color="#27ae60" style="background:#27ae60;"></span>
+                    <span class="color-option" data-color="#f39c12" style="background:#f39c12;"></span>
+                    <span class="color-option" data-color="#16a085" style="background:#16a085;"></span>
+                    <span class="color-option" data-color="#2c3e50" style="background:#2c3e50;"></span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeNewFolder()">取消</button>
+            <button class="btn-save" onclick="saveNewFolder()">创建</button>
+        </div>
+    </div>
+</div>
+
+<!-- 个人设置弹窗 -->
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOverlay(event)">
+    <div class="settings-modal" onclick="event.stopPropagation()">
+        <div class="settings-header">
+            <h2 class="settings-title">个人设置</h2>
+            <button class="settings-close" onclick="closeSettings()">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="settings-body">
+            <div class="settings-section">
+                <div class="settings-section-title">头像与昵称</div>
+                <div class="settings-avatar-row">
+                    <div class="settings-avatar" id="settingsAvatar">行</div>
+                    <div class="settings-avatar-upload">
+                        <span>点击更换头像</span>
+                        <button class="settings-upload-btn" onclick="document.getElementById('avatarInput').click()">上传图片</button>
+                        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-form-group">
+                <label>昵称</label>
+                <input type="text" class="settings-input" id="settingsNickname" value="行醒学子" placeholder="请输入昵称">
+            </div>
+
+            <div class="settings-form-group">
+                <label>一句箴言</label>
+                <input type="text" class="settings-input" id="settingsMotto" value="知行合一，日日精进" placeholder="请输入箴言">
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">主题</div>
+                <div class="settings-radio-group">
+                    <label class="settings-radio active" id="themeLightLabel">
+                        <input type="radio" name="theme" value="light" checked onchange="setTheme('light')">
+                        水墨日间
+                    </label>
+                    <label class="settings-radio" id="themeDarkLabel">
+                        <input type="radio" name="theme" value="dark" onchange="setTheme('dark')">
+                        宣纸深夜
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">精力起始值</div>
+                <div class="settings-form-group">
+                    <label>睡眠质量</label>
+                    <select class="settings-select" id="settingsSleep">
+                        <option value="excellent">极佳 (100)</option>
+                        <option value="good" selected>良好 (90)</option>
+                        <option value="normal">一般 (75)</option>
+                        <option value="poor">较差 (60)</option>
+                        <option value="insomnia">失眠 (40)</option>
+                    </select>
+                </div>
+                <div class="settings-form-group">
+                    <label>起床时精力：<span id="energyStartValue">90</span></label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">数据管理</div>
+                <div class="settings-data-row">
+                    <button class="settings-data-btn" onclick="exportData()">导出数据</button>
+                    <button class="settings-data-btn danger" onclick="clearAllData()">清空数据</button>
+                </div>
+            </div>
+        </div>
+        <div class="settings-footer">
+            <button class="settings-save-btn" onclick="saveSettings()">保存设置</button>
+        </div>
+    </div>
+</div>
+
+<!-- 资源查看器弹窗 -->
+<div class="viewer-overlay" id="viewerOverlay" onclick="closeViewerOverlay(event)">
+    <div class="viewer-modal" onclick="event.stopPropagation()">
+        <div class="viewer-header">
+            <div class="viewer-title-row">
+                <span class="viewer-type-badge" id="viewerTypeBadge"></span>
+                <h2 class="viewer-title" id="viewerTitle"></h2>
+            </div>
+            <button class="viewer-close" onclick="closeViewer()">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="viewer-body" id="viewerBody">
+            <!-- 动态内容 -->
+        </div>
+        <div class="viewer-footer" id="viewerFooter">
+            <div class="viewer-meta" id="viewerMeta"></div>
+            <div class="viewer-actions">
+                <button class="viewer-btn" id="viewerActionBtn" style="display:none;">在浏览器打开</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ========== 资源库数据 ==========
+const RESOURCES_KEY = 'xingxing_resources';
+const FOLDERS_KEY = 'xingxing_folders';
+
+const defaultFolders = [
+    { id: 'all',        name: '全部资源', icon: '📁', system: true },
+    { id: 'economics',  name: '经济学',  icon: '📊', color: '#e67e22' },
+    { id: 'logic',      name: '逻辑学',  icon: '🧠', color: '#8e44ad' },
+    { id: 'ielts',      name: '雅思',    icon: '📝', color: '#3498db' },
+    { id: 'psychology', name: '心理学',  icon: '❤️', color: '#e74c3c' },
+    { id: 'fitness',    name: '健身',    icon: '💪', color: '#27ae60' },
+    { id: 'uncategorized', name: '未分类', icon: '📄', system: true },
+];
+
+const defaultResources = [
+    {
+        id: '1',
+        type: 'link',
+        title: '陈波逻辑学公开课',
+        url: 'https://www.bilibili.com/video/BV1xxx',
+        description: '北京大学陈波教授的逻辑学导论课程，系统讲解逻辑学基础概念与方法。',
+        tags: ['学习', '逻辑学', 'B站'],
+        createdAt: '2024-09-01',
+        thumbnail: '',
+        folderId: 'logic'
+    },
+    {
+        id: '2',
+        type: 'doc',
+        title: '雅思阅读真经5 PDF',
+        url: '',
+        description: '雅思阅读备考经典教材，包含真题解析与技巧总结。',
+        tags: ['英语', '雅思', '阅读'],
+        createdAt: '2024-08-15',
+        thumbnail: '',
+        folderId: 'ielts'
+    },
+    {
+        id: '3',
+        type: 'video',
+        title: '李玫瑾育儿心理学',
+        url: '',
+        description: '中国人民公安大学李玫瑾教授关于儿童心理发展与教育的系列讲座。',
+        tags: ['心理学', '育儿', '教育'],
+        createdAt: '2024-07-20',
+        thumbnail: '',
+        folderId: 'psychology'
+    },
+    {
+        id: '4',
+        type: 'note',
+        title: '武志红心理学笔记',
+        url: '',
+        description: '学习武志红心理学课程的个人笔记整理，涵盖自我、关系、动力等主题。',
+        tags: ['心理学', '笔记', '自我成长'],
+        createdAt: '2024-09-05',
+        thumbnail: '',
+        folderId: 'psychology'
+    },
+    {
+        id: '5',
+        type: 'image',
+        title: '健身计划表',
+        url: '',
+        description: '每周健身训练计划表，包含力量训练与有氧运动的合理安排。',
+        tags: ['健身', '健康', '计划'],
+        createdAt: '2024-08-28',
+        thumbnail: '',
+        folderId: 'fitness'
+    },
+    {
+        id: '6',
+        type: 'link',
+        title: '博弈论基础',
+        url: 'https://www.coursera.org/learn/game-theory',
+        description: '斯坦福大学博弈论基础课程，涵盖纳什均衡、囚徒困境等核心概念。',
+        tags: ['学习', '经济学', 'Coursera'],
+        createdAt: '2024-09-10',
+        thumbnail: '',
+        folderId: 'economics'
+    }
+];
+
+let resources = [];
+let folders = [];
+let currentFilter = 'all';
+let currentFolder = 'all';
+let currentType = 'link';
+let uploadedFileData = '';
+let uploadedFileName = '';
+let noteContent = '';
+let selectedFolderIcon = '📊';
+let selectedFolderColor = '#e67e22';
+let editingFolderId = null;
+
+// 类型对应的图标SVG
+const typeIcons = {
+    link: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    doc: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+    image: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+    video: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
+    note: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'
+};
+
+const typeLabels = {
+    link: '链接',
+    doc: '文档',
+    image: '图片',
+    video: '视频',
+    note: '笔记'
+};
+
+// HTML 转义，防止 XSS
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// 加载资源
+function loadResources() {
+    try {
+        const saved = localStorage.getItem(RESOURCES_KEY);
+        if (saved) {
+            resources = JSON.parse(saved);
+        } else {
+            resources = [...defaultResources];
+            saveResources();
+        }
+    } catch (e) {
+        console.error('加载资源失败', e);
+        resources = [...defaultResources];
+    }
+}
+
+function saveResources() {
+    localStorage.setItem(RESOURCES_KEY, JSON.stringify(resources));
+}
+
+// 加载文件夹
+function loadFolders() {
+    try {
+        const saved = localStorage.getItem(FOLDERS_KEY);
+        if (saved) {
+            folders = JSON.parse(saved);
+        } else {
+            folders = [...defaultFolders];
+            saveFolders();
+        }
+    } catch (e) {
+        console.error('加载文件夹失败', e);
+        folders = [...defaultFolders];
+    }
+}
+
+function saveFolders() {
+    localStorage.setItem(FOLDERS_KEY, JSON.stringify(folders));
+}
+
+// 获取文件夹信息
+function getFolderById(id) {
+    return folders.find(f => f.id === id);
+}
+
+// 获取文件夹下的资源数量
+function getFolderResourceCount(folderId) {
+    if (folderId === 'all') return resources.length;
+    if (folderId === 'uncategorized') return resources.filter(r => !r.folderId || r.folderId === 'uncategorized').length;
+    return resources.filter(r => r.folderId === folderId).length;
+}
+
+// 渲染文件夹列表
+function renderFolderList() {
+    const folderList = document.getElementById('folderList');
+    if (!folderList) return;
+
+    // 系统文件夹在前，自定义文件夹在后
+    const systemFolders = folders.filter(f => f.system);
+    const customFolders = folders.filter(f => !f.system);
+    const allFolders = [...systemFolders, ...customFolders];
+
+    folderList.innerHTML = allFolders.map(folder => {
+        const isActive = folder.id === currentFolder;
+        const count = getFolderResourceCount(folder.id);
+        const colorStyle = folder.color ? 'style="color: ' + folder.color + '"' : '';
+        const activeBar = isActive && !folder.system ? 'style="background: ' + (folder.color || 'var(--okr-gold-500)') + '"' : '';
+        
+        return `
+            <div class="folder-item ${isActive ? 'active' : ''} ${folder.system ? 'system' : ''}" 
+                 data-id="${folder.id}" 
+                 onclick="selectFolder('${folder.id}')"
+                 onmouseenter="this.querySelector('.folder-actions').style.opacity='1'"
+                 onmouseleave="this.querySelector('.folder-actions').style.opacity='0'">
+                ${isActive ? '<span class="folder-active-bar" ' + activeBar + '></span>' : ''}
+                <span class="folder-icon" ${colorStyle}>${folder.icon}</span>
+                <span class="folder-name">${folder.name}</span>
+                <span class="folder-count">${count}</span>
+                ${!folder.system ? `
+                    <div class="folder-actions">
+                        <button class="folder-action-btn" onclick="event.stopPropagation(); editFolder('${folder.id}')" title="重命名">
+                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                        </button>
+                        <button class="folder-action-btn delete" onclick="event.stopPropagation(); deleteFolder('${folder.id}')" title="删除">
+                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// 渲染移动端文件夹标签
+function renderMobileFolderTags() {
+    const container = document.getElementById('mobileFolderTags');
+    if (!container) return;
+
+    const customFolders = folders.filter(f => !f.system || f.id === 'all');
+    const displayFolders = folders.filter(f => f.id === 'all' || !f.system || f.id === 'uncategorized');
+    
+    container.innerHTML = displayFolders.map(folder => {
+        const isActive = folder.id === currentFolder;
+        const colorStyle = folder.color && isActive ? 'style="background: ' + folder.color + '; border-color: ' + folder.color + '"' : '';
+        return `
+            <span class="mobile-folder-tag ${isActive ? 'active' : ''}" data-id="${folder.id}" 
+                  onclick="selectFolder('${folder.id}')"
+                  ${colorStyle}>
+                ${folder.icon} ${folder.name}
+            </span>
+        `;
+    }).join('');
+}
+
+// 选择文件夹
+function selectFolder(folderId) {
+    currentFolder = folderId;
+    renderFolderList();
+    renderMobileFolderTags();
+    renderResources();
+    updateResourceFolderSelect();
+}
+
+// 渲染资源卡片
+function renderResources() {
+    const grid = document.getElementById('resourcesGrid');
+    const emptyState = document.getElementById('emptyState');
+    const emptyStateText = document.getElementById('emptyStateText');
+    
+    let filtered = resources;
+    
+    // 按文件夹筛选
+    if (currentFolder === 'uncategorized') {
+        filtered = filtered.filter(r => !r.folderId || r.folderId === 'uncategorized');
+    } else if (currentFolder !== 'all') {
+        filtered = filtered.filter(r => r.folderId === currentFolder);
+    }
+    
+    // 按类型筛选
+    if (currentFilter !== 'all') {
+        filtered = filtered.filter(r => r.type === currentFilter);
+    }
+    
+    if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.style.display = 'block';
+        const folder = getFolderById(currentFolder);
+        const folderName = folder ? folder.name : '当前文件夹';
+        emptyStateText.textContent = folderName + '暂无资源，点击「添加资源」开始收藏';
+        return;
+    }
+    
+    emptyState.style.display = 'none';
+    grid.innerHTML = filtered.map(resource => createResourceCard(resource)).join('');
+}
+
+function createResourceCard(resource) {
+    const typeBadgeClass = 'resource-type-' + resource.type;
+    const thumbContent = resource.thumbnail 
+        ? '<img src="' + resource.thumbnail + '" alt="' + resource.title + '">'
+        : '<div class="resource-thumb-icon">' + typeIcons[resource.type] + '</div>';
+    
+    const tagsHtml = resource.tags.slice(0, 2).map(tag => 
+        '<span class="resource-tag">' + tag + '</span>'
+    ).join('');
+
+    // 文件夹标签
+    const folder = getFolderById(resource.folderId);
+    const folderTag = folder && !folder.system ? 
+        `<span class="resource-folder-tag" style="color: ${folder.color}; border-color: ${folder.color}30;">${folder.icon} ${folder.name}</span>` : '';
+    
+    return `
+        <div class="resource-card" data-id="${resource.id}" onclick="openResource('${resource.id}')">
+            <div class="resource-thumbnail">
+                <span class="resource-type-badge ${typeBadgeClass}">${typeLabels[resource.type]}</span>
+                ${thumbContent}
+            </div>
+            <div class="resource-body">
+                <div class="resource-title">${resource.title}</div>
+                <div class="resource-desc">${resource.description}</div>
+                <div class="resource-footer">
+                    <div class="resource-tags">${tagsHtml}</div>
+                    <div class="resource-actions" onclick="event.stopPropagation()">
+                        <button class="resource-action-btn" title="编辑" onclick="editResource('${resource.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </button>
+                        <button class="resource-action-btn delete" title="删除" onclick="deleteResource('${resource.id}')">
+                            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
+                    </div>
+                </div>
+                ${folderTag ? '<div class="resource-folder-row">' + folderTag + '</div>' : ''}
+                <div class="resource-meta" style="margin-top:8px;">${resource.createdAt}</div>
+            </div>
+        </div>
+    `;
+}
+
+// 更新添加资源弹窗中的文件夹选择
+function updateResourceFolderSelect() {
+    const select = document.getElementById('resourceFolder');
+    if (!select) return;
+    
+    const customFolders = folders.filter(f => !f.system);
+    select.innerHTML = '<option value="uncategorized">未分类</option>' +
+        customFolders.map(f => `<option value="${f.id}">${f.icon} ${f.name}</option>`).join('');
+    
+    // 如果当前在某个文件夹下，默认选中
+    if (currentFolder !== 'all' && currentFolder !== 'uncategorized') {
+        select.value = currentFolder;
+    }
+}
+
+// 新建文件夹弹窗
+function openNewFolder() {
+    editingFolderId = null;
+    selectedFolderIcon = '📊';
+    selectedFolderColor = '#e67e22';
+    document.getElementById('newFolderName').value = '';
+    
+    // 重置弹窗标题和按钮
+    const titleEl = document.querySelector('#newFolderOverlay .modal-title');
+    const saveBtn = document.querySelector('#newFolderOverlay .btn-save');
+    if (titleEl) titleEl.textContent = '新建文件夹';
+    if (saveBtn) saveBtn.textContent = '创建';
+    
+    // 更新图标和颜色选择器
+    document.querySelectorAll('.icon-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.icon === selectedFolderIcon);
+    });
+    document.querySelectorAll('.color-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.color === selectedFolderColor);
+    });
+    
+    document.getElementById('newFolderOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeNewFolder() {
+    document.getElementById('newFolderOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+    editingFolderId = null;
+}
+
+function closeNewFolderOverlay(e) {
+    if (e.target.id === 'newFolderOverlay') {
+        closeNewFolder();
+    }
+}
+
+function saveNewFolder() {
+    const name = document.getElementById('newFolderName').value.trim();
+    if (!name) {
+        alert('请输入文件夹名称');
+        return;
+    }
+    
+    if (editingFolderId) {
+        // 编辑现有文件夹
+        const folder = folders.find(f => f.id === editingFolderId);
+        if (folder) {
+            folder.name = name;
+            folder.icon = selectedFolderIcon;
+            folder.color = selectedFolderColor;
+        }
+    } else {
+        // 新建文件夹
+        const newFolder = {
+            id: 'folder_' + Date.now(),
+            name: name,
+            icon: selectedFolderIcon,
+            color: selectedFolderColor
+        };
+        folders.push(newFolder);
+    }
+    
+    saveFolders();
+    renderFolderList();
+    renderMobileFolderTags();
+    updateResourceFolderSelect();
+    closeNewFolder();
+}
+
+// 编辑文件夹
+function editFolder(folderId) {
+    const folder = folders.find(f => f.id === folderId);
+    if (!folder) return;
+    
+    editingFolderId = folderId;
+    selectedFolderIcon = folder.icon;
+    selectedFolderColor = folder.color || '#e67e22';
+    
+    document.getElementById('newFolderName').value = folder.name;
+    
+    // 更新图标和颜色选择器
+    document.querySelectorAll('.icon-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.icon === selectedFolderIcon);
+    });
+    document.querySelectorAll('.color-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.color === selectedFolderColor);
+    });
+    
+    document.querySelector('#newFolderOverlay .modal-title').textContent = '编辑文件夹';
+    document.querySelector('#newFolderOverlay .btn-save').textContent = '保存';
+    
+    document.getElementById('newFolderOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// 删除文件夹
+function deleteFolder(folderId) {
+    const folder = folders.find(f => f.id === folderId);
+    if (!folder) return;
+    
+    if (!confirm('确定删除文件夹「' + folder.name + '」吗？该文件夹下的资源将移至「未分类」。')) {
+        return;
+    }
+    
+    // 将该文件夹下的资源移至未分类
+    resources.forEach(r => {
+        if (r.folderId === folderId) {
+            r.folderId = 'uncategorized';
+        }
+    });
+    
+    // 删除文件夹
+    folders = folders.filter(f => f.id !== folderId);
+    
+    // 如果当前选中的是被删除的文件夹，回到全部
+    if (currentFolder === folderId) {
+        currentFolder = 'all';
+    }
+    
+    saveFolders();
+    saveResources();
+    renderFolderList();
+    renderMobileFolderTags();
+    renderResources();
+    updateResourceFolderSelect();
+}
+
+// 筛选标签
+document.addEventListener('DOMContentLoaded', function() {
+    const filterTags = document.querySelectorAll('.filter-tag');
+    filterTags.forEach(tag => {
+        tag.addEventListener('click', function() {
+            filterTags.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.dataset.type;
+            renderResources();
+        });
+    });
+
+    // 类型选择器
+    const typeOptions = document.querySelectorAll('.type-option');
+    typeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            typeOptions.forEach(o => o.classList.remove('active'));
+            this.classList.add('active');
+            currentType = this.dataset.type;
+            toggleUrlUpload();
+        });
+    });
+
+    // 拖拽上传
+    const uploadArea = document.getElementById('uploadArea');
+    if (uploadArea) {
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        });
+    }
+
+    // 睡眠质量变化
+    const sleepSelect = document.getElementById('settingsSleep');
+    if (sleepSelect) {
+        sleepSelect.addEventListener('change', function() {
+            const energyEl = document.getElementById('energyStartValue');
+            if (energyEl) {
+                energyEl.textContent = sleepEnergyMap[this.value];
+            }
+        });
+    }
+
+    // 初始化
+    loadResources();
+    loadFolders();
+    renderFolderList();
+    renderMobileFolderTags();
+    renderResources();
+    updateResourceFolderSelect();
+    updateDate();
+    const settings = loadSettings();
+    applySettings(settings);
+    
+    // 文件夹图标选择器
+    document.querySelectorAll('.icon-option').forEach(icon => {
+        icon.addEventListener('click', function() {
+            document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+            selectedFolderIcon = this.dataset.icon;
+        });
+    });
+    
+    // 文件夹颜色选择器
+    document.querySelectorAll('.color-option').forEach(color => {
+        color.addEventListener('click', function() {
+            document.querySelectorAll('.color-option').forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+            selectedFolderColor = this.dataset.color;
+        });
+    });
+});
+
+function toggleUrlUpload() {
+    const urlGroup = document.getElementById('urlGroup');
+    const uploadGroup = document.getElementById('uploadGroup');
+    const noteContentGroup = document.getElementById('noteContentGroup');
+    const uploadHint = document.getElementById('uploadHint');
+    
+    if (currentType === 'link') {
+        urlGroup.style.display = 'block';
+        uploadGroup.style.display = 'none';
+        noteContentGroup.style.display = 'none';
+    } else if (currentType === 'video') {
+        urlGroup.style.display = 'block';
+        uploadGroup.style.display = 'block';
+        noteContentGroup.style.display = 'none';
+        if (uploadHint) uploadHint.textContent = '支持视频文件（MP4、WebM 等）或填写下方链接';
+    } else if (currentType === 'note') {
+        urlGroup.style.display = 'none';
+        uploadGroup.style.display = 'none';
+        noteContentGroup.style.display = 'block';
+    } else if (currentType === 'image') {
+        urlGroup.style.display = 'none';
+        uploadGroup.style.display = 'block';
+        noteContentGroup.style.display = 'none';
+        if (uploadHint) uploadHint.textContent = '支持 JPG、PNG、GIF 等图片格式';
+    } else if (currentType === 'doc') {
+        urlGroup.style.display = 'none';
+        uploadGroup.style.display = 'block';
+        noteContentGroup.style.display = 'none';
+        if (uploadHint) uploadHint.textContent = '支持 PDF、TXT、Word 等文档格式';
+    } else {
+        urlGroup.style.display = 'none';
+        uploadGroup.style.display = 'block';
+        noteContentGroup.style.display = 'none';
+    }
+}
+
+// 打开添加资源弹窗
+function openAddResource() {
+    document.getElementById('resourceTitle').value = '';
+    document.getElementById('resourceUrl').value = '';
+    document.getElementById('resourceTags').value = '';
+    document.getElementById('resourceDesc').value = '';
+    document.getElementById('resourceNoteContent').value = '';
+    uploadedFileData = '';
+    uploadedFileName = '';
+    currentType = 'link';
+    
+    // 重置上传显示文字
+    const uploadText = document.getElementById('uploadText');
+    if (uploadText) uploadText.textContent = '点击或拖拽文件到此处';
+    
+    // 重置类型选择
+    document.querySelectorAll('.type-option').forEach((o, i) => {
+        o.classList.toggle('active', i === 0);
+    });
+    toggleUrlUpload();
+    
+    // 加载文件夹选择
+    updateResourceFolderSelect();
+    
+    document.getElementById('addResourceOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAddResource() {
+    document.getElementById('addResourceOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeAddResourceOverlay(e) {
+    if (e.target.id === 'addResourceOverlay') {
+        closeAddResource();
+    }
+}
+
+// 文件上传处理
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file) handleFile(file);
+}
+
+function handleFile(file) {
+    uploadedFileName = file.name;
+    const uploadText = document.getElementById('uploadText');
+    if (uploadText) {
+        uploadText.textContent = '已选择：' + file.name;
+    }
+    
+    // 所有类型都读取为 base64 存储
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedFileData = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+// 保存资源
+function saveResource() {
+    const title = document.getElementById('resourceTitle').value.trim();
+    if (!title) {
+        alert('请输入资源标题');
+        return;
+    }
+    
+    const url = document.getElementById('resourceUrl').value.trim();
+    // URL 清理：自动从文本中提取 http/https 链接
+    let cleanUrl = url;
+    if (url && (currentType === 'link' || currentType === 'doc')) {
+        const urlMatch = url.match(/https?:\/\/[^\s<>"'）)】]+/i);
+        if (urlMatch) {
+            cleanUrl = urlMatch[0];
+        }
+    }
+    const tagsStr = document.getElementById('resourceTags').value.trim();
+    const description = document.getElementById('resourceDesc').value.trim();
+    const tags = tagsStr ? tagsStr.split(/[,，]/).map(t => t.trim()).filter(t => t) : [];
+    const folderId = document.getElementById('resourceFolder').value || 'uncategorized';
+    
+    const noteContentVal = document.getElementById('resourceNoteContent').value.trim();
+    
+    const newResource = {
+        id: Date.now().toString(),
+        type: currentType,
+        title: title,
+        url: cleanUrl,
+        description: description,
+        tags: tags,
+        createdAt: new Date().toISOString().slice(0, 10),
+        thumbnail: currentType === 'image' && uploadedFileData.startsWith('data:image') ? uploadedFileData : '',
+        fileData: uploadedFileData && uploadedFileData.startsWith('data:') ? uploadedFileData : '',
+        fileName: uploadedFileName || '',
+        noteContent: currentType === 'note' ? noteContentVal : '',
+        folderId: folderId
+    };
+    
+    resources.unshift(newResource);
+    saveResources();
+    renderResources();
+    renderFolderList();
+    renderMobileFolderTags();
+    closeAddResource();
+}
+
+// 打开资源
+function openResource(id) {
+    const resource = resources.find(r => r.id === id);
+    if (!resource) return;
+    
+    const typeLabel = typeLabels[resource.type] || '资源';
+    document.getElementById('viewerTypeBadge').textContent = typeLabel;
+    document.getElementById('viewerTitle').textContent = resource.title;
+    
+    const viewerBody = document.getElementById('viewerBody');
+    const viewerMeta = document.getElementById('viewerMeta');
+    const actionBtn = document.getElementById('viewerActionBtn');
+    
+    let content = '';
+    let meta = '';
+    let showActionBtn = false;
+    let actionBtnText = '在浏览器打开';
+    let actionBtnOnClick = '';
+    
+    switch (resource.type) {
+        case 'link':
+            if (resource.url) {
+                const safeUrl = escapeHtml(resource.url);
+                content = `
+                    <div class="viewer-link-card">
+                        <div class="viewer-link-icon">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                            </svg>
+                        </div>
+                        <div class="viewer-link-info">
+                            <a class="viewer-link-url" href="${safeUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">${safeUrl}</a>
+                            <div class="viewer-link-desc">${resource.description || '点击链接或下方按钮在浏览器中打开'}</div>
+                        </div>
+                    </div>
+                `;
+                showActionBtn = true;
+                actionBtnText = '在浏览器打开';
+                actionBtnOnClick = `openExternalUrl('${resource.url.replace(/'/g, "\\'")}')`;
+            } else {
+                content = '<div class="viewer-empty">该链接暂无地址</div>';
+            }
+            meta = `标签：${resource.tags && resource.tags.length ? resource.tags.join('、') : '无'} · 创建于 ${resource.createdAt}`;
+            break;
+            
+        case 'image':
+            const imgSrc = resource.thumbnail || resource.fileData || resource.url;
+            if (imgSrc) {
+                content = `<div class="viewer-image-wrap"><img src="${imgSrc}" alt="${resource.title}" class="viewer-image"></div>`;
+                meta = `${resource.fileName || resource.title} · 创建于 ${resource.createdAt}`;
+            } else {
+                content = '<div class="viewer-empty">该图片暂无内容</div>';
+            }
+            break;
+            
+        case 'video':
+            const videoSrc = resource.fileData || resource.url;
+            if (videoSrc) {
+                content = `
+                    <div class="viewer-video-wrap">
+                        <video controls class="viewer-video" src="${videoSrc}">
+                            您的浏览器不支持视频播放
+                        </video>
+                    </div>
+                `;
+                if (resource.url && !resource.fileData) {
+                    showActionBtn = true;
+                    actionBtnText = '在浏览器打开';
+                    actionBtnOnClick = `openExternalUrl('${resource.url.replace(/'/g, "\\'")}')`;
+                }
+                meta = `${resource.fileName || '视频资源'} · 创建于 ${resource.createdAt}`;
+            } else {
+                content = '<div class="viewer-empty">该视频暂无内容</div>';
+            }
+            break;
+            
+        case 'doc':
+            if (resource.fileData) {
+                content = `
+                    <div class="viewer-doc-wrap">
+                        <iframe src="${resource.fileData}" class="viewer-doc-iframe"></iframe>
+                    </div>
+                `;
+                showActionBtn = true;
+                actionBtnText = '下载文档';
+                actionBtnOnClick = `downloadFile('${resource.id}')`;
+                meta = `${resource.fileName || '文档'} · 创建于 ${resource.createdAt}`;
+            } else if (resource.url) {
+                const safeDocUrl = escapeHtml(resource.url);
+                content = `
+                    <div class="viewer-link-card">
+                        <div class="viewer-link-icon" style="background: var(--ink-700);">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="viewer-link-info">
+                            <a class="viewer-link-url" href="${safeDocUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">${safeDocUrl}</a>
+                            <div class="viewer-link-desc">${resource.description || '点击链接或下方按钮在浏览器中打开'}</div>
+                        </div>
+                    </div>
+                `;
+                showActionBtn = true;
+                actionBtnText = '在浏览器打开';
+                actionBtnOnClick = `openExternalUrl('${resource.url.replace(/'/g, "\\'")}')`;
+                meta = `创建于 ${resource.createdAt}`;
+            } else {
+                content = '<div class="viewer-empty">该文档暂无内容</div>';
+            }
+            break;
+            
+        case 'note':
+            if (resource.noteContent) {
+                content = `
+                    <div class="viewer-note-content">
+                        ${resource.noteContent.replace(/\n/g, '<br>')}
+                    </div>
+                `;
+                meta = `标签：${resource.tags && resource.tags.length ? resource.tags.join('、') : '无'} · 创建于 ${resource.createdAt}`;
+            } else if (resource.description) {
+                content = `
+                    <div class="viewer-note-content">
+                        ${resource.description.replace(/\n/g, '<br>')}
+                    </div>
+                `;
+                meta = `创建于 ${resource.createdAt}`;
+            } else {
+                content = '<div class="viewer-empty">该笔记暂无内容</div>';
+            }
+            break;
+            
+        default:
+            content = '<div class="viewer-empty">暂不支持该类型</div>';
+    }
+    
+    viewerBody.innerHTML = content;
+    viewerMeta.textContent = meta;
+    
+    if (showActionBtn) {
+        actionBtn.style.display = 'inline-flex';
+        actionBtn.textContent = actionBtnText;
+        actionBtn.onclick = new Function(actionBtnOnClick);
+    } else {
+        actionBtn.style.display = 'none';
+    }
+    
+    document.getElementById('viewerOverlay').classList.add('active');
+}
+
+// 在外部浏览器打开链接
+function openExternalUrl(url) {
+    if (!url) return;
+    
+    // 清理并提取有效 URL：从文本中提取 http/https 链接
+    let cleanUrl = url.trim();
+    const urlMatch = cleanUrl.match(/https?:\/\/[^\s<>"'）)】]+/i);
+    if (urlMatch) {
+        cleanUrl = urlMatch[0];
+    }
+    
+    // 确保是 http/https 开头的有效链接
+    if (!/^https?:\/\//i.test(cleanUrl)) {
+        alert('链接格式不正确：' + url);
+        return;
+    }
+    
+    // 检测是否在 App（Capacitor/WebView）环境
+    const isApp = window.Capacitor || document.location.protocol === 'file:';
+    
+    if (isApp) {
+        // App 环境：优先尝试 Capacitor Browser 插件
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Browser) {
+            window.Capacitor.Plugins.Browser.open({ url: cleanUrl });
+            return;
+        }
+        
+        // 备用方案1：创建 a 标签用 _blank 触发
+        try {
+            const a = document.createElement('a');
+            a.href = cleanUrl;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            return;
+        } catch (e) {
+            // 继续往下走
+        }
+        
+        // 备用方案2：安卓 intent 协议，强制调用系统浏览器
+        if (/Android/i.test(navigator.userAgent)) {
+            const isHttps = /^https:\/\//i.test(cleanUrl);
+            const hostAndPath = cleanUrl.replace(/^https?:\/\//, '');
+            const intentScheme = isHttps ? 'https' : 'http';
+            const intentUrl = 'intent://' + hostAndPath + 
+                '#Intent;scheme=' + intentScheme + ';action=android.intent.action.VIEW;end';
+            window.location.href = intentUrl;
+            return;
+        }
+    }
+    
+    // 普通浏览器环境
+    try {
+        const win = window.open(cleanUrl, '_blank');
+        if (!win) {
+            // 如果被拦截，使用当前页跳转
+            window.location.href = cleanUrl;
+        }
+    } catch (e) {
+        window.location.href = cleanUrl;
+    }
+}
+
+// 下载文件
+function downloadFile(resourceId) {
+    const resource = resources.find(r => r.id === resourceId);
+    if (!resource || !resource.fileData) return;
+    
+    const link = document.createElement('a');
+    link.href = resource.fileData;
+    link.download = resource.fileName || resource.title;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// 关闭查看器
+function closeViewer() {
+    document.getElementById('viewerOverlay').classList.remove('active');
+    // 暂停视频播放
+    const video = document.querySelector('.viewer-video');
+    if (video) video.pause();
+}
+
+function closeViewerOverlay(event) {
+    if (event.target.id === 'viewerOverlay') {
+        closeViewer();
+    }
+}
+
+// 编辑资源（简化版 - 只删除后重新添加）
+function editResource(id) {
+    const resource = resources.find(r => r.id === id);
+    if (!resource) return;
+    
+    // 简单实现：填充表单并删除原资源
+    openAddResource();
+    document.getElementById('resourceTitle').value = resource.title;
+    document.getElementById('resourceUrl').value = resource.url || '';
+    document.getElementById('resourceTags').value = resource.tags.join(', ');
+    document.getElementById('resourceDesc').value = resource.description;
+    
+    // 切换类型
+    currentType = resource.type;
+    document.querySelectorAll('.type-option').forEach(o => {
+        o.classList.toggle('active', o.dataset.type === resource.type);
+    });
+    toggleUrlUpload();
+    
+    // 设置文件夹
+    if (resource.folderId) {
+        document.getElementById('resourceFolder').value = resource.folderId;
+    }
+    
+    // 填充笔记内容
+    if (resource.type === 'note' && resource.noteContent) {
+        document.getElementById('resourceNoteContent').value = resource.noteContent;
+    }
+    
+    // 恢复上传的文件数据
+    if (resource.fileData) {
+        uploadedFileData = resource.fileData;
+        uploadedFileName = resource.fileName || '';
+        const uploadText = document.getElementById('uploadText');
+        if (uploadText && uploadedFileName) {
+            uploadText.textContent = '已选择：' + uploadedFileName;
+        }
+    }
+    
+    // 删除原资源
+    resources = resources.filter(r => r.id !== id);
+    saveResources();
+    renderResources();
+    renderFolderList();
+    renderMobileFolderTags();
+}
+
+// 删除资源
+function deleteResource(id) {
+    if (confirm('确定要删除这个资源吗？')) {
+        resources = resources.filter(r => r.id !== id);
+        saveResources();
+        renderResources();
+        renderFolderList();
+        renderMobileFolderTags();
+    }
+}
+
+// ========== 实时日期 ==========
+function updateDate() {
+    const now = new Date();
+    const weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    const dateEl = document.getElementById('sidebarDate');
+    const weekdayEl = document.getElementById('sidebarWeekday');
+    if (dateEl) dateEl.textContent = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
+    if (weekdayEl) weekdayEl.textContent = weekdays[now.getDay()];
+}
+
+// ========== 设置弹窗（与dashboard共用逻辑）==========
+const defaultSettings = {
+    nickname: '行醒学子',
+    motto: '知行合一，日日精进',
+    avatar: '',
+    theme: 'light',
+    sleepQuality: 'good'
+};
+
+const sleepEnergyMap = {
+    excellent: 100,
+    good: 90,
+    normal: 75,
+    poor: 60,
+    insomnia: 40
+};
+
+function loadSettings() {
+    try {
+        const saved = localStorage.getItem('xingxing_settings');
+        if (saved) {
+            return { ...defaultSettings, ...JSON.parse(saved) };
+        }
+    } catch (e) {
+        console.error('加载设置失败', e);
+    }
+    return { ...defaultSettings };
+}
+
+function saveSettingsToStorage(settings) {
+    localStorage.setItem('xingxing_settings', JSON.stringify(settings));
+}
+
+function applySettings(settings) {
+    // 桌宠欢迎语和昵称
+    const petWelcomeEl = document.getElementById('petWelcome');
+    const petNameEl = document.getElementById('petName');
+    if (petWelcomeEl) petWelcomeEl.textContent = '欢迎加入行醒宇宙';
+    if (petNameEl) petNameEl.textContent = '成就真我 · ' + settings.nickname;
+    
+    // 兼容旧元素
+    const userNameEl = document.getElementById('userName');
+    if (userNameEl) userNameEl.textContent = settings.nickname;
+    
+    const userMottoEl = document.getElementById('userMotto');
+    if (userMottoEl) userMottoEl.textContent = settings.motto;
+    
+    const userAvatarEl = document.getElementById('userAvatar');
+    const settingsAvatarEl = document.getElementById('settingsAvatar');
+    if (settings.avatar) {
+        if (userAvatarEl) userAvatarEl.innerHTML = '<img src="' + settings.avatar + '" alt="头像">';
+        if (settingsAvatarEl) settingsAvatarEl.innerHTML = '<img src="' + settings.avatar + '" alt="头像">';
+    } else {
+        const firstChar = settings.nickname.charAt(0);
+        if (userAvatarEl) userAvatarEl.textContent = firstChar;
+        if (settingsAvatarEl) settingsAvatarEl.textContent = firstChar;
+    }
+    
+    setTheme(settings.theme);
+    
+    const sleepSelect = document.getElementById('settingsSleep');
+    if (sleepSelect) sleepSelect.value = settings.sleepQuality;
+    
+    const energyValueEl = document.getElementById('energyStartValue');
+    if (energyValueEl) energyValueEl.textContent = sleepEnergyMap[settings.sleepQuality];
+}
+
+function openSettings() {
+    const settings = loadSettings();
+    document.getElementById('settingsNickname').value = settings.nickname;
+    document.getElementById('settingsMotto').value = settings.motto;
+    document.getElementById('settingsSleep').value = settings.sleepQuality;
+    document.getElementById('energyStartValue').textContent = sleepEnergyMap[settings.sleepQuality];
+    
+    const lightRadio = document.querySelector('input[name="theme"][value="light"]');
+    const darkRadio = document.querySelector('input[name="theme"][value="dark"]');
+    if (settings.theme === 'dark') {
+        darkRadio.checked = true;
+        document.getElementById('themeDarkLabel').classList.add('active');
+        document.getElementById('themeLightLabel').classList.remove('active');
+    } else {
+        lightRadio.checked = true;
+        document.getElementById('themeLightLabel').classList.add('active');
+        document.getElementById('themeDarkLabel').classList.remove('active');
+    }
+    
+    const settingsAvatarEl = document.getElementById('settingsAvatar');
+    if (settings.avatar) {
+        settingsAvatarEl.innerHTML = '<img src="' + settings.avatar + '" alt="头像">';
+    } else {
+        settingsAvatarEl.textContent = settings.nickname.charAt(0);
+    }
+    
+    document.getElementById('settingsOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSettings() {
+    document.getElementById('settingsOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeSettingsOverlay(e) {
+    if (e.target.id === 'settingsOverlay') {
+        closeSettings();
+    }
+}
+
+function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const settingsAvatarEl = document.getElementById('settingsAvatar');
+        settingsAvatarEl.innerHTML = '<img src="' + e.target.result + '" alt="头像">';
+        window._tempAvatar = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function setTheme(theme) {
+    const html = document.documentElement;
+    if (theme === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        document.documentElement.style.setProperty('--bg-page', '#2a2518');
+        document.documentElement.style.setProperty('--ink-paper', '#362e1f');
+        document.documentElement.style.setProperty('--ink-paper-light', '#3d3524');
+        document.documentElement.style.setProperty('--text-primary', '#f0ebe3');
+        document.documentElement.style.setProperty('--text-secondary', '#c9bda8');
+        document.documentElement.style.setProperty('--border-ink', 'rgba(240, 235, 227, 0.15)');
+        document.documentElement.style.setProperty('--border-ink-strong', 'rgba(240, 235, 227, 0.3)');
+        document.getElementById('themeDarkLabel').classList.add('active');
+        document.getElementById('themeLightLabel').classList.remove('active');
+    } else {
+        html.classList.add('light');
+        html.classList.remove('dark');
+        document.documentElement.style.setProperty('--bg-page', '#f7f2e8');
+        document.documentElement.style.setProperty('--ink-paper', '#ede4d3');
+        document.documentElement.style.setProperty('--ink-paper-light', '#fdfbf5');
+        document.documentElement.style.setProperty('--text-primary', '#1f1a10');
+        document.documentElement.style.setProperty('--text-secondary', '#5c554a');
+        document.documentElement.style.setProperty('--border-ink', 'rgba(31, 26, 16, 0.15)');
+        document.documentElement.style.setProperty('--border-ink-strong', 'rgba(31, 26, 16, 0.3)');
+        document.getElementById('themeLightLabel').classList.add('active');
+        document.getElementById('themeDarkLabel').classList.remove('active');
+    }
+}
+
+function saveSettings() {
+    const nickname = document.getElementById('settingsNickname').value.trim() || '行醒学子';
+    const motto = document.getElementById('settingsMotto').value.trim() || '知行合一，日日精进';
+    const sleepQuality = document.getElementById('settingsSleep').value;
+    const theme = document.querySelector('input[name="theme"]:checked').value;
+    
+    const settings = loadSettings();
+    settings.nickname = nickname;
+    settings.motto = motto;
+    settings.sleepQuality = sleepQuality;
+    settings.theme = theme;
+    
+    if (window._tempAvatar) {
+        settings.avatar = window._tempAvatar;
+        window._tempAvatar = null;
+    }
+    
+    saveSettingsToStorage(settings);
+    applySettings(settings);
+    closeSettings();
+}
+
+function exportData() {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        data[key] = localStorage.getItem(key);
+    }
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'xingxing-data-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function clearAllData() {
+    if (confirm('确定要清空所有数据吗？此操作不可恢复！')) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+// ESC 关闭弹窗
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const addOverlay = document.getElementById('addResourceOverlay');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const viewerOverlay = document.getElementById('viewerOverlay');
+        if (viewerOverlay && viewerOverlay.classList.contains('active')) {
+            closeViewer();
+        } else if (addOverlay && addOverlay.classList.contains('active')) {
+            closeAddResource();
+        } else if (settingsOverlay && settingsOverlay.classList.contains('active')) {
+            closeSettings();
+        }
+    }
+});
+</script>
+
+
+    <style>
+/* ============================================
+   每日 OKR · 国风水墨设计系统
+   风格：剑来 / 仙侠 / 水墨山水
+   ============================================ */
+
+/* ---------- 设计令牌 ---------- */
+:root {
+  /* 宣纸底色 */
+  --ink-paper: #f7f2e8;
+  --ink-paper-light: #fdfbf5;
+  --ink-paper-dark: #ede6d6;
+
+  /* 墨色阶 */
+  --ink-100: #e8e2d5;
+  --ink-300: #a89f8e;
+  --ink-500: #5c554a;
+  --ink-700: #3a3328;
+  --ink-900: #1f1a10;
+
+  /* 点缀色 */
+  --ink-gold: #c9a227;
+  --ink-gold-light: #e0c158;
+  --ink-gold-dark: #a8851a;
+  --ink-cinnabar: #c0392b;
+  --ink-cinnabar-light: #d65445;
+  --ink-cinnabar-dark: #9b2d20;
+
+  /* 青黛色 */
+  --ink-cyan: #3d7a74;
+  --ink-cyan-light: #7fb3ad;
+  --ink-cyan-dark: #244f4b;
+
+  /* 语义色 */
+  --bg-page: var(--ink-paper);
+  --bg-card: var(--ink-paper-light);
+  --bg-ink: var(--ink-900);
+  --text-primary: var(--ink-900);
+  --text-secondary: var(--ink-500);
+  --text-muted: var(--ink-300);
+  --border-ink: rgba(31, 26, 16, 0.15);
+  --border-ink-strong: rgba(31, 26, 16, 0.3);
+
+  /* 字体 */
+  --font-serif: "STSong", "SimSun", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --font-kai: "STKaiti", "KaiTi", "楷体", "Noto Serif SC", serif;
+
+  /* 圆角 */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* 阴影 */
+  --shadow-ink: 0 2px 12px rgba(31, 26, 16, 0.06);
+  --shadow-ink-lg: 0 8px 24px rgba(31, 26, 16, 0.08);
+}
+
+/* ---------- 基础样式 ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 宣纸纹理背景 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(31, 26, 16, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(31, 26, 16, 0.025) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.02) 0%, transparent 60%);
+}
+
+/* 水墨晕染装饰 */
+.ink-wash-decoration {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+}
+
+.ink-wash-top {
+  top: 0;
+  right: 0;
+  width: 600px;
+  height: 400px;
+}
+
+.ink-wash-bottom {
+  bottom: 0;
+  left: 0;
+  width: 500px;
+  height: 350px;
+}
+
+/* ---------- 布局 ---------- */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 侧边栏 ---------- */
+.sidebar {
+  width: 240px;
+  background: var(--ink-paper-light);
+  border-right: 1px solid var(--border-ink);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.sidebar::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--ink-gold) 20%, var(--ink-gold) 80%, transparent);
+  opacity: 0.3;
+}
+
+.sidebar-header {
+  padding: 28px 20px 16px;
+  text-align: center;
+}
+
+.sidebar-title {
+  font-family: var(--font-kai);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.3em;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.sidebar-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ink-gold), transparent);
+  margin: 8px auto 0;
+}
+
+.sidebar-subtitle {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-500);
+  letter-spacing: 0.3em;
+}
+
+.sidebar-date {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  color: var(--ink-500);
+  margin-top: 12px;
+  letter-spacing: 0.1em;
+}
+
+.sidebar-weekday {
+  font-family: var(--font-kai);
+  font-size: 11px;
+  color: var(--ink-300);
+  margin-top: 2px;
+}
+
+.streak-seal {
+  margin-top: 16px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--ink-cinnabar);
+  color: #fff;
+  border-radius: 4px;
+  font-family: var(--font-kai);
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
+}
+
+.streak-number {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.streak-number span {
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+.streak-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  margin-top: 4px;
+}
+
+/* 用户区域 */
+/* ---------- 用户头像区域 - 行星桌宠 ---------- */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px;
+  margin: 0 12px 12px;
+  background: var(--ink-paper);
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 250ms ease;
+  position: relative;
+}
+
+.sidebar-user:hover {
+  border-color: var(--ink-gold);
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.15);
+}
+
+/* 行星容器 */
+.pet-avatar {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planet-pet .planet-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  animation: planet-float 4s ease-in-out infinite;
+}
+
+@keyframes planet-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* 行星本体 */
+.planet-body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffd97a 0%, #e9b94a 35%, #c9a227 70%, #a8851a 100%);
+  box-shadow: 
+    inset -4px -4px 8px rgba(0,0,0,0.2),
+    inset 2px 2px 6px rgba(255,255,255,0.35),
+    0 2px 10px rgba(201, 162, 39, 0.5);
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* 地表斑纹 */
+.planet-surface {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.planet-surface-1 {
+  top: 20%;
+  left: 15%;
+  width: 12px;
+  height: 6px;
+  background: #8b6914;
+  border-radius: 50%;
+  transform: rotate(-15deg);
+  opacity: 0.35;
+}
+
+.planet-surface-2 {
+  bottom: 30%;
+  right: 10%;
+  width: 10px;
+  height: 5px;
+  background: #a8851a;
+  border-radius: 50%;
+  transform: rotate(20deg);
+  opacity: 0.3;
+}
+
+.planet-surface-3 {
+  top: 55%;
+  left: 25%;
+  width: 7px;
+  height: 3px;
+  background: #6b5210;
+  border-radius: 50%;
+  opacity: 0.25;
+}
+
+/* 高光 */
+.planet-highlight {
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 8px;
+  height: 5px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  filter: blur(1px);
+  z-index: 3;
+}
+
+/* 大气层光晕 */
+.planet-atmosphere {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(255,230,150,0.3) 0%, 
+    rgba(201,162,39,0.1) 50%, 
+    transparent 70%);
+  pointer-events: none;
+}
+
+/* 行星环 */
+.planet-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  animation: ring-spin 12s linear infinite;
+}
+
+@keyframes ring-spin {
+  from { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
+  to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+}
+
+.planet-ring-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 42px;
+  height: 42px;
+  border: 2px solid rgba(201, 162, 39, 0.7);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.planet-ring-outer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+/* 小卫星 */
+.planet-moon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  animation: moon-orbit 6s ease-in-out infinite;
+}
+
+@keyframes moon-orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.moon-body {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  background: linear-gradient(135deg, #e8e0cc, #c4b89a);
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(201, 162, 39, 0.4);
+}
+
+/* 星星点缀 */
+.planet-star {
+  position: absolute;
+  color: var(--ink-gold);
+  animation: star-twinkle 2.5s ease-in-out infinite;
+}
+
+.star-a {
+  top: -2px;
+  right: 0px;
+  font-size: 8px;
+  animation-delay: 0s;
+}
+
+.star-b {
+  bottom: 4px;
+  left: -2px;
+  font-size: 7px;
+  opacity: 0.7;
+  animation-delay: 0.9s;
+}
+
+.star-c {
+  top: 6px;
+  left: 0px;
+  font-size: 10px;
+  opacity: 0.5;
+  animation-delay: 1.6s;
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+/* 对话气泡 */
+.pet-bubble {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink);
+  border-radius: 10px;
+  padding: 6px 26px 6px 10px;
+}
+
+.pet-bubble::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--ink-paper-light);
+  border-left: 1px solid var(--border-ink);
+  border-bottom: 1px solid var(--border-ink);
+}
+
+.pet-welcome {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.pet-name {
+  font-size: 10px;
+  color: var(--ink-500);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* 设置按钮 - 气泡内右上角 */
+.pet-settings-inline {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  color: var(--ink-300);
+  transition: color 0.2s ease;
+  z-index: 2;
+}
+
+.sidebar-user:hover .pet-settings-inline {
+  color: var(--ink-gold-dark);
+}
+
+.pet-settings-inline svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+
+/* 毛笔笔触分割线 */
+.brush-divider {
+  padding: 0 16px;
+  margin-bottom: 8px;
+}
+
+.brush-divider svg {
+  width: 100%;
+  height: 16px;
+}
+
+/* 导航 */
+.sidebar-nav {
+  flex: 1;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--ink-500);
+  text-decoration: none;
+  font-family: var(--font-kai);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-item svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  flex-shrink: 0;
+}
+
+.nav-item:hover {
+  background: var(--ink-paper);
+  color: var(--ink-900);
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, var(--ink-900), var(--ink-700));
+  color: var(--ink-paper-light);
+  box-shadow: 0 2px 8px rgba(31, 26, 16, 0.15);
+}
+
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--ink-gold);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ---------- 主内容区 ---------- */
+.main-content {
+  flex: 1;
+  margin-left: 240px;
+  padding: 32px 40px;
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-seal-tag {
+  display: inline-block;
+  font-family: var(--font-kai);
+  font-size: 12px;
+  color: var(--ink-cinnabar);
+  border: 1px solid var(--ink-cinnabar);
+  padding: 2px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+
+.page-title {
+  font-family: var(--font-kai);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-family: var(--font-kai);
+  font-size: 14px;
+  color: var(--ink-500);
+  letter-spacing: 0.1em;
+}
+
+/* ---------- 资源库头部 ---------- */
+.resources-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.resources-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.resources-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.add-folder-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: var(--okr-paper-light);
+  color: var(--okr-ink-700);
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-md);
+  font-family: var(--okr-font-display);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.1em;
+}
+
+.add-folder-btn:hover {
+  border-color: var(--okr-gold-300);
+  color: var(--okr-gold-700);
+  background: var(--okr-gold-100);
+}
+
+.add-folder-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.add-resource-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--ink-700), var(--ink-900));
+  color: var(--ink-paper-light);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-kai);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.15em;
+  box-shadow: 0 2px 8px rgba(31, 26, 16, 0.15);
+}
+
+.add-resource-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(31, 26, 16, 0.2);
+}
+
+.add-resource-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* 筛选标签 */
+.filter-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-tag {
+  padding: 6px 18px;
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-full);
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-500);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.1em;
+}
+
+.filter-tag:hover {
+  border-color: var(--ink-gold);
+  color: var(--ink-gold-dark);
+}
+
+.filter-tag.active {
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+  color: var(--ink-paper-light);
+}
+
+/* ---------- 移动端文件夹标签 ---------- */
+.mobile-folder-tags {
+  display: none;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-folder-tags::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-folder-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--okr-paper-light);
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-full);
+  font-family: var(--okr-font-display);
+  font-size: 13px;
+  color: var(--okr-ink-600);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.mobile-folder-tag.active {
+  background: var(--okr-ink-900);
+  border-color: var(--okr-ink-900);
+  color: var(--okr-paper-light);
+}
+
+/* ---------- 主体布局 ---------- */
+.resources-main {
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+}
+
+.folder-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--okr-paper);
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-lg);
+  padding: 12px 0;
+  margin-right: 24px;
+  position: sticky;
+  top: 20px;
+}
+
+.folder-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border-left: 3px solid transparent;
+  font-size: 14px;
+}
+
+.folder-item:hover {
+  background: var(--okr-paper-light);
+}
+
+.folder-item.active {
+  background: var(--okr-gold-100);
+  border-left-color: var(--okr-gold-500);
+  font-weight: 600;
+}
+
+.folder-item.system .folder-name {
+  color: var(--okr-ink-700);
+}
+
+.folder-item.active .folder-name {
+  color: var(--okr-gold-700);
+}
+
+.folder-active-bar {
+  position: absolute;
+  left: -3px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.folder-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.folder-name {
+  flex: 1;
+  color: var(--okr-ink-700);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-count {
+  font-size: 12px;
+  color: var(--okr-ink-400);
+  background: var(--okr-paper-light);
+  padding: 2px 8px;
+  border-radius: var(--okr-radius-full);
+  flex-shrink: 0;
+}
+
+.folder-item.active .folder-count {
+  background: rgba(201, 162, 39, 0.2);
+  color: var(--okr-gold-700);
+}
+
+.folder-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.folder-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--okr-ink-400);
+  cursor: pointer;
+  padding: 3px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.folder-action-btn:hover {
+  background: var(--okr-paper);
+  color: var(--okr-ink-700);
+}
+
+.folder-action-btn.delete:hover {
+  color: var(--okr-vermilion);
+  background: var(--okr-state-error-bg);
+}
+
+.folder-sidebar-footer {
+  padding: 12px 12px 4px;
+  border-top: 1px solid var(--okr-border);
+  margin-top: 8px;
+}
+
+.new-folder-btn-side {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px dashed var(--okr-border);
+  border-radius: var(--okr-radius-md);
+  color: var(--okr-ink-500);
+  font-family: var(--okr-font-display);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.new-folder-btn-side:hover {
+  border-color: var(--okr-gold-400);
+  color: var(--okr-gold-700);
+  background: var(--okr-gold-100);
+}
+
+.new-folder-btn-side svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.resources-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- 资源卡片文件夹标签 ---------- */
+.resource-folder-row {
+  margin-top: 6px;
+}
+
+.resource-folder-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: var(--okr-radius-full);
+  background: var(--okr-paper-light);
+  border: 1px solid;
+}
+
+/* ---------- 表单下拉 ---------- */
+.form-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-md);
+  font-size: 14px;
+  font-family: var(--okr-font-sans);
+  color: var(--okr-ink-800);
+  background: var(--okr-paper-light);
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--okr-gold-400);
+}
+
+/* ---------- 图标/颜色选择器 ---------- */
+.folder-icon-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.icon-option {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border: 2px solid var(--okr-border);
+  border-radius: var(--okr-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--okr-paper-light);
+}
+
+.icon-option:hover {
+  border-color: var(--okr-gold-300);
+  transform: scale(1.1);
+}
+
+.icon-option.active {
+  border-color: var(--okr-gold-500);
+  background: var(--okr-gold-100);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.folder-color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.color-option {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.color-option:hover {
+  transform: scale(1.15);
+}
+
+.color-option.active {
+  border-color: var(--okr-paper-light);
+  box-shadow: 0 0 0 2px currentColor;
+}
+
+/* ---------- 资源卡片网格 ---------- */
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1400px) {
+  .resources-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 1100px) {
+  .resources-grid { grid-template-columns: repeat(2, 1fr); }
+  .folder-sidebar {
+    width: 160px;
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .folder-sidebar { display: none; }
+  .mobile-folder-tags { display: block; }
+  .resources-main { display: block; }
+  .add-folder-btn { display: none; }
+}
+
+@media (max-width: 700px) {
+  .resources-grid { grid-template-columns: 1fr; }
+}
+
+.resource-card {
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.resource-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(31, 26, 16, 0.12);
+  border-color: var(--ink-gold);
+}
+
+/* 卡片宣纸质感 */
+.resource-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(201, 162, 39, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(61, 122, 116, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.resource-thumbnail {
+  height: 140px;
+  background: var(--ink-paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid var(--border-ink);
+  overflow: hidden;
+}
+
+.resource-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.resource-thumb-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink-paper-light);
+  border: 2px solid var(--border-ink);
+}
+
+.resource-thumb-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--ink-500);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+/* 类型印章标签 */
+.resource-type-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 3px 10px;
+  font-family: var(--font-kai);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 3px;
+  letter-spacing: 0.15em;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(31, 26, 16, 0.2);
+}
+
+.resource-type-link { background: var(--ink-cyan-dark); }
+.resource-type-doc { background: var(--ink-700); }
+.resource-type-image { background: var(--ink-gold-dark); }
+.resource-type-video { background: var(--ink-cinnabar-dark); }
+.resource-type-note { background: var(--ink-cinnabar); }
+
+.resource-body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.resource-title {
+  font-family: var(--font-kai);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.05em;
+}
+
+.resource-desc {
+  font-size: 13px;
+  color: var(--ink-500);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12px;
+  flex: 1;
+}
+
+.resource-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-ink);
+}
+
+.resource-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.resource-tag {
+  font-size: 11px;
+  color: var(--ink-500);
+  background: var(--ink-paper);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-kai);
+  letter-spacing: 0.05em;
+}
+
+.resource-meta {
+  font-size: 11px;
+  color: var(--ink-300);
+  font-family: var(--font-kai);
+}
+
+.resource-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.resource-card:hover .resource-actions {
+  opacity: 1;
+}
+
+.resource-action-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: var(--ink-paper);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-500);
+  transition: all 0.2s ease;
+}
+
+.resource-action-btn:hover {
+  background: var(--ink-900);
+  color: var(--ink-paper-light);
+}
+
+.resource-action-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.resource-action-btn.delete:hover {
+  background: var(--ink-cinnabar);
+}
+
+/* ---------- 添加资源弹窗 ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 26, 16, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink-strong);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(31, 26, 16, 0.2);
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-ink);
+}
+
+.modal-title {
+  font-family: var(--font-kai);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.15em;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--ink-cinnabar);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(192, 57, 43, 0.1);
+}
+
+.modal-close svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-700);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--ink-900);
+  background: var(--ink-paper-light);
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--ink-gold);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--ink-900);
+  background: var(--ink-paper-light);
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.2s ease;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--ink-gold);
+}
+
+/* 类型选择 */
+.type-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.type-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--ink-paper-light);
+}
+
+.type-option:hover {
+  border-color: var(--ink-gold);
+}
+
+.type-option.active {
+  border-color: var(--ink-gold);
+  background: var(--ink-gold-100, #f7ecd0);
+}
+
+.type-option-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.type-option-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+}
+
+.type-option-label {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  color: var(--ink-700);
+  letter-spacing: 0.1em;
+}
+
+/* 文件上传区 */
+.upload-area {
+  border: 2px dashed var(--border-ink);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--ink-paper);
+}
+
+.upload-area:hover {
+  border-color: var(--ink-gold);
+  background: var(--ink-paper-light);
+}
+
+.upload-area.dragover {
+  border-color: var(--ink-gold);
+  background: var(--ink-gold-100, #f7ecd0);
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  color: var(--ink-300);
+}
+
+.upload-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.upload-text {
+  font-family: var(--font-kai);
+  font-size: 14px;
+  color: var(--ink-500);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.upload-hint {
+  font-size: 12px;
+  color: var(--ink-300);
+}
+
+.modal-footer {
+  padding: 16px 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  border: 1px solid var(--border-ink);
+  background: var(--ink-paper);
+  color: var(--ink-700);
+  border-radius: var(--radius-md);
+  font-family: var(--font-kai);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.15em;
+}
+
+.btn-cancel:hover {
+  border-color: var(--ink-500);
+  color: var(--ink-900);
+}
+
+.btn-save {
+  padding: 10px 32px;
+  border: none;
+  background: linear-gradient(135deg, var(--ink-700), var(--ink-900));
+  color: var(--ink-paper-light);
+  border-radius: var(--radius-md);
+  font-family: var(--font-kai);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.2em;
+  box-shadow: 0 2px 8px rgba(31, 26, 16, 0.15);
+}
+
+.btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(31, 26, 16, 0.2);
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink-300);
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  opacity: 0.5;
+}
+
+.empty-state-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.empty-state-text {
+  font-family: var(--font-kai);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- 设置弹窗 ---------- */
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 26, 16, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.settings-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.settings-modal {
+  background: var(--ink-paper-light);
+  border: 1px solid var(--border-ink-strong);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(31, 26, 16, 0.2);
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.settings-overlay.active .settings-modal {
+  transform: translateY(0) scale(1);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-ink);
+}
+
+.settings-title {
+  font-family: var(--font-kai);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.15em;
+}
+
+.settings-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--ink-cinnabar);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease;
+}
+
+.settings-close:hover {
+  background: rgba(192, 57, 43, 0.1);
+}
+
+.settings-close svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.settings-body {
+  padding: 24px;
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section-title {
+  font-family: var(--font-kai);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-ink);
+}
+
+.settings-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.settings-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--ink-gold-light), var(--ink-gold-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-kai);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  border: 3px solid var(--ink-paper-light);
+  box-shadow: 0 2px 8px rgba(31, 26, 16, 0.15);
+  overflow: hidden;
+}
+
+.settings-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.settings-avatar-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-avatar-upload span {
+  font-size: 13px;
+  color: var(--ink-500);
+}
+
+.settings-upload-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border-ink);
+  background: var(--ink-paper);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-kai);
+}
+
+.settings-upload-btn:hover {
+  border-color: var(--ink-gold);
+  color: var(--ink-gold-dark);
+}
+
+.settings-form-group {
+  margin-bottom: 16px;
+}
+
+.settings-form-group label {
+  display: block;
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-700);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.settings-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--ink-900);
+  background: var(--ink-paper-light);
+  transition: border-color 0.2s ease;
+}
+
+.settings-input:focus {
+  outline: none;
+  border-color: var(--ink-gold);
+}
+
+.settings-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--ink-900);
+  background: var(--ink-paper-light);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.settings-select:focus {
+  outline: none;
+  border-color: var(--ink-gold);
+}
+
+.settings-radio-group {
+  display: flex;
+  gap: 12px;
+}
+
+.settings-radio {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  color: var(--ink-700);
+}
+
+.settings-radio:hover {
+  border-color: var(--ink-gold);
+}
+
+.settings-radio input {
+  accent-color: var(--ink-gold-dark);
+}
+
+.settings-radio.active {
+  border-color: var(--ink-gold);
+  background: #f7ecd0;
+  color: var(--ink-gold-dark);
+}
+
+.settings-data-row {
+  display: flex;
+  gap: 12px;
+}
+
+.settings-data-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border-ink);
+  background: var(--ink-paper);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-kai);
+  font-size: 13px;
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.1em;
+}
+
+.settings-data-btn:hover {
+  border-color: var(--ink-gold);
+  color: var(--ink-gold-dark);
+}
+
+.settings-data-btn.danger:hover {
+  border-color: var(--ink-cinnabar);
+  color: var(--ink-cinnabar);
+}
+
+.settings-footer {
+  padding: 16px 24px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.settings-save-btn {
+  padding: 12px 48px;
+  border: none;
+  background: linear-gradient(135deg, var(--ink-700), var(--ink-900));
+  color: var(--ink-paper-light);
+  font-family: var(--font-kai);
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.2em;
+  box-shadow: 0 2px 8px rgba(31, 26, 16, 0.15);
+}
+
+.settings-save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(31, 26, 16, 0.2);
+}
+
+/* 底部山脉 */
+.mountain-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink-paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-500);
+}
+
+/* ---------- 资源查看器弹窗 ---------- */
+.viewer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  backdrop-filter: blur(4px);
+}
+
+.viewer-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.viewer-modal {
+  background: var(--ink-paper-light);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.25s ease;
+  overflow: hidden;
+}
+
+.viewer-overlay.active .viewer-modal {
+  transform: scale(1) translateY(0);
+}
+
+.viewer-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.viewer-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.viewer-type-badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--ink-gold);
+  color: #fff;
+  font-family: var(--font-kai);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.viewer-title {
+  font-family: var(--font-kai);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viewer-close {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: var(--ink-500);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.viewer-close:hover {
+  background: var(--ink-cinnabar);
+  color: #fff;
+}
+
+.viewer-close svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.viewer-body {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+  min-height: 200px;
+}
+
+.viewer-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+  background: var(--ink-paper);
+}
+
+.viewer-meta {
+  font-size: 13px;
+  color: var(--ink-500);
+  font-family: var(--font-serif);
+}
+
+.viewer-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.viewer-btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-kai);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--ink-gold);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewer-btn:hover {
+  background: var(--ink-gold-dark);
+  transform: translateY(-1px);
+}
+
+/* 查看器内容样式 */
+.viewer-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--ink-400);
+  font-family: var(--font-serif);
+  font-size: 15px;
+}
+
+.viewer-image-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.viewer-image {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.viewer-video-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.viewer-video {
+  max-width: 100%;
+  max-height: 60vh;
+  border-radius: var(--radius-sm);
+  background: #000;
+}
+
+.viewer-doc-wrap {
+  width: 100%;
+  height: 60vh;
+}
+
+.viewer-doc-iframe {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.viewer-link-card {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+  background: var(--ink-paper);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-ink);
+  align-items: center;
+}
+
+.viewer-link-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  background: var(--ink-cyan-dark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.viewer-link-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.viewer-link-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.viewer-link-url {
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  color: var(--ink-cyan-dark);
+  word-break: break-all;
+  margin-bottom: 6px;
+  text-decoration: none;
+  display: block;
+}
+
+.viewer-link-url:hover {
+  text-decoration: underline;
+}
+
+.viewer-link-desc {
+  font-size: 14px;
+  color: var(--ink-600);
+  font-family: var(--font-serif);
+}
+
+.viewer-note-content {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink-800);
+  padding: 8px 4px;
+  white-space: pre-wrap;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .viewer-overlay {
+    padding: 10px;
+  }
+  
+  .viewer-modal {
+    max-height: 95vh;
+    border-radius: var(--radius-md);
+  }
+  
+  .viewer-header {
+    padding: 16px;
+  }
+  
+  .viewer-title {
+    font-size: 16px;
+  }
+  
+  .viewer-body {
+    padding: 16px;
+  }
+  
+  .viewer-footer {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .viewer-actions {
+    width: 100%;
+  }
+  
+  .viewer-btn {
+    flex: 1;
+  }
+  
+  .viewer-link-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+</body>
+</html>
