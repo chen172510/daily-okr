@@ -15,8 +15,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ========== 中间件 ==========
+// 默认同源部署，禁用跨域；如移动端等需要跨域，通过 CORS_ORIGIN 指定允许的来源（逗号分隔）
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
 app.use(cors({
-  origin: true,
+  origin: allowedOrigins.length ? allowedOrigins : false,
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));

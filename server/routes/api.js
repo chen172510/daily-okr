@@ -97,13 +97,13 @@ router.put('/reviews/:date', authMiddleware, (req, res) => {
 // 获取错题本
 router.get('/mistakes', authMiddleware, (req, res) => {
   const userId = req.userId;
-  const data = getData(userId, 'xingxing_mistakes');
-  const total = db.prepare('SELECT value FROM user_data WHERE user_id = ? AND data_key = ?')
+  const data = getData(userId, 'xingxing_error_book');
+  const total = db.prepare('SELECT data_value FROM user_data WHERE user_id = ? AND data_key = ?')
     .get(userId, 'xingxing_total_errors');
 
   res.json({
     mistakes: data ? data.value : { categories: [], errorItems: [] },
-    totalErrors: total ? parseInt(JSON.parse(total.value), 10) : 0,
+    totalErrors: total ? parseInt(JSON.parse(total.data_value), 10) : 0,
     updatedAt: data ? data.updatedAt : null
   });
 });
@@ -111,7 +111,7 @@ router.get('/mistakes', authMiddleware, (req, res) => {
 // 保存错题本
 router.put('/mistakes', authMiddleware, (req, res) => {
   const userId = req.userId;
-  const updatedAt = setData(userId, 'xingxing_mistakes', req.body);
+  const updatedAt = setData(userId, 'xingxing_error_book', req.body);
 
   // 同步更新总数
   if (req.body.errorItems) {
@@ -124,7 +124,7 @@ router.put('/mistakes', authMiddleware, (req, res) => {
 // 添加单道错题
 router.post('/mistakes', authMiddleware, (req, res) => {
   const userId = req.userId;
-  const current = getData(userId, 'xingxing_mistakes');
+  const current = getData(userId, 'xingxing_error_book');
   const mistakes = current ? current.value : { categories: [], errorItems: [] };
 
   const newError = {
@@ -139,7 +139,7 @@ router.post('/mistakes', authMiddleware, (req, res) => {
   };
 
   mistakes.errorItems.unshift(newError);
-  const updatedAt = setData(userId, 'xingxing_mistakes', mistakes);
+  const updatedAt = setData(userId, 'xingxing_error_book', mistakes);
 
   // 更新总数
   const totalRow = db.prepare('SELECT data_value FROM user_data WHERE user_id = ? AND data_key = ?')
@@ -165,6 +165,52 @@ router.put('/resources', authMiddleware, (req, res) => {
   const userId = req.userId;
   const updatedAt = setData(userId, 'xingxing_resources', req.body);
   res.json({ success: true, updatedAt });
+});
+
+// ========== OKR ==========
+
+router.get('/okrs', authMiddleware, (req, res) => {
+  const data = getData(req.userId, 'xingxing_okrs');
+  const okrs = data && data.value && Array.isArray(data.value.okrs) ? data.value.okrs : [];
+  res.json({ okrs, updatedAt: data ? data.updatedAt : null });
+});
+
+router.post('/okrs', authMiddleware, (req, res) => {
+  const data = getData(req.userId, 'xingxing_okrs');
+  const list = data && data.value && Array.isArray(data.value.okrs) ? data.value.okrs : [];
+  const now = new Date().toISOString();
+  const okr = {
+    id: 'okr_' + Date.now(),
+    title: (req.body.title || '未命名目标').trim(),
+    objective: req.body.objective || '',
+    keyResults: Array.isArray(req.body.keyResults) ? req.body.keyResults : [],
+    createdAt: now,
+    updatedAt: now
+  };
+  list.unshift(okr);
+  setData(req.userId, 'xingxing_okrs', { okrs: list });
+  res.json({ okr });
+});
+
+router.put('/okrs/:id', authMiddleware, (req, res) => {
+  const data = getData(req.userId, 'xingxing_okrs');
+  const list = data && data.value && Array.isArray(data.value.okrs) ? data.value.okrs : [];
+  const idx = list.findIndex(o => o.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: 'OKR 不存在' });
+
+  const { id, createdAt, ...rest } = req.body;
+  list[idx] = { ...list[idx], ...rest, id: list[idx].id, createdAt: list[idx].createdAt, updatedAt: new Date().toISOString() };
+  setData(req.userId, 'xingxing_okrs', { okrs: list });
+  res.json({ okr: list[idx] });
+});
+
+router.delete('/okrs/:id', authMiddleware, (req, res) => {
+  const data = getData(req.userId, 'xingxing_okrs');
+  const list = data && data.value && Array.isArray(data.value.okrs) ? data.value.okrs : [];
+  const next = list.filter(o => o.id !== req.params.id);
+  if (next.length === list.length) return res.status(404).json({ error: 'OKR 不存在' });
+  setData(req.userId, 'xingxing_okrs', { okrs: next });
+  res.json({ success: true });
 });
 
 // ========== 充电记录 ==========
