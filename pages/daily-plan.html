@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日计划 - 行醒</title>
+    <style id="theme-vars">
+/* ============================================
+   Daily OKR - Brand Design Tokens
+   Style: 国风水墨
+   ============================================ */
+:root {
+  --okr-ink-50: #faf8f5;
+  --okr-ink-100: #f0ebe3;
+  --okr-ink-200: #e0d8cc;
+  --okr-ink-300: #c9bda8;
+  --okr-ink-400: #a89880;
+  --okr-ink-500: #8a7a5e;
+  --okr-ink-600: #6b5d44;
+  --okr-ink-700: #4f4430;
+  --okr-ink-800: #362e1f;
+  --okr-ink-900: #1f1a10;
+  --okr-paper-light: #f7f2e8;
+  --okr-paper: #ede4d3;
+  --okr-paper-dark: #d9cbae;
+  --okr-gold-100: #f7ecd0;
+  --okr-gold-300: #e8c97a;
+  --okr-gold-500: #c9a227;
+  --okr-gold-700: #8b6914;
+  --okr-gold-900: #5c4508;
+  --okr-vermilion: #c0392b;
+  --okr-vermilion-light: #e74c3c;
+  --okr-vermilion-dark: #922b21;
+  --okr-card: #fffcf5;
+  --okr-border: #e0d8cc;
+  --okr-radius-lg: 12px;
+  --okr-radius-xl: 16px;
+  --okr-shadow-md: 0 4px 12px rgba(31,26,16,0.08);
+  --okr-shadow-xl: 0 12px 40px rgba(31,26,16,0.15);
+  --okr-font-display: 'Noto Serif SC', 'STKaiti', 'KaiTi', '楷体', serif;
+  --okr-font-sans: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+}
+    </style>
+    <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--okr-font-sans);
+  background: var(--okr-paper-light);
+  color: var(--okr-ink-800);
+  min-height: 100vh;
+}
+
+/* ===== 顶部栏 ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--okr-card);
+  border-bottom: 1px solid var(--okr-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.back-btn {
+  width: 36px; height: 36px;
+  border: none; background: transparent;
+  cursor: pointer; color: var(--okr-ink-600);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.back-btn:hover { background: var(--okr-ink-100); }
+.topbar-title {
+  font-family: var(--okr-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+}
+.topbar-subtitle {
+  font-size: 12px;
+  color: var(--okr-ink-400);
+  margin-top: 2px;
+}
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.alarm-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px;
+  color: var(--okr-ink-500);
+  padding: 6px 12px;
+  background: var(--okr-ink-50);
+  border-radius: 20px;
+}
+.alarm-status.active { color: var(--okr-vermilion); }
+.alarm-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--okr-ink-300);
+}
+.alarm-status.active .alarm-dot {
+  background: var(--okr-vermilion);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+/* ===== 主内容 ===== */
+.main-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ===== 计划头部卡片 ===== */
+.plan-header-card {
+  background: var(--okr-card);
+  border-radius: var(--okr-radius-xl);
+  padding: 24px;
+  border: 1px solid var(--okr-border);
+  margin-bottom: 24px;
+  box-shadow: var(--okr-shadow-md);
+}
+.plan-date {
+  font-family: var(--okr-font-display);
+  font-size: 18px;
+  color: var(--okr-ink-700);
+  margin-bottom: 4px;
+}
+.plan-summary {
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+}
+.summary-item {
+  text-align: center;
+  flex: 1;
+}
+.summary-num {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: var(--okr-font-display);
+  color: var(--okr-gold-700);
+}
+.summary-label {
+  font-size: 12px;
+  color: var(--okr-ink-400);
+  margin-top: 4px;
+}
+
+/* ===== 时间轴 ===== */
+.timeline-section {
+  background: var(--okr-card);
+  border-radius: var(--okr-radius-xl);
+  padding: 24px;
+  border: 1px solid var(--okr-border);
+  margin-bottom: 24px;
+  box-shadow: var(--okr-shadow-md);
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-family: var(--okr-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+}
+.add-plan-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--okr-gold-500);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--okr-font-sans);
+}
+.add-plan-btn:hover {
+  background: var(--okr-gold-700);
+  transform: translateY(-1px);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 70px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--okr-ink-100);
+}
+.timeline-now-line {
+  position: absolute;
+  left: 30px;
+  right: 0;
+  height: 2px;
+  background: var(--okr-vermilion);
+  z-index: 5;
+  pointer-events: none;
+}
+.timeline-now-line::before {
+  content: '现在';
+  position: absolute;
+  left: -32px;
+  top: -8px;
+  font-size: 11px;
+  color: var(--okr-vermilion);
+  font-weight: 600;
+  background: var(--okr-card);
+  padding: 2px 4px;
+}
+.timeline-now-line::after {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--okr-vermilion);
+  box-shadow: 0 0 8px rgba(192,57,43,0.5);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  background: var(--okr-ink-50);
+  border-radius: var(--okr-radius-lg);
+  border: 1px solid var(--okr-border);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.timeline-item:hover {
+  border-color: var(--okr-gold-300);
+  box-shadow: var(--okr-shadow-md);
+}
+.timeline-item.current {
+  border-color: var(--okr-gold-500);
+  background: linear-gradient(135deg, #fffcf5 0%, #f7ecd0 100%);
+}
+.timeline-item.completed {
+  opacity: 0.6;
+}
+.timeline-item.completed .plan-title {
+  text-decoration: line-through;
+}
+
+.timeline-time {
+  position: absolute;
+  left: -70px;
+  top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--okr-ink-600);
+  font-family: var(--okr-font-mono, monospace);
+  width: 50px;
+  text-align: right;
+}
+.timeline-time .end-time {
+  display: block;
+  font-size: 11px;
+  color: var(--okr-ink-400);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -26px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--okr-ink-300);
+  border: 2px solid var(--okr-card);
+  z-index: 2;
+}
+.timeline-item.current .timeline-dot {
+  background: var(--okr-gold-500);
+  box-shadow: 0 0 8px rgba(201,162,39,0.5);
+}
+.timeline-item.completed .timeline-dot {
+  background: var(--okr-gold-500);
+}
+
+.plan-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.plan-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+  flex: 1;
+}
+.plan-actions {
+  display: flex;
+  gap: 8px;
+}
+.plan-action-btn {
+  width: 28px; height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--okr-ink-400);
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.plan-action-btn:hover {
+  background: var(--okr-ink-100);
+  color: var(--okr-ink-600);
+}
+.plan-action-btn.danger:hover {
+  color: var(--okr-vermilion);
+  background: rgba(192,57,43,0.1);
+}
+
+.plan-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--okr-ink-400);
+  flex-wrap: wrap;
+}
+.plan-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--okr-ink-100);
+  font-size: 11px;
+}
+.plan-tag.study { background: #e8f1f0; color: var(--okr-cyan-700); }
+.plan-tag.rest { background: #f0f7e8; color: #4a7c59; }
+.plan-tag.exercise { background: #fde8e8; color: #c0392b; }
+.plan-tag.alarm-on { background: #fef3c7; color: #92400e; }
+
+.plan-progress-bar {
+  height: 4px;
+  background: var(--okr-ink-100);
+  border-radius: 2px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.plan-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--okr-gold-500), var(--okr-gold-300));
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--okr-ink-400);
+}
+.empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+.empty-text {
+  font-size: 15px;
+  color: var(--okr-ink-500);
+  margin-bottom: 8px;
+}
+.empty-hint {
+  font-size: 12px;
+  color: var(--okr-ink-400);
+}
+
+/* ===== 添加计划弹窗 ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31,26,16,0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+.modal {
+  background: var(--okr-card);
+  border-radius: var(--okr-radius-xl);
+  box-shadow: var(--okr-shadow-xl);
+  width: 90%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s ease;
+  border: 1px solid var(--okr-border);
+}
+.modal-overlay.show .modal {
+  transform: translateY(0) scale(1);
+}
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--okr-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-title {
+  font-family: var(--okr-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+}
+.modal-close {
+  width: 32px; height: 32px;
+  border: none; background: transparent;
+  cursor: pointer;
+  color: var(--okr-ink-400);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: var(--okr-ink-100); color: var(--okr-ink-600); }
+.modal-body { padding: 20px 24px; }
+.form-group {
+  margin-bottom: 16px;
+}
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--okr-ink-600);
+  margin-bottom: 8px;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--okr-border);
+  border-radius: var(--okr-radius-lg);
+  font-size: 14px;
+  font-family: var(--okr-font-sans);
+  color: var(--okr-ink-800);
+  background: var(--okr-ink-50);
+  transition: all 0.2s;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--okr-gold-500);
+  background: white;
+}
+.form-textarea { resize: vertical; min-height: 60px; }
+
+.time-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.time-row .form-group { flex: 1; margin-bottom: 0; }
+.time-divider {
+  color: var(--okr-ink-400);
+  font-size: 14px;
+  padding-top: 24px;
+}
+
+/* 分类标签选择 */
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.category-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid var(--okr-border);
+  background: var(--okr-ink-50);
+  color: var(--okr-ink-600);
+  transition: all 0.2s;
+  user-select: none;
+}
+.category-tag:hover {
+  border-color: var(--okr-gold-300);
+}
+.category-tag.active {
+  background: var(--okr-gold-500);
+  color: white;
+  border-color: var(--okr-gold-500);
+}
+
+/* 闹钟开关 */
+.alarm-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--okr-ink-100);
+}
+.alarm-toggle-label {
+  font-size: 14px;
+  color: var(--okr-ink-700);
+}
+.alarm-toggle-hint {
+  font-size: 12px;
+  color: var(--okr-ink-400);
+  margin-top: 2px;
+}
+.switch {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  cursor: pointer;
+}
+.switch input { display: none; }
+.switch-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--okr-ink-200);
+  border-radius: 28px;
+  transition: all 0.3s;
+}
+.switch-slider::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.switch input:checked + .switch-slider {
+  background: var(--okr-gold-500);
+}
+.switch input:checked + .switch-slider::before {
+  transform: translateX(20px);
+}
+
+.ringtone-selector {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--okr-ink-50);
+  border-radius: var(--okr-radius-lg);
+  display: none;
+}
+.ringtone-selector.show { display: block; }
+.ringtone-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.ringtone-option {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid var(--okr-border);
+  background: white;
+  color: var(--okr-ink-600);
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.ringtone-option:hover { border-color: var(--okr-gold-300); }
+.ringtone-option.active {
+  background: var(--okr-gold-100);
+  border-color: var(--okr-gold-500);
+  color: var(--okr-gold-700);
+}
+.ringtone-option.custom {
+  color: var(--okr-vermilion);
+  border-style: dashed;
+}
+
+.modal-footer {
+  padding: 16px 24px 20px;
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--okr-radius-lg);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--okr-font-sans);
+  border: none;
+}
+.btn-primary {
+  background: var(--okr-gold-500);
+  color: white;
+}
+.btn-primary:hover { background: var(--okr-gold-700); }
+.btn-secondary {
+  background: var(--okr-ink-100);
+  color: var(--okr-ink-600);
+}
+.btn-secondary:hover { background: var(--okr-ink-200); }
+
+/* ===== 闹钟响铃弹窗 ===== */
+.alarm-ring-modal .modal {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #fffcf5 0%, #fde68a 100%);
+}
+.alarm-ring-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: ring 0.5s ease-in-out infinite alternate;
+}
+@keyframes ring {
+  from { transform: rotate(-10deg); }
+  to { transform: rotate(10deg); }
+}
+.alarm-ring-title {
+  font-family: var(--okr-font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--okr-ink-800);
+  margin-bottom: 8px;
+}
+.alarm-ring-time {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--okr-vermilion);
+  font-family: var(--okr-font-display);
+  margin-bottom: 16px;
+}
+.alarm-ring-task {
+  font-size: 16px;
+  color: var(--okr-ink-600);
+  margin-bottom: 24px;
+}
+.alarm-ring-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.alarm-ring-actions .btn {
+  flex: none;
+  padding: 12px 32px;
+}
+.btn-danger {
+  background: var(--okr-vermilion);
+  color: white;
+}
+.btn-danger:hover { background: var(--okr-vermilion-dark); }
+
+/* ===== 响应式 ===== */
+@media (max-width: 640px) {
+  .topbar { padding: 12px 16px; }
+  .main-content { padding: 16px; }
+  .plan-summary { gap: 12px; }
+  .summary-num { font-size: 22px; }
+  .timeline { padding-left: 60px; }
+  .timeline::before { left: 40px; }
+  .timeline-time { left: -60px; width: 40px; font-size: 12px; }
+  .timeline-dot { left: -21px; }
+}
+    </style>
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="back-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <div>
+      <div class="topbar-title">每日计划</div>
+      <div class="topbar-subtitle" id="planDateSubtitle">规划今日，惜取寸阴</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="alarm-status" id="alarmStatus">
+      <span class="alarm-dot"></span>
+      <span id="alarmStatusText">提醒关闭</span>
+    </div>
+  </div>
+</div>
+
+<!-- 主内容 -->
+<div class="main-content">
+
+  <!-- 计划概览卡片 -->
+  <div class="plan-header-card">
+    <div class="plan-date" id="planDate">—</div>
+    <div class="plan-summary">
+      <div class="summary-item">
+        <div class="summary-num" id="totalTasks">0</div>
+        <div class="summary-label">计划任务</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num" id="completedTasks">0</div>
+        <div class="summary-label">已完成</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num" id="alarmCount">0</div>
+        <div class="summary-label">待提醒</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 时间轴 -->
+  <div class="timeline-section">
+    <div class="section-header">
+      <div class="section-title">今日时间轴</div>
+      <button class="add-plan-btn" onclick="DailyPlan.openAddPlanModal()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        添加计划
+      </button>
+    </div>
+
+    <div class="timeline" id="timelineContainer">
+      <!-- 时间线项目由 JS 生成 -->
+    </div>
+  </div>
+
+</div>
+
+<!-- 添加/编辑计划弹窗 -->
+<div class="modal-overlay" id="planModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="planModalTitle">添加计划</div>
+      <button class="modal-close" onclick="DailyPlan.closePlanModal()">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">任务名称</label>
+        <input type="text" class="form-input" id="planName" placeholder="例如：雅思阅读精读">
+      </div>
+
+      <div class="time-row">
+        <div class="form-group">
+          <label class="form-label">开始时间</label>
+          <input type="time" class="form-input" id="planStartTime">
+        </div>
+        <div class="time-divider">—</div>
+        <div class="form-group">
+          <label class="form-label">结束时间</label>
+          <input type="time" class="form-input" id="planEndTime">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:16px">
+        <label class="form-label">分类</label>
+        <div class="category-tags" id="categoryTags">
+          <span class="category-tag active" data-cat="study" onclick="DailyPlan.selectCategory(this)">📖 学习</span>
+          <span class="category-tag" data-cat="work" onclick="DailyPlan.selectCategory(this)">💼 工作</span>
+          <span class="category-tag" data-cat="exercise" onclick="DailyPlan.selectCategory(this)">💪 运动</span>
+          <span class="category-tag" data-cat="rest" onclick="DailyPlan.selectCategory(this)">🌿 休息</span>
+          <span class="category-tag" data-cat="other" onclick="DailyPlan.selectCategory(this)">📝 其他</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">备注（可选）</label>
+        <textarea class="form-textarea" id="planNote" placeholder="补充说明..." rows="2"></textarea>
+      </div>
+
+      <div class="alarm-toggle-row">
+        <div>
+          <div class="alarm-toggle-label">🔔 到点提醒</div>
+          <div class="alarm-toggle-hint">任务开始时响铃提醒</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="alarmToggle" onchange="DailyPlan.toggleRingtoneSelector()">
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+
+      <div class="ringtone-selector" id="ringtoneSelector">
+        <div class="form-label" style="margin-bottom:8px">选择铃声</div>
+        <div class="ringtone-options" id="ringtoneOptions">
+          <span class="ringtone-option active" data-ring="bell" onclick="DailyPlan.selectRingtone(this)">🔔 古钟</span>
+          <span class="ringtone-option" data-ring="chime" onclick="DailyPlan.selectRingtone(this)">🎐 风铃</span>
+          <span class="ringtone-option" data-ring="drum" onclick="DailyPlan.selectRingtone(this)">🥁 更鼓</span>
+          <span class="ringtone-option" data-ring="bird" onclick="DailyPlan.selectRingtone(this)">🐦 鸟鸣</span>
+          <span class="ringtone-option custom" onclick="DailyPlan.uploadCustomRingtone()">
+            📎 自定义
+          </span>
+        </div>
+        <input type="file" id="customRingtoneInput" accept="audio/*" style="display:none" onchange="DailyPlan.handleCustomRingtone(event)">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="DailyPlan.closePlanModal()">取消</button>
+      <button class="btn btn-primary" onclick="DailyPlan.savePlan()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 闹钟响铃弹窗 -->
+<div class="modal-overlay alarm-ring-modal" id="alarmRingModal">
+  <div class="modal">
+    <div class="alarm-ring-icon">⏰</div>
+    <div class="alarm-ring-title">时间到！</div>
+    <div class="alarm-ring-time" id="alarmRingTime">00:00</div>
+    <div class="alarm-ring-task" id="alarmRingTask">任务名称</div>
+    <div class="alarm-ring-actions">
+      <button class="btn btn-secondary" onclick="DailyPlan.snoozeAlarm()">稍后提醒</button>
+      <button class="btn btn-danger" onclick="DailyPlan.stopAlarm()">停止</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/common.js"></script>
+<script src="../assets/daily-plan.js"></script>
+</body>
+</html>

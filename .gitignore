@@ -1,0 +1,36 @@
+# 依赖
+node_modules/
+server/node_modules/
+app/node_modules/
+
+# 数据库
+server/xingxing.db
+server/*.db
+
+# 构建产物
+app/android/app/build/
+app/android/capacitor-cordova-android-plugins/build/
+*.class
+*.apk
+*.aab
+
+# 日志
+*.log
+npm-debug.log*
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 设计文件（可选忽略，体积较大）
+*.design
+
+# 临时脚本
+sync-app.js

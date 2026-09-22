@@ -1,0 +1,20 @@
+{
+  "name": "xingxing-daily-okr",
+  "version": "1.0.0",
+  "description": "行醒 - 个人复盘与成长工具（每日复盘 + OKR + 错题本 + 点灯人 + 知识库）",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.3",
+    "sql.js": "^1.14.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
