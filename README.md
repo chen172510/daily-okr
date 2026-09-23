@@ -16,6 +16,20 @@
 - 知识库：个人资源收藏
 - 每日计划：当日任务规划
 
+## 界面预览
+
+| 首页看板 | 每日复盘 |
+| --- | --- |
+| ![首页看板](docs/screenshots/02-dashboard.png) | ![每日复盘](docs/screenshots/03-review.png) |
+
+| 目标图谱 | 省身错题 |
+| --- | --- |
+| ![目标图谱](docs/screenshots/04-okrs.png) | ![省身错题](docs/screenshots/05-error-book.png) |
+
+| 个人知识库 | 登录注册 |
+| --- | --- |
+| ![个人知识库](docs/screenshots/06-resources.png) | ![登录注册](docs/screenshots/01-login.png) |
+
 ## 主要特性
 
 - 离线优先：前端 localStorage 本地存储 + 待同步队列，断网可用、恢复联网自动合并
