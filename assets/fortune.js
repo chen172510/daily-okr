@@ -13,16 +13,16 @@
     { n: '射手座', e: '火' }, { n: '摩羯座', e: '土' }, { n: '水瓶座', e: '风' }, { n: '双鱼座', e: '水' }
   ];
   var YI = {
-    '火': ['果断行动', '主动表达', '运动出汗', '开启新事'],
-    '土': ['踏实推进', '整理归纳', '稳中求进', '务实规划'],
-    '风': ['沟通交流', '学习新知', '写作记录', '头脑风暴'],
-    '水': ['静心独处', '深度思考', '倾听内心', '休养疗愈']
+    '火': ['出行', '运动', '主动表达', '开启新事'],
+    '土': ['踏实做事', '整理收纳', '制定计划', '稳健推进'],
+    '风': ['结交新友', '学习新知', '沟通交流', '写作记录'],
+    '水': ['独处静心', '深度思考', '休养身心', '倾听自己']
   };
   var JI = {
     '火': ['急躁冲动', '与人争执', '熬夜硬撑'],
-    '土': ['钻牛角尖', '过度保守', '勉强自己'],
+    '土': ['钻牛角尖', '固执己见', '勉强自己'],
     '风': ['想多做少', '三心二意', '口无遮拦'],
-    '水': ['情绪化决策', '自我内耗', '过分在意他人']
+    '水': ['情绪化决策', '自我内耗', '过度在意他人']
   };
 
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
@@ -43,7 +43,10 @@
   function replaceYao(el, text) {
     if (!el) return;
     var t = el.textContent;
-    if (/[月火水木金土日]曜/.test(t)) el.textContent = t.replace(/[月火水木金土日]曜(日)?/g, text);
+    if (!/[月火水木金土日]曜/.test(t)) return;
+    el.textContent = t.replace(/\s*[·・]?\s*[月火水木金土日]曜(日)?/g, function () {
+      return text ? (' · ' + text) : '';
+    }).trim();
   }
 
   function buildPicker() {
@@ -72,16 +75,16 @@
     var f = get();
     var wd = document.querySelector('.sidebar-weekday') || document.getElementById('sidebarWeekday');
     if (wd) {
-      wd.textContent = f.sign + ' · ' + f.short;
-      wd.title = f.full + '（点击切换星座）';
+      wd.textContent = '宜' + f.yi + ' · 忌' + f.ji;
+      wd.title = '今日宜：' + f.yi + '　今日忌：' + f.ji + '（点击可更换宜忌风格）';
       wd.style.cursor = 'pointer';
       if (!wd.getAttribute('data-xx-bound')) {
         wd.setAttribute('data-xx-bound', '1');
         wd.addEventListener('click', function (e) { e.stopPropagation(); buildPicker(); });
       }
     }
-    replaceYao(document.querySelector('.topbar-date'), f.sign);
-    Array.prototype.forEach.call(document.querySelectorAll('.review-date'), function (el) { replaceYao(el, f.sign); });
+    replaceYao(document.querySelector('.topbar-date'), '宜' + f.yi);
+    Array.prototype.forEach.call(document.querySelectorAll('.review-date'), function (el) { replaceYao(el, ''); });
   }
 
   function sweep() {
@@ -90,7 +93,7 @@
     for (var i = 0; i < all.length; i++) {
       var el = all[i];
       if (el.children.length === 0 && el.id !== 'xx-zodiac-picker' && /[月火水木金土日]曜/.test(el.textContent)) {
-        replaceYao(el, f.sign);
+        replaceYao(el, '');
       }
     }
   }

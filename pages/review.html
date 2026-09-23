@@ -381,7 +381,7 @@ body {
             <path d="M2 12h6"/><path d="M16 12h6"/>
             <path d="M4.93 19.07l4.24-4.24"/><path d="M14.83 9.17l4.24-4.24"/>
           </svg>
-          点灯人
+          理想的我
         </a>
         <a href="resources.html" class="nav-item" data-dom-id="nav-resources">
           <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -429,7 +429,7 @@ body {
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="none"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             <span>晴 · 二十六度</span>
           </div>
-          <div class="time-display" id="topbarTime">未时三刻</div>
+          <div class="time-display" id="topbarTime">未时45 分钟</div>
           <button class="theme-btn">
             <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="none"/></svg>
           </button>
@@ -442,7 +442,7 @@ body {
         <div class="page-header">
           <div class="page-tag">省 身</div>
           <h1 class="page-title">每 日 省 身</h1>
-          <p class="page-subtitle">吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？</p>
+          <p class="page-subtitle">边行边醒，就是行醒</p>
         </div>
 
         <!-- 四象数据卡 -->
@@ -454,13 +454,13 @@ body {
           </div>
 
           <div class="stat-card">
-            <div class="stat-big-number">三时一刻</div>
+            <div class="stat-big-number">3 小时 15 分</div>
             <div class="stat-sub-text">↑ 一刻有余</div>
             <div class="stat-label">坐 功</div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-big-number">三 刻</div>
+            <div class="stat-big-number">45 分钟</div>
             <div class="stat-sub-text">尚有进境</div>
             <div class="stat-label">阅 藏</div>
           </div>
@@ -472,11 +472,11 @@ body {
           </div>
         </div>
 
-        <!-- 省身脉络 · 因果图谱 -->
+        <!-- 事务脉络 · 因果图谱 -->
         <div class="graph-card">
           <div class="card-header-section">
             <div class="card-section-label">脉 络</div>
-            <h2 class="card-title">省 身 脉 络</h2>
+            <h2 class="card-title">事务脉络</h2>
             <p class="card-subtitle">观因果之流转，察知行之关联。</p>
             <div class="graph-seal">省</div>
           </div>
@@ -577,7 +577,7 @@ body {
           <div class="card-header-section">
             <div class="card-section-label">三 省 录</div>
             <h2 class="card-title">三 省 录</h2>
-            <p class="card-subtitle">每日三问，以明得失。</p>
+            <p class="card-subtitle">今天，是不是打算为自己留点什么呢？</p>
           </div>
 
           <!-- 一问 -->
@@ -1010,7 +1010,7 @@ body {
     })();
 
     // ============================================
-    // 省身脉络 · 因果图谱 · 力导向网络
+    // 事务脉络 · 因果图谱 · 力导向网络
     // ============================================
     (function() {
       var svg = document.getElementById('graphSvg');
@@ -3456,7 +3456,7 @@ body {
 }
 
 /* ============================================
-   省身脉络 · 因果图谱
+   事务脉络 · 因果图谱
    ============================================ */
 .graph-card {
   background: var(--ink-paper-light);
@@ -4007,6 +4007,19 @@ body {
       } catch(e) { return ''; }
     }
 
+    // 完成时间（优先取复盘记录里的时间戳，没有则回退到星期几的中文写法）
+    function formatDoneTime(dateStr, data) {
+      try {
+        const ts = data && data.timestamp;
+        if (ts) {
+          const d = new Date(ts);
+          return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + ' 完成';
+        }
+        const d = new Date(dateStr + 'T00:00:00');
+        return ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][d.getDay()];
+      } catch(e) { return ''; }
+    }
+
     // 计算三省完成数量
     function countSanxing(sanxing) {
       if (!sanxing) return 0;
@@ -4059,7 +4072,7 @@ body {
         item.innerHTML = `
           <div class="review-item-date">
             <div class="review-item-day">${formatDay(r.date)}</div>
-            <div class="review-item-weekday">${formatWeekday(r.date)}</div>
+            <div class="review-item-weekday">${formatDoneTime(r.date, r.data)}</div>
           </div>
           <div class="review-item-content">
             <div class="review-item-header">
