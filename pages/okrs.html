@@ -2077,6 +2077,14 @@ body {
       { id:'okr_5', title:'身体素质提升', category:'身体·基础', progress:55, status:'active', dueDate:'冬至为期', keyResults:['每周跑步 3 次','每日拉伸','睡眠 7 小时'] }
     ];
 
+    function normalizeKrs(krs) {
+      if (!Array.isArray(krs)) return [];
+      return krs.map(function(k) {
+        if (typeof k === 'string') return { title: k, progress: 0 };
+        return { title: (k && k.title) || '', progress: (k && typeof k.progress === 'number') ? k.progress : 0 };
+      });
+    }
+
     function readOkrs() {
       var raw = null;
       try { raw = App ? App.safeGet(OKR_KEY, null) : JSON.parse(localStorage.getItem(OKR_KEY) || 'null'); } catch(e) {}
@@ -2096,6 +2104,13 @@ body {
         list = JSON.parse(JSON.stringify(SEED));
         writeOkrs(list);
       }
+      list.forEach(function(o) {
+        var raw = o.keyResults || [];
+        var base = typeof o.progress === 'number' ? o.progress : 0;
+        o.keyResults = normalizeKrs(raw).map(function(k, i) {
+          return typeof raw[i] === 'string' ? { title: k.title, progress: base } : k;
+        });
+      });
       return list;
     }
 
@@ -2113,8 +2128,8 @@ body {
     function cardHtml(o) {
       var s = STATUS[o.status] || STATUS.active;
       var p = Math.max(0, Math.min(100, o.progress || 0));
-      var krs = o.keyResults || [];
-      var desc = '关键结果：' + (krs.join(' / ') || '暂未设定');
+      var krs = normalizeKrs(o.keyResults);
+      var desc = '关键结果：' + (krs.map(function(k){ return k.title; }).join(' / ') || '暂未设定');
       return '<div class="okr-item" data-id="' + escapeHtml(o.id) + '">'
         + '<div class="progress-ring-wrapper">'
         + '<svg width="68" height="68" viewBox="0 0 68 68">'
@@ -2194,7 +2209,7 @@ body {
       document.getElementById('okrModalTitle').textContent = o ? '改志向' : '立新志';
       document.getElementById('okrTitle').value = o ? o.title : '';
       document.getElementById('okrCategory').value = o ? (o.category || '') : '';
-      document.getElementById('okrKeyResults').value = o ? (o.keyResults || []).join('\n') : '';
+      document.getElementById('okrKeyResults').value = o ? normalizeKrs(o.keyResults).map(function(k){ return k.title; }).join('\n') : '';
       document.getElementById('okrModalOverlay').classList.add('show');
     }
 
@@ -2206,8 +2221,13 @@ body {
     function saveModal() {
       var title = document.getElementById('okrTitle').value.trim();
       if (!title) { alert('请填写目标名称'); return; }
-      var krs = document.getElementById('okrKeyResults').value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean);
+      var lines = document.getElementById('okrKeyResults').value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean);
       var list = getOkrs();
+      var prev = editingId ? ((list.find(function(o){ return o.id === editingId; }) || {}).keyResults || []) : [];
+      var krs = lines.map(function(t) {
+        var found = prev.find(function(k){ return (typeof k === 'string' ? k : k.title) === t; });
+        return { title: t, progress: found ? (typeof found === 'string' ? 0 : (found.progress || 0)) : 0 };
+      });
       if (editingId) {
         var idx = list.findIndex(function(o){ return o.id === editingId; });
         if (idx >= 0) {

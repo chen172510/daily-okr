@@ -2271,60 +2271,131 @@ body::before {
       risk:   { seal: '有<br>阻滞', tag: 'at-risk', text: '有阻滞' }
     };
 
-    function fill(okr) {
-      var s = STATUS[okr.status] || STATUS.active;
+    function normalizeKrs(krs) {
+      if (!Array.isArray(krs)) return [];
+      return krs.map(function(k) {
+        if (typeof k === 'string') return { title: k, progress: 0 };
+        return { title: (k && k.title) || '', progress: (k && typeof k.progress === 'number') ? k.progress : 0 };
+      });
+    }
+
+    function writeAll(list) {
+      if (App) App.safeSet(OKR_KEY, { okrs: list });
+      else localStorage.setItem(OKR_KEY, JSON.stringify({ okrs: list }));
+    }
+
+    function esc(s) {
+      var d = document.createElement('div');
+      d.textContent = s == null ? '' : String(s);
+      return d.innerHTML;
+    }
+
+    var current = null;
+
+    function overall(krs) {
+      if (!krs.length) return 0;
+      var sum = 0;
+      krs.forEach(function(k) { sum += Math.max(0, Math.min(100, k.progress || 0)); });
+      return Math.round(sum / krs.length);
+    }
+
+    function render() {
+      if (!current) return;
+      var krs = current.keyResults = normalizeKrs(current.keyResults);
+      var prog = overall(krs);
+      current.progress = prog;
+      if (prog >= 100) current.status = 'done';
+      else if (current.status === 'done') current.status = 'active';
+      var s = STATUS[current.status] || STATUS.active;
 
       var seal = document.querySelector('.cinnabar-seal .seal-inner');
       if (seal) seal.innerHTML = s.seal;
-
       var cat = document.querySelector('.scroll-body .category-tag');
-      if (cat) cat.textContent = okr.category || '未分类';
-
+      if (cat) cat.textContent = current.category || '未分类';
       var title = document.querySelector('.objective-title');
-      if (title) title.textContent = '目标精研 · ' + (okr.title || '');
-
+      if (title) title.textContent = '目标精研 · ' + (current.title || '');
       var desc = document.querySelector('.objective-description');
-      if (desc) desc.textContent = (okr.keyResults && okr.keyResults.length)
-        ? '关键结果：' + okr.keyResults.join('；')
+      if (desc) desc.textContent = krs.length
+        ? '关键结果：' + krs.map(function(k){ return k.title; }).join('；')
         : '此志尚待立下关键关卡。';
 
-      var krs = okr.keyResults || [];
       var realmNums = document.querySelectorAll('.realm-card .realm-big-number');
-      if (realmNums[0]) realmNums[0].textContent = (okr.progress || 0) + '%';
-      if (realmNums[1]) realmNums[1].textContent = '0/' + krs.length;
-      if (realmNums[2]) realmNums[2].textContent = okr.dueDate || '未定';
-      if (realmNums[3]) realmNums[3].textContent = s.text === '有阻滞' ? '有' : '无';
+      if (realmNums[0]) realmNums[0].textContent = prog + '%';
+      if (realmNums[1]) realmNums[1].textContent = krs.filter(function(k){ return (k.progress || 0) >= 100; }).length + '/' + krs.length;
+      if (realmNums[2]) realmNums[2].textContent = current.dueDate || '未定';
+      if (realmNums[3]) realmNums[3].textContent = current.status === 'risk' ? '有' : '无';
 
       var krSub = document.querySelector('.section-title-sub');
       if (krSub) krSub.textContent = krs.length ? '共 ' + krs.length + ' 关，逐项突破' : '暂未设关键关卡';
 
       var krList = document.querySelector('.kr-list');
-      if (krList) {
-        krList.innerHTML = krs.map(function(k, i) {
-          return '<div class="kr-card">'
-            + '<div class="kr-header"><div class="kr-title-group">'
-            + '<h3 class="kr-title">KR' + (i + 1) + ' · ' + k + '</h3>'
-            + '<p class="kr-description">关键结果 ' + (i + 1) + '，尚待精进。</p>'
-            + '</div><span class="kr-status-tag ' + s.tag + '"><span class="status-dot"></span>' + s.text + '</span></div>'
-            + '<div class="kr-progress-section"><div class="kr-progress-numbers">'
-            + '<span class="kr-progress-current">' + (okr.progress || 0) + '%</span>'
-            + '<span class="kr-progress-unit"></span>'
-            + '<span class="kr-progress-percent">' + (okr.progress >= 100 ? '已圆满' : '修行中') + '</span>'
-            + '</div><div class="ink-progress-bar"><div class="ink-progress-track"></div>'
-            + '<div class="ink-progress-fill" style="width: ' + (okr.progress || 0) + '%"></div></div></div>'
-            + '</div>';
-        }).join('');
-      }
+      if (!krList) return;
+      krList.innerHTML = krs.map(function(k, i) {
+        var p = Math.max(0, Math.min(100, k.progress || 0));
+        var done = p >= 100;
+        return '<div class="kr-card">'
+          + '<div class="kr-header"><div class="kr-title-group">'
+          + '<h3 class="kr-title">KR' + (i + 1) + ' · ' + esc(k.title) + '</h3>'
+          + '<p class="kr-description">关键结果 ' + (i + 1) + '</p></div>'
+          + '<span class="kr-status-tag ' + (done ? 'done' : 'in-progress') + '"><span class="status-dot"></span>' + (done ? '已圆满' : '修行中') + '</span></div>'
+          + '<div class="kr-progress-section"><div class="kr-progress-numbers">'
+          + '<span class="kr-progress-current">' + p + '%</span>'
+          + '<span class="kr-progress-unit"></span>'
+          + '<span class="kr-progress-percent">' + (done ? '已圆满' : '进行中') + '</span>'
+          + '</div><div class="ink-progress-bar"><div class="ink-progress-track"></div>'
+          + '<div class="ink-progress-fill" style="width:' + p + '%"></div></div></div>'
+          + '<div class="kr-footer"><span class="kr-last-update">点击右侧按钮推进此关</span>'
+          + '<button class="btn-update-kr" type="button" data-adv="' + i + '">精进 +10%</button></div></div>';
+      }).join('');
+
+      Array.prototype.forEach.call(krList.querySelectorAll('[data-adv]'), function(btn) {
+        btn.addEventListener('click', function() { advance(parseInt(btn.getAttribute('data-adv'), 10)); });
+      });
+    }
+
+    function save() {
+      var list = readOkrs();
+      var idx = list.findIndex(function(o){ return o.id === current.id; });
+      if (idx >= 0) list[idx] = current;
+      writeAll(list);
+    }
+
+    function advance(i) {
+      var krs = current.keyResults;
+      if (!krs || !krs[i]) return;
+      krs[i].progress = Math.min(100, (krs[i].progress || 0) + 10);
+      save();
+      render();
+      if (App && App.showToast) App.showToast('已精进一关 +10%', 'success', 1500);
+    }
+
+    function addKr() {
+      var name = prompt('新关卡的名称（关键结果）：');
+      if (!name || !name.trim()) return;
+      current.keyResults = normalizeKrs(current.keyResults);
+      current.keyResults.push({ title: name.trim(), progress: 0 });
+      save();
+      render();
+      if (App && App.showToast) App.showToast('已加一关', 'success', 1500);
     }
 
     function init() {
       var id = getId();
       var list = readOkrs();
-      var okr = id ? list.find(function(o){ return o.id === id; }) : list[0];
-      if (okr) fill(okr);
+      current = id ? list.find(function(o){ return o.id === id; }) : list[0];
+      if (current) {
+        var raw = current.keyResults || [];
+        var base = typeof current.progress === 'number' ? current.progress : 0;
+        current.keyResults = normalizeKrs(raw).map(function(k, i) {
+          return typeof raw[i] === 'string' ? { title: k.title, progress: base } : k;
+        });
+        render();
+      }
 
       var back = document.querySelector('[data-dom-id="btn-back"]');
       if (back) back.addEventListener('click', function(){ location.href = 'okrs.html'; });
+      var addBtn = document.querySelector('.btn-add-kr');
+      if (addBtn) addBtn.addEventListener('click', addKr);
     }
 
     if (document.readyState === 'loading') {
