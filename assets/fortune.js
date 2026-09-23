@@ -36,6 +36,13 @@
     '天气好的话，出去透透气',
     '早点睡，明天才有力气'
   ];
+  var CHECKIN_WORDS = [
+    '边行边醒，今天也为自己活一次。',
+    '慢一点没关系，别停下就好。',
+    '你在成为你自己的路上，已经走了很远。',
+    '今天也不必完美，尽力就很好了。',
+    '把日子过成自己的，而不是别人的。'
+  ];
 
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
   function key() { return 'xingxing_zodiac'; }
@@ -89,15 +96,47 @@
     if (wd) {
       var r = REMINDERS[hash(dayStr() + '#reminder') % REMINDERS.length];
       wd.textContent = r;
-      wd.title = '今日善意提醒（点击可更换风格）';
-      wd.style.cursor = 'pointer';
-      if (!wd.getAttribute('data-xx-bound')) {
-        wd.setAttribute('data-xx-bound', '1');
-        wd.addEventListener('click', function (e) { e.stopPropagation(); buildPicker(); });
-      }
+      wd.title = '今日善意提醒';
     }
     replaceYao(document.querySelector('.topbar-date'), '宜' + f.yi);
     Array.prototype.forEach.call(document.querySelectorAll('.review-date'), function (el) { replaceYao(el, ''); });
+    bindCheckin();
+  }
+
+  function toast(msg) {
+    try {
+      if (global.XingxingCommon && global.XingxingCommon.showToast) { global.XingxingCommon.showToast(msg, 'gold', 3200); return; }
+    } catch (e) {}
+    alert(msg);
+  }
+
+  function updateCheckinText() {
+    var n = parseInt(localStorage.getItem('xingxing_checkin_count') || '0', 10) || 0;
+    var all = document.querySelectorAll('div,span,p');
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (el.children.length <= 2 && /已连续打卡|今日打卡/.test(el.textContent)) {
+        if (/已连续打卡/.test(el.textContent)) el.innerHTML = '已打卡 <strong>' + n + ' 次</strong>';
+      }
+    }
+  }
+
+  function bindCheckin() {
+    var btn = document.querySelector('.btn-checkin');
+    if (!btn || btn.getAttribute('data-xx-checkin')) { updateCheckinText(); return; }
+    btn.setAttribute('data-xx-checkin', '1');
+    btn.style.cursor = 'pointer';
+    btn.addEventListener('click', function () {
+      var today = dayStr();
+      if (localStorage.getItem('xingxing_checkin_date') === today) { toast('今天已经打过卡啦，明天再来～'); return; }
+      var n = (parseInt(localStorage.getItem('xingxing_checkin_count') || '0', 10) || 0) + 1;
+      localStorage.setItem('xingxing_checkin_date', today);
+      localStorage.setItem('xingxing_checkin_count', String(n));
+      var w = CHECKIN_WORDS[hash(today) % CHECKIN_WORDS.length];
+      toast('打卡成功 · 第 ' + n + ' 次\n' + w);
+      updateCheckinText();
+    });
+    updateCheckinText();
   }
 
   function sweep() {
