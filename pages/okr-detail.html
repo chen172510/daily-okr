@@ -2337,19 +2337,26 @@ body::before {
           + '<div class="kr-header"><div class="kr-title-group">'
           + '<h3 class="kr-title">KR' + (i + 1) + ' · ' + esc(k.title) + '</h3>'
           + '<p class="kr-description">关键结果 ' + (i + 1) + '</p></div>'
-          + '<span class="kr-status-tag ' + (done ? 'done' : 'in-progress') + '"><span class="status-dot"></span>' + (done ? '已圆满' : '修行中') + '</span></div>'
-          + '<div class="kr-progress-section"><div class="kr-progress-numbers">'
+          + '<span class="kr-status-tag ' + (done ? 'done' : 'in-progress') + '" data-info="' + i + '" style="cursor:pointer;" title="点击查看任务信息"><span class="status-dot"></span>' + (done ? '已圆满' : '修行中') + '</span></div>'
+          + '<div class="kr-progress-section" data-info="' + i + '" style="cursor:pointer;" title="点击查看已完成 / 未完成"><div class="kr-progress-numbers">'
           + '<span class="kr-progress-current">' + p + '%</span>'
           + '<span class="kr-progress-unit"></span>'
           + '<span class="kr-progress-percent">' + (done ? '已圆满' : '进行中') + '</span>'
           + '</div><div class="ink-progress-bar"><div class="ink-progress-track"></div>'
           + '<div class="ink-progress-fill" style="width:' + p + '%"></div></div></div>'
           + '<div class="kr-footer"><span class="kr-last-update">推进任务条</span>'
-          + '<button class="btn-update-kr" type="button" data-adv="' + i + '">精进 +10%</button></div></div>';
+          + '<button class="btn-update-kr" type="button" data-adv="' + i + '">精进 +10%</button>'
+          + '<button class="btn-update-kr" type="button" data-set="' + i + '">设定进度</button></div></div>';
       }).join('');
 
       Array.prototype.forEach.call(krList.querySelectorAll('[data-adv]'), function(btn) {
         btn.addEventListener('click', function() { advance(parseInt(btn.getAttribute('data-adv'), 10)); });
+      });
+      Array.prototype.forEach.call(krList.querySelectorAll('[data-set]'), function(btn) {
+        btn.addEventListener('click', function() { setProgress(parseInt(btn.getAttribute('data-set'), 10)); });
+      });
+      Array.prototype.forEach.call(krList.querySelectorAll('[data-info]'), function(el) {
+        el.addEventListener('click', function(e) { e.stopPropagation(); showInfo(parseInt(el.getAttribute('data-info'), 10)); });
       });
     }
 
@@ -2367,6 +2374,40 @@ body::before {
       save();
       render();
       if (App && App.showToast) App.showToast('已精进一关 +10%', 'success', 1500);
+    }
+
+    function setProgress(i) {
+      var k = current.keyResults[i];
+      if (!k) return;
+      var v = prompt('设置「' + k.title + '」的进度（0 - 100）：', String(k.progress || 0));
+      if (v === null) return;
+      var n = parseInt(v, 10);
+      if (isNaN(n)) { alert('请输入 0 - 100 的数字'); return; }
+      k.progress = Math.max(0, Math.min(100, n));
+      save();
+      render();
+      if (App && App.showToast) App.showToast('进度已更新为 ' + k.progress + '%', 'success', 1500);
+    }
+
+    function showInfo(i) {
+      var k = current.keyResults[i];
+      if (!k) return;
+      var p = Math.max(0, Math.min(100, k.progress || 0));
+      var done = p >= 100;
+      var old = document.getElementById('kr-info');
+      if (old) old.parentNode.removeChild(old);
+      var box = document.createElement('div');
+      box.id = 'kr-info';
+      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:20px 22px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;min-width:260px;max-width:86vw;';
+      box.innerHTML = '<div style="font-size:16px;color:#1f1a10;margin-bottom:12px;letter-spacing:1px;">KR' + (i + 1) + ' · ' + esc(k.title) + '</div>'
+        + '<div style="font-size:14px;color:#362e1f;line-height:2;">'
+        + '状态：' + (done ? '已圆满' : (p > 0 ? '修行中' : '未开始')) + '<br>'
+        + '进度：' + p + '%<br>'
+        + '已完成：' + p + '%<br>'
+        + '未完成：还差 ' + (100 - p) + '%</div>'
+        + '<div style="margin-top:16px;text-align:right;"><button type="button" data-close="1" style="border:1px solid #e0d8cc;background:#fff;border-radius:6px;padding:7px 16px;cursor:pointer;font-family:inherit;color:#362e1f;">知道了</button></div>';
+      document.body.appendChild(box);
+      box.addEventListener('click', function (e) { if (e.target.getAttribute('data-close')) box.parentNode.removeChild(box); });
     }
 
     function addKr() {
