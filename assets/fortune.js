@@ -115,8 +115,8 @@
     var all = document.querySelectorAll('div,span,p');
     for (var i = 0; i < all.length; i++) {
       var el = all[i];
-      if (el.children.length <= 2 && /已连续打卡|今日打卡/.test(el.textContent)) {
-        if (/已连续打卡/.test(el.textContent)) el.innerHTML = '已打卡 <strong>' + n + ' 次</strong>';
+      if (el.children.length <= 2 && /^\s*已连续打卡/.test(el.textContent)) {
+        el.innerHTML = '已打卡 <strong>' + n + ' 次</strong>';
       }
     }
   }
