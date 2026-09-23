@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>省身日记 - 修行札记</title>
+    <title>自我思考 - 修行札记</title>
     <style id="theme-vars">
 /* ============================================
    Daily OKR - Brand Design Tokens
@@ -356,7 +356,7 @@ body {
             <path d="M12 20h9"></path>
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
           </svg>
-          省身日记
+          自我思考
         </a>
         <a href="error-book.html" class="nav-item" data-dom-id="nav-errorbook">
           <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -572,7 +572,7 @@ body {
           </div>
         </div>
 
-        <!-- 三省录 · 大卡片 -->
+        <!-- 反思录 · 大卡片 -->
         <div class="questions-card">
           <div class="card-header-section">
             <div class="card-section-label">三 省 录</div>
@@ -584,7 +584,7 @@ body {
           <div class="question-block">
             <div class="question-title">
               <span class="question-number">一</span>
-              今日何为？
+              记录一下，今天做了些甚么嘞？
             </div>
             <div class="question-textarea-wrap">
               <textarea class="question-textarea" id="sanxing-1" placeholder="记录今日所为之事，大小不拘..."></textarea>
@@ -608,7 +608,7 @@ body {
           <div class="question-block">
             <div class="question-title">
               <span class="question-number">二</span>
-              今日何得？
+              今日想到有哪些可改正地方
             </div>
             <div class="question-textarea-wrap">
               <textarea class="question-textarea" id="sanxing-2" placeholder="今日所悟所得，新知旧学..."></textarea>
@@ -632,7 +632,7 @@ body {
           <div class="question-block">
             <div class="question-title">
               <span class="question-number">三</span>
-              明日何进？
+              遇到类似的事可以通用的方法有没有？
             </div>
             <div class="question-textarea-wrap">
               <textarea class="question-textarea" id="sanxing-3" placeholder="明日欲进之境，改过迁善..."></textarea>
@@ -1525,7 +1525,7 @@ body {
         XingxingCommon.showToast('今日已完成复盘，已更新内容', 'info', 2000);
       } else {
         // 首次完成，加基础积分
-        XingxingCommon.addPoints(20, '完成省身日记');
+        XingxingCommon.addPoints(20, '完成自我思考');
 
         // 三省每条 +3 分
         let sanxingPoints = 0;
@@ -1632,7 +1632,7 @@ body {
       openReviewErrorModal({
         title: title,
         context: content,
-        reflection: '来源：三省录 - ' + titles[index],
+        reflection: '来源：反思录 - ' + titles[index],
         source: 'sanxing-' + index
       });
     }
@@ -2393,7 +2393,7 @@ body {
 }
 
 /* ============================================
-   三省录 · 大卡片
+   反思录 · 大卡片
    ============================================ */
 .questions-card {
   background: var(--ink-paper-light);
@@ -2762,7 +2762,7 @@ body {
 }
 
 /* ============================================
-   三省录 · 加入错题本按钮
+   反思录 · 加入错题本按钮
    ============================================ */
 .question-actions {
   display: flex;
