@@ -508,7 +508,7 @@ body {
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                <span>立新志</span>
+                <span>立个 flag！</span>
               </button>
             </div>
           </div>
@@ -1501,7 +1501,7 @@ body {
   height: 13px;
 }
 
-/* 立新志按钮 - 墨色金字 */
+/* 立个 flag！按钮 - 墨色金字 */
 .btn-new-okr {
   display: flex;
   align-items: center;
@@ -2043,7 +2043,7 @@ body {
 
 <div class="okr-modal-overlay" id="okrModalOverlay">
   <div class="okr-modal">
-    <h3 id="okrModalTitle">立新志</h3>
+    <h3 id="okrModalTitle">立个 flag！</h3>
     <label>目标名称</label>
     <input id="okrTitle" placeholder="例如：雅思总分 7.0" />
     <label>门派 / 分类</label>
@@ -2206,7 +2206,7 @@ body {
       editingId = id || null;
       var list = getOkrs();
       var o = id ? list.find(function(x){ return x.id === id; }) : null;
-      document.getElementById('okrModalTitle').textContent = o ? '改志向' : '立新志';
+      document.getElementById('okrModalTitle').textContent = o ? '改志向' : '立个 flag！';
       document.getElementById('okrTitle').value = o ? o.title : '';
       document.getElementById('okrCategory').value = o ? (o.category || '') : '';
       document.getElementById('okrKeyResults').value = o ? normalizeKrs(o.keyResults).map(function(k){ return k.title; }).join('\n') : '';

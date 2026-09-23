@@ -24,6 +24,18 @@
     '风': ['想多做少', '三心二意', '口无遮拦'],
     '水': ['情绪化决策', '自我内耗', '过度在意他人']
   };
+  var REMINDERS = [
+    '今天喝够水了吗？',
+    '坐久了，起来走两步吧',
+    '要不要小睡十分钟？',
+    '抬头看看远处，歇歇眼睛',
+    '今天有好好吃饭吗？',
+    '深呼吸三次，松一松肩膀',
+    '今天，对自己温柔一点',
+    '别忘了伸个懒腰',
+    '天气好的话，出去透透气',
+    '早点睡，明天才有力气'
+  ];
 
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
   function key() { return 'xingxing_zodiac'; }
@@ -75,8 +87,9 @@
     var f = get();
     var wd = document.querySelector('.sidebar-weekday') || document.getElementById('sidebarWeekday');
     if (wd) {
-      wd.textContent = '宜' + f.yi + ' · 忌' + f.ji;
-      wd.title = '今日宜：' + f.yi + '　今日忌：' + f.ji + '（点击可更换宜忌风格）';
+      var r = REMINDERS[hash(dayStr() + '#reminder') % REMINDERS.length];
+      wd.textContent = r;
+      wd.title = '今日善意提醒（点击可更换风格）';
       wd.style.cursor = 'pointer';
       if (!wd.getAttribute('data-xx-bound')) {
         wd.setAttribute('data-xx-bound', '1');
