@@ -80,6 +80,7 @@
     if (old) { old.parentNode.removeChild(old); return; }
     var p = get();
     var custom = (p.customLevels || []).join('\n');
+    var levelIndex = typeof p.levelIndex === 'number' ? p.levelIndex : 0;
     var box = document.createElement('div');
     box.id = 'xx-profile-modal';
     box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:14px;padding:22px;box-shadow:0 20px 50px rgba(20,16,8,.35);font-family:"STKaiti","KaiTi",serif;width:88vw;max-width:420px;max-height:86vh;overflow:auto;';
@@ -110,8 +111,18 @@
       var txt = box.querySelector('[data-f="customLevels"]');
       var key = null;
       for (var k in LEVELS) if (LEVELS[k].name === sel.value) key = k;
-      var list = key === 'custom' ? (txt.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean).length ? txt.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean) : LEVELS.custom.list) : (LEVELS[key] || LEVELS.xianxia).list;
-      box.querySelector('#xx-level-table').innerHTML = '<div style="color:#8b6914;margin-bottom:6px;">' + sel.value + ' · 全部等级</div>' + list.map(function (t, i) { return (i + 1) + '. ' + t; }).join('<br>');
+      var customList = txt.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+      var list = key === 'custom' ? (customList.length ? customList : LEVELS.custom.list) : (LEVELS[key] || LEVELS.xianxia).list;
+      if (levelIndex >= list.length) levelIndex = list.length - 1;
+      if (levelIndex < 0) levelIndex = 0;
+      var html = '<div style="color:#8b6914;margin-bottom:6px;">' + sel.value + ' · 点一下选中当前等级</div>';
+      html += list.map(function (t, i) {
+        return '<div data-idx="' + i + '" style="padding:5px 8px;border-radius:6px;cursor:pointer;' + (i === levelIndex ? 'background:#1f1a10;color:#f7ecd0;' : '') + '">' + (i + 1) + '. ' + t + '</div>';
+      }).join('');
+      box.querySelector('#xx-level-table').innerHTML = html;
+      Array.prototype.forEach.call(box.querySelectorAll('#xx-level-table [data-idx]'), function (el) {
+        el.addEventListener('click', function () { levelIndex = parseInt(el.getAttribute('data-idx'), 10); refreshTable(); });
+      });
     }
     refreshTable();
     box.querySelector('[data-f="levelSystem"]').addEventListener('change', refreshTable);
@@ -142,7 +153,8 @@
         gender: box.querySelector('[data-f="gender"]').value,
         zodiac: box.querySelector('[data-f="zodiac"]').value,
         levelSystem: systemKey,
-        customLevels: customLevels
+        customLevels: customLevels,
+        levelIndex: levelIndex
       };
       if (box.getAttribute('data-avatar')) patch.avatar = box.getAttribute('data-avatar');
       else if (avatarText) patch.avatar = avatarText;
