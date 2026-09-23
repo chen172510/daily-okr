@@ -809,6 +809,8 @@ body {
               <div>尚无省身札记，完成今日复盘开启第一篇</div>
             </div>
           </div>
+
+          <div class="review-calendar" id="reviewCalendar" style="display:none;"></div>
         </div>
       </div>
     </main>
@@ -4053,6 +4055,7 @@ body {
         const count = countSanxing(r.data.sanxing);
         const item = document.createElement('div');
         item.className = 'review-item';
+        item.setAttribute('data-date', r.date);
         item.innerHTML = `
           <div class="review-item-date">
             <div class="review-item-day">${formatDay(r.date)}</div>
@@ -4114,6 +4117,113 @@ body {
       if (window.XingXingAPI && XingXingAPI.isLoggedIn()) {
         syncFromServer();
       }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+
+<style>
+  .review-calendar { padding: 8px 0; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal-head { text-align: center; font-size: 12px; color: var(--ink-light-grey, #8b8b8b); font-family: var(--font-kai, serif); padding: 4px 0; }
+  .cal-cell { aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid var(--gold-faint, #e8d5a3); border-radius: 4px; font-family: var(--font-kai, serif); font-size: 15px; color: var(--ink-charcoal, #2d2d2d); background: var(--ink-paper-light, #faf6ec); }
+  .cal-cell.empty { border: none; background: none; }
+  .cal-cell.today { border-color: var(--cinnabar, #c23a2b); color: var(--cinnabar, #c23a2b); font-weight: 700; }
+  .cal-cell.has-review::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--cinnabar, #c23a2b); margin-top: 3px; }
+</style>
+<script>
+  (function() {
+    'use strict';
+    var App = window.XingxingCommon || window.App;
+    var WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function fmt(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function getAllReviews() {
+      var out = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('xingxing_review_') === 0 && k.indexOf('_updated') < 0) {
+          try { out.push({ date: k.replace('xingxing_review_', ''), data: JSON.parse(localStorage.getItem(k)) }); } catch (e) {}
+        }
+      }
+      out.sort(function (a, b) { return b.date.localeCompare(a.date); });
+      return out;
+    }
+    function reviewedMap() {
+      var m = {};
+      getAllReviews().forEach(function (r) { m[r.date] = true; });
+      return m;
+    }
+    function todayStr() { return App && App.getTodayStr ? App.getTodayStr() : fmt(new Date()); }
+
+    function buildDateStrip() {
+      var strip = document.querySelector('.date-strip');
+      if (!strip) return;
+      var reviewed = reviewedMap(), today = todayStr(), html = '';
+      for (var i = 13; i >= 0; i--) {
+        var d = new Date(); d.setDate(d.getDate() - i);
+        var ds = fmt(d);
+        var cls = 'date-item' + (reviewed[ds] ? ' has-review' : '') + (ds === today ? ' active' : '');
+        html += '<div class="' + cls + '" data-date="' + ds + '" title="' + ds + '">'
+          + '<span class="date-day-name">' + WEEK[d.getDay()] + '</span>'
+          + '<span class="date-day-number">' + d.getDate() + '</span>'
+          + '<span class="date-dot"></span></div>';
+      }
+      strip.innerHTML = html;
+      Array.prototype.forEach.call(strip.querySelectorAll('.date-item'), function (el) {
+        el.addEventListener('click', function () {
+          Array.prototype.forEach.call(strip.querySelectorAll('.date-item'), function (x) { x.classList.remove('active'); });
+          el.classList.add('active');
+          var target = document.querySelector('.review-item[data-date="' + el.getAttribute('data-date') + '"]');
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+    }
+
+    function buildCalendar() {
+      var el = document.getElementById('reviewCalendar');
+      if (!el) return;
+      var reviewed = reviewedMap();
+      var now = new Date(), y = now.getFullYear(), m = now.getMonth();
+      var firstDay = new Date(y, m, 1).getDay();
+      var days = new Date(y, m + 1, 0).getDate();
+      var today = todayStr(), html = '';
+      WEEK.forEach(function (w) { html += '<div class="cal-head">' + w + '</div>'; });
+      for (var i = 0; i < firstDay; i++) html += '<div class="cal-cell empty"></div>';
+      for (var d = 1; d <= days; d++) {
+        var ds = y + '-' + pad(m + 1) + '-' + pad(d);
+        var cls = 'cal-cell' + (reviewed[ds] ? ' has-review' : '') + (ds === today ? ' today' : '');
+        html += '<div class="' + cls + '" title="' + ds + '">' + d + '</div>';
+      }
+      el.innerHTML = '<div class="cal-grid">' + html + '</div>';
+    }
+
+    function show(mode) {
+      var isCal = mode === 'calendar';
+      var listEl = document.getElementById('reviewHistoryList');
+      var calEl = document.getElementById('reviewCalendar');
+      var strip = document.querySelector('.date-strip');
+      if (listEl) listEl.style.display = isCal ? 'none' : '';
+      if (calEl) calEl.style.display = isCal ? '' : 'none';
+      if (strip) strip.style.display = isCal ? 'none' : '';
+      var calBtn = document.getElementById('toggle-calendar');
+      var listBtn = document.getElementById('toggle-list');
+      if (calBtn) calBtn.classList.toggle('active', isCal);
+      if (listBtn) listBtn.classList.toggle('active', !isCal);
+      if (isCal) buildCalendar();
+    }
+
+    function init() {
+      buildDateStrip();
+      var calBtn = document.getElementById('toggle-calendar');
+      var listBtn = document.getElementById('toggle-list');
+      if (calBtn) calBtn.addEventListener('click', function () { show('calendar'); });
+      if (listBtn) listBtn.addEventListener('click', function () { show('list'); });
     }
 
     if (document.readyState === 'loading') {
