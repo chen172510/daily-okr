@@ -455,13 +455,16 @@
   function checkAlarms() {
     var now = new Date();
     var nowMin = now.getHours() * 60 + now.getMinutes();
-    var nowSec = now.getSeconds();
+
+    // 总开关关闭时不提醒
+    if (localStorage.getItem('xingxing_alarm_enabled') === '0') return;
 
     plans.forEach(function(plan) {
       if (!plan.alarmOn || plan.alarmTriggered) return;
       var startMin = timeToMinutes(plan.startTime);
-      // 到点了（分钟匹配，秒数在 0-30 内触发一次）
-      if (nowMin === startMin && nowSec < 30) {
+      // 到点后 2 分钟内都可触发（避免 30 秒轮询错过整分钟）
+      var diff = nowMin - startMin;
+      if (diff >= 0 && diff <= 1) {
         triggerAlarm(plan);
       }
     });
