@@ -25,8 +25,8 @@
     renderDate();
     renderTimeline();
     updateSummary();
-    updateAlarmStatus();
-    startAlarmChecker();
+  applyAlarmToggleState();
+  startAlarmChecker();
     updateNowLine();
     setInterval(updateNowLine, 60000);
   }
@@ -197,17 +197,23 @@
     var textEl = document.getElementById('alarmStatusText');
     if (!statusEl || !textEl) return;
 
-    var hasActiveAlarm = plans.some(function(p) {
-      return p.alarmOn && !p.alarmTriggered;
-    });
-
-    if (hasActiveAlarm) {
+    // 以「总开关」为准：开 = 绿，关 = 红
+    var enabled = localStorage.getItem('xingxing_alarm_enabled') !== '0';
+    if (enabled) {
       statusEl.classList.add('active');
       textEl.textContent = '提醒开启';
     } else {
       statusEl.classList.remove('active');
       textEl.textContent = '提醒关闭';
     }
+  }
+
+  function applyAlarmToggleState() {
+    var enabled = localStorage.getItem('xingxing_alarm_enabled') !== '0';
+    var cb = document.getElementById('alarmToggle');
+    if (cb) cb.checked = enabled;
+    toggleRingtoneSelectorUI(enabled);
+    updateAlarmStatus();
   }
 
   // ========== 更新"现在"时间线位置 ==========
@@ -320,8 +326,11 @@
   }
 
   function toggleRingtoneSelector() {
-    var checked = document.getElementById('alarmToggle').checked;
+    var cb = document.getElementById('alarmToggle');
+    var checked = cb ? cb.checked : false;
     toggleRingtoneSelectorUI(checked);
+    try { localStorage.setItem('xingxing_alarm_enabled', checked ? '1' : '0'); } catch (e) {}
+    updateAlarmStatus();
   }
 
   function toggleRingtoneSelectorUI(show) {
