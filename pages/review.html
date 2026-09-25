@@ -4249,5 +4249,52 @@ body {
 </script>
 <script src="../assets/fortune.js"></script>
 <script src="../assets/profile.js"></script>
+
+<style>
+  .voice-btn.listening { color: var(--cinnabar, #c23a2b); animation: vpulse 1s ease-in-out infinite; }
+  @keyframes vpulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+</style>
+<script>
+  (function () {
+    'use strict';
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var btns = document.querySelectorAll('.voice-btn');
+    if (!btns.length) return;
+    if (!SR) {
+      Array.prototype.forEach.call(btns, function (b) { b.title = '当前浏览器不支持语音识别，请用 Chrome / Edge 打开'; });
+      return;
+    }
+    function targetFor(btn) {
+      var wrap = btn.closest('.question-textarea-wrap') || btn.parentElement;
+      var block = btn.closest('.question-block');
+      return (wrap && wrap.querySelector('textarea')) || (block && block.querySelector('textarea'));
+    }
+    function toast(msg) {
+      try { if (window.XingxingCommon && XingxingCommon.showToast) { XingxingCommon.showToast(msg, 'warning', 2200); return; } } catch (e) {}
+      alert(msg);
+    }
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var ta = targetFor(btn);
+        if (!ta) return;
+        var rec = new SR();
+        rec.lang = 'zh-CN';
+        rec.interimResults = true;
+        rec.continuous = false;
+        var base = ta.value;
+        btn.classList.add('listening');
+        rec.onresult = function (ev) {
+          var txt = '';
+          for (var i = ev.resultIndex; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+          ta.value = base + txt;
+        };
+        rec.onerror = function (ev) { toast('语音识别没成功：' + (ev.error || '未知原因')); };
+        rec.onend = function () { btn.classList.remove('listening'); };
+        try { rec.start(); } catch (err) { toast('无法启动语音识别'); btn.classList.remove('listening'); }
+      });
+    });
+  })();
+</script>
 </body>
 </html>
