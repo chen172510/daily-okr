@@ -62,6 +62,33 @@
       el.title = '点击打开个人档案';
       el.addEventListener('click', function (e) { e.stopPropagation(); open(); });
     });
+    applyBadge();
+  }
+
+  // ---------- 桌宠红点提醒 ----------
+  function badgeCount() {
+    try { return parseInt(localStorage.getItem('xingxing_pet_badge') || '0', 10) || 0; } catch (e) { return 0; }
+  }
+  function setBadge(n) {
+    try { localStorage.setItem('xingxing_pet_badge', String(n || 0)); } catch (e) {}
+    applyBadge();
+  }
+  function applyBadge() {
+    var n = badgeCount();
+    Array.prototype.forEach.call(document.querySelectorAll('.user-avatar, #sidebarUser'), function (el) {
+      var b = el.querySelector('.xx-badge');
+      if (!n) { if (b && b.parentNode) b.parentNode.removeChild(b); return; }
+      if (!b) {
+        if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+        b = document.createElement('span');
+        b.className = 'xx-badge';
+        b.style.cssText = 'position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:#e11d48;color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #faf6ec;font-family:sans-serif;cursor:pointer;z-index:5;';
+        b.addEventListener('click', function (e) { e.stopPropagation(); setBadge(0); });
+        el.appendChild(b);
+      }
+      b.textContent = String(n);
+      b.title = '有 ' + n + ' 条提醒，点击清除';
+    });
   }
 
   function row(label, value, attr, options) {
@@ -164,7 +191,7 @@
     });
   }
 
-  global.XingxingProfile = { get: get, save: save, apply: apply, open: open, levelText: levelText, LEVELS: LEVELS };
+  global.XingxingProfile = { get: get, save: save, apply: apply, open: open, levelText: levelText, LEVELS: LEVELS, setBadge: setBadge, badgeCount: badgeCount };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
   else apply();
 })(window);

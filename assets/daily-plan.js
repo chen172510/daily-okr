@@ -487,6 +487,11 @@
     updateSummary();
     updateAlarmStatus();
 
+    // 点亮桌宠红色感叹号（像微信消息那样）
+    try {
+      if (window.XingxingProfile && XingxingProfile.setBadge) XingxingProfile.setBadge(XingxingProfile.badgeCount ? (XingxingProfile.badgeCount() + 1) : 1);
+    } catch (e) {}
+
     // 浏览器通知（如果有权限）
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification('⏰ 时间到！', {
