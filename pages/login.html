@@ -490,7 +490,33 @@ body {
       <label class="form-label">确认密码</label>
       <input type="password" id="regConfirmPassword" class="form-input" placeholder="再次输入密码" autocomplete="new-password">
     </div>
-    <button type="submit" class="btn-primary" id="registerBtn">注 册</button>
+            <div class="form-group">
+          <label style="display:block;font-size:13px;color:var(--okr-ink-600,#6b5d44);margin-bottom:6px;">性别（可选）</label>
+          <select id="regGender" class="form-input">
+            <option value="不透露">不透露</option>
+            <option value="女生">女生</option>
+            <option value="男生">男生</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label style="display:block;font-size:13px;color:var(--okr-ink-600,#6b5d44);margin-bottom:6px;">星座（可选）</label>
+          <select id="regZodiac" class="form-input">
+            <option value="不透露">不透露</option>
+            <option value="白羊座">白羊座</option>
+            <option value="金牛座">金牛座</option>
+            <option value="双子座">双子座</option>
+            <option value="巨蟹座">巨蟹座</option>
+            <option value="狮子座">狮子座</option>
+            <option value="处女座">处女座</option>
+            <option value="天秤座">天秤座</option>
+            <option value="天蝎座">天蝎座</option>
+            <option value="射手座">射手座</option>
+            <option value="摩羯座">摩羯座</option>
+            <option value="水瓶座">水瓶座</option>
+            <option value="双鱼座">双鱼座</option>
+          </select>
+        </div>
+<button type="submit" class="btn-primary" id="registerBtn">注 册</button>
     <p class="auth-footer">
       已有账号？<a href="#" id="switchToLogin">返回登录</a>
     </p>
@@ -655,6 +681,17 @@ registerForm.addEventListener('submit', async (e) => {
       localStorage.setItem('xingxing_token', data.token);
       localStorage.setItem('xingxing_user', JSON.stringify(data.user));
       showToast('注册成功！', 'success');
+
+      // 把注册时选的性别 / 星座写入个人档案
+      try {
+        if (window.XingxingProfile && XingxingProfile.save) {
+          XingxingProfile.save({
+            nickname: data.user.nickname || username,
+            gender: (document.getElementById('regGender') || {}).value || '不透露',
+            zodiac: (document.getElementById('regZodiac') || {}).value || '不透露'
+          });
+        }
+      } catch (e2) {}
 
       // 把本地现有数据推送到云端（如果有）
       try {
