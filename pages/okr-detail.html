@@ -2380,14 +2380,46 @@ body::before {
     function setProgress(i) {
       var k = current.keyResults[i];
       if (!k) return;
-      var v = prompt('设置「' + k.title + '」的进度（0 - 100）：', String(k.progress || 0));
-      if (v === null) return;
-      var n = parseInt(v, 10);
-      if (isNaN(n)) { alert('请输入 0 - 100 的数字'); return; }
-      k.progress = Math.max(0, Math.min(100, n));
-      save();
-      render();
-      if (App && App.showToast) App.showToast('进度已更新为 ' + k.progress + '%', 'success', 1500);
+      askInput('设置「' + k.title + '」的进度（0 - 100）', k.progress || 0, function (v) {
+        var n = parseInt(v, 10);
+        if (isNaN(n)) { if (App && App.showToast) App.showToast('请输入 0 - 100 的数字', 'warning', 1600); return; }
+        k.progress = Math.max(0, Math.min(100, n));
+        save();
+        render();
+        if (App && App.showToast) App.showToast('进度已更新为 ' + k.progress + '%', 'success', 1500);
+      });
+    }
+
+    // 页面内输入框（内嵌浏览器会拦截原生 prompt/alert）
+    function askInput(title, value, cb) {
+      var old = document.getElementById('kr-ask');
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      var box = document.createElement('div');
+      box.id = 'kr-ask';
+      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:99999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:20px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;min-width:260px;max-width:86vw;';
+      box.innerHTML = '<div style="font-size:15px;margin-bottom:10px;color:#1f1a10;">' + esc(title) + '</div>'
+        + '<input id="kr-ask-input" value="' + String(value == null ? '' : value).replace(/"/g, '&quot;') + '" style="width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #d9cbae;border-radius:6px;font-family:inherit;background:#fff;" />'
+        + '<div style="margin-top:14px;display:flex;justify-content:flex-end;gap:10px;">'
+        + '<button type="button" data-a="cancel" style="border:none;background:none;cursor:pointer;font-family:inherit;color:#8a7a5e;font-size:14px;">取消</button>'
+        + '<button type="button" data-a="ok" style="border:none;border-radius:6px;padding:8px 18px;background:#1f1a10;color:#f7ecd0;cursor:pointer;font-family:inherit;font-size:14px;">确定</button>'
+        + '</div>';
+      document.body.appendChild(box);
+      var input = box.querySelector('#kr-ask-input');
+      try { input.focus(); input.select(); } catch (e) {}
+      function done(ok) {
+        var v = input.value;
+        if (box.parentNode) box.parentNode.removeChild(box);
+        if (ok) cb(v);
+      }
+      box.addEventListener('click', function (e) {
+        var a = e.target.getAttribute && e.target.getAttribute('data-a');
+        if (a === 'cancel') done(false);
+        if (a === 'ok') done(true);
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') done(true);
+        if (e.key === 'Escape') done(false);
+      });
     }
 
     function showInfo(i) {
@@ -2412,13 +2444,14 @@ body::before {
     }
 
     function addKr() {
-      var name = prompt('新关卡的名称（关键结果）：');
-      if (!name || !name.trim()) return;
-      current.keyResults = normalizeKrs(current.keyResults);
-      current.keyResults.push({ title: name.trim(), progress: 0 });
-      save();
-      render();
-      if (App && App.showToast) App.showToast('已加一关', 'success', 1500);
+      askInput('新关卡的名称（关键结果）', '', function (v) {
+        if (!v || !v.trim()) return;
+        current.keyResults = normalizeKrs(current.keyResults);
+        current.keyResults.push({ title: v.trim(), progress: 0 });
+        save();
+        render();
+        if (App && App.showToast) App.showToast('已加一关', 'success', 1500);
+      });
     }
 
     function init() {
