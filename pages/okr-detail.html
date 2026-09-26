@@ -2431,13 +2431,21 @@ body::before {
       if (old) old.parentNode.removeChild(old);
       var box = document.createElement('div');
       box.id = 'kr-info';
-      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:20px 22px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;min-width:260px;max-width:86vw;';
-      box.innerHTML = '<div style="font-size:16px;color:#1f1a10;margin-bottom:12px;letter-spacing:1px;">KR' + (i + 1) + ' · ' + esc(k.title) + '</div>'
-        + '<div style="font-size:14px;color:#362e1f;line-height:2;">'
-        + '状态：' + (done ? '已圆满' : (p > 0 ? '修行中' : '未开始')) + '<br>'
-        + '进度：' + p + '%<br>'
-        + '已完成：' + p + '%<br>'
-        + '未完成：还差 ' + (100 - p) + '%</div>'
+      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:20px 22px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;min-width:280px;max-width:86vw;';
+      var rows = (current.keyResults || []).map(function (kk, idx) {
+        var pp = Math.max(0, Math.min(100, kk.progress || 0));
+        var mark = pp >= 100 ? '✓' : (pp > 0 ? '◐' : '○');
+        var color = pp >= 100 ? '#2d6a4f' : (pp > 0 ? '#8b6914' : '#a89880');
+        return '<div style="display:flex;justify-content:space-between;gap:12px;' + (idx === i ? 'font-weight:600;' : '') + '">'
+          + '<span style="color:' + color + ';">' + mark + ' KR' + (idx + 1) + ' · ' + esc(kk.title) + '</span>'
+          + '<span>' + pp + '%</span></div>';
+      }).join('');
+      box.innerHTML = '<div style="font-size:16px;color:#1f1a10;margin-bottom:4px;letter-spacing:1px;">KR' + (i + 1) + ' · ' + esc(k.title) + '</div>'
+        + '<div style="font-size:12px;color:#8a7a5e;margin-bottom:10px;">所属目标：' + esc(current.title || '') + '</div>'
+        + '<div style="font-size:14px;color:#362e1f;line-height:1.9;">状态：' + (done ? '已圆满' : (p > 0 ? '修行中' : '未开始')) + '　当前进度：' + p + '%<br>'
+        + '<span style="color:#2d6a4f;">已完成 ' + p + '%</span>　<span style="color:#c23a2b;">待推进 ' + (100 - p) + '%</span></div>'
+        + '<div style="margin-top:12px;font-size:12px;color:#8b6914;">本目标各关卡完成情况（✓ 已完成 / ◐ 进行中 / ○ 未开始）</div>'
+        + '<div style="font-size:13px;color:#362e1f;line-height:1.95;margin-top:4px;">' + rows + '</div>'
         + '<div style="margin-top:16px;text-align:right;"><button type="button" data-close="1" style="border:1px solid #e0d8cc;background:#fff;border-radius:6px;padding:7px 16px;cursor:pointer;font-family:inherit;color:#362e1f;">知道了</button></div>';
       document.body.appendChild(box);
       box.addEventListener('click', function (e) { if (e.target.getAttribute('data-close')) box.parentNode.removeChild(box); });

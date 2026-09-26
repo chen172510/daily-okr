@@ -4191,10 +4191,34 @@ body {
       strip.innerHTML = html;
       Array.prototype.forEach.call(strip.querySelectorAll('.date-item'), function (el) {
         el.addEventListener('click', function () {
+          var ds = el.getAttribute('data-date');
+          var wasActive = el.classList.contains('active');
           Array.prototype.forEach.call(strip.querySelectorAll('.date-item'), function (x) { x.classList.remove('active'); });
+          var listEl = document.getElementById('reviewHistoryList');
+          var emptyEl = document.getElementById('reviewEmptyState');
+          if (!listEl) return;
+          var items = listEl.querySelectorAll('.review-item');
+          // 再点一次同一天 = 取消筛选，显示全部
+          if (wasActive) {
+            Array.prototype.forEach.call(items, function (it) { it.style.display = ''; });
+            if (emptyEl) emptyEl.style.display = 'none';
+            return;
+          }
           el.classList.add('active');
-          var target = document.querySelector('.review-item[data-date="' + el.getAttribute('data-date') + '"]');
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          var found = 0;
+          Array.prototype.forEach.call(items, function (it) {
+            var show = it.getAttribute('data-date') === ds;
+            it.style.display = show ? '' : 'none';
+            if (show) found++;
+          });
+          if (emptyEl) {
+            if (found === 0) {
+              emptyEl.innerHTML = '<div style="font-size:32px;margin-bottom:8px;">📜</div><div>' + ds + ' 那天还没有复盘记录</div>';
+              emptyEl.style.display = 'block';
+            } else {
+              emptyEl.style.display = 'none';
+            }
+          }
         });
       });
     }
