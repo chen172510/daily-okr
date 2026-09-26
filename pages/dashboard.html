@@ -10295,6 +10295,8 @@ body::before {
   }
 
   // --- 记录弹窗 ---
+  function chgNum(v, d) { return (typeof v === 'number' && !isNaN(v)) ? v : d; }
+
   function openChargeRecordModal(methodId) {
     currentChargeMethodId = methodId;
     currentEffectScore = 0;
@@ -10312,14 +10314,16 @@ body::before {
         '<span class="charge-record-cat">' + method.category + '</span>';
     }
 
-    // 自动填入当前精力/状态作为充电前
-    var current = getCurrentEnergyState();
-    setChargeSliderValue('before', 'energy', current.energy);
-    setChargeSliderValue('before', 'state', current.state);
+    // 自动填入当前精力/状态作为充电前（取数值，取不到就用 50，避免 NaN）
+    var A = window.XingxingCommon;
+    var energyNow = chgNum(A && A.getEnergy ? A.getEnergy() : NaN, 50);
+    var stateNow = chgNum(A && A.getState ? A.getState() : NaN, 50);
+    setChargeSliderValue('before', 'energy', energyNow);
+    setChargeSliderValue('before', 'state', stateNow);
 
     // 充电后默认加上预计恢复量
-    var afterEnergy = clamp(current.energy + method.energyBoost, 0, 100);
-    var afterState = clamp(current.state + method.stateBoost, 0, 100);
+    var afterEnergy = clamp(energyNow + (method.energyBoost || 0), 0, 100);
+    var afterState = clamp(stateNow + (method.stateBoost || 0), 0, 100);
     setChargeSliderValue('after', 'energy', afterEnergy);
     setChargeSliderValue('after', 'state', afterState);
 
