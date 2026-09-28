@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>周星星</title>
+<style>
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden;
+    -webkit-user-select: none; user-select: none; cursor: grab; }
+  body.dragging { cursor: grabbing; }
+  #stage { position: relative; width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+  #pet { position: relative; height: 88%; aspect-ratio: 1358 / 1280; transform-origin: 50% 100%;
+    animation: bob 2.6s ease-in-out infinite; transition: transform .25s ease; }
+  #pet.flip { transform: scaleX(-1); }
+  #pet img { width: 100%; height: 100%; display: block; pointer-events: none; }
+  @keyframes bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+  .prop { position: absolute; pointer-events: none; }
+  #bubble { position: absolute; top: 2%; left: 50%; transform: translateX(-50%);
+    background: #fffdf5; border: 2px solid #1b1b1b; border-radius: 12px;
+    padding: 6px 10px; font: 13px/1.4 "Microsoft YaHei", sans-serif; color: #1b1b1b;
+    white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis;
+    opacity: 0; transition: opacity .25s ease; }
+  #bubble.show { opacity: 1; }
+  #bubble::after { content: ''; position: absolute; bottom: -7px; left: 50%; margin-left: -6px;
+    width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 7px solid #1b1b1b; }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="bubble"></div>
+    <div id="pet"><img src="assets/pet.jpg" alt="周星星"></div>
+  </div>
+  <script src="pet.js"></script>
+</body>
+</html>
