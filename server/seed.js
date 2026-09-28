@@ -92,12 +92,16 @@ function seedUser(db, userId) {
     errorItems: [
       { id: 'err_seed_1', categoryId: 'c5', title: '雅思听力 Section 3 跟不上', description: '做听力时 Section 3 的选择题总是跟不上节奏，漏听关键信息',
         errorCount: 3, masteryLevel: 55, status: 'warning', lastErrorDate: dayStr(ago(1)), firstErrorDate: dayStr(ago(5)),
+        tags: ['雅思', '听力', '技巧'],
         errorReasons: ['读题速度慢', '没有预判答案类型'], solutions: ['提前读题划关键词', '练习跟读'],
-        history: [{ date: dayStr(ago(1)), context: '剑 17 Test 2 听力 Section 3 错了 5 道', reflection: '' }] },
+        history: [{ date: dayStr(ago(1)), context: '剑 17 Test 2 听力 Section 3 错了 5 道', reflection: '' }],
+        consecutiveSuccess: 0, practicedSolutions: [], addedFromReview: true, addedDate: dayStr(ago(5)) },
       { id: 'err_seed_2', categoryId: 'c2', title: '做事拖延，临急抱佛脚', description: '总是拖到最后一刻才开始，质量不稳定',
         errorCount: 5, masteryLevel: 45, status: 'critical', lastErrorDate: dayStr(ago(2)), firstErrorDate: dayStr(ago(8)),
+        tags: ['拖延', '习惯'],
         errorReasons: ['完美主义', '畏难'], solutions: ['先做五分钟', '把任务拆小'],
-        history: [{ date: dayStr(ago(2)), context: '论文拖到最后一天', reflection: '' }] }
+        history: [{ date: dayStr(ago(2)), context: '论文拖到最后一天', reflection: '' }],
+        consecutiveSuccess: 0, practicedSolutions: [], addedFromReview: true, addedDate: dayStr(ago(8)) }
     ]
   });
 }

@@ -899,13 +899,55 @@ let state = {
 };
 
 // ========== 数据持久化 ==========
+// 数据规整：兼容云端 / 旧版本里缺字段的错题数据，避免渲染时整页崩掉
+function normalizeErrorItem(item) {
+  if (!item || typeof item !== 'object') return null;
+  const toList = (v) => Array.isArray(v) ? v : (v === undefined || v === null || v === '' ? [] : [v]);
+  const toNum = (v, d) => { const n = Number(v); return isFinite(n) ? n : d; };
+  const today = todayStr();
+  const firstDate = item.firstErrorDate || item.lastErrorDate || today;
+  return {
+    id: item.id || ('e' + Math.random().toString(36).slice(2, 9)),
+    categoryId: item.categoryId || 'c1',
+    title: item.title || '未命名错题',
+    description: item.description || '',
+    errorCount: toNum(item.errorCount, 1),
+    masteryLevel: Math.max(0, Math.min(100, toNum(item.masteryLevel, 60))),
+    lastErrorDate: item.lastErrorDate || today,
+    firstErrorDate: firstDate,
+    status: item.status || 'normal',
+    tags: toList(item.tags),
+    errorReasons: toList(item.errorReasons),
+    solutions: toList(item.solutions),
+    history: Array.isArray(item.history) ? item.history : [],
+    consecutiveSuccess: toNum(item.consecutiveSuccess, 0),
+    practicedSolutions: Array.isArray(item.practicedSolutions) ? item.practicedSolutions : [],
+    addedFromReview: !!item.addedFromReview,
+    addedDate: item.addedDate || firstDate
+  };
+}
+
+function normalizeErrorData(raw) {
+  const data = (raw && typeof raw === 'object') ? raw : {};
+  const cats = (Array.isArray(data.categories) && data.categories.length) ? data.categories : defaultCategories;
+  return {
+    categories: cats.map(c => ({
+      id: c.id,
+      name: c.name || '未命名分类',
+      icon: c.icon || '📌',
+      color: c.color || '#8a7a5e'
+    })),
+    errorItems: (Array.isArray(data.errorItems) ? data.errorItems : []).map(normalizeErrorItem).filter(Boolean)
+  };
+}
+
 function loadData() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      const data = JSON.parse(saved);
-      state.categories = data.categories || defaultCategories;
-      state.errorItems = data.errorItems || defaultErrorItems;
+      const data = normalizeErrorData(JSON.parse(saved));
+      state.categories = data.categories;
+      state.errorItems = data.errorItems;
     } else {
       state.categories = [...defaultCategories];
       state.errorItems = [...defaultErrorItems];
@@ -1100,6 +1142,7 @@ function renderErrorList() {
     const statusIcon = getStatusIcon(item.status);
     const isNewToday = item.firstErrorDate === today || item.addedDate === today;
     const newBadge = isNewToday ? '<span class="new-badge">新</span>' : '';
+    const itemTags = Array.isArray(item.tags) ? item.tags : [];
     
     html += `<div class="error-card status-${item.status} ${isNewToday ? 'is-new' : ''}" onclick="openDetail('${item.id}')">
       <div class="error-card-header">
@@ -1125,7 +1168,7 @@ function renderErrorList() {
       </div>
       <div class="error-card-footer">
         <div class="error-tags">
-          ${item.tags.slice(0, 3).map(t => `<span class="error-tag">${t}</span>`).join('')}
+          ${itemTags.slice(0, 3).map(t => `<span class="error-tag">${t}</span>`).join('')}
         </div>
         <span class="mastery-text ${masteryClass}">掌握度 ${item.masteryLevel}%</span>
       </div>
@@ -1315,33 +1358,33 @@ function openDetail(errorId) {
     <div class="detail-section">
       <div class="detail-section-title">错误原因</div>
       <ul class="detail-list">
-        ${item.errorReasons.map(r => `<li>${r}</li>`).join('')}
+        ${(item.errorReasons || []).map(r => `<li>${r}</li>`).join('') || '<li>还没有分析原因</li>'}
       </ul>
     </div>
     
     <div class="detail-section">
       <div class="detail-section-title">改进方法</div>
       <ul class="detail-list solutions">
-        ${item.solutions.map((s, i) => `
+        ${(item.solutions || []).map((s, i) => `
           <li class="${(item.practicedSolutions || []).includes(i) ? 'practiced' : ''}" 
               onclick="toggleSolution('${item.id}', ${i}, this)">
             <span class="solution-checkbox"></span>
             ${s}
           </li>
-        `).join('')}
+        `).join('') || '<li>还没有想到办法，先记着</li>'}
       </ul>
     </div>
     
     <div class="detail-section">
-      <div class="detail-section-title">犯错历史 (${item.history.length}次)</div>
+      <div class="detail-section-title">犯错历史 (${(item.history || []).length}次)</div>
       <div class="history-timeline">
-        ${item.history.map(h => `
+        ${(item.history || []).map(h => `
           <div class="history-item">
             <div class="history-date">${h.date}</div>
             <div class="history-context">${h.context}</div>
             <div class="history-reflection">「${h.reflection}」</div>
           </div>
-        `).join('')}
+        `).join('') || '<div class="history-item">还没有记录</div>'}
       </div>
     </div>
     
@@ -1720,18 +1763,23 @@ function init() {
     // 重新加载数据，确保新增的题被包含
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      const data = JSON.parse(saved);
-      state.categories = data.categories || state.categories;
-      state.errorItems = data.errorItems || state.errorItems;
+      const data = normalizeErrorData(JSON.parse(saved));
+      state.categories = data.categories.length ? data.categories : state.categories;
+      state.errorItems = data.errorItems;
     }
   }
 
-  renderCategories();
-  renderErrorList();
-  renderStats();
-  updateListTitle();
-  updateTodayNewBanner();
-  updateTimeDisplay();
+  // 每个渲染块单独兜底：任何一处出错都不能影响其他部分
+  const safeRender = (name, fn) => {
+    try { fn(); } catch (e) { console.error('[错题本] ' + name + ' 渲染失败：', e); }
+  };
+
+  safeRender('renderCategories', renderCategories);
+  safeRender('renderErrorList', renderErrorList);
+  safeRender('renderStats', renderStats);
+  safeRender('updateListTitle', updateListTitle);
+  safeRender('updateTodayNewBanner', updateTodayNewBanner);
+  safeRender('updateTimeDisplay', updateTimeDisplay);
   setInterval(updateTimeDisplay, 60000);
 }
 

@@ -546,7 +546,12 @@
       e => e.firstErrorDate === today || e.addedDate === today
     );
 
-    if (!hasTodayError && data.errorItems && data.errorItems.length > 0) {
+    // 已有同标题的题就不重复塞演示数据了
+    const hasSameTitle = data.errorItems && data.errorItems.some(
+      e => e.title && e.title.indexOf('雅思听力Section 3') === 0
+    );
+
+    if (!hasTodayError && !hasSameTitle && data.errorItems && data.errorItems.length > 0) {
       // 添加一道今天的新错题
       const newError = {
         id: 'e_today_' + Date.now(),

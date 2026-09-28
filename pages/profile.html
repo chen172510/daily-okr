@@ -573,6 +573,18 @@ body {
         <span class="arrow">›</span>
       </div>
     </div>
+    <div class="list-item" id="personalProfileBtn">
+      <div class="list-item-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l2.6 6.2 6.7.5-5.1 4.4 1.5 6.6L12 16.3 6.3 19.7l1.5-6.6L2.7 8.7l6.7-.5z"/>
+        </svg>
+        个人档案
+      </div>
+      <div class="list-item-value">
+        <span id="personalProfileValue">性别 / 星座 / 等级</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>
     <div class="list-item" id="changePasswordBtn">
       <div class="list-item-label">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -892,6 +904,39 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 
 <script src="../assets/fortune.js"></script>
 <script src="../assets/profile.js"></script>
+<script>
+  // ---------- 个人档案（昵称 / 性别 / 星座 / 等级）----------
+  (function () {
+    var row = document.getElementById('personalProfileBtn');
+    var valueEl = document.getElementById('personalProfileValue');
+    if (!row || !valueEl) return;
+
+    function refresh() {
+      if (!window.XingxingProfile) return;
+      var p = XingxingProfile.get();
+      var parts = [];
+      if (p.nickname) parts.push(p.nickname);
+      parts.push(p.gender || '不透露');
+      parts.push(p.zodiac || '不透露');
+      var lv = XingxingProfile.levelText ? XingxingProfile.levelText() : '';
+      if (lv) parts.push(lv);
+      valueEl.textContent = parts.join(' · ');
+    }
+
+    row.addEventListener('click', function () {
+      if (window.XingxingProfile) XingxingProfile.open();
+    });
+
+    // 档案弹窗关闭后刷新这一行的显示
+    var observer = new MutationObserver(function () {
+      if (!document.getElementById('xx-profile-modal')) refresh();
+    });
+    observer.observe(document.body, { childList: true });
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', refresh);
+    else refresh();
+  })();
+</script>
 <script src="../assets/pet.js"></script>
 <style>
   /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */

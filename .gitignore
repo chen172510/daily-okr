@@ -34,3 +34,17 @@ Thumbs.db
 
 # 临时脚本
 sync-app.js
+
+# 安卓打包工程（内部产物，不入库）
+app/
+
+# 个人文件，不上传公开仓库
+作品列表导出.xlsx
+项目交接文档.md
+产品说明文档.md
+【先读我】给接手Agent的启动说明.md
+backup-exclude.txt
+validation-report.json
+colors_and_type.css
+_server.js
+fix-nav.js

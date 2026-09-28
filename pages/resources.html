@@ -1133,7 +1133,7 @@ function createResourceCard(resource) {
         ? '<img src="' + resource.thumbnail + '" alt="' + resource.title + '">'
         : '<div class="resource-thumb-icon">' + typeIcons[resource.type] + '</div>';
     
-    const tagsHtml = resource.tags.slice(0, 2).map(tag => 
+    const tagsHtml = (resource.tags || []).slice(0, 2).map(tag => 
         '<span class="resource-tag">' + tag + '</span>'
     ).join('');
 
@@ -1792,7 +1792,7 @@ function editResource(id) {
     openAddResource();
     document.getElementById('resourceTitle').value = resource.title;
     document.getElementById('resourceUrl').value = resource.url || '';
-    document.getElementById('resourceTags').value = resource.tags.join(', ');
+    document.getElementById('resourceTags').value = (resource.tags || []).join(', ');
     document.getElementById('resourceDesc').value = resource.description;
     
     // 切换类型
