@@ -4238,6 +4238,42 @@ body {
         html += '<div class="' + cls + '" title="' + ds + '">' + d + '</div>';
       }
       el.innerHTML = '<div class="cal-grid">' + html + '</div>';
+      Array.prototype.forEach.call(el.querySelectorAll('.cal-cell[title]'), function (cell) {
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', function () { showDayDetail(cell.getAttribute('title')); });
+      });
+    }
+
+    // 点某天 → 显示那天的完成程度 / 心境 / 完成时间 / 记录次数
+    function showDayDetail(ds) {
+      var all = getAllReviews();
+      var rec = null;
+      for (var i = 0; i < all.length; i++) if (all[i].date === ds) { rec = all[i]; break; }
+      var old = document.getElementById('xx-day-detail');
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      var rows;
+      if (rec && rec.data) {
+        var sx = rec.data.sanxing || {};
+        var done = 0;
+        for (var k = 1; k <= 3; k++) { var v = sx[k] || sx[String(k)]; if (v && String(v).trim()) done++; }
+        var pct = Math.round(done / 3 * 100);
+        var t = rec.data.timestamp ? new Date(rec.data.timestamp) : null;
+        var timeStr = t ? (String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0')) : '—';
+        var n = (localStorage.getItem('xingxing_review_' + ds) ? 1 : 0);
+        rows = '完成程度：<b>' + done + '/3</b>（' + pct + '%）<br>'
+          + '今日心境：<b>' + (rec.data.mood || '—') + '</b><br>'
+          + '完成时间：<b>' + timeStr + '</b><br>'
+          + '记录次数：<b>' + n + '</b> 条（三省 ' + done + ' 条）';
+      } else {
+        rows = '这天还没有复盘记录。';
+      }
+      var box = document.createElement('div');
+      box.id = 'xx-day-detail';
+      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:99999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:18px 20px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;min-width:250px;max-width:86vw;font-size:14px;line-height:2;color:#362e1f;';
+      box.innerHTML = '<div style="font-size:16px;color:#1f1a10;margin-bottom:10px;">' + ds + '</div>' + rows
+        + '<div style="margin-top:14px;text-align:right;"><button type="button" data-close="1" style="border:1px solid #e0d8cc;background:#fff;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:inherit;color:#362e1f;">知道了</button></div>';
+      document.body.appendChild(box);
+      box.addEventListener('click', function (e) { if (e.target.getAttribute('data-close')) box.parentNode.removeChild(box); });
     }
 
     function show(mode) {
