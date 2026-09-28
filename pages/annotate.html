@@ -3245,11 +3245,30 @@ body::before {
   var images = [];
   var enginePromise = null;
 
+  // 优先用项目自带的离线引擎（不联网、不用 VPN）；缺失时才退回镜像
+  var LOCAL_BASE = new URL('../assets/vendor/tesseract/', window.location.href).href;
+  var MIRROR = 'https://registry.npmmirror.com/tesseract.js/5.1.0/files/dist/';
   var CDNS = [
+    LOCAL_BASE + 'tesseract.min.js',
+    MIRROR + 'tesseract.min.js',
     'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js',
-    'https://unpkg.com/tesseract.js@5.1.0/dist/tesseract.min.js',
-    'https://cdn.bootcdn.net/ajax/libs/tesseract.js/5.0.4/tesseract.min.js'
+    'https://unpkg.com/tesseract.js@5.1.0/dist/tesseract.min.js'
   ];
+
+  // 本地引擎完整时：worker / core / 语言包都走本地，完全离线
+  var engineOptions = {
+    workerPath: LOCAL_BASE + 'worker.min.js',
+    corePath: LOCAL_BASE,
+    langPath: LOCAL_BASE
+  };
+  var localReady = null;
+  function checkLocal() {
+    if (localReady) return localReady;
+    localReady = fetch(LOCAL_BASE + 'tesseract.min.js', { method: 'HEAD' })
+      .then(function (r) { return !!r.ok; })
+      .catch(function () { return false; });
+    return localReady;
+  }
 
   function toast(msg, type, ms) {
     if (window.XingxingCommon && XingxingCommon.showToast) {
@@ -3327,7 +3346,18 @@ body::before {
     runBtn.disabled = true;
     setStatus('正在加载识别引擎（首次约 15MB，请稍等）…');
 
-    loadEngine().then(function (Tesseract) {
+    checkLocal().then(function (isLocal) {
+      if (!isLocal) {
+        // 项目里没有离线引擎 → 换用镜像 CDN 的引擎与语言包
+        engineOptions = {
+          workerPath: MIRROR + 'worker.min.js',
+          corePath: 'https://registry.npmmirror.com/tesseract.js-core/5.1.0/files/',
+          langPath: 'https://tessdata.projectnaptha.com/4.0.0_best_int'
+        };
+      }
+      setStatus(isLocal ? '正在用本机离线引擎识别…' : '正在加载识别引擎（需要联网，首次较慢）…');
+      return loadEngine();
+    }).then(function (Tesseract) {
       var done = 0;
       var out = [];
       var total = images.length;
@@ -3344,13 +3374,15 @@ body::before {
         }
         var img = images[done];
         setStatus('正在识别第 ' + (done + 1) + ' / ' + total + ' 张…');
-        Tesseract.recognize(img.dataUrl, 'chi_sim+eng', {
+        var opts = {
           logger: function (m) {
             if (m.status === 'recognizing text' && typeof m.progress === 'number') {
               setStatus('正在识别第 ' + (done + 1) + ' / ' + total + ' 张… ' + Math.round(m.progress * 100) + '%');
             }
           }
-        }).then(function (res) {
+        };
+        Object.keys(engineOptions).forEach(function (k) { opts[k] = engineOptions[k]; });
+        Tesseract.recognize(img.dataUrl, 'chi_sim+eng', opts).then(function (res) {
           out.push((res && res.data && res.data.text ? res.data.text : '').trim());
           done++;
           next();
@@ -3365,8 +3397,8 @@ body::before {
     }).catch(function () {
       enginePromise = null;   // 下次点「开始识别」可以重试
       runBtn.disabled = false;
-      setStatus('识别引擎没加载成功：需要联网（约 15MB）。可以先用下面的话筒说，或者直接手打。');
-      toast('识别引擎加载失败，检查一下网络', 'warning', 3200);
+      setStatus('识别引擎没加载成功：本机离线引擎缺失，网络镜像也连不上。可以先用下面的话筒说，或者直接手打。');
+      toast('识别引擎加载失败', 'warning', 3200);
     });
   }
 
