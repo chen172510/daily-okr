@@ -30,6 +30,31 @@ function seedUser(db, userId) {
   set('xingxing_total_reviews', 12);
   set('xingxing_total_errors', 6);
 
+  // 近七天完成情况（七日修行图读这份数据）
+  const history = {};
+  const weekPlan = [
+    { total: 4, done: 2, blocked: 1 },
+    { total: 5, done: 4, blocked: 0 },
+    { total: 4, done: 3, blocked: 1 },
+    { total: 6, done: 5, blocked: 0 },
+    { total: 4, done: 2, blocked: 1 },
+    { total: 3, done: 1, blocked: 1 },
+    { total: 5, done: 3, blocked: 1 }
+  ];
+  weekPlan.forEach((w, i) => {
+    const d = ago(6 - i);
+    history[dayStr(d)] = {
+      total: w.total,
+      done: w.done,
+      doing: 0,
+      blocked: w.blocked,
+      todo: Math.max(0, w.total - w.done - w.blocked),
+      actualMinutes: 60 + w.done * 45,
+      plannedMinutes: w.total * 60
+    };
+  });
+  set('xingxing_day_history', history);
+
   // 复盘（最近三天）
   const reviews = [
     { d: 1, mood: '😊', s1: '完成了雅思阅读三篇练习，正确率有所提升', s2: '学到了一个新的解题方法：关键词定位法', s3: '明天要练习听力 Section 3' },

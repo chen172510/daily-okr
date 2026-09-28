@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>行醒 · 标注工具</title>
+    <title>行醒 · 速记助理</title>
     <style id="theme-vars">
 /* ============================================
    Daily OKR - Brand Design Tokens
@@ -414,7 +414,7 @@ body {
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
                     <path d="M10 8h6M10 12h6M10 16h4"/>
                 </svg>
-                省身错题
+                刻意练习
             </a>
             <a href="daily-plan.html" class="nav-item" data-dom-id="nav-todo">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -453,7 +453,7 @@ body {
                     <path d="M2 2l7.586 7.586"/>
                     <circle cx="11" cy="11" r="2"/>
                 </svg>
-                标注工具
+                速记助理
             </a>
             <a href="profile.html" class="nav-item" data-dom-id="nav-settings">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -468,9 +468,18 @@ body {
     <!-- ========== 主内容区 ========== -->
     <main class="main-content">
         <div class="page-header">
-            <div class="page-seal-tag">圈点</div>
-            <h1 class="page-title">标注工具</h1>
-            <p class="page-subtitle">上传截图，圈点批注，如古卷批阅，精益求精。</p>
+            <div class="page-seal-tag">速记</div>
+            <h1 class="page-title">速记助理</h1>
+            <p class="page-subtitle">书上的字、手机拍的照片、备忘录截图，丢进来就能变成能编辑、能搜索的文字。</p>
+        </div>
+
+        <!-- 主入口：识图取字 -->
+        <div class="quick-capture">
+            <div class="quick-capture-left">
+                <div class="quick-capture-title">识图取字</div>
+                <div class="quick-capture-desc">书本拍照 / 手机照片 / 备忘录截图 → 自动读出文字，还能语音补充，结果可存进知识库</div>
+            </div>
+            <button type="button" class="quick-capture-btn" id="btnOcrTop">开始识别</button>
         </div>
 
         <div class="annotate-container">
@@ -2488,7 +2497,7 @@ body::before {
   letter-spacing: 0.05em;
 }
 
-/* ---------- 标注工具布局 ---------- */
+/* ---------- 速记助理布局 ---------- */
 .annotate-container {
   display: flex;
   gap: 20px;
@@ -3089,6 +3098,25 @@ body::before {
 
 <!-- ========== 识图取字（书本 / 照片 / 截图 → 文字）========== -->
 <style>
+.quick-capture {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin: 0 0 16px;
+  padding: 16px 20px;
+  background: var(--ink-paper-light, #faf6ec);
+  border: 1.5px solid var(--ink-2, #d9cbae);
+  border-left: 4px solid #8b6914;
+  border-radius: 8px;
+  font-family: "STKaiti","KaiTi",serif;
+}
+.quick-capture-title { font-size: 17px; color: #1f1a10; letter-spacing: 2px; }
+.quick-capture-desc { margin-top: 4px; font-size: 12.5px; color: #8a7a5e; }
+.quick-capture-btn {
+  flex-shrink: 0;
+  padding: 9px 24px; border: none; border-radius: 6px; cursor: pointer;
+  background: #1f1a10; color: #f7ecd0;
+  font-family: inherit; font-size: 14px; letter-spacing: 1px;
+}
+.quick-capture-btn:hover { filter: brightness(1.15); }
 .ocr-overlay {
   position: fixed; inset: 0; z-index: 60;
   background: rgba(26, 22, 14, .45);
@@ -3456,6 +3484,8 @@ body::before {
   // ---------- 事件绑定 ----------
   var trigger = document.getElementById('btnOcr');
   if (trigger) trigger.addEventListener('click', open);
+  var triggerTop = document.getElementById('btnOcrTop');
+  if (triggerTop) triggerTop.addEventListener('click', open);
   document.getElementById('ocrClose').addEventListener('click', close);
   overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.hidden) close(); });

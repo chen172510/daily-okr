@@ -464,7 +464,7 @@ body {
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
                     <path d="M10 8h6M10 12h6M10 16h4"/>
                 </svg>
-                省身错题
+                刻意练习
             </a>
             <a href="daily-plan.html" class="nav-item" data-dom-id="nav-todo">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -502,7 +502,7 @@ body {
                     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
                     <line x1="10" y1="10" x2="14" y2="14"/>
                 </svg>
-                标注工具
+                速记助理
             </a>
             <a href="profile.html" class="nav-item" data-dom-id="nav-settings">
                 <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -2310,6 +2310,34 @@ const weekData = {
 };
 
 let currentMetric = 'completion';
+
+// 七日修行图：读真实数据（来自每日计划的完成情况），没有记录的那天保持 0
+(function syncWeekDataWithTasks() {
+  function apply() {
+    var T = window.XingxingTasks;
+    if (!T) return false;
+    var hist;
+    try { hist = T.weekHistory(7); } catch (e) { return false; }
+    if (!hist || !hist.length) return false;
+    weekData.current = hist.map(function (d, i) {
+      var base = weekData.current[i] || {};
+      return {
+        day: d.day,
+        date: d.label,
+        today: d.today,
+        completion: d.completion,
+        focusMin: d.focusMin,
+        energy: d.hasData ? base.energy : 0,
+        drain: d.hasData ? base.drain : 0,
+        hasData: d.hasData
+      };
+    });
+    return true;
+  }
+  if (!apply()) {
+    document.addEventListener('DOMContentLoaded', function () { if (apply() && typeof renderWeeklyChart === 'function') renderWeeklyChart(); });
+  }
+})();
 
 const metricConfig = {
   completion: { label: '完成率', unit: '%', max: 100, lastWeek: weekData.lastWeek },
@@ -12115,7 +12143,8 @@ body::before {
     // ---- 今日使用区间 ----
     if (usageLine) {
       usageLine.textContent = day.first
-        ? ('今日修行区间：' + day.first + ' 第一次打开 → ' + day.last + ' 最后一次使用 · 共 ' + day.visits + ' 次')
+        ? ('今日修行区间 ' + T.minutesToText(day.start) + ' – ' + T.minutesToText(day.end)
+           + '（' + (day.sourceText || '') + '）· 网站使用 ' + day.first + ' – ' + day.last + ' · 共 ' + day.visits + ' 次')
         : '今日修行区间：正在记录中…';
     }
 

@@ -108,6 +108,13 @@
       edges.push(edge);
     }
 
+    // 今天有真实计划时，这张图就以每日计划的联系为主，不再堆无关的示例节点
+    var hasTasks = false;
+    try {
+      hasTasks = !!(window.XingxingTasks && window.XingxingTasks.getTasks().length);
+    } catch (e) { hasTasks = false; }
+
+    if (!hasTasks) {
     // ========== 1. 青蛙任务（目标节点）==========
     try {
       var frog = App.getFrogTask();
@@ -333,6 +340,8 @@
     } catch (e) {}
 
     // ========== 6. 补充知识节点（作为改进方向的锚点）==========
+    }  // end of !hasTasks
+
     // ========== 6.5 今天真实做过的事（来自每日计划 + 实际操作）==========
     try {
       var Tx = window.XingxingTasks;
@@ -394,7 +403,7 @@
     }
 
     // ========== 7. 如果没有任何数据，返回兜底数据 ==========
-    if (nodes.length < 3) {
+    if (nodes.length < 3 && !hasTasks) {
       return getFallbackData();
     }
 

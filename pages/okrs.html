@@ -371,7 +371,7 @@ body {
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
             <path d="M10 8h6M10 12h6M10 16h4"></path>
           </svg>
-          <span>省身错题</span>
+          <span>刻意练习</span>
         </a>
 
         <a class="nav-item" data-dom-id="nav-todo" href="daily-plan.html">
@@ -408,7 +408,7 @@ body {
             <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
             <line x1="10" y1="10" x2="14" y2="14"/>
           </svg>
-          <span>标注工具</span>
+          <span>速记助理</span>
         </a>
 
         <a class="nav-item" data-dom-id="nav-settings" href="profile.html">
@@ -508,6 +508,10 @@ body {
                   <div class="fp-item">
                     <span class="fp-item-title">完成进度</span>
                     <div class="fp-options" id="fpProgress"></div>
+                  </div>
+                  <div class="fp-item">
+                    <span class="fp-item-title">每日计划</span>
+                    <div class="fp-options" id="fpToday"></div>
                   </div>
                   <div class="fp-footer">
                     <span class="fp-tip">点一下即时生效</span>
@@ -2346,6 +2350,8 @@ body {
     var progressKey = 'all';  // all / low / mid / high / full
     var periodKey = 'all';    // all / 2026-春 ...
     var todayContribution = {};   // 今日任务对各目标的投入
+    var todayOnly = false;        // 只看今天有计划在推进的目标
+    var taskOkr = '';             // 选中的今日任务所属目标
 
     function refreshContribution() {
       var T = window.XingxingTasks;
@@ -2388,6 +2394,8 @@ body {
           if (hay.indexOf(searchText) === -1) return false;
         }
         if (activeCats.length && activeCats.indexOf(o.category || '未分类') === -1) return false;
+        if (todayOnly && !todayContribution[o.id]) return false;
+        if (taskOkr && o.id !== taskOkr) return false;
         if (!progOpt.test(avgProgress(o))) return false;
         if (periodKey !== 'all') {
           var s = seasonOf(o.createdAt) || currentSeason();
@@ -2398,7 +2406,8 @@ body {
     }
 
     function activeFilterCount() {
-      return activeCats.length + (progressKey === 'all' ? 0 : 1) + (periodKey === 'all' ? 0 : 1);
+      return activeCats.length + (progressKey === 'all' ? 0 : 1) + (periodKey === 'all' ? 0 : 1)
+        + (todayOnly ? 1 : 0) + (taskOkr ? 1 : 0);
     }
 
     function updateFilterUI(list) {
@@ -2443,6 +2452,26 @@ body {
           var label = s === 'all' ? '全部时间' : s.replace('-', ' · ') + '季';
           return '<span class="fp-opt' + (periodKey === s ? ' on' : '') + '" data-period="' + s + '">' + label + '</span>';
         }).join('');
+      }
+
+      // 每日计划：今天排了哪些任务，点一下只看它服务的目标
+      var todayBox = document.getElementById('fpToday');
+      if (todayBox) {
+        var Ts = window.XingxingTasks;
+        var tasks = Ts ? Ts.getTasks() : [];
+        var STATUS_SHORT = { todo: '未开始', doing: '修行中', done: '已圆满', blocked: '有阻碍' };
+        if (!tasks.length) {
+          todayBox.innerHTML = '<span class="fp-tip">今天还没排计划</span>';
+        } else {
+          var html = '<span class="fp-opt' + (todayOnly ? ' on' : '') + '" data-today="only">只看有今日任务的</span>';
+          html += tasks.map(function (t) {
+            var label = (t.name.length > 10 ? t.name.slice(0, 10) + '…' : t.name)
+              + ' · ' + (STATUS_SHORT[t.effective] || '');
+            return '<span class="fp-opt' + (taskOkr && taskOkr === t.okrId ? ' on' : '') + '" data-task-okr="'
+              + (t.okrId || '') + '">' + escapeHtml(label) + '</span>';
+          }).join('');
+          todayBox.innerHTML = html;
+        }
       }
     }
 
@@ -2640,6 +2669,23 @@ body {
           if (progEl) {
             progressKey = progEl.getAttribute('data-prog');
             render(currentFilter);
+            return;
+          }
+          var todayEl = e.target.closest ? e.target.closest('[data-today]') : null;
+          if (todayEl) {
+            todayOnly = !todayOnly;
+            render(currentFilter);
+            return;
+          }
+          var taskEl = e.target.closest ? e.target.closest('[data-task-okr]') : null;
+          if (taskEl) {
+            var oid = taskEl.getAttribute('data-task-okr');
+            if (!oid) {
+              if (App && App.showToast) App.showToast('这个任务还没关联目标，去「每日计划」里关联一下', 'warning', 2400);
+              return;
+            }
+            taskOkr = (taskOkr === oid) ? '' : oid;
+            render(currentFilter);
           }
         });
       }
@@ -2661,6 +2707,8 @@ body {
           progressKey = 'all';
           periodKey = 'all';
           searchText = '';
+          todayOnly = false;
+          taskOkr = '';
           if (searchInput) searchInput.value = '';
           render('all');
           document.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('active'); });

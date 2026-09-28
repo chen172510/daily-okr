@@ -16,6 +16,7 @@
   var PLAN_KEY = 'xingxing_daily_plan';
   var LINK_KEY = 'xingxing_task_links';
   var USAGE_KEY = 'xingxing_day_usage';
+  var HISTORY_KEY = 'xingxing_day_history';
   var OKR_KEY = 'xingxing_okrs';
   var EVT = 'xingxing:tasks-changed';
 
@@ -49,6 +50,7 @@
   var listeners = [];
   function on(cb) { if (typeof cb === 'function') listeners.push(cb); }
   function emit(detail) {
+    try { snapshot(); } catch (e) {}
     listeners.forEach(function (cb) { try { cb(detail); } catch (e) {} });
     try { global.dispatchEvent(new CustomEvent(EVT, { detail: detail || {} })); } catch (e) {}
   }
@@ -247,13 +249,46 @@
     return u;
   }
 
-  // 修行图的时间范围：第一次用到最后一次用，兜底为全天
+  // 修行图的时间范围，优先级：手动记录（实际开始/结束）> 每日计划时间 > 网站使用时间
   function dayWindow(date) {
+    date = date || todayStr();
     var u = usage(date);
-    var start = u.first ? toMinutes(u.first) : 6 * 60;
-    var end = u.last ? toMinutes(u.last) : 23 * 60;
+    var list = getTasks(date);
+
+    var manualStarts = [], manualEnds = [], planStarts = [], planEnds = [];
+    list.forEach(function (t) {
+      if (t.actualStart) manualStarts.push(toMinutes(t.actualStart));
+      if (t.actualEnd) manualEnds.push(toMinutes(t.actualEnd));
+      if (t.startTime) planStarts.push(toMinutes(t.startTime));
+      if (t.endTime) planEnds.push(toMinutes(t.endTime));
+    });
+
+    var start, end, source;
+    if (manualStarts.length && manualEnds.length) {
+      start = Math.min.apply(null, manualStarts);
+      end = Math.max.apply(null, manualEnds);
+      source = 'manual';
+    } else if (planStarts.length && planEnds.length) {
+      start = Math.min.apply(null, planStarts);
+      end = Math.max.apply(null, planEnds);
+      source = 'plan';
+    } else {
+      start = u.first ? toMinutes(u.first) : 6 * 60;
+      end = u.last ? toMinutes(u.last) : 23 * 60;
+      source = 'usage';
+    }
+    // 网站使用时间作为兜底参考：比手动/计划更早或更晚时就扩一点
+    if (u.first && source !== 'usage') start = Math.min(start, toMinutes(u.first));
+    if (u.last && source !== 'usage') end = Math.max(end, toMinutes(u.last));
+
     if (end - start < 60) end = start + 60;
-    return { start: start, end: end, first: u.first, last: u.last, visits: u.visits || 0 };
+    return {
+      start: start, end: end,
+      first: u.first, last: u.last, visits: u.visits || 0,
+      source: source,
+      sourceText: source === 'manual' ? '按你记录的实际时间'
+        : (source === 'plan' ? '按每日计划的时间' : '按网站使用时间')
+    };
   }
 
   function fmtMinutes(m) {
@@ -261,6 +296,11 @@
     if (m < 60) return m + ' 分钟';
     var h = Math.floor(m / 60), r = m % 60;
     return r ? (h + ' 小时 ' + r + ' 分钟') : (h + ' 小时');
+  }
+
+  function minutesToText(min) {
+    min = Math.max(0, Math.round(min || 0));
+    return pad(Math.floor(min / 60) % 24) + ':' + pad(min % 60);
   }
 
   function stats(date) {
@@ -272,6 +312,50 @@
       s.plannedMinutes += (t.plannedMinutes || 0);
     });
     return s;
+  }
+
+  // ---------- 每日快照：七日修行图 / 复盘趋势都读这里 ----------
+  function snapshot(date) {
+    date = date || todayStr();
+    var s;
+    try { s = stats(date); } catch (e) { return null; }
+    if (!s || !s.total) return null;
+    var all = read(HISTORY_KEY, {}) || {};
+    all[date] = {
+      total: s.total, done: s.done, doing: s.doing, blocked: s.blocked, todo: s.todo,
+      actualMinutes: s.actualMinutes, plannedMinutes: s.plannedMinutes
+    };
+    var keys = Object.keys(all).sort();
+    if (keys.length > 120) keys.slice(0, keys.length - 120).forEach(function (k) { delete all[k]; });
+    write(HISTORY_KEY, all);
+    return all[date];
+  }
+
+  // 最近 N 天（含今天）的真实完成情况
+  function weekHistory(days) {
+    days = days || 7;
+    var all = read(HISTORY_KEY, {}) || {};
+    var WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+    var out = [];
+    for (var i = days - 1; i >= 0; i--) {
+      var d = new Date();
+      d.setDate(d.getDate() - i);
+      var key = todayStr(d);
+      var rec = all[key] || null;
+      out.push({
+        date: key,
+        day: '周' + WEEK[d.getDay()],
+        label: (d.getMonth() + 1) + '/' + d.getDate(),
+        today: i === 0,
+        hasData: !!rec,
+        total: rec ? rec.total : 0,
+        done: rec ? rec.done : 0,
+        blocked: rec ? rec.blocked : 0,
+        completion: (rec && rec.total) ? Math.round((rec.done / rec.total) * 100) : 0,
+        focusMin: rec ? rec.actualMinutes : 0
+      });
+    }
+    return out;
   }
 
   function currentTask(date, nowMin) {
@@ -295,6 +379,8 @@
     nowMinutes: nowMinutes,
     getTasks: getTasks,
     stats: stats,
+    snapshot: snapshot,
+    weekHistory: weekHistory,
     currentTask: currentTask,
     effectiveStatus: effectiveStatus,
     startTask: startTask,
@@ -310,6 +396,7 @@
     logVisit: logVisit,
     dayWindow: dayWindow,
     fmtMinutes: fmtMinutes,
+    minutesToText: minutesToText,
     on: on,
     emit: emit,
     EVT: EVT
