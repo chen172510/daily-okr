@@ -752,6 +752,21 @@ body {
           </div>
           <div id="winList" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;"></div>
         </div>
+        <!-- 习惯打卡 -->
+        <div class="questions-card" id="habitsCard">
+          <div class="card-header-section">
+            <div class="card-section-label">习 惯</div>
+            <h2 class="card-title">习惯打卡</h2>
+            <p class="card-subtitle">每天重复的小事，才是真正拉开差距的地方。</p>
+          </div>
+          <div id="habitList" style="margin-top:14px;display:flex;flex-direction:column;gap:10px;"></div>
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <input id="habitInput" placeholder="添加一个习惯，比如：11 点前睡觉"
+              style="flex:1;padding:11px 14px;border:1px solid #e0d8cc;border-radius:6px;font-family:inherit;font-size:14px;background:#fff;" />
+            <button id="habitAdd" type="button"
+              style="border:none;border-radius:6px;padding:0 20px;background:#2b6a4f;color:#fff;cursor:pointer;font-family:inherit;font-size:14px;">添加</button>
+          </div>
+        </div>
 <div class="history-card">
           <div class="history-header">
             <div class="history-header-left">
@@ -4538,6 +4553,91 @@ body {
       try { if (C && C.showToast) C.showToast('已记下这条小胜利 +3 积分', 'success', 1600); } catch (e) {}
     }
     document.getElementById('winAdd').addEventListener('click', add);
+    inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') add(); });
+    render();
+  })();
+</script>
+<script>
+  /* 习惯打卡 */
+  (function () {
+    'use strict';
+    var C = window.XingxingCommon;
+    if (!document.getElementById('habitsCard')) return;
+    var KEY = 'xingxing_habits';
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function dsOf(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    var today = (C && C.getTodayStr) ? C.getTodayStr() : dsOf(new Date());
+    var listEl = document.getElementById('habitList');
+    var inputEl = document.getElementById('habitInput');
+    function save(v) { if (C) C.safeSet(KEY, v); else localStorage.setItem(KEY, JSON.stringify(v)); }
+    function load() {
+      var v = null;
+      try { v = C ? C.safeGet(KEY, null) : JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+      if (!v || !v.length) {
+        v = [
+          { id: 'h1', icon: '💧', name: '今天喝够水', days: [] },
+          { id: 'h2', icon: '🏃', name: '运动 20 分钟', days: [] },
+          { id: 'h3', icon: '🌙', name: '11 点前睡觉', days: [] }
+        ];
+        save(v);
+      }
+      return v;
+    }
+    var habits = load();
+    function streakIn(h) {
+      var n = 0, d = new Date(), first = true, guard = 0;
+      while (guard++ < 400) {
+        var k = dsOf(d);
+        if (h.days.indexOf(k) >= 0) n++;
+        else if (!(first && k === today)) break;
+        first = false;
+        d.setDate(d.getDate() - 1);
+      }
+      return n;
+    }
+    function monthCount(h) {
+      var ym = today.slice(0, 7);
+      return h.days.filter(function (x) { return x.slice(0, 7) === ym; }).length;
+    }
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    function render() {
+      listEl.innerHTML = habits.map(function (h, i) {
+        var done = h.days.indexOf(today) >= 0;
+        return '<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #e8e0d0;border-radius:8px;background:#fffdf7;">'
+          + '<button type="button" data-t="' + i + '" style="width:30px;height:30px;border-radius:50%;border:2px solid ' + (done ? '#2b6a4f' : '#d9cbae') + ';background:' + (done ? '#2b6a4f' : '#fff') + ';color:#fff;cursor:pointer;font-size:15px;">' + (done ? '✓' : '') + '</button>'
+          + '<span style="font-size:18px;">' + h.icon + '</span>'
+          + '<span style="flex:1;font-size:15px;color:#362e1f;">' + esc(h.name) + '</span>'
+          + '<span style="font-size:12px;color:#8b6914;white-space:nowrap;">连续 ' + streakIn(h) + ' 天 · 本月 ' + monthCount(h) + ' 次</span>'
+          + '<span data-d="' + i + '" style="cursor:pointer;color:#c0392b;font-size:16px;">&times;</span>'
+          + '</div>';
+      }).join('');
+      Array.prototype.forEach.call(listEl.querySelectorAll('[data-t]'), function (b) {
+        b.addEventListener('click', function () {
+          var i = parseInt(b.getAttribute('data-t'), 10), h = habits[i];
+          var k = h.days.indexOf(today);
+          if (k >= 0) h.days.splice(k, 1);
+          else {
+            h.days.push(today);
+            try { if (C && C.addPoints) C.addPoints(2, '习惯打卡：' + h.name); } catch (e) {}
+            try { if (C && C.showToast) C.showToast('打卡成功 · 连续 ' + streakIn(h) + ' 天', 'success', 1600); } catch (e) {}
+          }
+          save(habits); render();
+        });
+      });
+      Array.prototype.forEach.call(listEl.querySelectorAll('[data-d]'), function (x) {
+        x.addEventListener('click', function () {
+          habits.splice(parseInt(x.getAttribute('data-d'), 10), 1);
+          save(habits); render();
+        });
+      });
+    }
+    function add() {
+      var t = (inputEl.value || '').trim();
+      if (!t) return;
+      habits.push({ id: 'h' + Date.now(), icon: '⭐', name: t, days: [] });
+      save(habits); inputEl.value = ''; render();
+    }
+    document.getElementById('habitAdd').addEventListener('click', add);
     inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') add(); });
     render();
   })();
