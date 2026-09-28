@@ -4320,12 +4320,17 @@ body {
         rec.interimResults = true;
         rec.continuous = true;
         var base = ta.value;
+        var finalText = '';
         activeRec = rec; activeBtn = btn;
         btn.classList.add('listening');
         rec.onresult = function (ev) {
-          var txt = '';
-          for (var i = ev.resultIndex; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
-          ta.value = base + txt;
+          var interim = '';
+          for (var i = ev.resultIndex; i < ev.results.length; i++) {
+            var piece = ev.results[i][0].transcript;
+            if (ev.results[i].isFinal) finalText += piece;
+            else interim += piece;
+          }
+          ta.value = base + finalText + interim;
         };
         rec.onerror = function (ev) {
           var m = ev.error || '未知原因';
