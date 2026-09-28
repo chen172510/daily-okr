@@ -473,6 +473,21 @@
 
     // 更新总耗损汇总
     updateDrainTotalSummary(summary);
+
+    // 时段编辑：改完立即存下来，并按时间差自动算时长
+    [externalList, internalList].forEach(function (list) {
+      if (!list) return;
+      list.querySelectorAll('.drain-time-input').forEach(function (input) {
+        input.addEventListener('change', function () {
+          var id = input.getAttribute('data-drain-id');
+          var field = input.getAttribute('data-drain-field');
+          if (App && App.setDrainEventTime) {
+            App.setDrainEventTime(id, field, input.value);
+            renderDrainEvents();
+          }
+        });
+      });
+    });
   }
 
   function renderDrainEventItem(ev) {
@@ -500,6 +515,13 @@
             <div class="drain-event-bar ${ev.type}" style="width: ${percent}%"></div>
           </div>
           <span class="drain-event-impact negative">${ev.impact}<span class="drain-event-impact-percent">约占全天${percent}%</span></span>
+        </div>
+        <div class="drain-event-time">
+          <span class="drain-time-label">时段</span>
+          <input type="time" step="60" class="drain-time-input" data-drain-id="${ev.id}" data-drain-field="startTime" value="${ev.startTime || ''}">
+          <span class="drain-time-sep">–</span>
+          <input type="time" step="60" class="drain-time-input" data-drain-id="${ev.id}" data-drain-field="endTime" value="${ev.endTime || ''}">
+          <span class="drain-time-hint">${(ev.startTime && ev.endTime) ? (ev.startTime + '–' + ev.endTime) : (ev.startTime ? ev.startTime + ' 开始' : '还没记时段，点右边填')}</span>
         </div>
         ${ev.reason ? '<div class="drain-event-reason">' + ev.reason + '</div>' : ''}
       </div>

@@ -690,3 +690,16 @@
     font-size: 40px;
   }
 }
+
+/* 耗能事件：发生时段（可手输可点选） */
+.drain-event-time {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(184,176,160,.6);
+  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #8a7a5e;
+}
+.drain-time-input {
+  font-family: inherit; font-size: 12px; color: #3a3226;
+  padding: 2px 6px; border: 1px solid #ded4c2; border-radius: 5px; background: #fff; width: 92px;
+}
+.drain-time-input:focus { outline: none; border-color: #8b6914; }
+.drain-time-sep, .drain-time-hint { color: #b0a48c; }

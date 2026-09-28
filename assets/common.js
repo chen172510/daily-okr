@@ -952,6 +952,23 @@
     return removed;
   }
 
+  // 记录/修改某个耗能事件发生在哪个时间段（手输或时间选择器都行）
+  function setDrainEventTime(eventId, field, value) {
+    const data = getDrainEvents();
+    const ev = data.events.find(e => e.id === eventId);
+    if (!ev) return null;
+    if (field === 'startTime') ev.startTime = value;
+    else if (field === 'endTime') ev.endTime = value;
+    if (ev.startTime && ev.endTime) {
+      const s = ev.startTime.split(':'), t = ev.endTime.split(':');
+      const mins = (parseInt(t[0], 10) * 60 + parseInt(t[1], 10)) - (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
+      if (mins > 0) ev.duration = mins + ' min';
+    }
+    safeSet(DRAIN_KEY, data);
+    AppEvents.emit(EVENTS.DRAIN_UPDATED, { type: 'time', event: ev });
+    return ev;
+  }
+
   function getDrainSummary() {
     const data = getDrainEvents();
     let externalDrain = 0;
@@ -1272,6 +1289,7 @@
     getDrainEvents: getDrainEvents,
     addDrainEvent: addDrainEvent,
     removeDrainEvent: removeDrainEvent,
+    setDrainEventTime: setDrainEventTime,
     getDrainSummary: getDrainSummary,
 
     // 青蛙任务

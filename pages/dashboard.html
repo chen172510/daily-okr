@@ -1417,6 +1417,7 @@ body {
                 <span class="charge-record-name">散步放空</span>
                 <span class="charge-record-cat">思维</span>
             </div>
+            <div class="charge-decay-tip" id="chargeDecayTip" style="display:none;"></div>
 
             <div class="charge-form-group">
                 <label class="charge-form-label">充电前状态</label>
@@ -1640,6 +1641,31 @@ body {
             <div class="charge-form-group">
                 <label class="charge-form-label">备注说明</label>
                 <textarea class="charge-textarea" id="chargeEditorNote" placeholder="简单描述这个充电方式的特点..." rows="2"></textarea>
+            </div>
+
+            <div class="charge-form-group">
+                <label class="charge-form-label">单位量 & 递减规则</label>
+                <div class="charge-form-row">
+                    <div class="charge-form-group">
+                        <label class="charge-form-label" style="font-size:12px;">一次的单位</label>
+                        <input type="text" class="charge-input" id="chargeEditorUnit" value="1 次" placeholder="如：1 个苹果">
+                    </div>
+                    <div class="charge-form-group">
+                        <label class="charge-form-label" style="font-size:12px;">每天最多几次</label>
+                        <input type="number" class="charge-input" id="chargeEditorMaxPerDay" value="5" min="1" max="30">
+                    </div>
+                </div>
+                <div class="charge-form-row">
+                    <div class="charge-form-group">
+                        <label class="charge-form-label" style="font-size:12px;">第几次开始递减</label>
+                        <input type="number" class="charge-input" id="chargeEditorDecayStart" value="3" min="1" max="30">
+                    </div>
+                    <div class="charge-form-group">
+                        <label class="charge-form-label" style="font-size:12px;">每次剩下几成</label>
+                        <input type="number" class="charge-input" id="chargeEditorDecayRate" value="0.5" min="0.1" max="1" step="0.1">
+                    </div>
+                </div>
+                <div class="charge-decay-example" id="chargeDecayExample"></div>
             </div>
 
             <button class="charge-save-btn" onclick="saveChargeMethod()">保存配方</button>
@@ -10006,6 +10032,37 @@ body::before {
   // --- 今日目标次数 ---
   var CHARGE_DAILY_TARGET = 6;
 
+  // ============ 自定义单位量 & 边际递减 ============
+  // 例：吃一个苹果 +5 精力；第 3 个开始递减（×0.5），吃满 5 个嘴就累了，效果归零
+  var CHARGE_DECAY_DEFAULT = { unitLabel: '1 次', decayStart: 3, decayRate: 0.5, maxPerDay: 5 };
+
+  function chargeMethodRule(method) {
+    var r = Object.assign({}, CHARGE_DECAY_DEFAULT);
+    if (method && method.rule) Object.assign(r, method.rule);
+    return r;
+  }
+
+  // 今天已经用了几次
+  function chargeUsedToday(methodId) {
+    return chargeToday.filter(function (r) { return r.methodId === methodId; }).length;
+  }
+
+  // 第 n 次使用的实际效果（含递减、含每日上限）
+  function chargeEffectiveBoost(method, usedCount) {
+    var base = { energy: Number(method.energyBoost) || 0, state: Number(method.stateBoost) || 0 };
+    var rule = chargeMethodRule(method);
+    var n = usedCount + 1;                       // 这次是第几次
+    if (n > rule.maxPerDay) return { energy: 0, state: 0, factor: 0, capped: true, rule: rule, n: n };
+    var factor = 1;
+    if (n >= rule.decayStart) factor = Math.pow(rule.decayRate, n - rule.decayStart + 1);
+    return {
+      energy: Math.round(base.energy * factor * 10) / 10,
+      state: Math.round(base.state * factor * 10) / 10,
+      factor: Math.round(factor * 100) / 100,
+      capped: false, rule: rule, n: n
+    };
+  }
+
   // --- 状态变量 ---
   var chargeMethods = [];
   var chargeRecords = [];
@@ -10320,13 +10377,20 @@ body::before {
     container.innerHTML = '';
     var displayMethods = chargeMethods.slice(0, 7);
     displayMethods.forEach(function(method) {
+      var used = chargeUsedToday(method.id);
+      var rule = chargeMethodRule(method);
+      var next = chargeEffectiveBoost(method, used);
       var btn = document.createElement('button');
       btn.className = 'charge-quick-btn';
-      btn.title = method.name;
+      btn.title = method.name
+        + '（每次 ' + rule.unitLabel + '，今天已用 ' + used + ' 次）'
+        + (next.capped ? ' · 今天已到上限' : ' · 这次预计恢复精力 ' + next.energy);
+      if (used > 0) btn.classList.add('has-used');
       btn.onclick = function() { openChargeRecordModal(method.id); };
       btn.innerHTML =
         '<span class="charge-quick-icon">' + method.icon + '</span>' +
-        '<span class="charge-quick-label">' + method.name.replace(/一觉|好好|出汗|放空|找人|首好|歇会儿|呼吸/, '') + '</span>';
+        '<span class="charge-quick-label">' + method.name.replace(/一觉|好好|出汗|放空|找人|首好|歇会儿|呼吸/, '') + '</span>' +
+        (used > 0 ? '<span class="charge-quick-count">' + used + '</span>' : '');
       container.appendChild(btn);
     });
 
@@ -10413,11 +10477,28 @@ body::before {
     setChargeSliderValue('before', 'energy', energyNow);
     setChargeSliderValue('before', 'state', stateNow);
 
-    // 充电后默认加上预计恢复量
-    var afterEnergy = clamp(energyNow + (method.energyBoost || 0), 0, 100);
-    var afterState = clamp(stateNow + (method.stateBoost || 0), 0, 100);
+    // 充电后默认加上预计恢复量（按「自定义单位量 + 边际递减」算，第几次效果不同）
+    var used = chargeUsedToday(methodId);
+    var eff = chargeEffectiveBoost(method, used);
+    var afterEnergy = clamp(energyNow + eff.energy, 0, 100);
+    var afterState = clamp(stateNow + eff.state, 0, 100);
     setChargeSliderValue('after', 'energy', afterEnergy);
     setChargeSliderValue('after', 'state', afterState);
+
+    // 在弹窗里说明这一次为什么是这个效果
+    var tipEl = document.getElementById('chargeDecayTip');
+    if (tipEl) {
+      var unit = eff.rule.unitLabel;
+      if (eff.capped) {
+        tipEl.textContent = '今天已经用满 ' + eff.rule.maxPerDay + ' 次（' + unit + '），再加也没有效果了——就像吃第 5 个苹果，嘴已经累了。';
+      } else if (eff.factor < 1) {
+        tipEl.textContent = '今天第 ' + eff.n + ' 次（' + unit + '）：效果递到 ' + Math.round(eff.factor * 100)
+          + '%，预计恢复精力 ' + eff.energy + '、状态 ' + eff.state + '。';
+      } else {
+        tipEl.textContent = '今天第 ' + eff.n + ' 次（' + unit + '）：效果完整，预计恢复精力 ' + eff.energy + '、状态 ' + eff.state + '。';
+      }
+      tipEl.style.display = 'block';
+    }
 
     // 时长
     var durEl = document.getElementById('chargeDuration');
@@ -10752,6 +10833,17 @@ body::before {
     document.getElementById('chargeEditorStateBoost').value = 10;
     document.getElementById('chargeEditorNote').value = '';
 
+    var unitEl = document.getElementById('chargeEditorUnit');
+    var maxEl = document.getElementById('chargeEditorMaxPerDay');
+    var dsEl = document.getElementById('chargeEditorDecayStart');
+    var drEl = document.getElementById('chargeEditorDecayRate');
+    if (unitEl) unitEl.value = '1 次';
+    if (maxEl) maxEl.value = 5;
+    if (dsEl) dsEl.value = 3;
+    if (drEl) drEl.value = 0.5;
+    bindDecayInputs();
+    updateDecayExample();
+
     updateEditorIconSelection();
     updateEditorCatSelection();
     resetEditorSceneTags();
@@ -10774,6 +10866,18 @@ body::before {
     document.getElementById('chargeEditorEnergyBoost').value = method.energyBoost;
     document.getElementById('chargeEditorStateBoost').value = method.stateBoost;
     document.getElementById('chargeEditorNote').value = method.note || '';
+
+    var rule = chargeMethodRule(method);
+    var unitEl = document.getElementById('chargeEditorUnit');
+    var maxEl = document.getElementById('chargeEditorMaxPerDay');
+    var dsEl = document.getElementById('chargeEditorDecayStart');
+    var drEl = document.getElementById('chargeEditorDecayRate');
+    if (unitEl) unitEl.value = rule.unitLabel;
+    if (maxEl) maxEl.value = rule.maxPerDay;
+    if (dsEl) dsEl.value = rule.decayStart;
+    if (drEl) drEl.value = rule.decayRate;
+    bindDecayInputs();
+    updateDecayExample();
 
     updateEditorIconSelection();
     updateEditorCatSelection();
@@ -10929,6 +11033,41 @@ body::before {
     }
   }
 
+  // 实时示例：让用户一眼看懂「单位量 + 递减」是怎么回事
+  function updateDecayExample() {
+    var box = document.getElementById('chargeDecayExample');
+    if (!box) return;
+    var base = parseFloat((document.getElementById('chargeEditorEnergyBoost') || {}).value) || 10;
+    var unit = (document.getElementById('chargeEditorUnit') || {}).value || '1 次';
+    var max = parseInt((document.getElementById('chargeEditorMaxPerDay') || {}).value, 10) || 5;
+    var ds = parseInt((document.getElementById('chargeEditorDecayStart') || {}).value, 10) || 3;
+    var dr = parseFloat((document.getElementById('chargeEditorDecayRate') || {}).value) || 0.5;
+
+    function effectAt(n) {
+      if (n > max) return 0;
+      var f = n >= ds ? Math.pow(dr, n - ds + 1) : 1;
+      return Math.round(base * f * 10) / 10;
+    }
+    var parts = [];
+    for (var n = 1; n <= max; n++) parts.push('第 ' + n + ' 次 +' + effectAt(n));
+    box.innerHTML = '<div class="charge-decay-example-title">示例（按上面填的数字实时算）</div>'
+      + '<div class="charge-decay-example-body">每次「' + unit + '」恢复精力 ' + base + ' 点：'
+      + parts.join(' → ')
+      + '<br>到第 ' + (max + 1) + ' 次就没有效果了——就像吃第 ' + (max + 1) + ' 个苹果，嘴已经累了。</div>';
+  }
+
+  function bindDecayInputs() {
+    ['chargeEditorEnergyBoost', 'chargeEditorUnit', 'chargeEditorMaxPerDay',
+     'chargeEditorDecayStart', 'chargeEditorDecayRate'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && !el.getAttribute('data-decay-bound')) {
+        el.setAttribute('data-decay-bound', '1');
+        el.addEventListener('input', updateDecayExample);
+        el.addEventListener('change', updateDecayExample);
+      }
+    });
+  }
+
   function saveChargeMethod() {
     var name = document.getElementById('chargeEditorName').value.trim();
     if (!name) {
@@ -10941,6 +11080,12 @@ body::before {
     var stateBoost = parseInt(document.getElementById('chargeEditorStateBoost').value, 10) || 0;
     var note = document.getElementById('chargeEditorNote').value.trim();
     var scene = getEditorSceneTags();
+    var rule = {
+      unitLabel: (document.getElementById('chargeEditorUnit') || {}).value || '1 次',
+      maxPerDay: parseInt((document.getElementById('chargeEditorMaxPerDay') || {}).value, 10) || 5,
+      decayStart: parseInt((document.getElementById('chargeEditorDecayStart') || {}).value, 10) || 3,
+      decayRate: parseFloat((document.getElementById('chargeEditorDecayRate') || {}).value) || 0.5
+    };
 
     if (editingMethodId) {
       // 编辑
@@ -10953,6 +11098,7 @@ body::before {
         chargeMethods[idx].energyBoost = energyBoost;
         chargeMethods[idx].stateBoost = stateBoost;
         chargeMethods[idx].note = note;
+        chargeMethods[idx].rule = rule;
         chargeMethods[idx].适用场景 = scene;
       }
     } else {
@@ -10967,6 +11113,7 @@ body::before {
         stateBoost: stateBoost,
         note: note,
         custom: true,
+        rule: rule,
         适用场景: scene
       });
     }
@@ -11542,6 +11689,9 @@ body::before {
       const severity = getImpactSeverity(e.impact);
       const percent = totalForPercent > 0 ? Math.round((Math.abs(e.impact) / totalForPercent) * 100) : 0;
       const barClass = type === 'external' ? 'external' : 'internal';
+      // 发生时段：可以直接打字，也可以点时间选择器
+      const rangeText = (e.startTime && e.endTime) ? (e.startTime + '–' + e.endTime)
+        : (e.startTime ? (e.startTime + ' 开始') : '还没记时段');
       return `
         <div class="drain-event-item">
           <div class="drain-event-top">
@@ -11555,6 +11705,13 @@ body::before {
               <div class="drain-event-bar ${barClass}" style="width: ${percent}%"></div>
             </div>
             <span class="drain-event-impact negative">${e.impact}<span class="drain-event-impact-percent">约占全天${percent}%</span></span>
+          </div>
+          <div class="drain-event-time">
+            <span class="drain-time-label">时段</span>
+            <input type="time" class="drain-time-input" step="60" data-drain-id="${e.id}" data-drain-field="startTime" value="${e.startTime || ''}">
+            <span class="drain-time-sep">–</span>
+            <input type="time" class="drain-time-input" step="60" data-drain-id="${e.id}" data-drain-field="endTime" value="${e.endTime || ''}">
+            <span class="drain-time-hint">${rangeText}</span>
           </div>
         </div>
       `;
@@ -11571,6 +11728,26 @@ body::before {
     } else {
       internalList.innerHTML = internalEvents.map(e => renderItem(e, 'internal', totalDrain)).join('');
     }
+
+    // 记录「发生在哪个时间段」：改完立即保存，并按时间差自动算时长
+    [externalList, internalList].forEach(function (list) {
+      list.querySelectorAll('.drain-time-input').forEach(function (input) {
+        input.addEventListener('change', function () {
+          var id = input.getAttribute('data-drain-id');
+          var field = input.getAttribute('data-drain-field');
+          var target = events.filter(function (x) { return x.id === id; })[0];
+          if (!target) return;
+          target[field] = input.value;
+          if (target.startTime && target.endTime) {
+            var s = target.startTime.split(':'), t = target.endTime.split(':');
+            var mins = (parseInt(t[0], 10) * 60 + parseInt(t[1], 10)) - (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
+            if (mins > 0) { target.duration = mins; target.unit = 'min'; }
+          }
+          saveDrainEvents(events);
+          renderDrainEvents(events);
+        });
+      });
+    });
 
     // 计算外耗/内耗指数
     const externalIndex = Math.min(100, Math.round(externalTotal * 1.5));
@@ -12056,6 +12233,43 @@ body::before {
 </style>
 <script src="../assets/voice.js"></script>
 <style>
+/* ===== 耗能事件时间段 & 充电单位量 ===== */
+.drain-event-time {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(184,176,160,.6);
+  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #8a7a5e;
+}
+.drain-time-label { letter-spacing: .2em; }
+.drain-time-input {
+  font-family: inherit; font-size: 12px; color: #3a3226;
+  padding: 2px 6px; border: 1px solid #ded4c2; border-radius: 5px; background: #fff;
+  width: 92px;
+}
+.drain-time-input:focus { outline: none; border-color: #8b6914; }
+.drain-time-sep { color: #b8b0a0; }
+.drain-time-hint { color: #b0a48c; }
+
+.charge-decay-tip {
+  margin: 10px 0 2px; padding: 9px 12px;
+  background: rgba(232,201,122,.16); border-left: 3px solid #8b6914; border-radius: 4px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12.5px; color: #6b5d44; line-height: 1.6;
+}
+.charge-decay-example {
+  margin-top: 10px; padding: 10px 12px;
+  background: #f7f2e8; border: 1px dashed #ded4c2; border-radius: 6px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12.5px; color: #5a4a32; line-height: 1.7;
+}
+.charge-decay-example-title { color: #8b6914; margin-bottom: 4px; }
+.charge-decay-example-body { color: #6b5d44; }
+.charge-quick-btn { position: relative; }
+.charge-quick-btn.has-used { border-color: rgba(139,105,20,.55); }
+.charge-quick-count {
+  position: absolute; top: -6px; right: -6px;
+  min-width: 17px; height: 17px; padding: 0 4px;
+  border-radius: 9px; background: #8b6914; color: #f7ecd0;
+  font-size: 11px; line-height: 17px; text-align: center;
+}
+
 /* ===== 今日行醒 · 与每日计划联动 ===== */
 .now-task-card {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
