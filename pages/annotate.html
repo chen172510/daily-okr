@@ -571,6 +571,14 @@ body {
                                 <line x1="12" y1="3" x2="12" y2="15"/>
                             </svg>
                         </button>
+                        <button class="tool-btn" id="btnOcr" title="识图取字（书本/照片/截图 → 文字）">
+                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2"/>
+                                <line x1="7" y1="9" x2="13" y2="9"/>
+                                <line x1="7" y1="13" x2="17" y2="13"/>
+                                <line x1="7" y1="17" x2="11" y2="17"/>
+                            </svg>
+                        </button>
                         <button class="tool-btn" id="btnResetNumber" title="重置序号">
                             <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
@@ -2086,12 +2094,15 @@ body {
             document.querySelector('.tool-btn[data-tool="circle"]').click();
         } else if (e.key === 'h' || e.key === 'H') {
             document.querySelector('.tool-btn[data-tool="highlight"]').click();
-        } else if (e.key === 'n' || e.key === 'N') {
-            document.querySelector('.tool-btn[data-tool="number"]').click();
-        }
-    });
+                        } else if (e.key === 'n' || e.key === 'N') {
+                            document.querySelector('.tool-btn[data-tool="number"]').click();
+                        }
+                    });
 
-})();
+                    // 供「识图取字」把图片送进画布
+                    window.XingxingAnnotate = { loadImage: loadImage, showToast: showToast };
+
+                })();
 </script>
 
 
@@ -3075,6 +3086,384 @@ body::before {
   .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
   .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
 </style>
+
+<!-- ========== 识图取字（书本 / 照片 / 截图 → 文字）========== -->
+<style>
+.ocr-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(26, 22, 14, .45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.ocr-overlay[hidden] { display: none; }
+.ocr-modal {
+  width: 100%; max-width: 720px; max-height: 92vh; overflow: auto;
+  background: var(--ink-paper-light, #faf6ec);
+  border: 1.5px solid var(--ink-2, #d9cbae);
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(20, 16, 8, .38);
+  font-family: var(--font-song, serif);
+}
+.ocr-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px dashed var(--ink-4, #e0d6c2);
+}
+.ocr-title { font-size: 19px; letter-spacing: 3px; color: var(--ink-1, #1f1a10); }
+.ocr-sub { margin-top: 5px; font-size: 12px; color: var(--ink-3, #8a7a5e); }
+.ocr-close {
+  border: none; background: none; cursor: pointer;
+  font-size: 24px; line-height: 1; color: var(--ink-3, #8a7a5e);
+}
+.ocr-body { padding: 18px 22px 22px; }
+.ocr-drop {
+  border: 1.5px dashed var(--ink-4, #d9cbae);
+  border-radius: 8px;
+  padding: 22px 16px;
+  text-align: center;
+  background: rgba(245, 239, 227, .6);
+  transition: all .15s ease;
+}
+.ocr-drop.over { border-color: #8b6914; background: rgba(232, 201, 122, .18); }
+.ocr-drop-icon { font-size: 30px; }
+.ocr-drop-text { margin-top: 6px; font-size: 14px; color: var(--ink-2, #4a4133); }
+.ocr-drop-actions { margin-top: 10px; display: flex; gap: 10px; justify-content: center; }
+.ocr-drop-hint { margin-top: 9px; font-size: 11px; color: var(--ink-4, #b8b0a0); }
+.ocr-drop-hint kbd {
+  padding: 1px 5px; border: 1px solid var(--ink-4, #d9cbae);
+  border-radius: 3px; background: #fff; font-size: 11px;
+}
+.ocr-mini-btn {
+  padding: 6px 15px; font-family: inherit; font-size: 13px;
+  color: var(--ink-1, #1f1a10); background: #fff;
+  border: 1px solid var(--ink-3, #8a7a5e); border-radius: 6px; cursor: pointer;
+}
+.ocr-mini-btn:hover { background: var(--ink-1, #1f1a10); color: #f7ecd0; }
+.ocr-mini-btn.danger { color: #a8341f; border-color: #d8b3a8; }
+.ocr-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.ocr-thumb {
+  position: relative; width: 86px; height: 86px; border-radius: 6px;
+  overflow: hidden; border: 1px solid var(--ink-4, #d9cbae); background: #fff;
+}
+.ocr-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ocr-thumb button {
+  position: absolute; top: 2px; right: 2px;
+  width: 20px; height: 20px; border: none; border-radius: 50%;
+  background: rgba(26, 22, 14, .62); color: #fff; cursor: pointer;
+  font-size: 13px; line-height: 18px; padding: 0;
+}
+.ocr-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.ocr-main-btn {
+  padding: 9px 22px; font-family: inherit; font-size: 14px; letter-spacing: 1px;
+  color: #f7ecd0; background: var(--ink-1, #1f1a10);
+  border: none; border-radius: 6px; cursor: pointer;
+}
+.ocr-main-btn:disabled { opacity: .55; cursor: default; }
+.ocr-status { font-size: 12px; color: var(--ink-3, #8a7a5e); }
+.ocr-result-wrap { position: relative; margin-top: 14px; }
+.ocr-result {
+  width: 100%; min-height: 150px; box-sizing: border-box;
+  padding: 12px 46px 12px 12px;
+  font-family: inherit; font-size: 14px; line-height: 1.75;
+  color: var(--ink-1, #1f1a10); background: #fff;
+  border: 1px solid var(--ink-4, #d9cbae); border-radius: 8px; resize: vertical;
+}
+.ocr-result:focus { outline: none; border-color: #8b6914; }
+.ocr-voice {
+  position: absolute; top: 8px; right: 8px;
+  width: 32px; height: 32px; padding: 0;
+  border: 1px solid var(--ink-4, #d9cbae); border-radius: 50%;
+  background: #fff; cursor: pointer; font-size: 15px;
+}
+.ocr-voice.listening { background: #e11d48; border-color: #e11d48; color: #fff; }
+.ocr-foot { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+</style>
+
+<div class="ocr-overlay" id="ocrOverlay" hidden>
+  <div class="ocr-modal">
+    <div class="ocr-head">
+      <div>
+        <div class="ocr-title">识图取字</div>
+        <div class="ocr-sub">书本文字、手机照片、备忘录截图，都能读出文字，还可以用语音补充</div>
+      </div>
+      <button class="ocr-close" id="ocrClose" type="button">&times;</button>
+    </div>
+    <div class="ocr-body">
+      <div class="ocr-drop" id="ocrDrop">
+        <input type="file" id="ocrFile" accept="image/*" multiple hidden>
+        <input type="file" id="ocrCamera" accept="image/*" capture="environment" hidden>
+        <div class="ocr-drop-icon">📖</div>
+        <div class="ocr-drop-text">把图片拖进来，或者</div>
+        <div class="ocr-drop-actions">
+          <button type="button" class="ocr-mini-btn" id="ocrPickBtn">选图片</button>
+          <button type="button" class="ocr-mini-btn" id="ocrCameraBtn">拍一张</button>
+        </div>
+        <div class="ocr-drop-hint">也支持 <kbd>Ctrl</kbd> + <kbd>V</kbd> 直接粘贴截图，可一次选多张</div>
+      </div>
+
+      <div class="ocr-previews" id="ocrPreviews"></div>
+
+      <div class="ocr-row">
+        <button type="button" class="ocr-main-btn" id="ocrRunBtn">开始识别文字</button>
+        <span class="ocr-status" id="ocrStatus">还没有选择图片</span>
+      </div>
+
+      <div class="ocr-result-wrap">
+        <textarea id="ocrResult" class="ocr-result" placeholder="识别出来的文字会出现在这里。也可以直接手打，或者点右上角的麦克风说出来。"></textarea>
+        <button type="button" class="ocr-voice" data-voice="#ocrResult" title="语音输入">🎙</button>
+      </div>
+
+      <div class="ocr-foot">
+        <button type="button" class="ocr-mini-btn" id="ocrSaveBtn">存进知识库</button>
+        <button type="button" class="ocr-mini-btn" id="ocrCopyBtn">复制文字</button>
+        <button type="button" class="ocr-mini-btn" id="ocrToCanvasBtn">拿去圈点</button>
+        <button type="button" class="ocr-mini-btn danger" id="ocrClearBtn">清空</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="../assets/voice.js"></script>
+<script>
+/* ============================================
+   识图取字：图片 OCR + 语音补充
+   引擎首次使用需要联网加载（约 15MB），之后浏览器会缓存
+   ============================================ */
+(function () {
+  'use strict';
+
+  var overlay = document.getElementById('ocrOverlay');
+  if (!overlay) return;
+
+  var drop = document.getElementById('ocrDrop');
+  var fileInput = document.getElementById('ocrFile');
+  var cameraInput = document.getElementById('ocrCamera');
+  var previews = document.getElementById('ocrPreviews');
+  var runBtn = document.getElementById('ocrRunBtn');
+  var statusEl = document.getElementById('ocrStatus');
+  var resultEl = document.getElementById('ocrResult');
+  var images = [];
+  var enginePromise = null;
+
+  var CDNS = [
+    'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js',
+    'https://unpkg.com/tesseract.js@5.1.0/dist/tesseract.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/tesseract.js/5.0.4/tesseract.min.js'
+  ];
+
+  function toast(msg, type, ms) {
+    if (window.XingxingCommon && XingxingCommon.showToast) {
+      XingxingCommon.showToast(msg, type || 'info', ms || 2400);
+    } else if (window.XingxingAnnotate && XingxingAnnotate.showToast) {
+      XingxingAnnotate.showToast(msg);
+    }
+  }
+
+  function setStatus(text) { statusEl.textContent = text; }
+
+   function loadEngine() {
+    if (window.Tesseract) return Promise.resolve(window.Tesseract);
+    if (enginePromise) return enginePromise;
+    enginePromise = new Promise(function (resolve, reject) {
+      var i = 0;
+      var settled = false;
+      var timer = setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        reject(new Error('timeout'));
+      }, 30000);
+      function tryNext() {
+        if (settled) return;
+        if (i >= CDNS.length) { settled = true; clearTimeout(timer); reject(new Error('cdn')); return; }
+        var url = CDNS[i++];
+        var s = document.createElement('script');
+        s.src = url;
+        s.onload = function () {
+          if (settled) return;
+          if (window.Tesseract) { settled = true; clearTimeout(timer); resolve(window.Tesseract); }
+          else tryNext();
+        };
+        s.onerror = function () { s.parentNode && s.parentNode.removeChild(s); tryNext(); };
+        document.head.appendChild(s);
+      }
+      tryNext();
+    });
+    return enginePromise;
+  }
+
+  function open() {
+    overlay.hidden = false;
+    if (!images.length) setStatus('还没有选择图片');
+  }
+  function close() { overlay.hidden = true; }
+
+  // ---------- 选图 ----------
+  function addFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList || []).filter(function (f) {
+      return f && /^image\//.test(f.type);
+    });
+    if (!files.length) { toast('只认图片哦（jpg / png / 截图都行）', 'warning'); return; }
+    var pending = files.length;
+    files.forEach(function (f) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        images.push({ dataUrl: e.target.result, name: f.name || '图片' });
+        if (--pending === 0) { renderPreviews(); setStatus('已选 ' + images.length + ' 张图片，可以开始识别'); }
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+
+  function renderPreviews() {
+    previews.innerHTML = images.map(function (img, i) {
+      return '<div class="ocr-thumb"><img src="' + img.dataUrl + '" alt="">'
+        + '<button type="button" data-idx="' + i + '" title="移除">&times;</button></div>';
+    }).join('');
+  }
+
+  // ---------- 识别 ----------
+  function runOcr() {
+    if (!images.length) { toast('先选一张图片', 'warning'); return; }
+    runBtn.disabled = true;
+    setStatus('正在加载识别引擎（首次约 15MB，请稍等）…');
+
+    loadEngine().then(function (Tesseract) {
+      var done = 0;
+      var out = [];
+      var total = images.length;
+
+      function next() {
+        if (done >= total) {
+          var text = out.join('\n\n');
+          var old = resultEl.value.trim();
+          resultEl.value = old ? (old + '\n\n' + text) : text;
+          setStatus('识别完成，共 ' + text.replace(/\s/g, '').length + ' 字');
+          runBtn.disabled = false;
+          toast('识别完成', 'success');
+          return;
+        }
+        var img = images[done];
+        setStatus('正在识别第 ' + (done + 1) + ' / ' + total + ' 张…');
+        Tesseract.recognize(img.dataUrl, 'chi_sim+eng', {
+          logger: function (m) {
+            if (m.status === 'recognizing text' && typeof m.progress === 'number') {
+              setStatus('正在识别第 ' + (done + 1) + ' / ' + total + ' 张… ' + Math.round(m.progress * 100) + '%');
+            }
+          }
+        }).then(function (res) {
+          out.push((res && res.data && res.data.text ? res.data.text : '').trim());
+          done++;
+          next();
+        }).catch(function (err) {
+          console.error('识别失败', err);
+          done++;
+          out.push('');
+          next();
+        });
+      }
+      next();
+    }).catch(function () {
+      enginePromise = null;   // 下次点「开始识别」可以重试
+      runBtn.disabled = false;
+      setStatus('识别引擎没加载成功：需要联网（约 15MB）。可以先用下面的话筒说，或者直接手打。');
+      toast('识别引擎加载失败，检查一下网络', 'warning', 3200);
+    });
+  }
+
+  // ---------- 结果去向 ----------
+  function saveToResources() {
+    var text = resultEl.value.trim();
+    if (!text) { toast('还没有文字可以存', 'warning'); return; }
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem('xingxing_resources') || '[]') || []; } catch (e) { list = []; }
+    var firstLine = text.split('\n').filter(function (s) { return s.trim(); })[0] || '识图记录';
+    list.unshift({
+      id: 'r' + Date.now(),
+      type: 'note',
+      title: firstLine.slice(0, 24),
+      url: '',
+      description: text,
+      tags: ['识图取字'],
+      folderId: 'uncategorized',
+      createdAt: new Date().toISOString().slice(0, 10),
+      thumbnail: images.length ? images[0].dataUrl : ''
+    });
+    localStorage.setItem('xingxing_resources', JSON.stringify(list));
+    try { if (window.XingxingCommon && XingxingCommon.addPoints) XingxingCommon.addPoints(3, '识图取字'); } catch (e) {}
+    toast('已存进个人知识库', 'success');
+  }
+
+  function copyText() {
+    var text = resultEl.value.trim();
+    if (!text) { toast('还没有文字', 'warning'); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('已复制', 'success'); }, function () { toast('复制失败，手动选中一下吧', 'warning'); });
+    } else {
+      resultEl.select();
+      document.execCommand('copy');
+      toast('已复制', 'success');
+    }
+  }
+
+  function toCanvas() {
+    if (!images.length) { toast('先选一张图片', 'warning'); return; }
+    if (window.XingxingAnnotate && XingxingAnnotate.loadImage) {
+      XingxingAnnotate.loadImage(images[0].dataUrl);
+      close();
+      toast('图片已放上画布，可以圈点了', 'success');
+    }
+  }
+
+  function clearAll() {
+    images = [];
+    renderPreviews();
+    resultEl.value = '';
+    setStatus('还没有选择图片');
+  }
+
+  // ---------- 事件绑定 ----------
+  var trigger = document.getElementById('btnOcr');
+  if (trigger) trigger.addEventListener('click', open);
+  document.getElementById('ocrClose').addEventListener('click', close);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.hidden) close(); });
+
+  document.getElementById('ocrPickBtn').addEventListener('click', function () { fileInput.click(); });
+  document.getElementById('ocrCameraBtn').addEventListener('click', function () { cameraInput.click(); });
+  fileInput.addEventListener('change', function () { addFiles(this.files); this.value = ''; });
+  cameraInput.addEventListener('change', function () { addFiles(this.files); this.value = ''; });
+
+  previews.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('[data-idx]') : null;
+    if (!btn) return;
+    images.splice(parseInt(btn.getAttribute('data-idx'), 10), 1);
+    renderPreviews();
+    setStatus(images.length ? '已选 ' + images.length + ' 张图片' : '还没有选择图片');
+  });
+
+  ['dragenter', 'dragover'].forEach(function (t) {
+    drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); });
+  });
+  ['dragleave', 'drop'].forEach(function (t) {
+    drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove('over'); });
+  });
+  drop.addEventListener('drop', function (e) {
+    if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+
+  // 弹窗内的粘贴
+  document.addEventListener('paste', function (e) {
+    if (overlay.hidden) return;
+    var items = (e.clipboardData && e.clipboardData.files) ? e.clipboardData.files : null;
+    if (items && items.length) { e.preventDefault(); addFiles(items); }
+  });
+
+  runBtn.addEventListener('click', runOcr);
+  document.getElementById('ocrSaveBtn').addEventListener('click', saveToResources);
+  document.getElementById('ocrCopyBtn').addEventListener('click', copyText);
+  document.getElementById('ocrToCanvasBtn').addEventListener('click', toCanvas);
+  document.getElementById('ocrClearBtn').addEventListener('click', clearAll);
+})();
+</script>
 </body>
 </html>
