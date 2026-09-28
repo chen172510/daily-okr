@@ -11953,5 +11953,13 @@ body::before {
 <script src="../assets/fortune.js"></script>
 <script src="../assets/profile.js"></script>
 <script src="../assets/pet.js"></script>
+<style>
+  /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
+  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(139,105,20,.35) transparent; }
+  .sidebar-nav::-webkit-scrollbar { width: 6px; }
+  .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
+  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
+</style>
 </body>
 </html>
