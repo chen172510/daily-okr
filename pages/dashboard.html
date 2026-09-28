@@ -311,6 +311,7 @@ body {
 <script src="../assets/api.js"></script>
 <script src="../assets/page-nav.js"></script>
 <script src="../assets/common.js"></script>
+<script src="../assets/tasks.js"></script>
 <script src="../assets/user-module.js"></script>
 <link rel="stylesheet" href="../assets/dashboard-enhance.css">
 <script src="../assets/dashboard-enhance.js"></script>
@@ -673,6 +674,21 @@ body {
                 <span class="section-seal">一日修行</span>
                 <h3 class="section-title">一日修行图</h3>
             </div>
+
+            <!-- 此刻正在做什么（读自每日计划） -->
+            <div class="now-task-card" id="nowTaskCard" style="display:none;">
+                <div class="now-task-left">
+                    <div class="now-task-label">此刻</div>
+                    <div class="now-task-name" id="nowTaskName">—</div>
+                    <div class="now-task-meta" id="nowTaskMeta"></div>
+                </div>
+                <div class="now-task-actions" id="nowTaskActions"></div>
+            </div>
+            <div class="day-usage-line" id="dayUsageLine"></div>
+
+            <!-- 今日真实任务轨道 -->
+            <div class="day-real-track" id="dayRealTrack"></div>
+
             <div class="timeline-day">
                 <div class="timeline-track-day" id="timelineTrackDay">
                     <!-- 精力曲线 SVG -->
@@ -9326,6 +9342,55 @@ body::before {
   const TIMELINE_END_MIN = 23 * 60;    // 1380
   const TIMELINE_TOTAL_MIN = TIMELINE_END_MIN - TIMELINE_START_MIN; // 1020
 
+  // 每日计划的分类 → 修行图活动类型
+  const CATEGORY_TO_ACTIVITY = {
+    study: 'midFocus', work: 'deepFocus', exercise: 'workout', rest: 'rest', other: 'idle'
+  };
+
+  // 把「每日计划」的任务合并进今日修行图：
+  // 计划占用的时间段会替换掉原来的默认作息，修行图因此跟着用户的真实计划变化
+  function buildScheduleWithTasks() {
+    const T = window.XingxingTasks;
+    if (!T) return DEFAULT_SCHEDULE;
+    let tasks = [];
+    try { tasks = T.getTasks(); } catch (e) { tasks = []; }
+    if (!tasks.length) return DEFAULT_SCHEDULE;
+
+    let out = [];
+    DEFAULT_SCHEDULE.forEach(function (seg) {
+      const segS = timeToMinutes(seg.start);
+      const segE = timeToMinutes(seg.end) <= segS ? TIMELINE_END_MIN : timeToMinutes(seg.end);
+      let pieces = [{ type: seg.type, start: segS, end: segE }];
+
+      tasks.forEach(function (t) {
+        const ts = timeToMinutes(t.startTime);
+        const te = timeToMinutes(t.endTime);
+        if (!t.startTime || !t.endTime || te <= ts) return;
+        const actType = CATEGORY_TO_ACTIVITY[t.category] || 'idle';
+        let next = [];
+        pieces.forEach(function (p) {
+          if (te <= p.start || ts >= p.end) { next.push(p); return; }
+          if (ts > p.start) next.push({ type: p.type, start: p.start, end: ts });
+          next.push({
+            type: actType,
+            start: Math.max(ts, p.start),
+            end: Math.min(te, p.end),
+            taskStatus: t.effective
+          });
+          if (te < p.end) next.push({ type: p.type, start: te, end: p.end });
+        });
+        pieces = next;
+      });
+      out = out.concat(pieces);
+    });
+
+    return out
+      .filter(function (p) { return p.end > p.start; })
+      .map(function (p) {
+        return { type: p.type, start: minutesToTime(p.start), end: minutesToTime(p.end), taskStatus: p.taskStatus };
+      });
+  }
+
   // ---------- 状态修正系数 ----------
   function getEnergyMultiplier(state) {
     if (state >= 80) return 1.0;
@@ -9766,7 +9831,7 @@ body::before {
   // ---------- 初始化 ----------
   function init() {
     const stored = loadEnergyState();
-    const schedule = DEFAULT_SCHEDULE;
+    const schedule = buildScheduleWithTasks();
 
     // 初始值：起床时精力=100，状态=90
     const startEnergy = 100;
@@ -11962,5 +12027,147 @@ body::before {
   .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
 </style>
 <script src="../assets/voice.js"></script>
+<style>
+/* ===== 今日行醒 · 与每日计划联动 ===== */
+.now-task-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin: 4px 0 12px;
+  padding: 14px 18px;
+  background: var(--ink-paper-light, #faf6ec);
+  border: 1.5px solid var(--ink-2, #d9cbae);
+  border-left: 4px solid #a8341f;
+  border-radius: 8px;
+  font-family: "STKaiti","KaiTi",serif;
+}
+.now-task-label { font-size: 11px; letter-spacing: .3em; color: #8a7a5e; }
+.now-task-name { font-size: 19px; color: #1f1a10; margin-top: 3px; letter-spacing: 1px; }
+.now-task-meta { font-size: 12px; color: #8a7a5e; margin-top: 4px; }
+.now-task-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.now-task-btn {
+  font-family: inherit; font-size: 13px; padding: 6px 16px;
+  border-radius: 20px; cursor: pointer; text-decoration: none;
+  border: 1px solid #d9cbae; background: #fff; color: #5a4a32;
+}
+.now-task-btn.start { background: #1f1a10; color: #f7ecd0; border-color: #1f1a10; }
+.now-task-btn.done { background: #2d6a4f; color: #f2f7f2; border-color: #2d6a4f; }
+.now-task-btn.blocked { color: #8b6914; border-color: rgba(139,105,20,.5); }
+.now-task-btn.ghost { color: #8a7a5e; }
+.now-task-btn:hover { filter: brightness(1.08); }
+.day-usage-line { font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #8a7a5e; margin-bottom: 8px; }
+.day-real-track { position: relative; height: 46px; margin: 0 0 6px; }
+.day-real-bar {
+  position: absolute; top: 6px; height: 34px; border-radius: 5px;
+  display: flex; align-items: center; padding: 0 8px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12px;
+  overflow: hidden; white-space: nowrap;
+  border: 1px solid transparent; box-sizing: border-box;
+}
+.day-real-bar.plan { border-style: dashed; border-color: #b8b0a0; background: rgba(245,239,227,.9); color: #5a4a32; }
+.day-real-empty { font-family: "STKaiti","KaiTi",serif; font-size: 13px; color: #8a7a5e; padding: 12px 0; }
+</style>
+<script>
+/* ============ 今日行醒：读每日计划 + 状态联动 ============ */
+(function () {
+  'use strict';
+  var card = document.getElementById('nowTaskCard');
+  var track = document.getElementById('dayRealTrack');
+  var usageLine = document.getElementById('dayUsageLine');
+  if (!track) return;
+
+  var STATUS_TEXT = { todo: '未开始', doing: '修行中', done: '已圆满', blocked: '有阻碍' };
+
+  function render() {
+    var T = window.XingxingTasks;
+    if (!T) return;
+    var tasks = T.getTasks();
+    var day = T.dayWindow();
+
+    // ---- 此刻正在做什么 ----
+    if (card) {
+      var cur = T.currentTask();
+      if (!tasks.length) {
+        card.style.display = 'none';
+      } else {
+        card.style.display = 'flex';
+        var nameEl = document.getElementById('nowTaskName');
+        var metaEl = document.getElementById('nowTaskMeta');
+        var actions = document.getElementById('nowTaskActions');
+        if (cur) {
+          nameEl.textContent = cur.name;
+          var bits = [cur.startTime + '–' + cur.endTime, STATUS_TEXT[cur.effective] || ''];
+          if (cur.effective === 'doing' && cur.actualStart) bits.push('从 ' + cur.actualStart + ' 开始');
+          if (cur.okrId) bits.push('🎯 ' + (cur.krTitle || T.okrTitle(cur.okrId) || '已关联目标'));
+          if (cur.blockedReason) bits.push('阻碍：' + cur.blockedReason);
+          metaEl.textContent = bits.filter(Boolean).join(' · ');
+          actions.innerHTML =
+              (cur.effective === 'todo' ? '<button class="now-task-btn start" data-act="start" data-id="' + cur.id + '">开始</button>' : '')
+            + (cur.effective === 'doing' ? '<button class="now-task-btn done" data-act="finish" data-id="' + cur.id + '">完成</button>' : '')
+            + (cur.effective === 'todo' || cur.effective === 'doing' ? '<button class="now-task-btn blocked" data-act="block" data-id="' + cur.id + '">有阻碍</button>' : '')
+            + (cur.effective === 'blocked' || cur.effective === 'done' ? '<button class="now-task-btn ghost" data-act="reset" data-id="' + cur.id + '">重来</button>' : '');
+        } else {
+          nameEl.textContent = '今天没有待办的计划了';
+          metaEl.textContent = '去「每日计划」排一段新的任务吧';
+          actions.innerHTML = '<a class="now-task-btn" href="daily-plan.html">去排计划</a>';
+        }
+      }
+    }
+
+    // ---- 今日使用区间 ----
+    if (usageLine) {
+      usageLine.textContent = day.first
+        ? ('今日修行区间：' + day.first + ' 第一次打开 → ' + day.last + ' 最后一次使用 · 共 ' + day.visits + ' 次')
+        : '今日修行区间：正在记录中…';
+    }
+
+    // ---- 真实任务轨道 ----
+    if (!tasks.length) {
+      track.innerHTML = '<div class="day-real-empty">今天还没有排计划，这一天的轨迹还是空的 ·「每日计划」里排一段，这里就会长出来</div>';
+      return;
+    }
+    var from = day.start, to = day.end;
+    if (to - from < 60) to = from + 60;
+    var span = to - from;
+    function pos(min) { return Math.max(0, Math.min(100, ((min - from) / span) * 100)); }
+
+    track.innerHTML = tasks.map(function (t) {
+      var left = pos(T.toMinutes(t.startTime));
+      var width = Math.max(2, pos(T.toMinutes(t.endTime)) - left);
+      return '<div class="day-real-bar plan" style="left:' + left + '%;width:' + width + '%" title="'
+        + t.startTime + '–' + t.endTime + ' ' + t.name + '">' + t.name + '</div>';
+    }).join('');
+
+    var nowMin = T.nowMinutes();
+    if (nowMin >= from && nowMin <= to) {
+      var line = document.createElement('div');
+      line.style.cssText = 'position:absolute;top:0;bottom:0;width:2px;background:#a8341f;left:' + pos(nowMin) + '%;';
+      track.appendChild(line);
+    }
+  }
+
+  if (card) {
+    card.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('button[data-act]') : null;
+      if (!b) return;
+      var T = window.XingxingTasks;
+      if (!T) return;
+      var id = b.getAttribute('data-id');
+      var act = b.getAttribute('data-act');
+      if (act === 'start') T.startTask(id);
+      else if (act === 'finish') T.finishTask(id);
+      else if (act === 'block') {
+        var r = prompt('遇到什么阻碍？（可不填）', '');
+        T.blockTask(id, r === null ? '没按计划完成' : r);
+      } else if (act === 'reset') T.resetTask(id);
+      render();
+    });
+  }
+
+  render();
+  if (window.XingxingTasks) {
+    XingxingTasks.on(render);
+    setInterval(render, 60000);
+  }
+})();
+</script>
 </body>
 </html>

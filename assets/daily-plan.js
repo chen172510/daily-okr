@@ -97,16 +97,32 @@
     var nowMinutes = now.getHours() * 60 + now.getMinutes();
 
     container.innerHTML = sortedPlans.map(function(plan) {
+      var T = window.XingxingTasks;
+      var rich = null;
+      if (T) {
+        rich = T.getTasks().filter(function (t) { return t.id === plan.id; })[0] || null;
+      }
+      var status = rich ? rich.effective : (plan.completed ? 'done' : 'todo');
       var startMin = timeToMinutes(plan.startTime);
       var endMin = timeToMinutes(plan.endTime);
-      var isCurrent = nowMinutes >= startMin && nowMinutes < endMin;
-      var isCompleted = plan.completed || nowMinutes >= endMin;
+      var isCurrent = status === 'doing';
       var progress = 0;
-      if (isCurrent) {
-        progress = Math.min(100, ((nowMinutes - startMin) / (endMin - startMin)) * 100);
-      } else if (isCompleted) {
-        progress = 100;
-      }
+      if (status === 'done') progress = 100;
+      else if (isCurrent) progress = Math.min(100, ((nowMinutes - startMin) / Math.max(1, endMin - startMin)) * 100);
+
+      var STATUS_LABEL = { todo: '未开始', doing: '修行中', done: '已圆满', blocked: '有阻碍' };
+      var statusTag = '<span class="plan-status status-' + status + '">' + (STATUS_LABEL[status] || '未开始') + '</span>';
+      var linkTag = (rich && rich.okrId)
+        ? '<span class="plan-tag link">🎯 ' + escapeHtml(rich.krTitle || (T.okrTitle(rich.okrId) || '已关联目标')) + '</span>'
+        : '';
+      var actualTag = (rich && rich.actualMinutes)
+        ? '<span class="plan-tag">⏱ 实际 ' + T.fmtMinutes(rich.actualMinutes) + '</span>'
+        : '';
+      var actionBtns =
+          (status === 'todo' ? '<button class="plan-status-btn start" onclick="DailyPlan.setStatus(\'' + plan.id + '\',\'start\')">开始</button>' : '')
+        + (status === 'doing' ? '<button class="plan-status-btn done" onclick="DailyPlan.setStatus(\'' + plan.id + '\',\'finish\')">完成</button>' : '')
+        + (status === 'todo' || status === 'doing' ? '<button class="plan-status-btn blocked" onclick="DailyPlan.setStatus(\'' + plan.id + '\',\'block\')">有阻碍</button>' : '')
+        + (status === 'blocked' || status === 'done' ? '<button class="plan-status-btn reset" onclick="DailyPlan.setStatus(\'' + plan.id + '\',\'reset\')">重来</button>' : '');
 
       var catLabels = {
         study: '📖 学习',
@@ -121,7 +137,7 @@
         : '';
 
       return `
-        <div class="timeline-item ${isCurrent ? 'current' : ''} ${isCompleted && !isCurrent ? 'completed' : ''}" data-id="${plan.id}">
+        <div class="timeline-item ${isCurrent ? 'current' : ''} ${status === 'done' ? 'completed' : ''}" data-id="${plan.id}">
           <div class="timeline-time">
             ${plan.startTime}
             <span class="end-time">${plan.endTime}</span>
@@ -145,11 +161,15 @@
             </div>
           </div>
           <div class="plan-meta">
+            ${statusTag}
             <span class="plan-tag ${plan.category}">${catLabels[plan.category] || '📝 其他'}</span>
+            ${linkTag}
+            ${actualTag}
             ${alarmTag}
             ${plan.note ? '<span class="plan-tag">📝 ' + escapeHtml(plan.note).slice(0, 15) + '</span>' : ''}
           </div>
-          ${isCurrent || isCompleted ? '<div class="plan-progress-bar"><div class="plan-progress-fill" style="width:' + progress + '%"></div></div>' : ''}
+          ${isCurrent || status === 'done' ? '<div class="plan-progress-bar"><div class="plan-progress-fill" style="width:' + progress + '%"></div></div>' : ''}
+          ${actionBtns ? '<div class="plan-status-actions">' + actionBtns + '</div>' : ''}
         </div>
       `;
     }).join('');
@@ -270,6 +290,7 @@
     updateRingtoneSelection();
     toggleRingtoneSelectorUI(true);
 
+    fillOkrOptions('');
     document.getElementById('planModal').classList.add('show');
   }
 
@@ -292,6 +313,9 @@
     updateRingtoneSelection();
     toggleRingtoneSelectorUI(plan.alarmOn);
 
+    var T = window.XingxingTasks;
+    var link = T ? T.getLink(id) : null;
+    fillOkrOptions(link ? link.okrId : '');
     document.getElementById('planModal').classList.add('show');
   }
 
@@ -371,6 +395,8 @@
 
   // ========== 保存计划 ==========
   function savePlan() {
+    var isEditing = !!currentEditId;
+    var savedTaskId = '';
     var name = document.getElementById('planName').value.trim();
     var startTime = document.getElementById('planStartTime').value;
     var endTime = document.getElementById('planEndTime').value;
@@ -394,6 +420,7 @@
       // 编辑模式
       var idx = plans.findIndex(function(p) { return p.id === currentEditId; });
       if (idx >= 0) {
+        savedTaskId = plans[idx].id;
         plans[idx].name = name;
         plans[idx].startTime = startTime;
         plans[idx].endTime = endTime;
@@ -406,8 +433,10 @@
       }
     } else {
       // 新增模式
+      var newId = 'plan_' + Date.now();
+      savedTaskId = newId;
       plans.push({
-        id: 'plan_' + Date.now(),
+        id: newId,
         name: name,
         startTime: startTime,
         endTime: endTime,
@@ -427,12 +456,71 @@
     updateNowLine();
     closePlanModal();
 
+    // 目标关联 + 通知其他页面（今日行醒 / 修行图 / 目标图谱 / 复盘）
+    var T = window.XingxingTasks;
+    if (T) {
+      var linkSel = document.getElementById('planOkrLink');
+      var okrId = linkSel ? linkSel.value : '';
+      if (savedTaskId) {
+        var krTitle = '';
+        if (okrId) {
+          try {
+            var raw = JSON.parse(localStorage.getItem('xingxing_okrs') || '[]');
+            var arr = Array.isArray(raw) ? raw : (raw.okrs || []);
+            var found = arr.filter(function (o) { return o.id === okrId; })[0];
+            if (found && found.keyResults && found.keyResults.length) krTitle = found.keyResults[0].title || '';
+          } catch (e) {}
+        }
+        T.linkTask(savedTaskId, okrId, null, krTitle);
+      }
+      T.emit({ from: 'daily-plan' });
+    }
+
     if (App && App.showToast) {
-      App.showToast(currentEditId ? '计划已更新' : '计划已添加', 'success', 2000);
+      App.showToast(isEditing ? '计划已更新' : '计划已添加', 'success', 2000);
     }
   }
 
   // ========== 删除计划 ==========
+  // ========== 任务状态：开始 / 完成 / 有阻碍（同步到今日行醒、修行图、目标图谱、复盘）==========
+  function setStatus(id, action) {
+    var T = window.XingxingTasks;
+    if (!T) return;
+    if (action === 'start') T.startTask(id);
+    else if (action === 'finish') T.finishTask(id);
+    else if (action === 'block') {
+      var reason = prompt('遇到什么阻碍？（可不填）', '') ;
+      T.blockTask(id, reason === null ? '没按计划完成' : reason);
+    }
+    else if (action === 'reset') T.resetTask(id);
+
+    // 状态变化后把本地 plans 重新读一遍，保持两个页面一致
+    loadPlans();
+    renderTimeline();
+    updateSummary();
+    updateNowLine();
+
+    var T2 = window.XingxingTasks;
+    if (T2 && App && App.showToast) {
+      var msg = { start: '开始修行，加油', finish: '已圆满，记一笔', block: '已标记有阻碍', reset: '已重置为未开始' }[action];
+      App.showToast(msg || '状态已更新', 'success', 1600);
+    }
+  }
+
+  // 关联到目标的选项
+  function fillOkrOptions(selectedId) {
+    var sel = document.getElementById('planOkrLink');
+    if (!sel) return;
+    var okrs = [];
+    try {
+      var raw = JSON.parse(localStorage.getItem('xingxing_okrs') || '[]');
+      okrs = Array.isArray(raw) ? raw : (raw.okrs || []);
+    } catch (e) { okrs = []; }
+    sel.innerHTML = '<option value="">不关联</option>' + okrs.map(function (o) {
+      return '<option value="' + o.id + '"' + (o.id === selectedId ? ' selected' : '') + '>' + escapeHtml(o.title) + '</option>';
+    }).join('');
+  }
+
   function deletePlan(id) {
     if (!confirm('确定要删除这个计划吗？')) return;
     plans = plans.filter(function(p) { return p.id !== id; });
@@ -663,6 +751,7 @@
     openAddPlanModal: openAddPlanModal,
     editPlan: editPlan,
     deletePlan: deletePlan,
+    setStatus: setStatus,
     closePlanModal: closePlanModal,
     savePlan: savePlan,
     selectCategory: selectCategory,

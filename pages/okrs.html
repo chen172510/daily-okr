@@ -311,6 +311,7 @@ body {
 <script src="../assets/api.js"></script>
 <script src="../assets/page-nav.js"></script>
 <script src="../assets/common.js"></script>
+<script src="../assets/tasks.js"></script>
 <script src="../assets/user-module.js"></script>
 <script>
   if (window.XingxingCommon) XingxingCommon.checkDailyReset();
@@ -2197,6 +2198,24 @@ body {
   }
   .okr-more-menu button:hover { background: #f0ebe3; }
   .okr-more-menu button.danger { color: #922b21; }
+  /* 今日投入（来自每日计划） */
+  .okr-today-line {
+    margin-top: 8px;
+    padding: 7px 10px;
+    border-left: 3px solid #8b6914;
+    background: rgba(232,201,122,.14);
+    border-radius: 4px;
+    font-family: "STKaiti","KaiTi",serif;
+    font-size: 12.5px;
+    color: #6b5d44;
+  }
+  .okr-today-tasks { display: block; margin-top: 3px; color: #8a7a5e; font-size: 11.5px; }
+  .okr-today-done {
+    display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 12px;
+    background: rgba(45,106,79,.14); color: #245239; border: 1px solid rgba(45,106,79,.4);
+    font-size: 11.5px;
+  }
+  .okr-item.today-done { border-left: 3px solid #2d6a4f; }
 </style>
 
 <div class="okr-modal-overlay" id="okrModalOverlay">
@@ -2288,7 +2307,24 @@ body {
       var p = Math.max(0, Math.min(100, o.progress || 0));
       var krs = normalizeKrs(o.keyResults);
       var desc = '关键结果：' + (krs.map(function(k){ return k.title; }).join(' / ') || '暂未设定');
-      return '<div class="okr-item" data-id="' + escapeHtml(o.id) + '">'
+      // 今日任务对这一目标的投入（来自每日计划）
+      var contrib = todayContribution[o.id];
+      var todayLine = '';
+      var todayAllDone = false;
+      if (contrib && contrib.tasks.length) {
+        var tn = window.XingxingTasks;
+        todayAllDone = contrib.done === contrib.tasks.length;
+        var planText = tn ? tn.fmtMinutes(contrib.plannedMinutes) : (contrib.plannedMinutes + ' 分钟');
+        var head = (contrib.minutes > 0)
+          ? '📌 今日投入 ' + (tn ? tn.fmtMinutes(contrib.minutes) : contrib.minutes + ' 分钟')
+            + ' / 计划 ' + planText + '（' + Math.min(100, Math.round((contrib.minutes / Math.max(1, contrib.plannedMinutes)) * 100)) + '%）'
+          : '📌 今日计划 ' + planText + '，还没开始投入';
+        todayLine = '<div class="okr-today-line">' + head
+          + ' · ' + contrib.done + '/' + contrib.tasks.length + ' 项已圆满'
+          + (todayAllDone ? ' <span class="okr-today-done">今日已圆满</span>' : '')
+          + '<span class="okr-today-tasks">' + contrib.tasks.map(function (t) { return escapeHtml(t.name); }).join(' · ') + '</span></div>';
+      }
+      return '<div class="okr-item' + (todayAllDone ? ' today-done' : '') + '" data-id="' + escapeHtml(o.id) + '">'
         + '<div class="progress-ring-wrapper">'
         + '<svg width="68" height="68" viewBox="0 0 68 68">'
         + '<circle class="progress-ring-bg" cx="34" cy="34" r="30"></circle>'
@@ -2296,6 +2332,7 @@ body {
         + '</svg><div class="progress-ring-text">' + p + '%</div></div>'
         + '<div class="okr-content"><div class="okr-title">' + escapeHtml(o.title) + '</div>'
         + '<div class="okr-desc">' + escapeHtml(desc) + '</div>'
+        + todayLine
         + '<div class="okr-meta-row"><span class="category-tag">' + escapeHtml(o.category || '未分类') + '</span>'
         + '<span class="kr-count"><strong>' + krs.length + '关</strong> KR</span>'
         + '<span class="due-date">' + escapeHtml(o.dueDate || '') + '</span></div></div>'
@@ -2308,6 +2345,12 @@ body {
     var activeCats = [];      // 空数组 = 全部门派
     var progressKey = 'all';  // all / low / mid / high / full
     var periodKey = 'all';    // all / 2026-春 ...
+    var todayContribution = {};   // 今日任务对各目标的投入
+
+    function refreshContribution() {
+      var T = window.XingxingTasks;
+      todayContribution = T ? T.okrContribution() : {};
+    }
 
     var PROGRESS_OPTS = [
       { key: 'all',  label: '全部',   test: function () { return true; } },
@@ -2405,6 +2448,7 @@ body {
 
     function render(filter) {
       currentFilter = filter || currentFilter || 'all';
+      refreshContribution();
       var list = baseFiltered(getOkrs());
       var container = document.querySelector('.okr-scroll-content');
       if (!container) return;
@@ -2544,6 +2588,10 @@ body {
       });
 
       bindFilterPanel();
+      // 每日计划里的任务状态变了，这一页也跟着刷新
+      if (window.XingxingTasks) {
+        XingxingTasks.on(function () { render(currentFilter); });
+      }
     }
 
     function bindFilterPanel() {

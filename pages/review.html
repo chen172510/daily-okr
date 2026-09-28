@@ -312,6 +312,7 @@ body {
 <script src="../assets/api.js"></script>
 <script src="../assets/page-nav.js"></script>
 <script src="../assets/common.js"></script>
+<script src="../assets/tasks.js"></script>
 <script src="../assets/review-graph.js"></script>
 <script src="../assets/user-module.js"></script>
 <link rel="icon" type="image/png" href="../assets/favicon.png">
@@ -474,6 +475,17 @@ body {
         </div>
 
         <!-- 事务脉络 · 因果图谱 -->
+        <!-- 今日自动归档：直接读每日计划 + 实际执行 -->
+        <div class="graph-card" id="autoArchiveCard">
+          <div class="card-header-section">
+            <div class="card-section-label">自 动 归 档</div>
+            <h2 class="card-title">今天的行动</h2>
+            <p class="card-subtitle">由「每日计划」和你的实际操作自动汇成，不用手填。</p>
+            <div class="graph-seal">录</div>
+          </div>
+          <div id="autoArchiveBody" style="padding: 4px 4px 12px;"></div>
+        </div>
+
         <div class="graph-card">
           <div class="card-header-section">
             <div class="card-section-label">脉 络</div>
@@ -4659,6 +4671,109 @@ body {
     inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') add(); });
     render();
   })();
+</script>
+<style>
+/* ===== 每日复盘 · 自动归档与关系链 ===== */
+.aa-summary { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 14px; }
+.aa-chip {
+  font-family: "STKaiti","KaiTi",serif; font-size: 12.5px;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1px solid #ded4c2; background: #f7f2e8; color: #5a4a32;
+}
+.aa-chip.done { border-color: rgba(45,106,79,.4); background: rgba(45,106,79,.10); color: #245239; }
+.aa-chip.doing { border-color: rgba(168,52,31,.4); background: rgba(168,52,31,.10); color: #8c2c19; }
+.aa-chip.blocked { border-color: rgba(139,105,20,.45); background: rgba(232,201,122,.22); color: #7a5c11; }
+.aa-chain { margin-top: 6px; }
+.aa-row {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: 9px 0; border-bottom: 1px dashed #e0d6c2;
+  font-family: "STKaiti","KaiTi",serif; font-size: 13px; color: #3a3226;
+}
+.aa-row:last-child { border-bottom: none; }
+.aa-node { padding: 4px 11px; border-radius: 16px; border: 1px solid #d9cbae; background: #fff; }
+.aa-node.task { background: #1f1a10; color: #f7ecd0; border-color: #1f1a10; }
+.aa-node.okr { border-color: rgba(139,105,20,.5); background: rgba(232,201,122,.18); }
+.aa-node.status-done { border-color: rgba(45,106,79,.45); background: rgba(45,106,79,.12); }
+.aa-node.status-blocked { border-color: rgba(139,105,20,.5); background: rgba(232,201,122,.24); }
+.aa-node.status-doing { border-color: rgba(168,52,31,.45); background: rgba(168,52,31,.12); }
+.aa-arrow { color: #b8b0a0; }
+.aa-meta { color: #8a7a5e; font-size: 12px; }
+.aa-empty { font-family: "STKaiti","KaiTi",serif; font-size: 13px; color: #8a7a5e; padding: 10px 0; }
+</style>
+<script>
+/* ============ 每日复盘：自动归档 + 任务→目标 关系链 ============ */
+(function () {
+  'use strict';
+  var body = document.getElementById('autoArchiveBody');
+  if (!body) return;
+  var STATUS_TEXT = { todo: '未开始', doing: '修行中', done: '已圆满', blocked: '有阻碍' };
+
+  function render() {
+    var T = window.XingxingTasks;
+    if (!T) return;
+    var s = T.stats();
+    var day = T.dayWindow();
+
+    if (!s.total) {
+      body.innerHTML = '<div class="aa-empty">今天还没有排计划。去「每日计划」排一段，这里就会自动出现今天的行动记录。</div>';
+      return;
+    }
+
+    var chips = ''
+      + '<span class="aa-chip">计划 ' + s.total + ' 项</span>'
+      + '<span class="aa-chip done">已圆满 ' + s.done + '</span>'
+      + '<span class="aa-chip doing">修行中 ' + s.doing + '</span>'
+      + '<span class="aa-chip blocked">有阻碍 ' + s.blocked + '</span>'
+      + '<span class="aa-chip">未开始 ' + s.todo + '</span>'
+      + '<span class="aa-chip">实际投入 ' + T.fmtMinutes(s.actualMinutes) + ' / 计划 ' + T.fmtMinutes(s.plannedMinutes) + '</span>';
+    if (day.first) chips += '<span class="aa-chip">修行区间 ' + day.first + ' – ' + day.last + '</span>';
+
+    var rows = s.tasks.map(function (t) {
+      var chain = '<span class="aa-node task">' + t.name + '</span>'
+        + '<span class="aa-arrow">→</span><span class="aa-node status-' + t.effective + '">' + (STATUS_TEXT[t.effective] || '') + '</span>'
+        + '<span class="aa-arrow">·</span><span class="aa-meta">' + t.startTime + '–' + t.endTime
+        + (t.actualMinutes ? '，实际 ' + T.fmtMinutes(t.actualMinutes) : '') + '</span>';
+      if (t.okrId) {
+        chain += '<span class="aa-arrow">→ 关联 →</span><span class="aa-node okr">🎯 '
+          + (t.krTitle ? t.krTitle + ' · ' : '') + (T.okrTitle(t.okrId) || '目标') + '</span>';
+      } else {
+        chain += '<span class="aa-arrow">→</span><span class="aa-meta">还没关联目标</span>';
+      }
+      if (t.blockedReason && t.effective === 'blocked') {
+        chain += '<span class="aa-arrow">·</span><span class="aa-meta">阻碍：' + t.blockedReason + '</span>';
+      }
+      return '<div class="aa-row">' + chain + '</div>';
+    }).join('');
+
+    body.innerHTML = '<div class="aa-summary">' + chips + '</div><div class="aa-chain">' + rows + '</div>';
+
+    // 顶部「今日坐功 / 专注时长」换成真实数据
+    var statNums = document.querySelectorAll('.stats-row .stat-card .stat-big-number');
+    if (statNums.length >= 3) {
+      statNums[1].textContent = T.fmtMinutes(s.actualMinutes);
+      var focusMin = s.tasks.filter(function (t) { return t.effective === 'done'; })
+        .reduce(function (a, t) { return a + (t.actualMinutes || 0); }, 0);
+      statNums[2].textContent = T.fmtMinutes(focusMin);
+    }
+
+    // 第一问自动填底稿（用户没写过才填）
+    var a1 = document.getElementById('sanxing-1');
+    if (a1 && !a1.value.trim()) {
+      var doneList = s.tasks.filter(function (t) { return t.effective === 'done'; });
+      if (doneList.length) {
+        a1.value = doneList.map(function (t) {
+          return '· ' + t.name + '（' + t.startTime + '–' + t.endTime + '，实际 ' + T.fmtMinutes(t.actualMinutes) + '）';
+        }).join('\n');
+      }
+    }
+  }
+
+  render();
+  if (window.XingxingTasks) {
+    XingxingTasks.on(render);
+    setInterval(render, 120000);
+  }
+})();
 </script>
 </body>
 </html>

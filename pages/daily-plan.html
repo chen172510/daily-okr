@@ -800,6 +800,14 @@ body {
         </div>
       </div>
 
+      <div class="form-group">
+        <label class="form-label">关联目标（可选）</label>
+        <select class="form-input" id="planOkrLink" style="width:100%;">
+          <option value="">不关联</option>
+        </select>
+        <div style="margin-top:5px;font-size:12px;color:#8a7a5e;">关联后，这一小时会算进「目标图谱」的进度</div>
+      </div>
+
       <div class="alarm-toggle-row">
         <div>
           <div class="alarm-toggle-label">🔔 到点提醒</div>
@@ -847,6 +855,7 @@ body {
 </div>
 
 <script src="../assets/common.js"></script>
+<script src="../assets/tasks.js"></script>
 <script src="../assets/daily-plan.js"></script>
 <script src="../assets/fortune.js"></script>
 <script src="../assets/profile.js"></script>
@@ -858,6 +867,44 @@ body {
   .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
   .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
   .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
+</style>
+<style>
+/* 任务状态标签与操作 */
+.plan-status {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: "STKaiti","KaiTi",serif;
+  border: 1px solid transparent;
+}
+.plan-status.status-todo    { color: #8a7a5e; background: #f0ebe3; border-color: #ded4c2; }
+.plan-status.status-doing   { color: #a8341f; background: rgba(168,52,31,.10); border-color: rgba(168,52,31,.35); }
+.plan-status.status-done    { color: #2d6a4f; background: rgba(45,106,79,.10); border-color: rgba(45,106,79,.35); }
+.plan-status.status-blocked { color: #8b6914; background: rgba(232,201,122,.22); border-color: rgba(139,105,20,.35); }
+
+.plan-tag.link { color: #8b6914; border-color: rgba(139,105,20,.4); }
+
+.plan-status-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 9px;
+}
+.plan-status-btn {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 4px 13px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: 1px solid #d9cbae;
+  background: #fff;
+  color: #5a4a32;
+}
+.plan-status-btn.start   { background: #1f1a10; color: #f7ecd0; border-color: #1f1a10; }
+.plan-status-btn.done    { background: #2d6a4f; color: #f2f7f2; border-color: #2d6a4f; }
+.plan-status-btn.blocked { color: #8b6914; border-color: rgba(139,105,20,.5); }
+.plan-status-btn.reset   { color: #8a7a5e; }
+.plan-status-btn:hover   { filter: brightness(1.08); }
 </style>
 <script src="../assets/voice.js"></script>
 </body>

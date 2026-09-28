@@ -333,6 +333,59 @@
     } catch (e) {}
 
     // ========== 6. 补充知识节点（作为改进方向的锚点）==========
+    // ========== 6.5 今天真实做过的事（来自每日计划 + 实际操作）==========
+    try {
+      var Tx = window.XingxingTasks;
+      if (Tx) {
+        var tasks = Tx.getTasks();
+        var STATUS_LABEL = { todo: '未开始', doing: '修行中', done: '已圆满', blocked: '有阻碍' };
+        tasks.forEach(function (t, i) {
+          var tid = 'task_' + t.id;
+          var shortName = t.name.length > 8 ? t.name.slice(0, 8) + '…' : t.name;
+          addNode({
+            id: tid,
+            type: t.effective === 'done' ? 'goal' : 'event',
+            label: shortName,
+            desc: t.name + '（' + t.startTime + '–' + t.endTime + '，' + (STATUS_LABEL[t.effective] || '') +
+                  (t.actualMinutes ? '，实际 ' + Tx.fmtMinutes(t.actualMinutes) : '') + '）',
+            r: t.effective === 'done' ? 22 : 19,
+            icon: t.effective === 'done' ? '✅' : (t.effective === 'blocked' ? '⚠️' : '⏳')
+          });
+
+          // 任务 → 它服务的目标
+          if (t.okrId) {
+            var oid = 'okr_' + t.okrId;
+            if (addNode({
+              id: oid,
+              type: 'goal',
+              label: (Tx.okrTitle(t.okrId) || '目标').slice(0, 8),
+              desc: '今日任务所服务的目标：' + (Tx.okrTitle(t.okrId) || ''),
+              r: 23
+            })) {
+              if (nodeIds['goal_frog']) addEdge({ source: oid, target: 'goal_frog', type: 'derive', label: '同属长期方向' });
+            }
+            if (t.krTitle) {
+              var kid = 'kr_' + t.okrId;
+              addNode({ id: kid, type: 'knowledge', label: t.krTitle.slice(0, 8), desc: '关键结果：' + t.krTitle + '（每日计划里的任务正在推进它）', r: 18 });
+              addEdge({ source: tid, target: kid, type: 'link', label: '推进' });
+              addEdge({ source: kid, target: oid, type: 'derive', label: '汇入目标' });
+            } else {
+              addEdge({ source: tid, target: oid, type: 'link', label: '服务于' });
+            }
+          }
+
+          if (t.effective === 'done') {
+            addNode({ id: 'emo_done_' + i, type: 'emotion', label: '踏实', desc: '完成「' + t.name + '」带来的踏实感', r: 17, icon: '😊' });
+            var doneEmoId = 'emo_done_' + i;
+            addEdge({ source: tid, target: doneEmoId, type: 'cause', label: '完成带来' });
+          } else if (t.effective === 'blocked') {
+            addNode({ id: 'prob_task_' + i, type: 'problem', label: '未完成', desc: '「' + t.name + '」没按计划完成' + (t.blockedReason ? '：' + t.blockedReason : ''), r: 18 });
+            addEdge({ source: tid, target: 'prob_task_' + i, type: 'cause', label: '未能完成' });
+          }
+        });
+      }
+    } catch (e) {}
+
     if (!nodeIds['know_calm']) {
       addNode({ id: 'know_calm', type: 'knowledge', label: '静心之法', desc: '冥想、深呼吸、正念等平静心绪的方法', r: 18 });
     }
