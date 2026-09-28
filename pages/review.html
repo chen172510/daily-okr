@@ -737,7 +737,22 @@ body {
         </div>
 
         <!-- 往昔省身 · 历史复盘 -->
-        <div class="history-card">
+                <!-- 今日小胜利 -->
+        <div class="questions-card" id="winsCard">
+          <div class="card-header-section">
+            <div class="card-section-label">小 胜 利</div>
+            <h2 class="card-title">今日小胜利</h2>
+            <p class="card-subtitle">今天做成了什么？哪怕很小，也值得记一笔。</p>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <input id="winInput" placeholder="比如：今天没有拖延，先把最难的事做完了"
+              style="flex:1;padding:11px 14px;border:1px solid #e0d8cc;border-radius:6px;font-family:inherit;font-size:14px;background:#fff;" />
+            <button id="winAdd" type="button"
+              style="border:none;border-radius:6px;padding:0 20px;background:#c0392b;color:#fff;cursor:pointer;font-family:inherit;font-size:14px;">记一笔</button>
+          </div>
+          <div id="winList" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+<div class="history-card">
           <div class="history-header">
             <div class="history-header-left">
               <span class="history-label">往 昔</span>
@@ -4486,5 +4501,46 @@ body {
   })();
 </script>
 <script src="../assets/voice.js"></script>
+<script>
+  /* 今日小胜利 */
+  (function () {
+    'use strict';
+    var C = window.XingxingCommon;
+    if (!document.getElementById('winsCard')) return;
+    var today = C && C.getTodayStr ? C.getTodayStr() : new Date().toISOString().slice(0, 10);
+    var KEY = 'xingxing_wins_' + today;
+    var listEl = document.getElementById('winList');
+    var inputEl = document.getElementById('winInput');
+    function load() { try { return (C ? C.safeGet(KEY, []) : JSON.parse(localStorage.getItem(KEY) || '[]')) || []; } catch (e) { return []; } }
+    function save(v) { if (C) C.safeSet(KEY, v); else localStorage.setItem(KEY, JSON.stringify(v)); }
+    var list = load();
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    function render() {
+      if (!list.length) {
+        listEl.innerHTML = '<span style="font-size:13px;color:#a89880;">今天还没有记录，写一条吧。</span>';
+        return;
+      }
+      listEl.innerHTML = list.map(function (t, i) {
+        return '<span class="okr-pill" style="cursor:default;">' + esc(t) + ' <span class="okr-pill-close" data-i="' + i + '">&times;</span></span>';
+      }).join('');
+      Array.prototype.forEach.call(listEl.querySelectorAll('.okr-pill-close'), function (x) {
+        x.addEventListener('click', function () {
+          list.splice(parseInt(x.getAttribute('data-i'), 10), 1);
+          save(list); render();
+        });
+      });
+    }
+    function add() {
+      var t = (inputEl.value || '').trim();
+      if (!t) return;
+      list.unshift(t); save(list); inputEl.value = ''; render();
+      try { if (C && C.addPoints) C.addPoints(3, '记录今日小胜利'); } catch (e) {}
+      try { if (C && C.showToast) C.showToast('已记下这条小胜利 +3 积分', 'success', 1600); } catch (e) {}
+    }
+    document.getElementById('winAdd').addEventListener('click', add);
+    inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') add(); });
+    render();
+  })();
+</script>
 </body>
 </html>
