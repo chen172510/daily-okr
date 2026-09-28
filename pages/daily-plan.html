@@ -794,6 +794,10 @@ body {
       <div class="form-group">
         <label class="form-label">备注（可选）</label>
         <textarea class="form-textarea" id="planNote" placeholder="补充说明..." rows="2"></textarea>
+        <div style="margin-top:6px;text-align:right;">
+          <button type="button" data-voice="#planNote" title="语音输入"
+            style="border:1px solid #e0d8cc;background:#fff;border-radius:16px;padding:5px 12px;cursor:pointer;font-family:inherit;font-size:13px;color:#6b5d44;">🎤 语音输入</button>
+        </div>
       </div>
 
       <div class="alarm-toggle-row">
@@ -855,5 +859,6 @@ body {
   .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
   .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
 </style>
+<script src="../assets/voice.js"></script>
 </body>
 </html>

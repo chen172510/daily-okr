@@ -4357,5 +4357,75 @@ body {
   .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
   .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
 </style>
+
+<script>
+  /* 心境卡片可点击切换 + 关联按钮自动关联今天的目标 */
+  (function () {
+    'use strict';
+    var C = window.XingxingCommon;
+    function toast(m) { try { if (C && C.showToast) { C.showToast(m, 'success', 1800); return; } } catch (e) {} }
+
+    // ---- 心境卡片 ----
+    var emoEl = document.querySelector('.stat-big-emoji');
+    var moodBox = emoEl && emoEl.closest('.stat-card');
+    if (emoEl && moodBox) {
+      var MOODS = [['😊', '神清气爽'], ['😐', '波澜不惊'], ['😔', '心绪不宁']];
+      var cur = 0;
+      var saved = localStorage.getItem('xingxing_today_mood');
+      for (var i = 0; i < MOODS.length; i++) if (MOODS[i][0] === saved) cur = i;
+      var applyMood = function () {
+        emoEl.textContent = MOODS[cur][0];
+        var sub = moodBox.querySelector('.stat-sub-text');
+        if (sub) sub.textContent = MOODS[cur][1];
+        Array.prototype.forEach.call(document.querySelectorAll('.mood-btn'), function (b, k) {
+          b.classList.toggle('active', k === cur);
+        });
+        try { localStorage.setItem('xingxing_today_mood', MOODS[cur][0]); } catch (e) {}
+      };
+      applyMood();
+      moodBox.style.cursor = 'pointer';
+      moodBox.title = '点一下换今日心境';
+      moodBox.addEventListener('click', function () {
+        cur = (cur + 1) % MOODS.length;
+        applyMood();
+        toast('今日心境：' + MOODS[cur][1]);
+      });
+    }
+
+    // ---- 关联按钮 ----
+    var linkBtn = document.querySelector('[data-dom-id="btn-link-okr"]');
+    if (linkBtn) {
+      linkBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var wrap = linkBtn.parentElement;
+        if (!wrap) return;
+        var titles = [];
+        try {
+          var raw = JSON.parse(localStorage.getItem('xingxing_okrs') || '{}');
+          titles = (raw.okrs || []).map(function (o) { return o.title; });
+        } catch (err) {}
+        if (!titles.length) titles = ['雅思总分 7.0', '逻辑学筑基与结构化表达', '心理学认知体系搭建'];
+        titles = titles.slice(0, 3);
+        var added = 0;
+        titles.forEach(function (t) {
+          var pills = wrap.querySelectorAll('.okr-pill');
+          var exists = Array.prototype.some.call(pills, function (p) { return p.textContent.indexOf(t) >= 0; });
+          if (exists) return;
+          var chip = document.createElement('span');
+          chip.className = 'okr-pill';
+          chip.innerHTML = t + ' <span class="okr-pill-close">&times;</span>';
+          chip.querySelector('.okr-pill-close').addEventListener('click', function (ev) {
+            ev.stopPropagation();
+            if (chip.parentNode) chip.parentNode.removeChild(chip);
+          });
+          wrap.insertBefore(chip, linkBtn);
+          added++;
+        });
+        toast(added ? ('已自动关联今天的 ' + added + ' 项') : '今天的项目都关联过了');
+      });
+    }
+  })();
+</script>
+<script src="../assets/voice.js"></script>
 </body>
 </html>
