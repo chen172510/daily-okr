@@ -155,6 +155,21 @@
     applyStreakUI(curStreak());
   }
 
+  // 顶栏主题图标：白天太阳、夜间月亮（19:00–05:30 为夜间）
+  function applyThemeIcon() {
+    var btn = document.querySelector('.theme-btn');
+    if (!btn) return;
+    var now = new Date();
+    var mins = now.getHours() * 60 + now.getMinutes();
+    var isNight = (mins >= 19 * 60) || (mins < 5 * 60 + 31);
+    var sun = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>';
+    var moon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
+    if (btn.getAttribute('data-xx-icon') === (isNight ? 'moon' : 'sun')) return;
+    btn.setAttribute('data-xx-icon', isNight ? 'moon' : 'sun');
+    btn.innerHTML = isNight ? moon : sun;
+    btn.title = isNight ? '现在是夜间（点击可切换）' : '现在是白天（点击可切换）';
+  }
+
   function sweep() {
     var f = get();
     var all = document.querySelectorAll('body *');
@@ -166,7 +181,12 @@
     }
   }
 
-  function init() { sweep(); apply(); }
+  function init() {
+    sweep();
+    apply();
+    applyThemeIcon();
+    setInterval(applyThemeIcon, 60000);
+  }
 
   global.XingxingFortune = { ZODIACS: ZODIACS, get: get, getZodiac: getZodiac, setZodiac: setZodiac, apply: apply };
 
