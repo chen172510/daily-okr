@@ -5,6 +5,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const zlib = require('zlib');
 
 const { initDatabase } = require('./database');
 const authRoutes = require('./routes/auth');
@@ -28,6 +29,38 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // ========== 静态文件（前端页面） ==========
+// 开启 gzip：文本类资源（HTML/CSS/JS/JSON/SVG）压缩后再发，页面加载快很多
+app.use((req, res, next) => {
+  if (!/\bgzip\b/i.test(req.headers['accept-encoding'] || '')) return next();
+  const origEnd = res.end;
+  const chunks = [];
+  res.write = function (chunk, enc) {
+    if (chunk) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, enc || 'utf8'));
+    return true;
+  };
+  res.end = function (chunk, enc) {
+    if (chunk) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, enc || 'utf8'));
+    const body = Buffer.concat(chunks);
+    if (res.statusCode === 304 || res.statusCode === 204 || body.length === 0) {
+      return origEnd.call(res, body);
+    }
+    const type = String(res.getHeader('Content-Type') || '');
+    const compressible = /^(text\/|application\/(javascript|json|xml)|image\/svg)/.test(type);
+    if (!res.getHeader('Content-Encoding') && compressible && body.length > 1024) {
+      try {
+        const gz = zlib.gzipSync(body, { level: 6 });
+        res.setHeader('Content-Encoding', 'gzip');
+        res.setHeader('Vary', 'Accept-Encoding');
+        res.setHeader('Content-Length', gz.length);
+        return origEnd.call(res, gz);
+      } catch (e) { /* 压缩失败就原样发 */ }
+    }
+    if (!res.getHeader('Content-Length')) res.setHeader('Content-Length', body.length);
+    return origEnd.call(res, body);
+  };
+  next();
+});
+
 const publicPath = path.join(__dirname, '..');
 app.use(express.static(publicPath, {
   index: false,
