@@ -2043,7 +2043,7 @@ body {
                 }
             }
             const timeEl = document.getElementById('topbarTime');
-            if (timeEl) timeEl.textContent = currentShichen + ' · ' + String(h).padStart(2, '0') + ':' + m;
+            if (timeEl) timeEl.textContent = String(h).padStart(2, '0') + ':' + m;
 
             const weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
             const dateEl = document.getElementById('sidebarDate');
