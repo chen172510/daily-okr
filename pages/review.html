@@ -4437,6 +4437,10 @@ body {
             else if (m === 'network') toast('语音识别连不上谷歌服务器（国内 Chrome 常见）。可以改用 Edge 浏览器，或开 VPN 后重试。');
             else if (m === 'language-not-supported' || m === 'language-not-available') toast('本机还没有中文语音包，可在 Chrome 设置里下载离线语音包，或改用 Edge。');
             else toast('语音识别没成功：' + (m || '未知原因'));
+            if ((m === 'network' || m === 'language-not-supported' || m === 'language-not-available')
+                && window.XingxingVoice && XingxingVoice.suggestEdge) {
+              XingxingVoice.suggestEdge();
+            }
             stopActive();
           };
           rec.onend = function () {

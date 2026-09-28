@@ -8,6 +8,36 @@
     alert(msg);
   }
 
+  // 国内 Chrome 连不上谷歌语音服务时，弹一条「用 Edge 打开」的小提示
+  var isEdge = /Edg\//.test(navigator.userAgent);
+  function suggestEdge() {
+    try {
+      if (document.getElementById('xx-edge-tip')) return;
+      var tip = document.createElement('div');
+      tip.id = 'xx-edge-tip';
+      tip.style.cssText = 'position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:9998;max-width:92vw;'
+        + 'background:#1f1a10;color:#f7ecd0;padding:10px 14px;border-radius:10px;font-family:"STKaiti","KaiTi",serif;'
+        + 'font-size:13px;box-shadow:0 10px 26px rgba(0,0,0,.32);display:flex;align-items:center;gap:10px;';
+      var span = document.createElement('span');
+      span.textContent = isEdge ? '还是连不上？检查一下系统的麦克风权限。' : '国内 Chrome 连不上谷歌的语音服务，换 Edge 就能用：';
+      tip.appendChild(span);
+      if (!isEdge) {
+        var a = document.createElement('a');
+        a.textContent = '用 Edge 打开这个页面';
+        a.setAttribute('href', 'microsoft-edge:' + location.href);
+        a.style.cssText = 'color:#e8c97a;text-decoration:underline;cursor:pointer;white-space:nowrap;';
+        tip.appendChild(a);
+      }
+      var close = document.createElement('button');
+      close.textContent = '×';
+      close.setAttribute('type', 'button');
+      close.style.cssText = 'border:none;background:none;color:#b8b0a0;font-size:16px;cursor:pointer;line-height:1;';
+      close.onclick = function () { tip.remove(); };
+      tip.appendChild(close);
+      document.body.appendChild(tip);
+    } catch (e) {}
+  }
+
   function bind(btn, target) {
     var active = null;
 
@@ -42,7 +72,7 @@
         }
         active = null; btn.classList.remove('listening');
         if (code === 'not-allowed' || code === 'service-not-allowed') toast('麦克风被拒绝了，请在浏览器地址栏左边允许麦克风');
-        else if (code === 'network') toast('语音识别连不上谷歌服务器（国内 Chrome 常见）。可以改用 Edge 浏览器，或开着 VPN 再试。');
+        else if (code === 'network') { toast('语音识别连不上谷歌服务器（国内 Chrome 常见）。可以改用 Edge 浏览器，或开着 VPN 再试。'); suggestEdge(); }
         else if (code === 'language-not-supported' || code === 'language-not-available') toast('本机还没有中文语音包：可在 Chrome 设置里下载离线语音识别语言包，或改用 Edge。');
         else toast('语音识别没成功：' + (code || '未知原因'));
       };
@@ -80,7 +110,7 @@
     });
   }
 
-  global.XingxingVoice = { bind: bind, init: init };
+  global.XingxingVoice = { bind: bind, init: init, suggestEdge: suggestEdge };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })(window);
