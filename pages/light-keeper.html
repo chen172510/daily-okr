@@ -823,22 +823,7 @@ body {
       setInterval(updateTime, 60000);
     })();
 
-    // ========== 递信按钮 ==========
-    document.querySelector('[data-dom-id="btn-send"]').addEventListener('click', function() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-      
-      // 模拟发送 - 实际项目中可接入后端
-      input.value = '';
-      console.log('递信:', text);
-    });
-
-    // ========== 语音按钮 ==========
-    document.querySelector('[data-dom-id="btn-voice"]').addEventListener('click', function() {
-      console.log('语音录入');
-    });
-
+    // 递信 / 语音按钮的逻辑见页面底部「理想的我 · 对话」模块
     // ========== 历史记录点击 ==========
     document.querySelectorAll('.history-item').forEach(item => {
       item.addEventListener('click', function() {
@@ -2034,7 +2019,7 @@ body {
 <script src="../assets/profile.js"></script>
 <script src="../assets/pet.js"></script>
 <style>
-  /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
+/* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
   .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(139,105,20,.35) transparent; }
   .sidebar-nav::-webkit-scrollbar { width: 6px; }
   .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
@@ -2042,5 +2027,240 @@ body {
   .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
 </style>
 <script src="../assets/voice.js"></script>
+<style>
+/* ===== 理想的我 · 对话状态 ===== */
+.chat-mode-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin: 0 0 10px; padding: 7px 12px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #8a7a5e;
+  background: #f7f2e8; border: 1px dashed #ded4c2; border-radius: 6px;
+}
+.chat-mode-bar .mode-tag {
+  padding: 2px 9px; border-radius: 12px; border: 1px solid #ded4c2; background: #fff; color: #6b5d44;
+}
+.chat-mode-bar .mode-tag.live { border-color: rgba(45,106,79,.45); background: rgba(45,106,79,.10); color: #245239; }
+.msg-thinking .msg-content { color: #b0a48c; }
+.chat-hint-line { margin-top: 6px; font-size: 11.5px; color: #b0a48c; text-align: center; }
+</style>
+<script>
+/* ============================================
+   理想的我 · 对话
+   - 配了 AI key：走后端代理 /api/ai/chat（key 不会出现在前端）
+   - 没配 key：本地演示话术，一分钱不花，页面照样能用
+   ============================================ */
+(function () {
+  'use strict';
+
+  var listEl = document.getElementById('chatMessages');
+  var inputEl = document.getElementById('chatInput');
+  var sendBtn = document.querySelector('[data-dom-id="btn-send"]');
+  var voiceBtn = document.querySelector('[data-dom-id="btn-voice"]');
+  if (!listEl || !inputEl || !sendBtn) return;
+
+  var TIER_CAP = 8;              // 只把最近 8 条发给模型，省 token
+  var history = [];              // {role:'user'|'assistant', content}
+  var sending = false;
+  var aiConfigured = false;
+  var remaining = null;
+  var examplesRemoved = false;
+
+  // ---------- 模式提示条 ----------
+  var bar = document.createElement('div');
+  bar.className = 'chat-mode-bar';
+  bar.innerHTML = '<span>模式：<span class="mode-tag" id="chatModeTag">检测中…</span></span>'
+    + '<span id="chatQuotaText"></span>';
+  listEl.parentNode.insertBefore(bar, listEl);
+
+  function setMode(text, live, quotaText) {
+    var tag = document.getElementById('chatModeTag');
+    if (tag) {
+      tag.textContent = text;
+      tag.classList.toggle('live', !!live);
+    }
+    var q = document.getElementById('chatQuotaText');
+    if (q) q.textContent = quotaText || '';
+  }
+
+  // ---------- 气泡渲染 ----------
+  function roleInfo() {
+    try {
+      var el = document.querySelector('.role-card.active');
+      var id = el ? el.getAttribute('data-role') : 'chen-ping-an';
+      return (window.ROLES && ROLES[id]) ? ROLES[id] : null;
+    } catch (e) { return null; }
+  }
+
+  function currentRoleId() {
+    var el = document.querySelector('.role-card.active');
+    return el ? el.getAttribute('data-role') : 'chen-ping-an';
+  }
+
+  function appendUser(text) {
+    var div = document.createElement('div');
+    div.className = 'msg msg-user';
+    div.innerHTML = '<div class="msg-bubble"><div class="msg-content"></div></div>';
+    div.querySelector('.msg-content').textContent = text;
+    listEl.appendChild(div);
+    scrollDown();
+  }
+
+  function appendKeeper(text, isThinking) {
+    var role = roleInfo() || { avatar: '🗡️', name: '理想的我' };
+    var div = document.createElement('div');
+    div.className = 'msg msg-keeper' + (isThinking ? ' msg-thinking' : '');
+    div.innerHTML = '<div class="msg-avatar"></div><div class="msg-bubble">'
+      + '<div class="msg-name"></div><div class="msg-content"></div></div>';
+    div.querySelector('.msg-avatar').textContent = role.avatar || '🗡️';
+    div.querySelector('.msg-name').textContent = role.name || '理想的我';
+    div.querySelector('.msg-content').textContent = text;
+    listEl.appendChild(div);
+    scrollDown();
+    return div;
+  }
+
+  function scrollDown() {
+    try { listEl.scrollTop = listEl.scrollHeight; } catch (e) {}
+  }
+
+  function removeExamples() {
+    if (examplesRemoved) return;
+    examplesRemoved = true;
+    listEl.querySelectorAll('.msg').forEach(function (m) {
+      // 第一屏是写死的示例对话，第一次真聊天时清掉，避免混淆
+      if (m.querySelector('#welcomeMsg')) return;
+      if (m.textContent.indexOf('今天项目出了问题') > -1) m.remove();
+      else if (m.textContent.indexOf('这种憋屈，我少年时也常遇到') > -1) m.remove();
+    });
+  }
+
+  // ---------- 本地演示话术（不花钱）----------
+  var KEYWORD_ADVICE = [
+    { k: ['焦虑', '担心', '慌', '紧张', '害怕'], tag: '情绪', say: '先把手上的事切成最小的一步，只做 10 分钟。焦虑多半是被「想太多」喂大的，动起来它就小了。' },
+    { k: ['拖延', '不想做', '懒', '拖着'], tag: '行动', say: '告诉自己「只做 5 分钟」，5 分钟后允许停。真正难的是开始，不是过程。' },
+    { k: ['生气', '委屈', '憋屈', '不公平', '愤怒'], tag: '情绪', say: '这股气要先落地：写下来、走一圈、或者晚点再回应。情绪没落地时说的话，通常都要返工。' },
+    { k: ['睡不着', '失眠', '熬夜', '累'], tag: '身体', say: '今晚别再补偿性刷手机了。把屏幕放下、灯调暗，身体比脑子更需要你先服软。' },
+    { k: ['考试', '雅思', '分数', '成绩'], tag: '目标', say: '别盯着总分，盯今天这一个小任务有没有做完。分数是积累出来的，不是焦虑出来的。' },
+    { k: ['吵', '朋友', '室友', '领导', '同事', '关系'], tag: '关系', say: '先分清「事实」和「你的解读」两栏，写下来。多数矛盾卡在第二步，而不是第一步。' },
+    { k: ['没意义', '迷茫', '不知道', '方向'], tag: '方向', say: '迷茫的时候不用急着找答案，先找一件做完会有踏实感的小事。方向常常是走出来的。' }
+  ];
+
+  function localReply(text) {
+    var role = roleInfo() || {};
+    var hit = KEYWORD_ADVICE.filter(function (a) {
+      return a.k.some(function (k) { return text.indexOf(k) > -1; });
+    })[0] || { tag: '回看', say: '把它写下来，比在脑子里反复想有用得多。写完之后，往往自己就看到下一步了。' };
+
+    var know = (role.knowledge && role.knowledge.length) ? role.knowledge : ['心理学', '逻辑学'];
+    var opening = '我听见了，这件事确实不好受。';
+    if (text.length > 40) opening = '你说的这些，我大概明白那种滋味。';
+
+    return opening + '\n\n'
+      + '· 从「' + know[0] + '」看：' + hit.say + '\n'
+      + '· 从「' + (know[1] || '行动') + '」看：先把今天能做完的那一小步挑出来，做完再来评判自己。\n'
+      + '· 一句话：' + (role.signature ? role.signature.replace(/[「」]/g, '') : '遇事不决，可问春风。');
+  }
+
+  // ---------- 发送 ----------
+  function send() {
+    var text = inputEl.value.trim();
+    if (!text || sending) return;
+    if (remaining !== null && remaining <= 0) {
+      appendKeeper('今天的 AI 次数用完了（限流是为了省额度）。你可以继续写下来，明天再来找我聊。');
+      return;
+    }
+
+    removeExamples();
+    inputEl.value = '';
+    appendUser(text);
+    history.push({ role: 'user', content: text });
+    if (history.length > TIER_CAP) history = history.slice(-TIER_CAP);
+
+    var thinking = appendKeeper('正在想…', true);
+    sending = true;
+    sendBtn.disabled = true;
+
+    var role = roleInfo();
+    var persona = role
+      ? ('你是「' + role.name + '」，' + (role.title || '') + '。'
+         + '说话风格：' + (role.style || '温和坚定') + '。'
+         + '擅长领域：' + ((role.knowledge || []).join('、')) + '。'
+         + '请用中文回应倾诉者，先共情，再给 1-2 条可执行建议，控制在 250 字内，不要说教。')
+      : '';
+
+    function finish(replyText) {
+      thinking.remove();
+      appendKeeper(replyText);
+      history.push({ role: 'assistant', content: replyText });
+      if (history.length > TIER_CAP) history = history.slice(-TIER_CAP);
+      sending = false;
+      sendBtn.disabled = false;
+    }
+
+    if (!window.XingXingAPI || !XingXingAPI.post) {
+      finish(localReply(text));
+      return;
+    }
+
+    if (!aiConfigured) {
+      // 已经是本地模式，不用再打接口
+      setTimeout(function () { finish(localReply(text)); }, 400);
+      return;
+    }
+
+    XingXingAPI.post('/ai/chat', { messages: history, persona: persona, roleId: currentRoleId() })
+      .then(function (data) {
+        if (data && data.remaining !== undefined) {
+          remaining = data.remaining;
+          setMode('已接入 AI（' + (data.model || '') + '）', true, '今日剩余 ' + data.remaining + ' 次');
+        }
+        finish((data && data.reply) || '（这次没有生成内容，再说一次试试）');
+      })
+      .catch(function (err) {
+        var msg = (err && err.message) || '';
+        // 没配 key / 超限 → 退回本地话术，保证页面永远能用
+        if (msg.indexOf('AI_NOT_CONFIGURED') > -1 || msg.indexOf('未配置') > -1) {
+          aiConfigured = false;
+          setMode('本地演示（未配置 AI Key）', false, '');
+          finish(localReply(text));
+          return;
+        }
+        if (msg.indexOf('DAILY_LIMIT') > -1 || msg.indexOf('用完了') > -1) {
+          remaining = 0;
+          finish('今天的 AI 次数用完了（每天有上限，是为了省额度）。先用本地话术陪你：\n\n' + localReply(text));
+          return;
+        }
+        finish('刚才没连上（' + (msg || '网络问题') + '）。先用我自己的话回你：\n\n' + localReply(text));
+      });
+  }
+
+  sendBtn.addEventListener('click', function (e) { e.preventDefault(); send(); });
+  inputEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); send(); }
+  });
+  // 语音输入直接复用通用模块（它自己会绑点击事件，这里不要再加一层，否则会互相触发）
+  if (voiceBtn && window.XingxingVoice && XingxingVoice.bind) {
+    XingxingVoice.bind(voiceBtn, inputEl);
+  }
+
+  // ---------- 启动时问一下后端有没有配 AI ----------
+  function loadStatus() {
+    if (!window.XingXingAPI || !XingXingAPI.get) {
+      setMode('本地演示（未登录）', false, '');
+      return;
+    }
+    XingXingAPI.get('/ai/status').then(function (s) {
+      aiConfigured = !!(s && s.configured);
+      remaining = s && s.remaining !== undefined ? s.remaining : null;
+      setMode(aiConfigured ? ('已接入 AI' + (s.model ? '（' + s.model + '）' : '')) : '本地演示（未配置 AI Key）',
+        aiConfigured,
+        aiConfigured ? ('今日剩余 ' + remaining + ' 次') : '不消耗额度');
+    }).catch(function () {
+      aiConfigured = false;
+      setMode('本地演示（后端未连接）', false, '不消耗额度');
+    });
+  }
+  loadStatus();
+})();
+</script>
 </body>
 </html>

@@ -11,6 +11,7 @@ const { initDatabase } = require('./database');
 const authRoutes = require('./routes/auth');
 const syncRoutes = require('./routes/sync');
 const apiRoutes = require('./routes/api');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -77,6 +78,7 @@ app.use(express.static(publicPath, {
 app.use('/api', authRoutes);
 app.use('/api', syncRoutes);
 app.use('/api', apiRoutes);
+app.use('/api', aiRoutes);
 
 // ========== 健康检查 ==========
 app.get('/api/health', (req, res) => {

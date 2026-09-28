@@ -580,8 +580,13 @@ body {
                   <span class="graph-legend-line graph-line-derive"></span>
                   推导
                 </span>
+                <span class="graph-legend-item graph-link-toggle" id="graphLinkToggle" title="进入后先点第一个节点，再点第二个节点，就能连一条线">
+                  ✎ 自己连线
+                </span>
+                <span class="graph-legend-item graph-link-clear" id="graphLinkClear" title="清掉自己连的所有线">清空</span>
               </div>
             </div>
+            <div class="graph-link-hint" id="graphLinkHint"></div>
           </div>
         </div>
 
@@ -1112,6 +1117,81 @@ body {
       var nodeMap = {};
       graphData.nodes.forEach(function(n) { nodeMap[n.id] = n; });
 
+      // ============================================
+      // 自己连线：存在本地的连线，可增可删可改说明
+      // ============================================
+      var MANUAL_KEY = 'xingxing_graph_manual';
+
+      function todayKey() {
+        var d = new Date();
+        var p = function (n) { return String(n).padStart(2, '0'); };
+        return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+      }
+      function loadManual() {
+        try {
+          var raw = JSON.parse(localStorage.getItem(MANUAL_KEY) || '{}');
+          if (!raw || raw.date !== todayKey() || !Array.isArray(raw.edges)) return [];
+          return raw.edges;
+        } catch (e) { return []; }
+      }
+      function saveManual(edges) {
+        try { localStorage.setItem(MANUAL_KEY, JSON.stringify({ date: todayKey(), edges: edges })); } catch (e) {}
+      }
+
+      var manualEdges = loadManual();
+      var linkMode = false;
+      var pendingNodeId = null;
+
+      function hasEdge(a, b) {
+        return graphData.edges.some(function (e) {
+          return (e.source === a && e.target === b) || (e.source === b && e.target === a);
+        });
+      }
+
+      // 合并手工连线（只保留两端节点都还在的）
+      manualEdges = manualEdges.filter(function (e) {
+        return nodeMap[e.source] && nodeMap[e.target];
+      });
+      manualEdges.forEach(function (e) {
+        graphData.edges.push({
+          source: e.source, target: e.target, type: e.type || 'link',
+          label: e.label || '关联', manual: true, id: e.id
+        });
+      });
+
+      // 事件之间必有联系：时间相邻的任务串起来，孤立的节点也挂到主图上
+      (function autoLink() {
+        var T = window.XingxingTasks;
+        if (T) {
+          var tasks = T.getTasks().slice().sort(function (a, b) {
+            return T.toMinutes(a.startTime) - T.toMinutes(b.startTime);
+          });
+          for (var i = 0; i < tasks.length - 1; i++) {
+            var a = 'task_' + tasks[i].id, b = 'task_' + tasks[i + 1].id;
+            if (nodeMap[a] && nodeMap[b] && !hasEdge(a, b)) {
+              graphData.edges.push({ source: a, target: b, type: 'link', label: '接着', autoOrder: true });
+            }
+          }
+        }
+        // 度数统计：把没有连线的节点挂到连接最多的节点上
+        var degree = {};
+        graphData.edges.forEach(function (e) {
+          degree[e.source] = (degree[e.source] || 0) + 1;
+          degree[e.target] = (degree[e.target] || 0) + 1;
+        });
+        var hub = null;
+        Object.keys(degree).sort(function (x, y) { return degree[y] - degree[x]; }).forEach(function (id) {
+          if (!hub && nodeMap[id]) hub = id;
+        });
+        if (!hub) return;
+        graphData.nodes.forEach(function (n) {
+          if (n.id === hub) return;
+          if (!degree[n.id] && !hasEdge(n.id, hub)) {
+            graphData.edges.push({ source: n.id, target: hub, type: 'link', label: '同属今日', autoIsolate: true });
+          }
+        });
+      })();
+
       // 环形布局初始位置
       var nodeCount = graphData.nodes.length;
       var radius = Math.min(VIEW_W, VIEW_H) * 0.32;
@@ -1147,12 +1227,14 @@ body {
       graphData.edges.forEach(function(edge, i) {
         var source = nodeMap[edge.source];
         var target = nodeMap[edge.target];
+        if (!source || !target) return;
 
         var path = createSVG('path', {
           'class': 'graph-edge ' + edge.type,
           'data-index': i,
           'd': 'M' + source.x + ',' + source.y + ' L' + target.x + ',' + target.y
         });
+        if (edge.manual) path.classList.add('manual');
 
         // 添加箭头标记
         if (edge.type === 'cause') {
@@ -1162,6 +1244,34 @@ body {
         }
 
         edgesGroup.appendChild(path);
+
+        // 手工线加一条透明的粗线，方便点中；点它就能改说明或删除
+        if (edge.manual) {
+          var hit = createSVG('path', {
+            'class': 'graph-edge-hit',
+            'd': path.getAttribute('d'),
+            'stroke': 'transparent',
+            'stroke-width': '14',
+            'fill': 'none',
+            'style': 'cursor:pointer;'
+          });
+          hit.addEventListener('click', function (e) {
+            e.stopPropagation();
+            openEdgePop(edge, path, e);
+          });
+          edgesGroup.appendChild(hit);
+          edge._hit = hit;
+
+          // 连线上写清「这条线是什么意思」
+          var labelEl = createSVG('text', {
+            'class': 'graph-edge manual-label',
+            'text-anchor': 'middle'
+          });
+          labelEl.textContent = edge.label || '';
+          edgesGroup.appendChild(labelEl);
+          edge._label = labelEl;
+        }
+
         edgeElements.push(path);
         edge._el = path;
       });
@@ -1312,7 +1422,14 @@ body {
         graphData.edges.forEach(function(edge) {
           var source = nodeMap[edge.source];
           var target = nodeMap[edge.target];
-          edge._el.setAttribute('d', 'M' + source.x + ',' + source.y + ' L' + target.x + ',' + target.y);
+          if (!source || !target || !edge._el) return;
+          var d = 'M' + source.x + ',' + source.y + ' L' + target.x + ',' + target.y;
+          edge._el.setAttribute('d', d);
+          if (edge._hit) edge._hit.setAttribute('d', d);
+          if (edge._label) {
+            edge._label.setAttribute('x', (source.x + target.x) / 2);
+            edge._label.setAttribute('y', (source.y + target.y) / 2 - 6);
+          }
         });
       }
 
@@ -1525,6 +1642,257 @@ body {
         selectedNodeIndex = -1;
         setHighlight(-1);
       });
+
+      // ============================================
+      // 自己连线：连线模式 + 说明弹层
+      // ============================================
+      var hintEl = document.getElementById('graphLinkHint');
+      var popEl = null;
+
+      function setHint(text) { if (hintEl) hintEl.textContent = text || ''; }
+
+      function closePop() {
+        if (popEl && popEl.parentNode) popEl.parentNode.removeChild(popEl);
+        popEl = null;
+      }
+
+      function refreshToggle() {
+        var btn = document.getElementById('graphLinkToggle');
+        if (btn) btn.classList.toggle('on', linkMode);
+        var n = manualEdges.length;
+        setHint(linkMode
+          ? '连线模式：先点第一个节点，再点第二个节点' + (pendingNodeId ? '（已选中 1 个，再点另一个）' : '')
+          : (n ? ('你自己连了 ' + n + ' 条线，点线可以改说明或删除') : '想让两件事产生联系，就点「✎ 自己连线」'));
+      }
+
+      function addManualEdge(sourceId, targetId, type, label) {
+        var id = 'm' + Date.now();
+        manualEdges.push({ id: id, source: sourceId, target: targetId, type: type, label: label });
+        saveManual(manualEdges);
+        graphData.edges.push({ source: sourceId, target: targetId, type: type, label: label, manual: true, id: id });
+        // 重新画一遍这张图（保留当前节点位置）
+        renderGraphEdges();
+        simulation.alpha = 0.4;
+        refreshToggle();
+      }
+
+      function updateManualEdge(id, type, label) {
+        manualEdges.forEach(function (e) { if (e.id === id) { e.type = type; e.label = label; } });
+        saveManual(manualEdges);
+        graphData.edges.forEach(function (e) {
+          if (e.manual && e.id === id) {
+            e.type = type; e.label = label;
+            if (e._label) e._label.textContent = label;
+            if (e._el) {
+              e._el.setAttribute('class', 'graph-edge ' + type + ' manual');
+              if (type === 'cause') e._el.setAttribute('marker-end', 'url(#graph-arrow-cause)');
+              else if (type === 'derive') e._el.setAttribute('marker-end', 'url(#graph-arrow-derive)');
+              else e._el.removeAttribute('marker-end');
+            }
+          }
+        });
+        refreshToggle();
+      }
+
+      function removeManualEdge(id) {
+        manualEdges = manualEdges.filter(function (e) { return e.id !== id; });
+        saveManual(manualEdges);
+        graphData.edges = graphData.edges.filter(function (e) { return !(e.manual && e.id === id); });
+        renderGraphEdges();
+        refreshToggle();
+      }
+
+      // 只重画连线层（节点位置不动，视觉上不会跳）
+      function renderGraphEdges() {
+        edgesGroup.innerHTML = '';
+        graphData.edges.forEach(function (edge) {
+          var source = nodeMap[edge.source];
+          var target = nodeMap[edge.target];
+          if (!source || !target) return;
+          var d = 'M' + source.x + ',' + source.y + ' L' + target.x + ',' + target.y;
+          var path = createSVG('path', {
+            'class': 'graph-edge ' + edge.type + (edge.manual ? ' manual' : ''),
+            'd': d
+          });
+          if (edge.type === 'cause') path.setAttribute('marker-end', 'url(#graph-arrow-cause)');
+          else if (edge.type === 'derive') path.setAttribute('marker-end', 'url(#graph-arrow-derive)');
+          edgesGroup.appendChild(path);
+          edge._el = path;
+
+          if (edge.manual) {
+            var hit = createSVG('path', {
+              'class': 'graph-edge-hit', 'd': d,
+              'stroke': 'transparent', 'stroke-width': '14', 'fill': 'none',
+              'style': 'cursor:pointer;'
+            });
+            hit.addEventListener('click', function (e) { e.stopPropagation(); openEdgePop(edge, path, e); });
+            edgesGroup.appendChild(hit);
+            edge._hit = hit;
+
+            var labelEl = createSVG('text', { 'class': 'graph-edge manual-label', 'text-anchor': 'middle' });
+            labelEl.textContent = edge.label || '';
+            edgesGroup.appendChild(labelEl);
+            edge._label = labelEl;
+          }
+        });
+        updateRender();
+      }
+
+      var TYPE_NAMES = { cause: '因果', link: '关联', derive: '推导' };
+
+      function openEdgePop(edge, pathEl, evt) {
+        closePop();
+        var rect = container.getBoundingClientRect();
+        popEl = document.createElement('div');
+        popEl.className = 'edge-edit-pop';
+        popEl.innerHTML =
+            '<div class="pop-title">这条线是什么意思？</div>'
+          + '<div class="pop-types">'
+          +   '<span class="pop-type" data-t="cause">因果</span>'
+          +   '<span class="pop-type" data-t="link">关联</span>'
+          +   '<span class="pop-type" data-t="derive">推导</span>'
+          + '</div>'
+          + '<input type="text" maxlength="12" placeholder="写一句说明，如：因为刷手机所以没完成">'
+          + '<div class="pop-actions">'
+          +   '<button class="del">删除这条线</button>'
+          +   '<button class="primary">保存</button>'
+          + '</div>';
+        popEl.style.left = Math.max(8, Math.min(rect.width - 220, (evt ? evt.clientX - rect.left - 105 : rect.width / 2))) + 'px';
+        popEl.style.top = Math.max(8, (evt ? evt.clientY - rect.top + 12 : 40)) + 'px';
+        container.appendChild(popEl);
+
+        var curType = edge.type || 'link';
+        var input = popEl.querySelector('input');
+        input.value = edge.label || '';
+        function paint() {
+          popEl.querySelectorAll('.pop-type').forEach(function (t) {
+            t.classList.toggle('on', t.getAttribute('data-t') === curType);
+          });
+        }
+        paint();
+        popEl.querySelectorAll('.pop-type').forEach(function (t) {
+          t.addEventListener('click', function () {
+            curType = t.getAttribute('data-t');
+            if (!input.value.trim() || input.value === '关联' || input.value === '因果' || input.value === '推导') {
+              input.value = TYPE_NAMES[curType];
+            }
+            paint();
+          });
+        });
+        popEl.addEventListener('click', function (e) { e.stopPropagation(); });
+        popEl.querySelector('.primary').addEventListener('click', function () {
+          updateManualEdge(edge.id, curType, (input.value.trim() || TYPE_NAMES[curType]).slice(0, 20));
+          closePop();
+        });
+        popEl.querySelector('.del').addEventListener('click', function () {
+          removeManualEdge(edge.id);
+          closePop();
+        });
+      }
+
+      function openCreatePop(sourceId, targetId, evt) {
+        closePop();
+        var rect = container.getBoundingClientRect();
+        var edge = { id: null, source: sourceId, target: targetId, type: 'link', label: '关联' };
+        popEl = document.createElement('div');
+        popEl.className = 'edge-edit-pop';
+        popEl.innerHTML =
+            '<div class="pop-title">这两件事是什么关系？</div>'
+          + '<div class="pop-types">'
+          +   '<span class="pop-type" data-t="cause">因果</span>'
+          +   '<span class="pop-type" data-t="link">关联</span>'
+          +   '<span class="pop-type" data-t="derive">推导</span>'
+          + '</div>'
+          + '<input type="text" maxlength="12" placeholder="写一句说明，如：因为刷手机所以没完成">'
+          + '<div class="pop-actions">'
+          +   '<button class="del">取消</button>'
+          +   '<button class="primary">连上</button>'
+          + '</div>';
+        popEl.style.left = Math.max(8, Math.min(rect.width - 220, evt.clientX - rect.left - 105)) + 'px';
+        popEl.style.top = Math.max(8, evt.clientY - rect.top + 12) + 'px';
+        container.appendChild(popEl);
+
+        var curType = 'link';
+        var input = popEl.querySelector('input');
+        input.value = '关联';
+        function paint() {
+          popEl.querySelectorAll('.pop-type').forEach(function (t) {
+            t.classList.toggle('on', t.getAttribute('data-t') === curType);
+          });
+        }
+        paint();
+        popEl.querySelectorAll('.pop-type').forEach(function (t) {
+          t.addEventListener('click', function () {
+            curType = t.getAttribute('data-t');
+            input.value = TYPE_NAMES[curType];
+            paint();
+          });
+        });
+        popEl.addEventListener('click', function (e) { e.stopPropagation(); });
+        popEl.querySelector('.primary').addEventListener('click', function () {
+          addManualEdge(sourceId, targetId, curType, (input.value.trim() || TYPE_NAMES[curType]).slice(0, 20));
+          closePop();
+        });
+        popEl.querySelector('.del').addEventListener('click', closePop);
+      }
+
+      // 连线模式下的节点点击：第一个再点第二个
+      graphData.nodes.forEach(function (node, i) {
+        node._el.addEventListener('click', function (e) {
+          if (!linkMode) return;
+          e.stopPropagation();
+          if (!pendingNodeId) {
+            pendingNodeId = node.id;
+            node._el.classList.add('pending');
+            setHighlight(i);
+            refreshToggle();
+            return;
+          }
+          if (pendingNodeId === node.id) {
+            node._el.classList.remove('pending');
+            pendingNodeId = null;
+            setHighlight(-1);
+            refreshToggle();
+            return;
+          }
+          var fromEl = nodeMap[pendingNodeId] && nodeMap[pendingNodeId]._el;
+          if (fromEl) fromEl.classList.remove('pending');
+          openCreatePop(pendingNodeId, node.id, e);
+          pendingNodeId = null;
+          refreshToggle();
+        });
+      });
+
+      var toggleBtn = document.getElementById('graphLinkToggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+          linkMode = !linkMode;
+          closePop();
+          graphData.nodes.forEach(function (n) {
+            n._el.classList.toggle('linkable', linkMode);
+            if (!linkMode) n._el.classList.remove('pending');
+          });
+          if (!linkMode) { pendingNodeId = null; setHighlight(-1); }
+          refreshToggle();
+        });
+      }
+
+      var clearBtn = document.getElementById('graphLinkClear');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function () {
+          if (!manualEdges.length) { refreshToggle(); return; }
+          if (!confirm('清掉你自己连的所有线？')) return;
+          manualEdges = [];
+          saveManual(manualEdges);
+          graphData.edges = graphData.edges.filter(function (e) { return !e.manual; });
+          renderGraphEdges();
+          refreshToggle();
+        });
+      }
+
+      // 点空白处关掉弹层
+      svg.addEventListener('click', function () { closePop(); });
+      refreshToggle();
 
     })();
 
@@ -4674,6 +5042,58 @@ body {
 </script>
 <style>
 /* ===== 每日复盘 · 自动归档与关系链 ===== */
+.graph-link-toggle {
+  cursor: pointer; border: 1px solid #ded4c2; border-radius: 14px;
+  padding: 2px 10px; background: #fff; color: #6b5d44;
+}
+.graph-link-toggle:hover { border-color: #8b6914; color: #8b6914; }
+.graph-link-toggle.on {
+  background: #1f1a10; color: #f7ecd0; border-color: #1f1a10;
+}
+.graph-link-clear {
+  cursor: pointer; border: 1px solid #e2cfc4; border-radius: 14px;
+  padding: 2px 10px; background: #fff; color: #a8341f;
+}
+.graph-link-clear:hover { border-color: #a8341f; }
+.graph-link-hint {
+  flex-basis: 100%; margin-top: 6px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #b0a48c;
+}
+/* 手工连线：金色虚线，和自动生成的线区分开 */
+.graph-edge.manual { stroke: #8b6914; stroke-dasharray: 6 4; stroke-width: 2; }
+.graph-edge.manual-label {
+  font-family: "STKaiti","KaiTi",serif; font-size: 10px; fill: #8b6914;
+  pointer-events: none;
+}
+.graph-node.pending .graph-node-circle,
+.graph-node.pending .graph-node-shape { stroke: #8b6914; stroke-width: 3; }
+.graph-node.linkable .graph-node-circle,
+.graph-node.linkable .graph-node-shape { stroke-dasharray: 4 3; }
+.edge-edit-pop {
+  position: absolute; z-index: 30; width: 210px;
+  background: #faf6ec; border: 1.5px solid #d9cbae; border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(20,16,8,.28);
+  padding: 10px 12px; font-family: "STKaiti","KaiTi",serif; font-size: 12.5px; color: #3a3226;
+}
+.edge-edit-pop .pop-title { color: #8b6914; margin-bottom: 6px; }
+.edge-edit-pop .pop-types { display: flex; gap: 6px; margin-bottom: 8px; }
+.edge-edit-pop .pop-type {
+  flex: 1; text-align: center; padding: 3px 0; border: 1px solid #ded4c2;
+  border-radius: 12px; cursor: pointer; background: #fff;
+}
+.edge-edit-pop .pop-type.on { background: #1f1a10; color: #f7ecd0; border-color: #1f1a10; }
+.edge-edit-pop input {
+  width: 100%; box-sizing: border-box; padding: 5px 7px; font-family: inherit; font-size: 12.5px;
+  border: 1px solid #ded4c2; border-radius: 5px; background: #fff; color: #3a3226;
+}
+.edge-edit-pop .pop-actions { display: flex; justify-content: space-between; margin-top: 9px; }
+.edge-edit-pop button {
+  font-family: inherit; font-size: 12.5px; cursor: pointer; border-radius: 5px;
+  padding: 4px 12px; border: 1px solid #ded4c2; background: #fff; color: #5a4a32;
+}
+.edge-edit-pop button.primary { background: #1f1a10; color: #f7ecd0; border-color: #1f1a10; }
+.edge-edit-pop button.del { color: #a8341f; border-color: #e2cfc4; }
+
 .aa-summary { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 14px; }
 .aa-chip {
   font-family: "STKaiti","KaiTi",serif; font-size: 12.5px;
