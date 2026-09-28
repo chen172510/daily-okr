@@ -812,5 +812,54 @@ document.querySelectorAll('.form-input').forEach(input => {
 <script src="../assets/fortune.js"></script>
 <script src="../assets/profile.js"></script>
 <script src="../assets/pet.js"></script>
+
+<script>
+  /* 演示模式：login.html?demo=1 —— 自动清掉本地旧数据并用演示账号登录 */
+  (function () {
+    if (!/[?&]demo=1/.test(location.search)) return;
+    try {
+      Object.keys(localStorage)
+        .filter(function (k) { return k.indexOf('xingxing_') === 0 || k.indexOf('okr_') === 0; })
+        .forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) {}
+    var tip = document.createElement('div');
+    tip.style.cssText = 'position:fixed;left:50%;top:24px;transform:translateX(-50%);background:#1f1a10;color:#f7ecd0;padding:10px 18px;border-radius:20px;font:14px "Microsoft YaHei",sans-serif;z-index:9999;';
+    tip.textContent = '正在以演示账号登录…';
+    document.body.appendChild(tip);
+    setTimeout(function () {
+      fetch(API_BASE + '/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: 'demo', password: 'demo123' })
+      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (!res.ok) { tip.textContent = '演示登录失败：' + (res.d.error || ''); return; }
+          localStorage.setItem('xingxing_token', res.d.token);
+          localStorage.setItem('xingxing_user', JSON.stringify(res.d.user));
+          tip.textContent = '正在载入演示数据…';
+          // 把云端演示数据拉到本地，保证进去就是满的
+          return fetch(API_BASE + '/sync/pull', { headers: { Authorization: 'Bearer ' + res.d.token } })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (data && data.data) {
+                Object.keys(data.data).forEach(function (k) {
+                  var it = data.data[k];
+                  try {
+                    if (it.isDeleted) { localStorage.removeItem(k); localStorage.removeItem(k + '_updated'); }
+                    else {
+                      localStorage.setItem(k, JSON.stringify(it.value));
+                      localStorage.setItem(k + '_updated', it.updatedAt);
+                    }
+                  } catch (e) {}
+                });
+              }
+              tip.textContent = '进入看板…';
+              location.href = 'dashboard.html';
+            });
+        })
+        .catch(function (e) { tip.textContent = '演示登录失败：' + e.message; });
+    }, 250);
+  })();
+</script>
 </body>
 </html>
