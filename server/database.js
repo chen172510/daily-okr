@@ -207,6 +207,21 @@ async function initDatabase() {
   schedulePersist();
   console.log('[数据库] 初始化完成');
 
+  // 演示账号：每次启动重建，保证 demo / demo123 一定能登、数据是满的
+  try {
+    const { seedUser } = require('./seed');
+    db.run("DELETE FROM user_data WHERE user_id IN (SELECT id FROM users WHERE username = 'demo')");
+    db.run("DELETE FROM users WHERE username = 'demo'");
+    const hash = bcrypt.hashSync('demo123', 10);
+    const r = dbWrapper.prepare('INSERT INTO users (username, email, password_hash, nickname) VALUES (?, ?, ?, ?)')
+      .run('demo', null, hash, '周星星');
+    seedUser(dbWrapper, r.lastInsertRowid);
+    persist();
+    console.log('[演示] 演示账号已就绪：demo / demo123');
+  } catch (e) {
+    console.error('[演示] 创建失败:', e.message);
+  }
+
   return dbWrapper;
 }
 

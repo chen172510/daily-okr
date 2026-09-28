@@ -10,6 +10,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const db = require('../database');
 const { generateToken, authMiddleware } = require('../middleware/auth');
+const { seedUser } = require('../seed');
 
 const router = express.Router();
 
@@ -52,6 +53,9 @@ router.post('/auth/register', (req, res) => {
 
   const userId = result.lastInsertRowid;
   const token = generateToken(userId, username);
+
+  // 预置一套演示数据，登录后不至于空空如也
+  try { seedUser(db, userId); } catch (e) { console.error('[种子] 写入失败:', e.message); }
 
   // 更新最后同步时间
   db.prepare('UPDATE users SET last_sync_at = CURRENT_TIMESTAMP WHERE id = ?').run(userId);
