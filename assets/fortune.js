@@ -145,6 +145,8 @@
       var streak = curStreak() + 1;
       localStorage.setItem('xingxing_streak', String(streak));
       applyStreakUI(streak);
+      // 打卡后刷新等级显示（自动升级模式下会立刻涨）
+      try { if (global.XingxingProfile && global.XingxingProfile.apply) global.XingxingProfile.apply(); } catch (e) {}
       var w = CHECKIN_WORDS[hash(today) % CHECKIN_WORDS.length];
       toast('打卡成功 · 连续 ' + streak + ' 天\n' + w);
       updateCheckinText();

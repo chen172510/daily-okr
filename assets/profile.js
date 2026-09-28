@@ -28,10 +28,21 @@
     if ((p.levelSystem || 'xianxia') === 'custom' && Array.isArray(p.customLevels) && p.customLevels.length) return p.customLevels;
     return (LEVELS[p.levelSystem || 'xianxia'] || LEVELS.xianxia).list;
   }
+  // 活跃度 = 累计打卡次数 + 完成复盘数；每 3 次升 1 级
+  function activityScore() {
+    var c = parseInt(localStorage.getItem('xingxing_checkin_count') || '0', 10) || 0;
+    var r = parseInt(localStorage.getItem('xingxing_total_reviews') || '0', 10) || 0;
+    return c + r;
+  }
+  function autoIndex(list) {
+    return Math.max(0, Math.min(Math.floor(activityScore() / 3), list.length - 1));
+  }
+  function isAuto(p) { return (p || get()).levelMode === 'auto'; }
   function levelText() {
     var p = get();
     var list = levelList(p);
-    return list[Math.max(0, Math.min((p.levelIndex || 0), list.length - 1))];
+    var idx = isAuto(p) ? autoIndex(list) : Math.max(0, Math.min((p.levelIndex || 0), list.length - 1));
+    return list[idx];
   }
 
   function setAvatar(el, av) {
@@ -125,6 +136,7 @@
       + row('性别', p.gender || '不透露', 'gender', GENDERS)
       + row('星座', p.zodiac || '不透露', 'zodiac', ZODIACS)
       + row('等级体系', (LEVELS[p.levelSystem || 'xianxia'] || LEVELS.xianxia).name, 'levelSystem', Object.keys(LEVELS).map(function (k) { return LEVELS[k].name; }))
+      + row('等级方式', isAuto(p) ? '按活跃自动升级' : '手动选择', 'levelMode', ['手动选择', '按活跃自动升级'])
       + row('当前等级（按行填写自定义等级）', custom || '', 'customLevels')
       + '<div id="xx-level-table" style="margin-top:14px;font-size:13px;color:#362e1f;line-height:1.9;background:#f0ebe3;border-radius:8px;padding:12px;"></div>'
       + '<div style="margin-top:16px;display:flex;justify-content:space-between;gap:10px;">'
@@ -136,24 +148,33 @@
     function refreshTable() {
       var sel = box.querySelector('[data-f="levelSystem"]');
       var txt = box.querySelector('[data-f="customLevels"]');
+      var modeSel = box.querySelector('[data-f="levelMode"]');
+      var auto = modeSel && modeSel.value === '按活跃自动升级';
       var key = null;
       for (var k in LEVELS) if (LEVELS[k].name === sel.value) key = k;
       var customList = txt.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
       var list = key === 'custom' ? (customList.length ? customList : LEVELS.custom.list) : (LEVELS[key] || LEVELS.xianxia).list;
+      if (auto) levelIndex = autoIndex(list);
       if (levelIndex >= list.length) levelIndex = list.length - 1;
       if (levelIndex < 0) levelIndex = 0;
-      var html = '<div style="color:#8b6914;margin-bottom:6px;">' + sel.value + ' · 点一下选中当前等级</div>';
+      var head = auto
+        ? sel.value + ' · 按活跃自动升级（累计活跃 ' + activityScore() + '，每 3 次升一级，还差 ' + ((3 - activityScore() % 3) % 3 || 3) + ' 次）'
+        : sel.value + ' · 点一下选中当前等级';
+      var html = '<div style="color:#8b6914;margin-bottom:6px;">' + head + '</div>';
       html += list.map(function (t, i) {
-        return '<div data-idx="' + i + '" style="padding:5px 8px;border-radius:6px;cursor:pointer;' + (i === levelIndex ? 'background:#1f1a10;color:#f7ecd0;' : '') + '">' + (i + 1) + '. ' + t + '</div>';
+        return '<div data-idx="' + i + '" style="padding:5px 8px;border-radius:6px;cursor:' + (auto ? 'default' : 'pointer') + ';' + (i === levelIndex ? 'background:#1f1a10;color:#f7ecd0;' : '') + '">' + (i + 1) + '. ' + t + '</div>';
       }).join('');
       box.querySelector('#xx-level-table').innerHTML = html;
-      Array.prototype.forEach.call(box.querySelectorAll('#xx-level-table [data-idx]'), function (el) {
-        el.addEventListener('click', function () { levelIndex = parseInt(el.getAttribute('data-idx'), 10); refreshTable(); });
-      });
+      if (!auto) {
+        Array.prototype.forEach.call(box.querySelectorAll('#xx-level-table [data-idx]'), function (el) {
+          el.addEventListener('click', function () { levelIndex = parseInt(el.getAttribute('data-idx'), 10); refreshTable(); });
+        });
+      }
     }
     refreshTable();
     box.querySelector('[data-f="levelSystem"]').addEventListener('change', refreshTable);
     box.querySelector('[data-f="customLevels"]').addEventListener('input', refreshTable);
+    box.querySelector('[data-f="levelMode"]').addEventListener('change', refreshTable);
     box.querySelector('#xx-avatar-file').addEventListener('change', function (e) {
       var f = e.target.files && e.target.files[0];
       if (!f) return;
@@ -181,7 +202,8 @@
         zodiac: box.querySelector('[data-f="zodiac"]').value,
         levelSystem: systemKey,
         customLevels: customLevels,
-        levelIndex: levelIndex
+        levelIndex: levelIndex,
+        levelMode: box.querySelector('[data-f="levelMode"]').value === '按活跃自动升级' ? 'auto' : 'manual'
       };
       if (box.getAttribute('data-avatar')) patch.avatar = box.getAttribute('data-avatar');
       else if (avatarText) patch.avatar = avatarText;
