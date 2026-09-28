@@ -892,6 +892,7 @@ let state = {
   categories: [],
   errorItems: [],
   currentCategoryId: 'all',
+  lastSelectCategoryId: '',   // 「添加错题」下拉里记住上次选的分类
   currentSort: 'severity',
   selectedEmoji: '🧠',
   selectedColor: '#7fb3ad',
@@ -1042,6 +1043,10 @@ function renderCategories() {
       <span class="category-icon">${cat.icon}</span>
       <span class="category-name">${cat.name}</span>
       <span class="category-count">${count}</span>
+      <span class="category-tools">
+        <button type="button" class="cat-tool-btn" onclick="event.stopPropagation();editCategory('${cat.id}')" title="重命名 / 换图标">✎</button>
+        <button type="button" class="cat-tool-btn danger" onclick="event.stopPropagation();deleteCategory('${cat.id}')" title="删除分类">✕</button>
+      </span>
     </div>`;
   });
   
@@ -1064,9 +1069,23 @@ function renderCategories() {
   // 添加弹窗中的分类下拉
   let selectHtml = '';
   state.categories.forEach(cat => {
-    selectHtml += `<option value="${cat.id}">${cat.icon} ${cat.name}</option>`;
+    const isCur = cat.id === state.lastSelectCategoryId;
+    selectHtml += `<option value="${cat.id}"${isCur ? ' selected' : ''}>${cat.icon} ${cat.name}</option>`;
   });
+  selectHtml += '<option value="__new__">＋ 新建分类…</option>';
   categorySelect.innerHTML = selectHtml;
+
+  // 选到「＋ 新建分类…」就去新建，建完自动选中它
+  if (!categorySelect.getAttribute('data-new-bound')) {
+    categorySelect.setAttribute('data-new-bound', '1');
+    categorySelect.addEventListener('change', function () {
+      state.lastSelectCategoryId = this.value === '__new__' ? state.lastSelectCategoryId : this.value;
+      if (this.value === '__new__') {
+        selectNewCategoryAfterSave = true;
+        openAddCategory();
+      }
+    });
+  }
 }
 
 function selectCategory(categoryId) {
@@ -1523,6 +1542,12 @@ function deleteError(errorId) {
 // ========== 添加错题 ==========
 function openAddError() {
   document.getElementById('addErrorForm').reset();
+  // 默认选中当前正在看的分类；没有就选第一个
+  const sel = document.getElementById('errorCategory');
+  if (sel) {
+    const wanted = state.currentCategoryId !== 'all' ? state.currentCategoryId : (state.categories[0] || {}).id;
+    if (wanted) sel.value = wanted;
+  }
   openModal('addErrorModal');
 }
 
@@ -1596,6 +1621,41 @@ function openAddCategory() {
   openModal('categoryModal');
 }
 
+// 从「添加错题」的分类下拉里点「新建分类」时用
+let selectNewCategoryAfterSave = false;
+
+function editCategory(id) {
+  const cat = getCategoryById(id);
+  if (!cat) return;
+  state.editingCategoryId = id;
+  document.getElementById('categoryModalTitle').textContent = '编辑分类';
+  document.getElementById('categoryName').value = cat.name;
+  state.selectedEmoji = cat.icon || '🧠';
+  state.selectedColor = cat.color || '#7fb3ad';
+  updateEmojiPicker();
+  updateColorPicker();
+  openModal('categoryModal');
+}
+
+function deleteCategory(id) {
+  const cat = getCategoryById(id);
+  if (!cat) return;
+  const used = state.errorItems.filter(e => e.categoryId === id).length;
+  const msg = used
+    ? ('「' + cat.name + '」下面还有 ' + used + ' 道错题，删掉分类后它们会变成「未分类」。确定删除吗？')
+    : ('确定删除分类「' + cat.name + '」吗？');
+  if (!confirm(msg)) return;
+  state.categories = state.categories.filter(c => c.id !== id);
+  state.errorItems.forEach(e => { if (e.categoryId === id) e.categoryId = ''; });
+  if (state.currentCategoryId === id) state.currentCategoryId = 'all';
+  saveData();
+  renderCategories();
+  renderErrorList();
+  renderStats();
+  updateListTitle();
+  if (window.XingxingCommon && XingxingCommon.showToast) XingxingCommon.showToast('分类已删除', 'success', 1600);
+}
+
 function submitCategory() {
   const name = document.getElementById('categoryName').value.trim();
   if (!name) {
@@ -1620,6 +1680,11 @@ function submitCategory() {
       color: state.selectedColor
     };
     state.categories.push(newCat);
+    // 如果是从「添加错题」的下拉里点进来的，新建完直接选中它
+    if (selectNewCategoryAfterSave) {
+      state.lastSelectCategoryId = newCat.id;
+      selectNewCategoryAfterSave = false;
+    }
   }
   
   saveData();
@@ -2325,7 +2390,7 @@ input, textarea, select {
   gap: 2px;
 }
 
-.category-item {
+  .category-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2388,6 +2453,21 @@ input, textarea, select {
   background: var(--gold-primary);
   color: #fff;
 }
+
+/* 分类上的小工具：重命名 / 删除（鼠标移上去才显示） */
+.category-tools {
+  display: none;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.category-item:hover .category-tools { display: inline-flex; }
+.cat-tool-btn {
+  border: none; background: none; cursor: pointer;
+  font-size: 12px; line-height: 1; padding: 3px 5px;
+  color: var(--ink-light-grey); border-radius: 4px;
+}
+.cat-tool-btn:hover { background: rgba(139,105,20,.14); color: var(--gold-primary); }
+.cat-tool-btn.danger:hover { background: rgba(168,52,31,.12); color: #a8341f; }
 
 .add-category-btn {
   margin: 8px;
