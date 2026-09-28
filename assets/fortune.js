@@ -121,9 +121,18 @@
     }
   }
 
+  // 把「连续打卡」同步到顶栏和侧栏印章的显示
+  function curStreak() { return parseInt(localStorage.getItem('xingxing_streak') || '0', 10) || 0; }
+  function applyStreakUI(n) {
+    var t = document.querySelector('#topbarStreak .streak-num');
+    if (t) t.textContent = n;
+    var s = document.querySelector('.streak-seal .streak-number');
+    if (s) s.innerHTML = n + '<span>日</span>';
+  }
+
   function bindCheckin() {
     var btn = document.querySelector('.btn-checkin');
-    if (!btn || btn.getAttribute('data-xx-checkin')) { updateCheckinText(); return; }
+    if (!btn || btn.getAttribute('data-xx-checkin')) { updateCheckinText(); applyStreakUI(curStreak()); return; }
     btn.setAttribute('data-xx-checkin', '1');
     btn.style.cursor = 'pointer';
     btn.addEventListener('click', function () {
@@ -132,11 +141,16 @@
       var n = (parseInt(localStorage.getItem('xingxing_checkin_count') || '0', 10) || 0) + 1;
       localStorage.setItem('xingxing_checkin_date', today);
       localStorage.setItem('xingxing_checkin_count', String(n));
+      // 打卡同时 +1 连续天数，并立刻反映到界面
+      var streak = curStreak() + 1;
+      localStorage.setItem('xingxing_streak', String(streak));
+      applyStreakUI(streak);
       var w = CHECKIN_WORDS[hash(today) % CHECKIN_WORDS.length];
-      toast('打卡成功 · 第 ' + n + ' 次\n' + w);
+      toast('打卡成功 · 连续 ' + streak + ' 天\n' + w);
       updateCheckinText();
     });
     updateCheckinText();
+    applyStreakUI(curStreak());
   }
 
   function sweep() {

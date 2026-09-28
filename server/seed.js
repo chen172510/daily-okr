@@ -11,6 +11,8 @@ function seedUser(db, userId) {
   const now = new Date();
   const ago = (n) => { const d = new Date(now); d.setDate(d.getDate() - n); return d; };
 
+  // 时间戳略微提前到「未来 60 秒」，确保首次同步拉取时云端数据优先于浏览器里的旧本地数据
+  const stamp = new Date(Date.now() + 60000).toISOString();
   const set = (key, value) => {
     db.prepare(`
       INSERT INTO user_data (user_id, data_key, data_value, updated_at, is_deleted)
@@ -19,7 +21,7 @@ function seedUser(db, userId) {
         data_value = excluded.data_value,
         updated_at = excluded.updated_at,
         is_deleted = 0
-    `).run(userId, key, JSON.stringify(value), new Date().toISOString());
+    `).run(userId, key, JSON.stringify(value), stamp);
   };
 
   // 积分 / 连续天数 / 统计
