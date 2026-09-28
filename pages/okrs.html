@@ -491,18 +491,40 @@ body {
               </div>
             </div>
             <div class="action-bar-right">
-              <button class="filter-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-                筛 选
-              </button>
-              <button class="period-selector">
-                <span>2026 · 秋季</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
+              <div class="okr-filter-wrap">
+                <button class="filter-btn" id="okrFilterBtn" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                  </svg>
+                  筛 选
+                  <span class="filter-btn-count" id="okrFilterBadge" hidden>0</span>
+                </button>
+                <div class="okr-filter-panel" id="okrFilterPanel" hidden>
+                  <div class="fp-item">
+                    <span class="fp-item-title">门派</span>
+                    <div class="fp-options" id="fpCategories"></div>
+                  </div>
+                  <div class="fp-item">
+                    <span class="fp-item-title">完成进度</span>
+                    <div class="fp-options" id="fpProgress"></div>
+                  </div>
+                  <div class="fp-footer">
+                    <span class="fp-tip">点一下即时生效</span>
+                    <button type="button" class="fp-clear" id="fpClearBtn">清空筛选</button>
+                  </div>
+                </div>
+              </div>
+              <div class="okr-filter-wrap">
+                <button class="period-selector" id="okrPeriodBtn" type="button">
+                  <span id="okrPeriodLabel">全部时间</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <div class="okr-filter-panel narrow" id="okrPeriodPanel" hidden>
+                  <div class="fp-options" id="fpPeriods"></div>
+                </div>
+              </div>
               <button class="btn-new-okr" data-dom-id="btn-new-okr">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -1588,6 +1610,121 @@ body {
   padding: 0;
 }
 
+/* ========== 筛选面板 ========== */
+.okr-filter-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.filter-btn-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--gold-1, #8b6914);
+  color: var(--ink-paper-light, #faf6ec);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.filter-btn-count[hidden] { display: none; }
+
+.filter-btn.has-filter,
+.period-selector.has-filter {
+  border-color: var(--gold-1, #8b6914);
+  color: var(--ink-1);
+}
+
+.okr-filter-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: 300px;
+  padding: 14px 16px;
+  background: var(--ink-paper-light);
+  border: 1.5px solid var(--ink-2);
+  border-radius: var(--radius-sm, 4px);
+  box-shadow: 0 14px 32px rgba(31, 26, 16, 0.18);
+  font-family: var(--font-song);
+  text-align: left;
+}
+
+.okr-filter-panel.narrow { width: 190px; }
+.okr-filter-panel[hidden] { display: none; }
+
+.fp-item + .fp-item { margin-top: 12px; }
+
+.fp-item-title {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.fp-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.fp-opt {
+  padding: 4px 11px;
+  font-size: 12px;
+  color: var(--ink-3);
+  border: 1px solid var(--ink-4);
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.fp-opt:hover { border-color: var(--ink-2); color: var(--ink-1); }
+
+.fp-opt.on {
+  background: var(--ink-1);
+  border-color: var(--ink-1);
+  color: var(--gold-3);
+  font-weight: 600;
+}
+
+.fp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--ink-4);
+}
+
+.fp-tip { font-size: 11px; color: var(--ink-4); }
+
+.fp-clear {
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 12px;
+  color: #a8341f;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.okr-empty {
+  padding: 46px 20px;
+  text-align: center;
+  font-family: var(--font-song);
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
 .filter-pill {
   padding: 7px 20px;
   font-size: 13px;
@@ -2166,15 +2303,116 @@ body {
         + '<button class="more-btn" type="button">⋯</button></div></div>';
     }
 
+    // ---------- 筛选状态 ----------
+    var searchText = '';
+    var activeCats = [];      // 空数组 = 全部门派
+    var progressKey = 'all';  // all / low / mid / high / full
+    var periodKey = 'all';    // all / 2026-春 ...
+
+    var PROGRESS_OPTS = [
+      { key: 'all',  label: '全部',   test: function () { return true; } },
+      { key: 'low',  label: '刚起步', test: function (v) { return v < 30; } },
+      { key: 'mid',  label: '过半',   test: function (v) { return v >= 30 && v < 70; } },
+      { key: 'high', label: '快完成', test: function (v) { return v >= 70 && v < 100; } },
+      { key: 'full', label: '已满',   test: function (v) { return v >= 100; } }
+    ];
+
+    function avgProgress(o) {
+      var krs = o.keyResults || [];
+      if (!krs.length) return typeof o.progress === 'number' ? o.progress : 0;
+      var sum = krs.reduce(function (s, k) { return s + (typeof k === 'string' ? 0 : (Number(k.progress) || 0)); }, 0);
+      return Math.round(sum / krs.length);
+    }
+
+    function seasonOf(dateStr) {
+      if (!dateStr) return null;
+      var d = new Date(dateStr);
+      if (isNaN(d.getTime())) return null;
+      var m = d.getMonth() + 1;
+      var s = (m >= 3 && m <= 5) ? '春' : (m >= 6 && m <= 8) ? '夏' : (m >= 9 && m <= 11) ? '秋' : '冬';
+      return d.getFullYear() + '-' + s;
+    }
+
+    function currentSeason() { return seasonOf(new Date().toISOString()); }
+
+    // 搜索 + 门派 + 进度 + 时间，四处条件叠加
+    function baseFiltered(list) {
+      var progOpt = PROGRESS_OPTS.filter(function (p) { return p.key === progressKey; })[0] || PROGRESS_OPTS[0];
+      return list.filter(function (o) {
+        if (searchText) {
+          var krText = (o.keyResults || []).map(function (k) { return typeof k === 'string' ? k : k.title; }).join(' ');
+          var hay = ((o.title || '') + ' ' + (o.category || '') + ' ' + krText).toLowerCase();
+          if (hay.indexOf(searchText) === -1) return false;
+        }
+        if (activeCats.length && activeCats.indexOf(o.category || '未分类') === -1) return false;
+        if (!progOpt.test(avgProgress(o))) return false;
+        if (periodKey !== 'all') {
+          var s = seasonOf(o.createdAt) || currentSeason();
+          if (s !== periodKey) return false;
+        }
+        return true;
+      });
+    }
+
+    function activeFilterCount() {
+      return activeCats.length + (progressKey === 'all' ? 0 : 1) + (periodKey === 'all' ? 0 : 1);
+    }
+
+    function updateFilterUI(list) {
+      var badge = document.getElementById('okrFilterBadge');
+      var btn = document.getElementById('okrFilterBtn');
+      var n = activeFilterCount();
+      if (badge) { badge.hidden = n === 0; badge.textContent = n; }
+      if (btn) btn.classList.toggle('has-filter', n > 0);
+      var pLabel = document.getElementById('okrPeriodLabel');
+      if (pLabel) pLabel.textContent = periodKey === 'all' ? '全部时间' : periodKey.replace('-', ' · ') + '季';
+      var pBtn = document.getElementById('okrPeriodBtn');
+      if (pBtn) pBtn.classList.toggle('has-filter', periodKey !== 'all');
+      var label = document.querySelector('.filter-label');
+      if (label) label.textContent = activeCats.length ? '已选门派' : '全部门派';
+    }
+
+    // 用数据里的门派动态生成可点选项
+    function buildFilterOptions() {
+      var cats = [];
+      getOkrs().forEach(function (o) {
+        var c = o.category || '未分类';
+        if (cats.indexOf(c) === -1) cats.push(c);
+      });
+      var catBox = document.getElementById('fpCategories');
+      if (catBox) {
+        catBox.innerHTML = cats.map(function (c) {
+          return '<span class="fp-opt' + (activeCats.indexOf(c) > -1 ? ' on' : '') + '" data-cat="' + escapeHtml(c) + '">' + escapeHtml(c) + '</span>';
+        }).join('') || '<span class="fp-tip">还没有门派</span>';
+      }
+      var progBox = document.getElementById('fpProgress');
+      if (progBox) {
+        progBox.innerHTML = PROGRESS_OPTS.map(function (p) {
+          return '<span class="fp-opt' + (progressKey === p.key ? ' on' : '') + '" data-prog="' + p.key + '">' + p.label + '</span>';
+        }).join('');
+      }
+      var seasons = ['all', currentSeason(), '2026-春', '2026-夏', '2026-冬'];
+      var uniq = [];
+      seasons.forEach(function (s) { if (s && uniq.indexOf(s) === -1) uniq.push(s); });
+      var periodBox = document.getElementById('fpPeriods');
+      if (periodBox) {
+        periodBox.innerHTML = uniq.map(function (s) {
+          var label = s === 'all' ? '全部时间' : s.replace('-', ' · ') + '季';
+          return '<span class="fp-opt' + (periodKey === s ? ' on' : '') + '" data-period="' + s + '">' + label + '</span>';
+        }).join('');
+      }
+    }
+
     function render(filter) {
-      var list = getOkrs();
+      currentFilter = filter || currentFilter || 'all';
+      var list = baseFiltered(getOkrs());
       var container = document.querySelector('.okr-scroll-content');
       if (!container) return;
       var shown = list;
-      if (filter === 'active') shown = list.filter(function(o){ return o.status === 'active'; });
-      else if (filter === 'done') shown = list.filter(function(o){ return o.status === 'done'; });
-      else if (filter === 'risk') shown = list.filter(function(o){ return o.status === 'risk'; });
-      container.innerHTML = shown.map(cardHtml).join('');
+      if (currentFilter === 'active') shown = list.filter(function(o){ return o.status === 'active'; });
+      else if (currentFilter === 'done') shown = list.filter(function(o){ return o.status === 'done'; });
+      else if (currentFilter === 'risk') shown = list.filter(function(o){ return o.status === 'risk'; });
+      container.innerHTML = shown.length ? shown.map(cardHtml).join('') : '<div class="okr-empty">这个条件下暂时没有目标，换个筛选看看</div>';
       var badge = document.querySelector('.filter-count-badge');
       if (badge) badge.textContent = list.length;
       // 每个筛选标签显示对应任务数量
@@ -2188,9 +2426,10 @@ body {
         var el = document.querySelector('[data-dom-id="filter-' + k + '"] .pill-count');
         if (el) el.textContent = counts[k];
       });
+      buildFilterOptions();
+      updateFilterUI(list);
       bind();
     }
-
     function closeMenu() {
       var m = document.querySelector('.okr-more-menu');
       if (m) m.remove();
@@ -2303,6 +2542,92 @@ body {
           render(currentFilter);
         });
       });
+
+      bindFilterPanel();
+    }
+
+    function bindFilterPanel() {
+      var filterBtn = document.getElementById('okrFilterBtn');
+      var filterPanel = document.getElementById('okrFilterPanel');
+      var periodBtn = document.getElementById('okrPeriodBtn');
+      var periodPanel = document.getElementById('okrPeriodPanel');
+      var clearBtn = document.getElementById('fpClearBtn');
+      var searchInput = document.querySelector('.search-input');
+
+      function toggle(panel) {
+        var willOpen = panel.hidden;
+        filterPanel.hidden = true;
+        periodPanel.hidden = true;
+        panel.hidden = !willOpen;
+      }
+
+      if (filterBtn && filterPanel) {
+        filterBtn.addEventListener('click', function (e) { e.stopPropagation(); toggle(filterPanel); });
+      }
+      if (periodBtn && periodPanel) {
+        periodBtn.addEventListener('click', function (e) { e.stopPropagation(); toggle(periodPanel); });
+      }
+      if (filterPanel) filterPanel.addEventListener('click', function (e) { e.stopPropagation(); });
+      if (periodPanel) periodPanel.addEventListener('click', function (e) { e.stopPropagation(); });
+      document.addEventListener('click', function () {
+        if (filterPanel) filterPanel.hidden = true;
+        if (periodPanel) periodPanel.hidden = true;
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { filterPanel.hidden = true; periodPanel.hidden = true; }
+      });
+
+      // 门派多选
+      if (filterPanel) {
+        filterPanel.addEventListener('click', function (e) {
+          var catEl = e.target.closest ? e.target.closest('[data-cat]') : null;
+          if (catEl) {
+            var c = catEl.getAttribute('data-cat');
+            var i = activeCats.indexOf(c);
+            if (i > -1) activeCats.splice(i, 1); else activeCats.push(c);
+            render(currentFilter);
+            return;
+          }
+          var progEl = e.target.closest ? e.target.closest('[data-prog]') : null;
+          if (progEl) {
+            progressKey = progEl.getAttribute('data-prog');
+            render(currentFilter);
+          }
+        });
+      }
+
+      // 时间段单选
+      if (periodPanel) {
+        periodPanel.addEventListener('click', function (e) {
+          var el = e.target.closest ? e.target.closest('[data-period]') : null;
+          if (!el) return;
+          periodKey = el.getAttribute('data-period');
+          render(currentFilter);
+          periodPanel.hidden = true;
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function () {
+          activeCats = [];
+          progressKey = 'all';
+          periodKey = 'all';
+          searchText = '';
+          if (searchInput) searchInput.value = '';
+          render('all');
+          document.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('active'); });
+          var allPill = document.querySelector('[data-dom-id="filter-all"]');
+          if (allPill) allPill.classList.add('active');
+        });
+      }
+
+      // 搜索框实时过滤
+      if (searchInput) {
+        searchInput.addEventListener('input', function () {
+          searchText = this.value.trim().toLowerCase();
+          render(currentFilter);
+        });
+      }
     }
 
     if (document.readyState === 'loading') {
