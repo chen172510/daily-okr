@@ -308,6 +308,7 @@ body {
       }
     </style>
 <script src="../assets/quotes.js"></script>
+<script src="../assets/lunar.js"></script>
 <script src="../assets/api.js"></script>
 <script src="../assets/page-nav.js"></script>
 <script src="../assets/common.js"></script>
@@ -4148,6 +4149,11 @@ body {
   .cal-cell.empty { border: none; background: none; }
   .cal-cell.today { border-color: var(--cinnabar, #c23a2b); color: var(--cinnabar, #c23a2b); font-weight: 700; }
   .cal-cell.has-review::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--cinnabar, #c23a2b); margin-top: 3px; }
+  .cal-cell { flex-direction: column; line-height: 1.15; padding: 3px 0 2px; }
+  .cal-day { font-size: 15px; }
+  .cal-lunar { font-size: 10px; color: #8b8b8b; margin-top: 1px; max-width: 96%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .cal-cell.fest .cal-lunar { color: #c0392b; }
+  .cal-cell.term .cal-lunar { color: #2b6a4f; }
 </style>
 <script>
   (function() {
@@ -4235,7 +4241,24 @@ body {
       for (var d = 1; d <= days; d++) {
         var ds = y + '-' + pad(m + 1) + '-' + pad(d);
         var cls = 'cal-cell' + (reviewed[ds] ? ' has-review' : '') + (ds === today ? ' today' : '');
-        html += '<div class="' + cls + '" title="' + ds + '">' + d + '</div>';
+        var sub = '', extra = '';
+        try {
+          if (window.Lunar && window.Solar) {
+            var sd = new Date(y, m, d);
+            var L = window.Lunar.fromDate(sd);
+            var S = window.Solar.fromDate(sd);
+            var fests = (S.getFestivals() || []).concat(L.getFestivals() || []);
+            var jq = '';
+            try { jq = L.getJieQi() || ''; } catch (e) {}
+            if (fests.length) { sub = fests[0]; extra = ' fest'; }
+            else if (jq) { sub = jq; extra = ' term'; }
+            else { sub = L.getDayInChinese(); }
+          }
+        } catch (e) {}
+        html += '<div class="' + cls + extra + '" title="' + ds + '">'
+          + '<span class="cal-day">' + d + '</span>'
+          + (sub ? '<span class="cal-lunar">' + sub + '</span>' : '')
+          + '</div>';
       }
       el.innerHTML = '<div class="cal-grid">' + html + '</div>';
       Array.prototype.forEach.call(el.querySelectorAll('.cal-cell[title]'), function (cell) {
