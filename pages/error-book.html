@@ -945,9 +945,14 @@ function loadData() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      const data = normalizeErrorData(JSON.parse(saved));
+      const raw = JSON.parse(saved);
+      const data = normalizeErrorData(raw);
       state.categories = data.categories;
       state.errorItems = data.errorItems;
+      // 数据被自动补齐过就写回一次，顺便把干净的版本同步到云端
+      try {
+        if (JSON.stringify(raw) !== JSON.stringify(data)) saveData();
+      } catch (e) {}
     } else {
       state.categories = [...defaultCategories];
       state.errorItems = [...defaultErrorItems];

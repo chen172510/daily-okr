@@ -520,10 +520,10 @@ body {
               <span class="filter-count-badge">五</span>
             </div>
             <div class="filter-row-right">
-              <div class="filter-pill active" data-dom-id="filter-all">全 部</div>
-              <div class="filter-pill" data-dom-id="filter-active">修行中</div>
-              <div class="filter-pill" data-dom-id="filter-done">已圆满</div>
-              <div class="filter-pill" data-dom-id="filter-risk">有阻滞</div>
+              <div class="filter-pill active" data-dom-id="filter-all">全 部<span class="pill-count">0</span></div>
+              <div class="filter-pill" data-dom-id="filter-active">修行中<span class="pill-count">0</span></div>
+              <div class="filter-pill" data-dom-id="filter-done">已圆满<span class="pill-count">0</span></div>
+              <div class="filter-pill" data-dom-id="filter-risk">有阻滞<span class="pill-count">0</span></div>
             </div>
           </div>
 
@@ -1622,6 +1622,27 @@ body {
   z-index: 2;
 }
 
+/* 筛选标签上的任务数量 */
+.filter-pill .pill-count {
+  display: inline-block;
+  min-width: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0;
+  background: rgba(31, 26, 16, 0.08);
+  color: var(--ink-3);
+}
+
+.filter-pill.active .pill-count {
+  background: rgba(247, 236, 208, 0.22);
+  color: var(--gold-3);
+}
+
 /* ========== 目标卷轴列表 ========== */
 .okr-list-card {
   background: var(--ink-paper-light);
@@ -2156,6 +2177,17 @@ body {
       container.innerHTML = shown.map(cardHtml).join('');
       var badge = document.querySelector('.filter-count-badge');
       if (badge) badge.textContent = list.length;
+      // 每个筛选标签显示对应任务数量
+      var counts = {
+        all: list.length,
+        active: list.filter(function(o){ return o.status === 'active'; }).length,
+        done: list.filter(function(o){ return o.status === 'done'; }).length,
+        risk: list.filter(function(o){ return o.status === 'risk'; }).length
+      };
+      Object.keys(counts).forEach(function(k) {
+        var el = document.querySelector('[data-dom-id="filter-' + k + '"] .pill-count');
+        if (el) el.textContent = counts[k];
+      });
       bind();
     }
 
