@@ -4572,6 +4572,10 @@ body {
   .cal-lunar { font-size: 10px; color: #8b8b8b; margin-top: 1px; max-width: 96%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .cal-cell.fest .cal-lunar { color: #c0392b; }
   .cal-cell.term .cal-lunar { color: #2b6a4f; }
+  /* 格子下方显示“完成/计划”，按状态着色 */
+  .cal-cell.done-all .cal-lunar { color: #2b6a4f; font-weight: 600; }
+  .cal-cell.part .cal-lunar { color: #8b6914; }
+  .cal-cell.has-block .cal-lunar { color: #c0392b; }
 </style>
 <script>
   (function() {
@@ -4659,18 +4663,16 @@ body {
       for (var d = 1; d <= days; d++) {
         var ds = y + '-' + pad(m + 1) + '-' + pad(d);
         var cls = 'cal-cell' + (reviewed[ds] ? ' has-review' : '') + (ds === today ? ' today' : '');
+        // 格子下面不写农历/节气/节日，改成当天的任务完成情况
         var sub = '', extra = '';
         try {
-          if (window.Lunar && window.Solar) {
-            var sd = new Date(y, m, d);
-            var L = window.Lunar.fromDate(sd);
-            var S = window.Solar.fromDate(sd);
-            var fests = (S.getFestivals() || []).concat(L.getFestivals() || []);
-            var jq = '';
-            try { jq = L.getJieQi() || ''; } catch (e) {}
-            if (fests.length) { sub = fests[0]; extra = ' fest'; }
-            else if (jq) { sub = jq; extra = ' term'; }
-            else { sub = L.getDayInChinese(); }
+          var hist = JSON.parse(localStorage.getItem('xingxing_day_history') || '{}') || {};
+          var rec = hist[ds];
+          if (rec && rec.total) {
+            sub = rec.done + '/' + rec.total;
+            if (rec.done >= rec.total) extra = ' done-all';
+            else if (rec.blocked) extra = ' has-block';
+            else extra = ' part';
           }
         } catch (e) {}
         html += '<div class="' + cls + extra + '" title="' + ds + '">'

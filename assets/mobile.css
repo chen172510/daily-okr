@@ -4,6 +4,30 @@
    ============================================ */
 .xx-mobile-nav { display: none; }
 
+/* ===== 顶栏主题图标：太阳发光（黄）、月亮洁白带光晕 ===== */
+.theme-btn[data-xx-icon="sun"] {
+  border-color: rgba(232, 184, 60, .55);
+  background: rgba(255, 246, 214, .92);
+}
+.theme-btn[data-xx-icon="sun"] svg {
+  color: #e8b83c;
+  filter: drop-shadow(0 0 4px rgba(232, 184, 60, .95)) drop-shadow(0 0 10px rgba(232, 184, 60, .55));
+}
+.theme-btn[data-xx-icon="moon"] {
+  border-color: rgba(120, 140, 180, .5);
+  background: #24263a;
+}
+.theme-btn[data-xx-icon="moon"] svg {
+  color: #ffffff;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, .95)) drop-shadow(0 0 11px rgba(190, 215, 255, .75));
+}
+
+/* ===== 手机端：原来的长内容收起，只通过书架进入 ===== */
+@media (max-width: 900px) {
+  body.xx-mobile-ready [data-xx-block] { display: none !important; }
+  body.xx-mobile-ready .xx-sheet-body [data-xx-block] { display: block !important; }
+}
+
 @media (max-width: 900px) {
   /* 桌面侧栏在手机上隐藏 */
   aside.sidebar,

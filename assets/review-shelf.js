@@ -108,11 +108,17 @@
             + '<span class="book-name">' + b.name + '</span>'
             + '<span class="book-desc">' + b.desc + '</span></button>';
         }).join('') + '</div>'
-      + calendar()
       + '<div class="shelf-tip">点一本书，进入那一件事的专属页面</div>';
 
+    // 放在顶栏（时间/天气/太阳月亮）下面，顶栏保持最上面
+    var topbar = pick('header.topbar') || pick('.topbar');
     var host = pick('main.main-content') || pick('.content-area') || document.body;
-    host.insertBefore(shelf, host.firstChild);
+    if (topbar && topbar.parentNode) topbar.insertAdjacentElement('afterend', shelf);
+    else host.insertBefore(shelf, host.firstChild);
+
+    // 手机端：原来的长内容默认收起，只通过书架进入
+    cards.forEach(function (el) { el.setAttribute('data-xx-block', '1'); });
+    document.body.classList.add('xx-mobile-ready');
 
     /* ---------------- 全屏专属页 ---------------- */
     var sheet = document.createElement('div');
