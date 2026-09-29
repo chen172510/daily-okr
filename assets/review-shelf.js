@@ -1,7 +1,8 @@
 /* ============================================
-   复盘页 · 手机版「书柜」布局
-   便利贴看状态 → 从书柜拿书 → 只看那一块内容 → 返回书柜
-   宽屏（>900px）不启用，保持原来的长页布局
+   复盘页 · 手机版「书架 → 专属页面」
+   书架点一本书，打开那一件事的全屏专属页（自带标题栏和返回），
+   不再是把原来的长页面往下滑。
+   宽屏（>900px）不启用，保持原来的长页布局。
    ============================================ */
 (function () {
   'use strict';
@@ -16,41 +17,43 @@
     { key: 'history', icon: '📅', name: '往昔省身', desc: '翻翻以前' }
   ];
 
+  var STATUS = {
+    done:    { text: '已圆满', cls: 'st-done' },
+    doing:   { text: '修行中', cls: 'st-doing' },
+    blocked: { text: '有阻碍', cls: 'st-blocked' },
+    todo:    { text: '未开始', cls: 'st-todo' }
+  };
+
   function pick(sel) { return document.querySelector(sel); }
 
   function build() {
     var cards = Array.prototype.slice.call(
       document.querySelectorAll('.stats-row, .graph-card, .questions-card, .history-card')
-    ).filter(function (el) { return el.id !== 'autoArchiveCard' || true; });
+    );
     if (!cards.length) return;
 
-    // 给每块内容编号，方便定位
-    cards.forEach(function (el, i) { el.setAttribute('data-xx-block', String(i)); });
-
-    function findBlock(pred) {
+    function find(pred) {
       for (var i = 0; i < cards.length; i++) if (pred(cards[i])) return cards[i];
       return null;
     }
-    var byId = function (id) { return findBlock(function (el) { return el.id === id; }); };
-    var byTitle = function (t) {
-      return findBlock(function (el) {
+    function byId(id) { return find(function (el) { return el.id === id; }); }
+    function byTitle(t) {
+      return find(function (el) {
         var h = el.querySelector('.card-title, .section-title');
-        return h && h.textContent.indexOf(t) > -1;
+        return h && h.textContent.replace(/\s/g, '').indexOf(t) > -1;
       });
-    };
+    }
 
     var map = {
-      action: byId('autoArchiveCard') || byTitle('今天的行动'),
       graph: byTitle('事务脉络'),
       diary: byTitle('我的日记') || byTitle('三省') || byTitle('备忘录'),
       wins: byId('winsCard') || byTitle('今日小胜利'),
       habits: byId('habitsCard') || byTitle('习惯打卡'),
-      history: byTitle('往昔') || findBlock(function (el) { return el.className.indexOf('history-card') > -1; })
+      history: byTitle('往昔') || find(function (el) { return el.className.indexOf('history-card') > -1; })
     };
 
-    // ---------- 便利贴数据 ----------
     var T = window.XingxingTasks;
-    var stats = T ? T.stats() : { total: 0, done: 0, actualMinutes: 0 };
+    var stats = T ? T.stats() : { total: 0, done: 0, doing: 0, blocked: 0, todo: 0, actualMinutes: 0, tasks: [] };
     var rate = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
     var day = T ? T.dayWindow() : null;
     var moodEl = pick('.stat-big-emoji');
@@ -58,17 +61,14 @@
     var mood = moodEl ? (moodEl.textContent || '').trim() : '';
     var moodTxt = moodTxtEl ? (moodTxtEl.textContent || '').trim() : '';
     var fmtMin = T ? T.fmtMinutes(stats.actualMinutes) : (stats.actualMinutes + ' 分钟');
-    var range = day && day.first
-      ? (T.minutesToText(day.start) + ' – ' + T.minutesToText(day.end))
-      : '还没记录';
+    var range = (day && day.first) ? (T.minutesToText(day.start) + ' – ' + T.minutesToText(day.end)) : '还没记录';
 
-    // ---------- 挂历 ----------
+    /* ---------------- 便利贴 + 书柜 + 挂历 ---------------- */
     function calendar() {
       var now = new Date();
       var y = now.getFullYear(), m = now.getMonth();
-      var first = new Date(y, m, 1);
       var days = new Date(y, m + 1, 0).getDate();
-      var lead = (first.getDay() + 6) % 7;   // 周一开头
+      var lead = (new Date(y, m, 1).getDay() + 6) % 7;
       var hasReview = {};
       try {
         for (var i = 0; i < localStorage.length; i++) {
@@ -81,83 +81,133 @@
       for (var b = 0; b < lead; b++) cells += '<span class="cal-blank"></span>';
       for (var d = 1; d <= days; d++) {
         var ds = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-        var cls = 'cal-day' + (hasReview[ds] ? ' has' : '') + (ds === todayStr ? ' today' : '');
-        cells += '<span class="' + cls + '" data-date="' + ds + '">' + d + '</span>';
+        cells += '<span class="cal-day' + (hasReview[ds] ? ' has' : '') + (ds === todayStr ? ' today' : '')
+          + '" data-date="' + ds + '">' + d + '</span>';
       }
       return '<div class="shelf-cal">'
         + '<div class="shelf-cal-head">' + y + ' 年 ' + (m + 1) + ' 月'
-        + '<span class="shelf-cal-hint">有记录的日子会有小点</span></div>'
+        + '<span class="shelf-cal-hint">有记录的日子有小点</span></div>'
         + '<div class="shelf-cal-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>'
-        + '<div class="shelf-cal-grid">' + cells + '</div>'
-        + '</div>';
+        + '<div class="shelf-cal-grid">' + cells + '</div></div>';
     }
-
-    var notes = ''
-      + '<div class="shelf-notes">'
-      + '<div class="note note-a"><b>' + rate + '%</b><span>今日完成</span></div>'
-      + '<div class="note note-b"><b>' + (mood || '—') + '</b><span>' + (moodTxt || '今日心境') + '</span></div>'
-      + '<div class="note note-c"><b>' + fmtMin + '</b><span>实际投入</span></div>'
-      + '<div class="note note-d"><b>' + range + '</b><span>修行区间</span></div>'
-      + '</div>';
-
-    var books = '<div class="shelf-books">' + BOOKS.map(function (b) {
-      var on = map[b.key] ? '' : ' disabled';
-      return '<button class="shelf-book' + on + '" data-book="' + b.key + '">'
-        + '<span class="book-icon">' + b.icon + '</span>'
-        + '<span class="book-name">' + b.name + '</span>'
-        + '<span class="book-desc">' + b.desc + '</span></button>';
-    }).join('') + '</div>';
 
     var shelf = document.createElement('div');
     shelf.className = 'xx-shelf';
     shelf.id = 'xxShelf';
-    shelf.innerHTML = notes
+    shelf.innerHTML =
+        '<div class="shelf-notes">'
+      +   '<div class="note note-a"><b>' + rate + '%</b><span>今日完成</span></div>'
+      +   '<div class="note note-b"><b>' + (mood || '—') + '</b><span>' + (moodTxt || '今日心境') + '</span></div>'
+      +   '<div class="note note-c"><b>' + fmtMin + '</b><span>实际投入</span></div>'
+      +   '<div class="note note-d"><b>' + range + '</b><span>修行区间</span></div>'
+      + '</div>'
       + '<div class="shelf-title">我的复盘书架</div>'
-      + books
+      + '<div class="shelf-books">' + BOOKS.map(function (b) {
+          return '<button class="shelf-book" data-book="' + b.key + '">'
+            + '<span class="book-icon">' + b.icon + '</span>'
+            + '<span class="book-name">' + b.name + '</span>'
+            + '<span class="book-desc">' + b.desc + '</span></button>';
+        }).join('') + '</div>'
       + calendar()
-      + '<div class="shelf-tip">点一本书，只看那一部分，不用一直往下滑</div>';
+      + '<div class="shelf-tip">点一本书，进入那一件事的专属页面</div>';
 
     var host = pick('main.main-content') || pick('.content-area') || document.body;
     host.insertBefore(shelf, host.firstChild);
 
-    // ---------- 聚焦模式 ----------
-    var bar = document.createElement('div');
-    bar.className = 'xx-focus-bar';
-    bar.innerHTML = '<button class="xx-back">‹ 书架</button><span class="xx-focus-title"></span>';
-    document.body.appendChild(bar);
+    /* ---------------- 全屏专属页 ---------------- */
+    var sheet = document.createElement('div');
+    sheet.className = 'xx-sheet';
+    sheet.id = 'xxSheet';
+    sheet.innerHTML = '<div class="xx-sheet-head">'
+      + '<button class="xx-sheet-back" type="button">‹ 书架</button>'
+      + '<span class="xx-sheet-title"></span></div>'
+      + '<div class="xx-sheet-body"></div>';
+    document.body.appendChild(sheet);
 
-    function exitFocus() {
-      document.body.classList.remove('xx-focus');
-      cards.forEach(function (el) { el.style.display = ''; });
-      bar.classList.remove('on');
-      window.scrollTo(0, 0);
+    var sheetTitle = sheet.querySelector('.xx-sheet-title');
+    var sheetBody = sheet.querySelector('.xx-sheet-body');
+    var moved = null;
+
+    function restoreMoved() {
+      if (!moved) return;
+      if (moved.next && moved.next.parentNode === moved.parent) moved.parent.insertBefore(moved.el, moved.next);
+      else moved.parent.appendChild(moved.el);
+      moved = null;
     }
 
-    function enterFocus(key) {
-      var el = map[key];
-      if (!el) return;
-      cards.forEach(function (c) { c.style.display = (c === el ? '' : 'none'); });
-      var titleEl = bar.querySelector('.xx-focus-title');
-      var b = BOOKS.filter(function (x) { return x.key === key; })[0];
-      if (titleEl && b) titleEl.textContent = b.icon + ' ' + b.name;
-      document.body.classList.add('xx-focus');
-      bar.classList.add('on');
-      window.scrollTo(0, 0);
+    function renderAction() {
+      var chips = '<div class="sheet-chips">'
+        + '<span class="chip">计划 ' + stats.total + '</span>'
+        + '<span class="chip st-done">已圆满 ' + (stats.done || 0) + '</span>'
+        + '<span class="chip st-doing">修行中 ' + (stats.doing || 0) + '</span>'
+        + '<span class="chip st-blocked">有阻碍 ' + (stats.blocked || 0) + '</span>'
+        + '<span class="chip">未开始 ' + (stats.todo || 0) + '</span>'
+        + '<span class="chip">实际 ' + fmtMin + '</span></div>';
+
+      if (!stats.tasks || !stats.tasks.length) {
+        return chips + '<div class="sheet-empty">今天还没排计划。<br>去「每日计划」排一段，这里就会有记录。</div>';
+      }
+
+      var rows = stats.tasks.map(function (t) {
+        var st = STATUS[t.effective] || STATUS.todo;
+        return '<div class="sheet-card ' + st.cls + '">'
+          + '<div class="sc-top"><span class="sc-name">' + t.name + '</span>'
+          + '<span class="sc-status ' + st.cls + '">' + st.text + '</span></div>'
+          + '<div class="sc-meta">' + t.startTime + ' – ' + t.endTime
+          + (t.actualMinutes ? '　实际 ' + (T ? T.fmtMinutes(t.actualMinutes) : t.actualMinutes + ' 分钟') : '')
+          + '</div>'
+          + (t.okrId ? '<div class="sc-goal">🎯 ' + (t.krTitle ? t.krTitle + ' · ' : '') + (T.okrTitle(t.okrId) || '已关联目标') + '</div>' : '')
+          + (t.blockedReason ? '<div class="sc-reason">阻碍：' + t.blockedReason + '</div>' : '')
+          + '</div>';
+      }).join('');
+
+      return chips + '<div class="sheet-list">' + rows + '</div>';
+    }
+
+    function openBook(key) {
+      var book = BOOKS.filter(function (b) { return b.key === key; })[0];
+      if (!book) return;
+      restoreMoved();
+      sheetBody.innerHTML = '';
+      sheetTitle.textContent = book.icon + ' ' + book.name;
+
+      if (key === 'action') {
+        sheetBody.innerHTML = renderAction();
+      } else {
+        var el = map[key];
+        if (!el) {
+          sheetBody.innerHTML = '<div class="sheet-empty">这块内容还没有。<br>先去记录一点吧。</div>';
+        } else {
+          moved = { el: el, parent: el.parentNode, next: el.nextSibling };
+          sheetBody.appendChild(el);
+        }
+      }
+      document.body.classList.add('xx-sheet-open');
+      sheetBody.scrollTop = 0;
+    }
+
+    function closeSheet() {
+      document.body.classList.remove('xx-sheet-open');
+      restoreMoved();
+      sheetBody.innerHTML = '';
     }
 
     shelf.addEventListener('click', function (e) {
       var btn = e.target.closest ? e.target.closest('[data-book]') : null;
-      if (btn) { enterFocus(btn.getAttribute('data-book')); return; }
-      var day = e.target.closest ? e.target.closest('[data-date]') : null;
-      if (day) {
-        var ds = day.getAttribute('data-date');
-        var cell = document.querySelector('#reviewCalendar .cal-cell[data-date="' + ds + '"]')
-          || document.querySelector('.cal-cell[data-date="' + ds + '"]');
-        if (cell) cell.click();
-        enterFocus('history');
+      if (btn) { openBook(btn.getAttribute('data-book')); return; }
+      var dayEl = e.target.closest ? e.target.closest('[data-date]') : null;
+      if (dayEl) {
+        var ds = dayEl.getAttribute('data-date');
+        openBook('history');
+        setTimeout(function () {
+          var cell = sheetBody.querySelector('.cal-cell[data-date="' + ds + '"]')
+            || document.querySelector('.cal-cell[data-date="' + ds + '"]');
+          if (cell) cell.click();
+        }, 350);
       }
     });
-    bar.querySelector('.xx-back').addEventListener('click', exitFocus);
+
+    sheet.querySelector('.xx-sheet-back').addEventListener('click', closeSheet);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(build, 900); });
