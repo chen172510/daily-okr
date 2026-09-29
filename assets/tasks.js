@@ -228,10 +228,24 @@
 
   // ---------- 当天使用记录（一日修行图的时间范围）----------
   function usageAll() { return read(USAGE_KEY, {}) || {}; }
+  // 兼容老数据：早期版本把时间存成了「分钟数」（如 517），这里统一转成 08:37 这种格式
+  function normalizeClock(v) {
+    if (v === '' || v === null || v === undefined) return '';
+    if (typeof v === 'number') return minutesToText(v);
+    var s = String(v).trim();
+    if (s.indexOf(':') > -1) return s;
+    var n = parseInt(s, 10);
+    return isFinite(n) ? minutesToText(n) : '';
+  }
   function usage(date) {
     date = date || todayStr();
     var all = usageAll();
-    return all[date] || { first: '', last: '', visits: 0 };
+    var u = all[date] || { first: '', last: '', visits: 0 };
+    return {
+      first: normalizeClock(u.first),
+      last: normalizeClock(u.last),
+      visits: u.visits || 0
+    };
   }
   function logVisit() {
     var date = todayStr();
