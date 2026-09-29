@@ -1,0 +1,26 @@
+{
+  "name": "行醒 · 个人成长工具",
+  "short_name": "行醒",
+  "description": "把计划、执行、复盘串成一条数据链的个人成长工具",
+  "start_url": "./pages/login.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF6EC",
+  "theme_color": "#1F1A10",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./assets/app-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

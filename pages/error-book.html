@@ -2,7 +2,7 @@
 <html lang="zh-CN" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>刻意练习本 - 修行札记</title>
     <style id="theme-vars">
 /* ============================================
@@ -314,7 +314,15 @@ body {
 <link rel="stylesheet" href="../assets/error-book-enhance.css">
 <script src="../assets/error-book-enhance.js"></script>
 <link rel="icon" type="image/png" href="../assets/favicon.png">
-</head>
+<!-- 移动端适配 + 可添加到主屏幕 -->
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1F1A10">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="行醒">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="../assets/mobile.css"></head>
 <body>
   <div class="app-layout">
     <!-- ========== 左侧玉简导航 ========== -->
@@ -3954,5 +3962,6 @@ input, textarea, select {
   .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
 </style>
 <script src="../assets/voice.js"></script>
+<script src="../assets/mobile.js"></script>
 </body>
 </html>

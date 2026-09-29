@@ -129,6 +129,140 @@ function seedUser(db, userId) {
         consecutiveSuccess: 0, practicedSolutions: [], addedFromReview: true, addedDate: dayStr(ago(8)) }
     ]
   });
+
+  // ===== 今日计划 + 任务-OKR 关联 =====
+  // 取当前时间，动态计算任务时间：确保 1 个已过时段（有阻碍）、1 个进行中、1 个已完成
+  const todayNow = now;
+  const nowMin = todayNow.getHours() * 60 + todayNow.getMinutes();
+
+  // 任务 1：听力（安排在 1 小时前，已过时段 → 有阻碍）
+  const t1Start = minutesToHm(Math.max(60, nowMin - 120));
+  const t1End = minutesToHm(Math.max(90, nowMin - 60));
+  // 任务 2：阅读（安排在更早，已完成 → 已圆满）
+  const t2Start = minutesToHm(Math.max(120, nowMin - 240));
+  const t2End = minutesToHm(Math.max(150, nowMin - 180));
+  // 任务 3：跑步（安排在现在时段 → 修行中）
+  const t3Start = minutesToHm(Math.max(30, nowMin - 20));
+  const t3End = minutesToHm(nowMin + 40);
+
+  set('xingxing_daily_plan', {
+    date: dayStr(todayNow),
+    plans: [
+      {
+        id: 'task_seed_listening',
+        name: '雅思听力精听 · Section 3',
+        startTime: t1Start,
+        endTime: t1End,
+        category: 'study',
+        note: '剑 17 Test 3',
+        status: 'todo',
+        completed: false,
+        blockedReason: 'Section 3 选择题跟不上节奏'
+      },
+      {
+        id: 'task_seed_reading',
+        name: '读完陈波《逻辑学导论》第三章',
+        startTime: t2Start,
+        endTime: t2End,
+        category: 'study',
+        note: '命题逻辑部分',
+        status: 'done',
+        completed: true,
+        actualStart: t2Start,
+        actualEnd: minutesToHm(hmToMinutes(t2End) + 5),
+        actualMinutes: 65
+      },
+      {
+        id: 'task_seed_running',
+        name: '跑步 30 分钟',
+        startTime: t3Start,
+        endTime: t3End,
+        category: 'exercise',
+        note: '夜跑 · 江边',
+        status: 'doing',
+        completed: false,
+        actualStart: t3Start,
+        actualMinutes: 20
+      }
+    ]
+  });
+
+  // 任务 ↔ OKR 关联
+  set('xingxing_task_links', {
+    task_seed_listening: {
+      okrId: 'okr_seed_1',
+      krIndex: 1,
+      krTitle: 'Listening 7.0 分'
+    },
+    task_seed_reading: {
+      okrId: 'okr_seed_2',
+      krIndex: 0,
+      krTitle: '读完陈波《逻辑学导论》'
+    },
+    task_seed_running: {
+      okrId: 'okr_seed_5',
+      krIndex: 0,
+      krTitle: '每周跑步 3 次'
+    }
+  });
+
+  // ===== 今日复盘（自动汇总今日行动的数据也在里面） =====
+  // 复盘的 sanxing 写好，同时有今日行动汇总
+  set('xingxing_review_' + dayStr(todayNow), {
+    sanxing: {
+      1: '今天听力虽然没跟上，但发现了 Section 3 的问题——关键词定位太慢，明天要练预读技巧',
+      2: '逻辑学导论第三章读完了，命题逻辑这块比想象中有意思，真值表方法很实用',
+      3: '晚上跑步状态不错，节奏稳，明天继续保持'
+    },
+    mood: '😊',
+    completed: true,
+    timestamp: todayNow.getTime(),
+    // 今日行动汇总数据（复盘页"今天的行动"自动生成用）
+    todayActions: {
+      totalPlans: 3,
+      completedPlans: 1,
+      doingPlans: 1,
+      blockedPlans: 1,
+      actualMinutes: 85,
+      plannedMinutes: 155,
+      timeRange: t2Start + ' – ' + t3End
+    }
+  });
+
+  // ===== 今日使用统计 =====
+  set('xingxing_day_usage', {
+    [dayStr(todayNow)]: {
+      first: nowMin - 180,
+      last: nowMin,
+      visits: 4
+    }
+  });
+
+  // ===== 用户昵称改成「剑客 YUAN」（分镜脚本里的称呼） =====
+  set('xingxing_user_profile', {
+    nickname: '剑客 YUAN',
+    title: '练气期 · 第十二层',
+    streak: 12
+  });
+  set('xingxing_settings', {
+    nickname: '剑客 YUAN',
+    motto: '书中自有黄金屋',
+    avatar: '',
+    theme: 'dark',
+    sleepQuality: 'good'
+  });
+}
+
+function hmToMinutes(hm) {
+  if (!hm) return 0;
+  const p = hm.split(':');
+  return (parseInt(p[0], 10) || 0) * 60 + (parseInt(p[1], 10) || 0);
+}
+
+function minutesToHm(m) {
+  const h = Math.floor(m / 60);
+  const min = m % 60;
+  return String(h).padStart(2, '0') + ':' + String(min).padStart(2, '0');
 }
 
 module.exports = { seedUser };

@@ -1,0 +1,142 @@
+/* ============================================
+   行醒 · 移动端适配
+   手机（≤900px）：隐藏桌面侧栏、内容占满、底部导航、禁止横向溢出
+   ============================================ */
+.xx-mobile-nav { display: none; }
+
+@media (max-width: 900px) {
+  /* 桌面侧栏在手机上隐藏 */
+  aside.sidebar,
+  .sidebar,
+  #sidebar { display: none !important; }
+
+  /* 主内容区去掉左边距，缩紧内边距，底部给导航留位置 */
+  .main-content,
+  main.main-content,
+  main.main,
+  .main,
+  .content,
+  .content-area,
+  .content-inner,
+  .app-layout > main {
+    margin-left: 0 !important;
+    padding: 14px 12px 84px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* 整页禁止横向滚动 */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  img, svg, video, canvas { max-width: 100%; }
+
+  /* 宽表格改成可横向滑动，避免把整页撑破 */
+  table { display: block; overflow-x: auto; max-width: 100%; }
+
+  /* 两栏/三栏布局改为纵向排列 */
+  .annotate-container,
+  .chat-main,
+  .stats-row,
+  .okr-meta-row,
+  .filter-row,
+  .action-bar { flex-direction: column !important; align-items: stretch !important; }
+
+  .annotation-panel,
+  .chat-right,
+  .chat-left,
+  .canvas-section { width: 100% !important; max-width: 100% !important; }
+
+  /* 搜索、筛选一类的定宽元素改为自适应 */
+  .search-box, .search-input, .filter-btn, .period-selector, .btn-new-okr { width: 100% !important; }
+
+  /* 弹窗在手机上占满宽度 */
+  .modal, .ocr-modal, .okr-modal, .detail-modal, .charge-modal {
+    width: 94vw !important;
+    max-width: 94vw !important;
+    max-height: 90vh !important;
+    overflow: auto;
+  }
+
+  /* 底部导航 */
+  .xx-mobile-nav {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 900;
+    background: #faf6ec;
+    border-top: 1px solid #ded4c2;
+    padding: 6px 2px calc(6px + env(safe-area-inset-bottom));
+    justify-content: space-around;
+    font-family: "STKaiti", "KaiTi", serif;
+    box-shadow: 0 -4px 14px rgba(31, 26, 16, .06);
+  }
+  .xx-mobile-nav a {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.35;
+    color: #8a7a5e;
+    text-decoration: none;
+    padding: 3px 0;
+    border-radius: 8px;
+  }
+  .xx-mobile-nav a.on { color: #8b6914; font-weight: 700; background: rgba(232, 201, 122, .18); }
+  .xx-mobile-nav i { display: block; font-size: 19px; font-style: normal; margin-bottom: 1px; }
+
+  /* ---- 标题在手机上不能一字一行 ---- */
+  .page-title {
+    font-size: 30px !important;
+    letter-spacing: 0.08em !important;
+    line-height: 1.35 !important;
+    writing-mode: horizontal-tb !important;
+    word-break: keep-all;
+  }
+  .card-title, .okr-title {
+    font-size: 20px !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.4 !important;
+  }
+  .page-subtitle, .card-subtitle { font-size: 13px !important; }
+
+  /* ---- 工具栏一律换行，不要横向撑破 ---- */
+  .toolbar { height: auto !important; flex-wrap: wrap !important; gap: 8px !important; }
+  .toolbar .tool-group { flex-wrap: wrap !important; }
+  .canvas-wrapper, .canvas-section, .canvas-svg-container,
+  .annotate-svg, #svgContainer { width: 100% !important; min-width: 0 !important; max-width: 100% !important; }
+
+  /* ---- 固定宽度的图表 / 时间轴改为自适应 ---- */
+  .weekly-chart svg, #weeklyChartSvg, .timeline-track-day svg { width: 100% !important; }
+  .timeline-track-wrapper { overflow-x: auto !important; }
+
+  /* ---- 首页四环换行排列 ---- */
+  .four-rings, .rings-row, .ring-row { flex-wrap: wrap !important; justify-content: center !important; }
+
+  /* ---- 目标卡片：手机上改为纵向堆叠，标题不再被挤成竖排 ---- */
+  .okr-item {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+  .okr-content { width: 100% !important; min-width: 0 !important; }
+  .okr-title {
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere;
+    font-size: 19px !important;
+  }
+  .okr-desc, .okr-today-line { font-size: 12.5px !important; }
+  .progress-ring-wrapper { align-self: flex-start; }
+  .okr-right {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .okr-meta-row { flex-wrap: wrap !important; gap: 6px !important; }
+  .filter-row-left, .filter-row-right { width: 100% !important; }
+}

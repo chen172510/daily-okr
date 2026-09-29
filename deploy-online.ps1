@@ -50,7 +50,10 @@ Say ''
 Say '[3/4] push code to GitHub' 'Cyan'
 Set-Location $repo
 $pushUrl = "https://$ghUser`:$token@github.com/$ghRepo.git"
-$out = (& git push -f $pushUrl main 2>&1 | Out-String)
+$gitExe = 'C:\Users\刘家豪\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\git\cmd\git.exe'
+if (-not (Test-Path $gitExe)) { $g = Get-Command git -ErrorAction SilentlyContinue; if ($g) { $gitExe = $g.Source } else { $gitExe = 'git' } }
+Say "      using git: $gitExe" 'DarkGray'
+$out = (& $gitExe -c http.postBuffer=524288000 -c http.version=HTTP/1.1 push -f $pushUrl main 2>&1 | Out-String)
 $out = $out.Replace($token, '***TOKEN***')
 Say $out.Trim() 'DarkGray'
 
