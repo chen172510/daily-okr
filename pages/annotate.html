@@ -323,7 +323,7 @@ body {
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
 <body>
 
 <!-- 水墨晕染装饰 SVG -->
@@ -475,248 +475,338 @@ body {
 
     <!-- ========== 主内容区 ========== -->
     <main class="main-content">
-        <div class="page-header">
-            <div class="page-seal-tag">速记</div>
-            <h1 class="page-title">速记助理</h1>
-            <p class="page-subtitle">书上的字、手机拍的照片、备忘录截图，丢进来就能变成能编辑、能搜索的文字。</p>
-        </div>
+  <style>
+    /* ===== 速记助理 · 暖色手账风（覆盖局部，不影响外壳） ===== */
+    .annotate-new {
+      --paper: #F7F2EA;
+      --paper-2: #FDFBF7;
+      --line: #E0D8CC;
+      --line-2: #D9D3C8;
+      --ink: #3C3A36;
+      --ink-soft: #6E685F;
+      --ink-faint: #9A948A;
+      --terra: #C0895E;
+      --terra-bg: #F2E4D7;
+      --sage: #8AA399;
+      --sage-bg: #DDE8E4;
+      --plum: #A99AB8;
+      --plum-bg: #EDE9F2;
+      --btn-dark: #3C3A36;
+    }
+    .annotate-new .page-header { margin-bottom: 18px; }
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+    .qcard {
+      background: var(--paper-2);
+      border: 0.5px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 10px 14px;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform .12s ease, background .15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .qcard:active { transform: scale(0.97); background: #F3EDE4; }
+    .q-ico {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 21px; margin-bottom: 9px;
+    }
+    .q-photo .q-ico { background: var(--terra-bg); }
+    .q-voice .q-ico { background: var(--sage-bg); }
+    .q-text  .q-ico { background: var(--plum-bg); }
+    .q-title { font-size: 14px; color: var(--ink); font-weight: 600; }
+    .q-sub { font-size: 11px; color: var(--ink-faint); margin-top: 3px; }
 
-        <!-- 主入口：识图取字 -->
-        <div class="quick-capture">
-            <div class="quick-capture-left">
-                <div class="quick-capture-title">识图取字</div>
-                <div class="quick-capture-desc">书本拍照 / 手机照片 / 备忘录截图 → 自动读出文字，还能语音补充，结果可存进知识库</div>
-            </div>
-            <button type="button" class="quick-capture-btn" id="btnOcrTop">开始识别</button>
-        </div>
+    .section-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 12px;
+    }
+    .section-head h2 { font-size: 16px; color: #4A4742; font-weight: 600; margin: 0; }
+    .section-head .more { font-size: 12px; color: var(--sage); text-decoration: none; }
 
-        <div class="annotate-container">
-            <!-- 左侧画布区 -->
-            <div class="canvas-section">
-                <!-- 工具栏 -->
-                <div class="toolbar">
-                    <div class="tool-group">
-                        <span class="tool-group-label">工具</span>
-                        <button class="tool-btn active" data-tool="rect" title="矩形框选 (R)">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" data-tool="arrow" title="箭头标注 (A)">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="19" x2="19" y2="5"/>
-                                <polyline points="12 5 19 5 19 12"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" data-tool="pen" title="自由画笔 (P)">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 19l7-7 3 3-7 7-3-3z"/>
-                                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" data-tool="text" title="文字标注 (T)">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="4 7 4 4 20 4 20 7"/>
-                                <line x1="9" y1="20" x2="15" y2="20"/>
-                                <line x1="12" y1="4" x2="12" y2="20"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" data-tool="circle" title="圆形/椭圆标注 (C)">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <ellipse cx="12" cy="12" rx="9" ry="7"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" data-tool="highlight" title="高亮标注 (H)">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9 11l-6 6v3h3l6-6"/>
-                                <path d="M22 12l-6 6-3-3 6-6 3 3z" opacity="0.3"/>
-                                <line x1="9" y1="11" x2="13" y2="7"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" data-tool="number" title="序号标注 (N)">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="9"/>
-                                <text x="12" y="16" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor" stroke="none" style="font-family:serif;">1</text>
-                            </svg>
-                        </button>
-                    </div>
+    .note-list { display: flex; flex-direction: column; gap: 12px; padding-bottom: 90px; }
+    .note-card {
+      background: var(--paper-2);
+      border: 0.5px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .note-card::before {
+      content: ""; position: absolute; left: 0; top: 14px; bottom: 14px;
+      width: 3px; border-radius: 0 3px 3px 0;
+    }
+    .note-card.t-idea::before { background: var(--terra); }
+    .note-card.t-task::before { background: var(--sage); }
+    .note-card.t-clip::before { background: var(--plum); }
+    .note-card.t-voice::before { background: var(--terra); }
+    .note-card.t-text::before { background: var(--plum); }
+    .note-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+    .note-tag {
+      font-size: 10px; padding: 2px 8px; border-radius: 10px;
+      background: #F1ECE4; color: var(--ink-soft);
+    }
+    .note-time { font-size: 10px; color: var(--ink-faint); }
+    .note-body { font-size: 14px; color: var(--ink); line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+    .note-img { margin-top: 8px; max-width: 100%; max-height: 160px; border-radius: 10px; border: 0.5px solid var(--line); }
+    .note-del {
+      position: absolute; top: 10px; right: 10px;
+      border: none; background: transparent; color: var(--ink-faint);
+      font-size: 14px; cursor: pointer; padding: 2px 6px; border-radius: 6px;
+    }
+    .note-del:hover { background: #F3EDE4; color: #922b21; }
 
-                    <div class="tool-group">
-                        <span class="tool-group-label">颜色</span>
-                        <button class="color-btn cinnabar active" data-color="cinnabar" title="朱砂红·问题"></button>
-                        <button class="color-btn gold" data-color="gold" title="金色·建议"></button>
-                        <button class="color-btn ink" data-color="ink" title="墨色·备注"></button>
-                    </div>
+    .quick-input {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: var(--paper-2);
+      border-top: 0.5px solid var(--line-2);
+      padding: 10px 16px 12px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 40;
+    }
+    .quick-input input {
+      flex: 1; border: 0.5px solid var(--line-2); background: #fff;
+      border-radius: 22px; padding: 11px 16px; font-size: 14px; color: var(--ink);
+      outline: none; font-family: inherit;
+    }
+    .quick-input input:focus { border-color: var(--terra); }
+    .qi-send {
+      width: 38px; height: 38px; border-radius: 50%; border: none;
+      background: var(--btn-dark); color: var(--paper); font-size: 17px; cursor: pointer;
+      flex-shrink: 0;
+    }
 
-                    <div class="tool-group">
-                        <span class="tool-group-label">粗细</span>
-                        <button class="line-width-btn" data-width="2"><span></span></button>
-                        <button class="line-width-btn active" data-width="3"><span></span></button>
-                        <button class="line-width-btn" data-width="5"><span></span></button>
-                    </div>
+    /* 模态 */
+    .modal-mask {
+      position: fixed; inset: 0; background: rgba(26,22,14,.4);
+      display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 80;
+    }
+    .modal-mask[hidden] { display: none; }
+    .modal-box {
+      width: 100%; max-width: 520px; max-height: 90vh; overflow: auto;
+      background: var(--paper); border: 0.5px solid var(--line-2); border-radius: 16px;
+      padding: 20px; font-family: inherit;
+    }
+    .modal-box h3 { margin: 0 0 14px; font-size: 17px; color: var(--ink); }
+    .modal-box .preview { width: 100%; border-radius: 12px; margin-bottom: 12px; border: 0.5px solid var(--line); }
+    .modal-box textarea, .modal-box input[type=text] {
+      width: 100%; border: 0.5px solid var(--line-2); border-radius: 10px;
+      padding: 10px 12px; font-size: 14px; font-family: inherit; color: var(--ink);
+      outline: none; resize: vertical; background: #fff;
+    }
+    .modal-box textarea { min-height: 90px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; }
+    .mbtn { padding: 9px 18px; border-radius: 8px; font-size: 14px; cursor: pointer; border: 0.5px solid var(--line-2); background: #fff; color: var(--ink); font-family: inherit; }
+    .mbtn.primary { background: var(--btn-dark); color: var(--paper); border-color: var(--btn-dark); }
+    .ocr-hint { font-size: 12px; color: var(--ink-faint); margin-top: 8px; }
+    .rec-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #c0392b; margin-right: 6px; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+    @media (max-width: 900px) {
+      .quick-input { bottom: 64px; padding-left: 16px; padding-right: 16px; }
+      .quick-grid { grid-template-columns: 1fr; }
+      .qcard { flex-direction: row; gap: 14px; text-align: left; padding: 14px 16px; }
+      .q-ico { margin-bottom: 0; }
+      .qcard .q-text-wrap { display: flex; flex-direction: column; }
+    }
+  </style>
 
-                    <div class="tool-group">
-                        <span class="tool-group-label">线型</span>
-                        <button class="line-style-btn active" data-style="solid">实线</button>
-                        <button class="line-style-btn" data-style="dashed">虚线</button>
-                    </div>
+  <div class="page-header">
+    <div class="page-seal-tag">速记</div>
+    <h1 class="page-title">速记助理</h1>
+    <p class="page-subtitle">想到什么，三秒记下来。拍照、说话、打字都行。</p>
+  </div>
 
-                    <div class="tool-group">
-                        <span class="tool-group-label">操作</span>
-                        <button class="tool-btn" id="btnUndo" title="撤销" disabled>
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="1 4 1 10 7 10"/>
-                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" id="btnRedo" title="重做" disabled>
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="23 4 23 10 17 10"/>
-                                <path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn danger" id="btnClear" title="清空全部">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="3 6 5 6 21 6"/>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" id="btnUpload" title="上传图片">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                <polyline points="17 8 12 3 7 8"/>
-                                <line x1="12" y1="3" x2="12" y2="15"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" id="btnOcr" title="识图取字（书本/照片/截图 → 文字）">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="16" rx="2"/>
-                                <line x1="7" y1="9" x2="13" y2="9"/>
-                                <line x1="7" y1="13" x2="17" y2="13"/>
-                                <line x1="7" y1="17" x2="11" y2="17"/>
-                            </svg>
-                        </button>
-                        <button class="tool-btn" id="btnResetNumber" title="重置序号">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                                <path d="M3 3v5h5"/>
-                                <text x="12" y="15" text-anchor="middle" font-size="8" font-weight="bold" fill="currentColor" stroke="none" style="font-family:serif;">1</text>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+  <div class="annotate-new">
+    <div class="quick-grid">
+      <button class="qcard q-photo" id="btnPhoto">
+        <span class="q-ico">📷</span>
+        <span class="q-text-wrap"><span class="q-title">拍照识图</span><span class="q-sub">图片转文字</span></span>
+      </button>
+      <button class="qcard q-voice" id="btnVoice">
+        <span class="q-ico">🎙</span>
+        <span class="q-text-wrap"><span class="q-title">语音速记</span><span class="q-sub">按住即录</span></span>
+      </button>
+      <button class="qcard q-text" id="btnText">
+        <span class="q-ico">✎</span>
+        <span class="q-text-wrap"><span class="q-title">文本便签</span><span class="q-sub">随手写</span></span>
+      </button>
+    </div>
 
-                <!-- 画布 -->
-                <div class="canvas-wrapper" id="canvasWrapper">
-                    <!-- 上传区 -->
-                    <div class="upload-area" id="uploadArea">
-                        <div class="upload-icon">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                <polyline points="17 8 12 3 7 8"/>
-                                <line x1="12" y1="3" x2="12" y2="15"/>
-                            </svg>
-                        </div>
-                        <div class="upload-text">拖拽图片到此处，或点击上传</div>
-                        <div class="upload-hint">支持 <kbd>Ctrl</kbd> + <kbd>V</kbd> 粘贴剪贴板图片</div>
-                    </div>
-                    <!-- SVG 画布（初始隐藏） -->
-                    <div class="canvas-svg-container" id="svgContainer" style="display:none; width:100%; height:100%;">
-                        <svg class="annotate-svg" id="annotateSvg" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <!-- 毛笔笔触滤镜 -->
-                                <filter id="inkBrush" x="-20%" y="-20%" width="140%" height="140%">
-                                    <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/>
-                                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
-                                </filter>
-                                <!-- 朱砂印章效果 -->
-                                <filter id="sealEffect" x="-10%" y="-10%" width="120%" height="120%">
-                                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise"/>
-                                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" xChannelSelector="R" yChannelSelector="G"/>
-                                </filter>
-                            </defs>
-                            <image id="bgImage" href="" x="0" y="0"/>
-                            <g class="annotation-layer" id="annotationLayer"></g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+    <div class="section-head">
+      <h2>最近速记</h2>
+      <a href="#" class="more" id="btnClear">清空</a>
+    </div>
+    <div class="note-list" id="noteList"></div>
+  </div>
 
-            <!-- 右侧标注面板 -->
-            <div class="annotation-panel">
-                <!-- 常用批注模板 -->
-                <div class="panel-card template-panel">
-                    <div class="panel-header template-header" id="templateHeader">
-                        <span class="panel-title">常用批注模板</span>
-                        <svg class="template-toggle-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"/>
-                        </svg>
-                    </div>
-                    <div class="template-body" id="templateBody">
-                        <div class="template-pills">
-                            <span class="template-pill" data-text="配色不协调，建议调整">配色不协调</span>
-                            <span class="template-pill" data-text="间距太大，建议收紧">间距太大</span>
-                            <span class="template-pill" data-text="间距太小，建议增加留白">间距太小</span>
-                            <span class="template-pill" data-text="字体层级不清晰，建议优化字号对比">字体层级不清</span>
-                            <span class="template-pill" data-text="交互反馈缺失，点击无明显响应">交互反馈缺失</span>
-                            <span class="template-pill" data-text="信息层级混乱，重点不突出">信息层级混乱</span>
-                            <span class="template-pill" data-text="对齐方式不统一，建议对齐基准线">对齐不统一</span>
-                            <span class="template-pill" data-text="图标风格不统一，建议统一线性/面性风格">图标风格不统一</span>
-                            <span class="template-pill" data-text="圆角大小不一致，建议统一圆角规范">圆角不一致</span>
-                            <span class="template-pill" data-text="需要增加留白，内容过于拥挤">增加留白</span>
-                            <span class="template-pill" data-text="重点不够突出，视觉层级需加强">重点不突出</span>
-                        </div>
-                    </div>
-                </div>
+  <form class="quick-input" id="quickInput">
+    <input type="text" id="qiText" placeholder="想到什么，直接写…" autocomplete="off" />
+    <button type="submit" class="qi-send" aria-label="保存">↑</button>
+  </form>
 
-                <div class="panel-card">
-                    <div class="panel-header">
-                        <span class="panel-title">批注清单</span>
-                        <span class="panel-count" id="annoCount">0</span>
-                    </div>
-                    <div class="panel-body" id="annotationList">
-                        <div class="empty-state">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                                <polyline points="10 9 9 9 8 9"/>
-                            </svg>
-                            <p>暂无批注</p>
-                            <p style="font-size:12px; margin-top:4px; opacity:0.7;">上传图片后开始圈点</p>
-                        </div>
-                    </div>
-                    <div class="export-section">
-                        <button class="export-btn primary" id="btnExportImage">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <polyline points="21 15 16 10 5 21"/>
-                            </svg>
-                            导出批注图
-                        </button>
-                        <button class="export-btn" id="btnCopyImage">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                            </svg>
-                            复制到剪贴板
-                        </button>
-                        <button class="export-btn" id="btnExportMarkdown">
-                            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                            </svg>
-                            导出批注文
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+  <input type="file" id="imgPicker" accept="image/*" capture="environment" hidden />
+
+  <!-- 拍照识图模态 -->
+  <div class="modal-mask" id="ocrModal" hidden>
+    <div class="modal-box">
+      <h3>拍照识图</h3>
+      <img class="preview" id="ocrPreview" alt="预览" hidden />
+      <textarea id="ocrText" placeholder="识别到的文字会显示在这里，也可以直接手动转写 / 语音补充…"></textarea>
+      <div class="ocr-hint">提示：接入 OCR 服务后可自动识别图中文字，当前为手动转写模式。</div>
+      <div class="modal-actions">
+        <button class="mbtn" data-close="ocrModal">取消</button>
+        <button class="mbtn primary" id="ocrSave">存为速记</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 语音速记模态 -->
+  <div class="modal-mask" id="voiceModal" hidden>
+    <div class="modal-box">
+      <h3>语音速记</h3>
+      <p style="font-size:13px;color:var(--ink-soft);margin:0 0 14px;">
+        <span class="rec-dot"></span><span id="voiceState">准备录音…</span>
+      </p>
+      <textarea id="voiceText" placeholder="说完后文字会显示在这里"></textarea>
+      <div class="ocr-hint" id="voiceHint"></div>
+      <div class="modal-actions">
+        <button class="mbtn" data-close="voiceModal">取消</button>
+        <button class="mbtn primary" id="voiceSave">存为速记</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var KEY = 'xx_notes_v1';
+    var list = document.getElementById('noteList');
+    function load() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } }
+    function save(arr) { localStorage.setItem(KEY, JSON.stringify(arr)); }
+    function fmt(ts) {
+      var d = new Date(ts), n = new Date();
+      var hh = ('0' + d.getHours()).slice(-2), mm = ('0' + d.getMinutes()).slice(-2);
+      var label = hh + ':' + mm;
+      if (d.toDateString() === n.toDateString()) return label;
+      var y = new Date(n); y.setDate(n.getDate() - 1);
+      if (d.toDateString() === y.toDateString()) return '昨天 ' + label;
+      return (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + label;
+    }
+    var TAGS = { idea: '灵感', task: '待办', clip: '图片', voice: '语音', text: '便签' };
+    function esc(s) { return (s || '').replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+    function render() {
+      var arr = load();
+      if (!arr.length) { list.innerHTML = '<p style="color:var(--ink-faint);font-size:13px;padding:8px 2px;">还没有速记。从上面三个入口开始，或直接在底部写下第一句。</p>'; return; }
+      list.innerHTML = arr.map(function (n) {
+        var img = n.img ? '<img class="note-img" src="' + n.img + '" alt="速记图片"/>' : '';
+        return '<div class="note-card t-' + n.type + '">' +
+          '<button class="note-del" data-id="' + n.id + '">✕</button>' +
+          '<div class="note-meta"><span class="note-tag">' + (TAGS[n.type] || '速记') + '</span><span class="note-time">' + fmt(n.time) + '</span></div>' +
+          '<div class="note-body">' + esc(n.text) + '</div>' + img + '</div>';
+      }).join('');
+    }
+    function add(type, text, img) {
+      var arr = load();
+      arr.unshift({ id: Date.now(), type: type, text: text, img: img || '', time: Date.now() });
+      if (arr.length > 200) arr = arr.slice(0, 200);
+      save(arr); render();
+    }
+    // 底部快捷输入
+    document.getElementById('quickInput').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = document.getElementById('qiText').value.trim();
+      if (!v) return;
+      add('text', v); document.getElementById('qiText').value = '';
+    });
+    // 删除
+    list.addEventListener('click', function (e) {
+      var b = e.target.closest('.note-del'); if (!b) return;
+      var id = b.getAttribute('data-id');
+      save(load().filter(function (n) { return String(n.id) !== id; })); render();
+    });
+    // 清空
+    document.getElementById('btnClear').addEventListener('click', function (e) {
+      e.preventDefault(); if (confirm('确定清空全部速记？')) { save([]); render(); }
+    });
+    // 文本便签
+    document.getElementById('btnText').addEventListener('click', function () {
+      document.getElementById('qiText').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    // 拍照识图
+    var picker = document.getElementById('imgPicker');
+    var ocrModal = document.getElementById('ocrModal');
+    var ocrPreview = document.getElementById('ocrPreview');
+    var ocrText = document.getElementById('ocrText');
+    var pendingImg = '';
+    document.getElementById('btnPhoto').addEventListener('click', function () { picker.click(); });
+    picker.addEventListener('change', function () {
+      var f = picker.files && picker.files[0]; if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        var img = new Image();
+        img.onload = function () {
+          var c = document.createElement('canvas');
+          var w = Math.min(img.width, 480); var h = img.height * (w / img.width);
+          c.width = w; c.height = h; c.getContext('2d').drawImage(img, 0, 0, w, h);
+          try { pendingImg = c.toDataURL('image/jpeg', 0.7); } catch (e) { pendingImg = r.result; }
+          ocrPreview.src = pendingImg; ocrPreview.hidden = false;
+          ocrText.value = ''; ocrModal.hidden = false;
+        };
+        img.src = r.result;
+      };
+      r.readAsDataURL(f);
+      picker.value = '';
+    });
+    document.getElementById('ocrSave').addEventListener('click', function () {
+      var t = ocrText.value.trim();
+      if (!t && !pendingImg) { ocrModal.hidden = true; return; }
+      add('clip', t || '（图片速记）', pendingImg);
+      ocrModal.hidden = true; ocrText.value = ''; ocrPreview.hidden = true; pendingImg = '';
+    });
+    // 语音速记（Web Speech，失败降级）
+    var voiceModal = document.getElementById('voiceModal');
+    var voiceText = document.getElementById('voiceText');
+    var voiceState = document.getElementById('voiceState');
+    var voiceHint = document.getElementById('voiceHint');
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var rec = null;
+    document.getElementById('btnVoice').addEventListener('click', function () {
+      voiceText.value = ''; voiceHint.textContent = ''; voiceModal.hidden = false;
+      if (!SR) { voiceState.textContent = '当前环境不支持语音识别，可直接打字记录。'; voiceHint.textContent = '（多数浏览器需联网且为 https / localhost 才支持）'; return; }
+      try {
+        rec = new SR(); rec.lang = 'zh-CN'; rec.interimResults = true; rec.continuous = false;
+        rec.onstart = function () { voiceState.textContent = '正在聆听，请说话…'; };
+        rec.onresult = function (e) {
+          var s = ''; for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript;
+          voiceText.value = s;
+        };
+        rec.onerror = function (ev) { voiceState.textContent = '识别失败：' + ev.error; };
+        rec.onend = function () { voiceState.textContent = '已停止，可修改后保存。'; };
+        rec.start();
+      } catch (err) { voiceState.textContent = '无法启动语音识别。'; }
+    });
+    document.getElementById('voiceSave').addEventListener('click', function () {
+      var t = voiceText.value.trim();
+      if (!t) { voiceModal.hidden = true; if (rec) try { rec.stop(); } catch (e) {} return; }
+      add('voice', t); voiceModal.hidden = true; if (rec) try { rec.stop(); } catch (e) {}
+    });
+    // 关闭模态
+    document.querySelectorAll('[data-close]').forEach(function (b) {
+      b.addEventListener('click', function () { document.getElementById(b.getAttribute('data-close')).hidden = true; if (rec) try { rec.stop(); } catch (e) {} });
+    });
+    render();
+  })();
+  </script>
 </div>
 
 <!-- Toast 提示 -->

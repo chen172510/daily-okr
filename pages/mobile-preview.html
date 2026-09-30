@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>手机预览 · 行醒</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    background: #efe7d8;
+    font-family: "STKaiti","KaiTi",serif; color: #2f2a1f;
+    display: flex; flex-direction: column; align-items: center.clone;
+    align-items: center;
+  }
+  .bar {
+    width: 100%; padding: 14px 20px; background: #faf6ec;
+    border-bottom: 1px solid #ded4c2;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .bar-title { font-size: 17px; letter-spacing: .12em; color: #8b6914; margin-right: 8px; }
+  .bar button {
+    font-family: inherit; font-size: 14px; cursor: pointer;
+    padding: 7px 15px; border-radius: 18px; border: 1px solid #ded4c2;
+    background: #fff; color: #5a4a32;
+  }
+  .bar button.on { background: #1f1a10; color: #f7ecd0; border-color: #1f1a10; }
+  .bar .hint { margin-left: auto; font-size: 12.5px; color: #8a7a5e; }
+  .stage { padding: 26px 20px 60px; display: flex; gap: 28px; align-items: flex-start; }
+
+  /* 手机外壳 */
+  .phone {
+    position: relative; width: 410px; height: 864px; flex: 0 0 auto;
+    background: #17150f; border-radius: 44px;
+    padding: 10px; box-shadow: 0 22px 50px rgba(20,16,8,.35), inset 0 0 0 2px #2c2820;
+  }
+  .phone::after {
+    content: ''; position: absolute; left: 50%; top: 14px;
+    width: 120px; height: 22px; margin-left: -60px;
+    background: #17150f; border-radius: 0 0 14px 14px; z-index: 3;
+  }
+  .screen { width: 390px; height: 844px; border-radius: 36px; overflow: hidden; background: #fff; position: relative; }
+  .screen iframe { width: 390px; height: 844px; border: 0; display: block; }
+
+  .tips {
+    max-width: 380px; background: #faf6ec; border: 1px solid #ece2cd;
+    border-radius: 10px; padding: 16px 18px; font-size: 14px; line-height: 1.8; color: #4a4133;
+  }
+  .tips h3 { margin: 0 0 8px; font-size: 15px; color: #8b6914; letter-spacing: .1em; }
+  .tips ol { margin: 0; padding-left: 20px; }
+  .tips li { margin-bottom: 6px; }
+  .tips code { background: #f1e8d6; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <span class="bar-title">手机预览 · 行醒</span>
+    <span style="font-size:12px;color:#b0a48c;margin-right:6px;">v6</span>
+    <button data-page="dashboard.html" class="on">首页</button>
+    <button data-page="okrs.html">目标</button>
+    <button data-page="review.html">复盘</button>
+    <button data-page="error-book.html">练习本</button>
+    <button data-page="daily-plan.html">计划</button>
+    <button data-page="annotate.html">速记</button>
+    <button data-page="login.html?demo=1">重新登录</button>
+    <button id="clearBtn" style="background:#a8341f;color:#fff;border-color:#a8341f;">🧹 清理缓存并重载</button>
+    <span class="hint">这就是手机上的样子（390 × 844）</span>
+  </div>
+
+  <div class="stage">
+    <div class="phone">
+      <div class="screen">
+        <iframe id="frame"></iframe>
+      </div>
+    </div>
+
+    <div class="tips">
+      <h3>怎么用</h3>
+      <ol>
+        <li>第一次会先自动登录演示账号，等 5~8 秒</li>
+        <li>点上方的按钮切换页面，看手机版长什么样</li>
+        <li>要改哪里，直接截图给我说「第几个页面、哪块」就行</li>
+      </ol>
+      <h3 style="margin-top:14px;">说明</h3>
+      <div>
+        这个页面只是个"外框"，里面跑的是真实的手机版页面（宽度 390px，所以会自动切到手机布局）。
+        电脑端原本的样子不受影响。
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var frame = document.getElementById('frame');
+      var btns = Array.prototype.slice.call(document.querySelectorAll('.bar button[data-page]'));
+      var currentPage = 'login.html?demo=1';
+
+      function bust(page) {
+        // 每次都带时间戳，绕过浏览器缓存，保证看到的是服务器上的最新文件
+        var sep = page.indexOf('?') > -1 ? '&' : '?';
+        return './' + page + sep + 'v=' + Date.now();
+      }
+
+      window.xxPreviewGo = function (page) {
+        currentPage = page;
+        frame.src = bust(page);
+        btns.forEach(function (b) {
+          b.classList.toggle('on', b.getAttribute('data-page') === page);
+        });
+      };
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () { xxPreviewGo(b.getAttribute('data-page')); });
+      });
+
+      // 清理缓存：注销 Service Worker + 删掉所有缓存，然后重载
+      document.getElementById('clearBtn').addEventListener('click', function () {
+        var btn = this;
+        btn.textContent = '清理中…';
+        Promise.resolve().then(function () {
+          var jobs = [];
+          if ('serviceWorker' in navigator) {
+            jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+              return Promise.all(rs.map(function (r) { return r.unregister(); }));
+            }).catch(function () {}));
+          }
+          if (window.caches) {
+            jobs.push(caches.keys().then(function (ks) {
+              return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+            }).catch(function () {}));
+          }
+          return Promise.all(jobs);
+        }).then(function () {
+          btn.textContent = '✅ 已清理，正在重载';
+          xxPreviewGo('dashboard.html');
+          setTimeout(function () { btn.textContent = '🧹 清理缓存并重载'; }, 2500);
+        });
+      });
+
+      // 打开预览页时，自动做一次"清缓存 + 强制拉最新脚本"，避免看到旧版闪几秒
+      function cleanse() {
+        var jobs = [];
+        try {
+          if ('serviceWorker' in navigator) {
+            jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+              return Promise.all(rs.map(function (r) { return r.unregister(); }));
+            }).catch(function () {}));
+          }
+        } catch (e) {}
+        try {
+          if (window.caches) {
+            jobs.push(caches.keys().then(function (ks) {
+              return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+            }).catch(function () {}));
+          }
+        } catch (e) {}
+        // 关键：把几个核心脚本标记为"必须重新下载"，浏览器缓存里的旧版本会被换掉
+        try {
+          jobs.push(Promise.all([
+            './assets/mobile.js', './assets/mobile.css', './assets/review-shelf.js', './sw.js'
+          ].map(function (u) {
+            return fetch(u, { cache: 'reload' }).catch(function () {});
+          })));
+        } catch (e) {}
+        return Promise.all(jobs);
+      }
+
+      // 首次进入：先清一遍，再登录
+      cleanse().then(function () {
+        xxPreviewGo('login.html?demo=1');
+      });
+      // 等登录完自动跳到首页
+      frame.addEventListener('load', function () {
+        var src = frame.getAttribute('src') || '';
+        if (src.indexOf('login.html') > -1) {
+          setTimeout(function () {
+            try {
+              if (frame.contentWindow.location.pathname.indexOf('login') > -1) {
+                frame.src = './dashboard.html';
+              }
+            } catch (e) {}
+          }, 7000);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

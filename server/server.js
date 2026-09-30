@@ -71,6 +71,11 @@ app.use(express.static(publicPath, {
     } else if (filePath.endsWith('.css')) {
       res.setHeader('Content-Type', 'text/css; charset=utf-8');
     }
+    // 页面 / 脚本 / 样式一律「每次校验」：改了立刻能看到，不会再被浏览器缓存住。
+    // 没改的文件会返回 304，速度不受影响。
+    if (/\.(html?|js|css|json)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    }
   }
 }));
 

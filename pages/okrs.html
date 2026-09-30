@@ -325,7 +325,7 @@ body {
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
 <body>
   <!-- 水墨装饰 -->
   <div class="ink-splash top-right"></div>
@@ -485,7 +485,7 @@ body {
           <div class="page-header">
             <div class="page-badge">目 标</div>
             <h1 class="page-title">目 标 图 谱</h1>
-            <p class="page-subtitle">成长的第一步，是拿回自己的主体性。</p>
+            <p class="page-subtitle">不着急，但要一直在动。</p>
           </div>
 
           <!-- 操作栏 -->
@@ -2210,6 +2210,15 @@ body {
   }
   .okr-more-menu button:hover { background: #f0ebe3; }
   .okr-more-menu button.danger { color: #922b21; }
+  /* 四象限选择（立 flag 弹窗里） */
+  .okr-quad-picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 4px; }
+  .okr-quad-picker label {
+    display: inline-flex; align-items: center; gap: 5px; cursor: pointer;
+    font-size: 13px; color: #4a4133;
+    padding: 6px 12px; border: 1px solid #ded4c2; border-radius: 18px; background: #fff;
+  }
+  .okr-quad-picker input { accent-color: #8b6914; }
+  .okr-quad-hint { font-size: 11.5px; color: #8a7a5e; margin-bottom: 4px; line-height: 1.5; }
   /* 今日投入（来自每日计划） */
   .okr-today-line {
     margin-top: 8px;
@@ -2237,6 +2246,15 @@ body {
     <input id="okrTitle" placeholder="例如：雅思总分 7.0" />
     <label>门派 / 分类</label>
     <input id="okrCategory" placeholder="例如：英语·核心" />
+    <label>放进哪个书架格子</label>
+    <div class="okr-quad-picker" id="okrQuadPicker">
+      <label><input type="radio" name="okrQuad" value="auto" checked> 自动判断</label>
+      <label><input type="radio" name="okrQuad" value="q1"> 重要且紧急</label>
+      <label><input type="radio" name="okrQuad" value="q2"> 重要不紧急</label>
+      <label><input type="radio" name="okrQuad" value="q3"> 紧急不重要</label>
+      <label><input type="radio" name="okrQuad" value="q4"> 不急不重要</label>
+    </div>
+    <div class="okr-quad-hint">自动判断：今天有任务的算「紧急」，门派带“核心”或进度过 30% 的算「重要」</div>
     <label>关键结果（每行一个）</label>
     <textarea id="okrKeyResults" placeholder="Reading 7.5&#10;Listening 7.0&#10;Writing 6.5"></textarea>
     <div class="okr-modal-actions">
@@ -2561,6 +2579,10 @@ body {
       document.getElementById('okrModalTitle').textContent = o ? '改志向' : '立个 flag！';
       document.getElementById('okrTitle').value = o ? o.title : '';
       document.getElementById('okrCategory').value = o ? (o.category || '') : '';
+      var q = (o && o.quadrant) ? o.quadrant : 'auto';
+      Array.prototype.forEach.call(document.querySelectorAll('input[name="okrQuad"]'), function (r) {
+        r.checked = (r.value === q);
+      });
       document.getElementById('okrKeyResults').value = o ? normalizeKrs(o.keyResults).map(function(k){ return k.title; }).join('\n') : '';
       document.getElementById('okrModalOverlay').classList.add('show');
     }
@@ -2580,12 +2602,15 @@ body {
         var found = prev.find(function(k){ return (typeof k === 'string' ? k : k.title) === t; });
         return { title: t, progress: found ? (typeof found === 'string' ? 0 : (found.progress || 0)) : 0 };
       });
+      var picked = document.querySelector('input[name="okrQuad"]:checked');
+      var quad = picked ? picked.value : 'auto';
       if (editingId) {
         var idx = list.findIndex(function(o){ return o.id === editingId; });
         if (idx >= 0) {
           list[idx].title = title;
           list[idx].category = document.getElementById('okrCategory').value.trim() || list[idx].category;
           list[idx].keyResults = krs;
+          list[idx].quadrant = quad;
         }
       } else {
         list.unshift({
@@ -2596,6 +2621,7 @@ body {
           progress: 0,
           status: 'active',
           dueDate: '冬至为期',
+          quadrant: quad,
           createdAt: new Date().toISOString()
         });
       }

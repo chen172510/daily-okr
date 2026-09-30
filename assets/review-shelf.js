@@ -6,7 +6,7 @@
    ============================================ */
 (function () {
   'use strict';
-  if (window.innerWidth > 900) return;
+  if (!window.xxIsMobileView || !window.xxIsMobileView()) return;
 
   var BOOKS = [
     { key: 'action',  icon: '📖', name: '今日行动', desc: '今天做了什么' },
@@ -52,16 +52,24 @@
       history: byTitle('往昔') || find(function (el) { return el.className.indexOf('history-card') > -1; })
     };
 
-    var T = window.XingxingTasks;
-    var stats = T ? T.stats() : { total: 0, done: 0, doing: 0, blocked: 0, todo: 0, actualMinutes: 0, tasks: [] };
-    var rate = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
-    var day = T ? T.dayWindow() : null;
-    var moodEl = pick('.stat-big-emoji');
-    var moodTxtEl = pick('.stat-sub-text');
-    var mood = moodEl ? (moodEl.textContent || '').trim() : '';
-    var moodTxt = moodTxtEl ? (moodTxtEl.textContent || '').trim() : '';
-    var fmtMin = T ? T.fmtMinutes(stats.actualMinutes) : (stats.actualMinutes + ' 分钟');
-    var range = (day && day.first) ? (T.minutesToText(day.start) + ' – ' + T.minutesToText(day.end)) : '还没记录';
+    // 便利贴的数值：单独抽成函数，方便稍后再刷新一次（页面脚本可能后渲染）
+    function noteValues() {
+      var TX = window.XingxingTasks;
+      var s = TX ? TX.stats() : { total: 0, done: 0, doing: 0, blocked: 0, todo: 0, actualMinutes: 0, tasks: [] };
+      var d = TX ? TX.dayWindow() : null;
+      var moodE = pick('.stat-big-emoji');
+      var moodT = pick('.stat-sub-text');
+      return {
+        rate: s.total ? Math.round((s.done / s.total) * 100) : 0,
+        mood: moodE ? (moodE.textContent || '').trim() : '',
+        moodTxt: moodT ? (moodT.textContent || '').trim() : '',
+        fmtMin: TX ? TX.fmtMinutes(s.actualMinutes) : (s.actualMinutes + ' 分钟'),
+        range: (d && d.first) ? (TX.minutesToText(d.start) + ' – ' + TX.minutesToText(d.end)) : '还没记录'
+      };
+    }
+    var nv = noteValues();
+    var stats = window.XingxingTasks ? window.XingxingTasks.stats() : { total: 0 };
+    var rate = nv.rate, mood = nv.mood, moodTxt = nv.moodTxt, fmtMin = nv.fmtMin, range = nv.range;
 
     /* ---------------- 便利贴 + 书柜 + 挂历 ---------------- */
     function calendar() {
@@ -118,6 +126,17 @@
 
     // 手机端：原来的长内容默认收起，只通过书架进入
     cards.forEach(function (el) { el.setAttribute('data-xx-block', '1'); });
+    // 主内容区里除了顶栏 / 页头 / 书架，其余整块也收起，
+    // 避免出现"书架下面还挂着旧内容"的情况（比如问题速记那块）
+    var mainEl = pick('main.main-content') || pick('.content-area') || host;
+    if (mainEl && mainEl.children) {
+      Array.prototype.forEach.call(mainEl.children, function (el) {
+        if (el === shelf) return;
+        if (el.tagName === 'HEADER') return;
+        if (el.classList && (el.classList.contains('topbar') || el.classList.contains('page-header'))) return;
+        el.setAttribute('data-xx-block', '1');
+      });
+    }
     document.body.classList.add('xx-mobile-ready');
 
     /* ---------------- 全屏专属页 ---------------- */
@@ -142,6 +161,7 @@
     }
 
     function renderAction() {
+      var T = window.XingxingTasks;
       var chips = '<div class="sheet-chips">'
         + '<span class="chip">计划 ' + stats.total + '</span>'
         + '<span class="chip st-done">已圆满 ' + (stats.done || 0) + '</span>'
@@ -214,8 +234,23 @@
     });
 
     sheet.querySelector('.xx-sheet-back').addEventListener('click', closeSheet);
+
+    // 页面自己的脚本可能稍后才把数字渲染好：过 1.2 秒再刷一次便利贴
+    setTimeout(function () {
+      var v = noteValues();
+      var notes = shelf.querySelectorAll('.shelf-notes .note b');
+      if (notes.length >= 4) {
+        notes[0].textContent = v.rate + '%';
+        notes[1].textContent = v.mood || '—';
+        notes[2].textContent = v.fmtMin;
+        notes[3].textContent = v.range;
+      }
+      var subs = shelf.querySelectorAll('.shelf-notes .note span');
+      if (subs.length >= 2 && v.moodTxt) subs[1].textContent = v.moodTxt;
+    }, 1200);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(build, 900); });
-  else setTimeout(build, 900);
+  // 立刻搭书架（不等延迟），避免先闪一下原来的长页面
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);
+  else build();
 })();

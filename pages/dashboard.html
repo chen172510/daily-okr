@@ -324,7 +324,7 @@ body {
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
 <body>
 
 <!-- 水墨晕染装饰 SVG -->
@@ -1308,35 +1308,42 @@ body {
 
         <!-- 快捷入口 2x2 网格 -->
         <div class="mh-quick-grid">
-            <div class="mh-quick-card" onclick="window.location.href='light-keeper.html'">
-                <div class="mh-quick-icon">🐸</div>
-                <div class="mh-quick-info">
-                    <div class="mh-quick-title">青蛙任务</div>
-                    <div class="mh-quick-desc">今天最重要的一件事</div>
+                <div class="mh-quick-card" onclick="if(window.xxEnergyStation){xxEnergyStation();}">
+                    <div class="mh-quick-icon">🔋</div>
+                    <div class="mh-quick-info">
+                        <div class="mh-quick-title">能量观测站</div>
+                        <div class="mh-quick-desc">内外耗 · 能量都去哪了</div>
+                    </div>
                 </div>
-            </div>
-            <div class="mh-quick-card" onclick="window.location.href='light-keeper.html'">
-                <div class="mh-quick-icon">⚡</div>
-                <div class="mh-quick-info">
-                    <div class="mh-quick-title">快速充电</div>
-                    <div class="mh-quick-desc">累了就歇 5 分钟</div>
+                <div class="mh-quick-card" onclick="if(window.xxChargeStation){xxChargeStation();}">
+                    <div class="mh-quick-icon">⚡</div>
+                    <div class="mh-quick-info">
+                        <div class="mh-quick-title">快速充电</div>
+                        <div class="mh-quick-desc">能量补给站 · 一键打卡</div>
+                    </div>
                 </div>
-            </div>
-            <div class="mh-quick-card" onclick="window.location.href='error-book.html'">
-                <div class="mh-quick-icon">❌</div>
-                <div class="mh-quick-info">
-                    <div class="mh-quick-title">今日错题</div>
-                    <div class="mh-quick-desc" id="mhErrorDesc">有 2 道题需要攻克</div>
+                <div class="mh-quick-card" onclick="if(window.xxCognitive){xxCognitive();}">
+                    <div class="mh-quick-icon">🧠</div>
+                    <div class="mh-quick-info">
+                        <div class="mh-quick-title">认知重构</div>
+                        <div class="mh-quick-desc">换个角度看那件事</div>
+                    </div>
                 </div>
-            </div>
-            <div class="mh-quick-card" onclick="window.location.href='resources.html'">
-                <div class="mh-quick-icon">📚</div>
-                <div class="mh-quick-info">
-                    <div class="mh-quick-title">知识库</div>
-                    <div class="mh-quick-desc">昨天存的经济学笔记</div>
+                <div class="mh-quick-card" onclick="window.location.href='resources.html'">
+                    <div class="mh-quick-icon">📚</div>
+                    <div class="mh-quick-info">
+                        <div class="mh-quick-title">知识库</div>
+                        <div class="mh-quick-desc">昨天存的经济学笔记</div>
+                    </div>
                 </div>
-            </div>
-        </div>
+                <div class="mh-quick-card" onclick="window.location.href='annotate.html'">
+                    <div class="mh-quick-icon">📷</div>
+                    <div class="mh-quick-info">
+                        <div class="mh-quick-title">速记助理</div>
+                        <div class="mh-quick-desc">拍照取字 · 书本截图变文字</div>
+                    </div>
+                </div>
+                </div>
 
         <!-- 底部留白 -->
         <div class="mh-bottom-space"></div>
