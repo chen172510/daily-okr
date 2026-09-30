@@ -12,55 +12,55 @@
 
 :root {
   /* ---------- Ink Palette ---------- */
-  --okr-ink-50: #faf8f5;
-  --okr-ink-100: #f0ebe3;
-  --okr-ink-200: #e0d8cc;
-  --okr-ink-300: #c9bda8;
-  --okr-ink-400: #a89880;
-  --okr-ink-500: #8a7a5e;
-  --okr-ink-600: #6b5d44;
-  --okr-ink-700: #4f4430;
-  --okr-ink-800: #362e1f;
-  --okr-ink-900: #1f1a10;
+  --okr-ink-50: #faf9f7;
+  --okr-ink-100: #f2f1ed;
+  --okr-ink-200: #e8e6e1;
+  --okr-ink-300: #d8d5ce;
+  --okr-ink-400: #a8a39c;
+  --okr-ink-500: #6b6864;
+  --okr-ink-600: #5a5753;
+  --okr-ink-700: #4d4a46;
+  --okr-ink-800: #3d3a36;
+  --okr-ink-900: #2d2a26;
 
   /* ---------- Rice Paper (宣纸) ---------- */
-  --okr-paper-light: #f7f2e8;
-  --okr-paper: #ede4d3;
-  --okr-paper-dark: #d9cbae;
+  --okr-paper-light: #faf9f7;
+  --okr-paper: #f0efeb;
+  --okr-paper-dark: #f0efeb;
 
   /* ---------- Cyan Ink (青黛) ---------- */
-  --okr-cyan-100: #e8f1f0;
-  --okr-cyan-300: #7fb3ad;
-  --okr-cyan-500: #3d7a74;
-  --okr-cyan-700: #244f4b;
-  --okr-cyan-900: #122b29;
+  --okr-cyan-100: #e8f6f2;
+  --okr-cyan-300: #a8ddd0;
+  --okr-cyan-500: #7fcdbb;
+  --okr-cyan-700: #4a9d8c;
+  --okr-cyan-900: #2d6a5f;
 
   /* ---------- Gold Accent (描金) ---------- */
-  --okr-gold-100: #f7ecd0;
-  --okr-gold-300: #e8c97a;
-  --okr-gold-500: #c9a227;
-  --okr-gold-700: #8b6914;
-  --okr-gold-900: #5c4508;
+  --okr-gold-100: #fde2e2;
+  --okr-gold-300: #f7c4c4;
+  --okr-gold-500: #f2a0a0;
+  --okr-gold-700: #d67b7b;
+  --okr-gold-900: #d65c5c;
 
   /* ---------- Vermilion (朱砂) ---------- */
-  --okr-vermilion: #c0392b;
-  --okr-vermilion-light: #e74c3c;
-  --okr-vermilion-dark: #922b21;
+  --okr-vermilion: #e88383;
+  --okr-vermilion-light: #e88383;
+  --okr-vermilion-dark: #d65c5c;
 
   /* ---------- State Colors ---------- */
-  --okr-state-success: #2d6a4f;
-  --okr-state-success-bg: #d8f3dc;
-  --okr-state-warning: #b07d1e;
-  --okr-state-warning-bg: #fef3c7;
-  --okr-state-error: #922b21;
+  --okr-state-success: #5bb3a0;
+  --okr-state-success-bg: #e8f6f2;
+  --okr-state-warning: #d67b7b;
+  --okr-state-warning-bg: #fde2e2;
+  --okr-state-error: #d65c5c;
   --okr-state-error-bg: #fde2e2;
 
   /* ---------- Semantic Aliases ---------- */
   --okr-background: var(--okr-paper-light);
   --okr-foreground: var(--okr-ink-900);
-  --okr-card: #fdfbf5;
+  --okr-card: #ffffff;
   --okr-card-foreground: var(--okr-ink-900);
-  --okr-popover: #fdfbf5;
+  --okr-popover: #ffffff;
   --okr-popover-foreground: var(--okr-ink-900);
   --okr-primary: var(--okr-ink-800);
   --okr-primary-foreground: var(--okr-paper-light);
@@ -106,10 +106,10 @@
   --okr-space-16: 64px;
 
   /* ---------- Shadow (subtle ink wash) ---------- */
-  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
-  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
-  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
-  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+  --okr-shadow-sm: 0 1px 3px 0 rgba(45, 42, 38, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(45, 42, 38, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(45, 42, 38, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(45, 42, 38, 0.12);
 
   /* ---------- Transition ---------- */
   --okr-transition-fast: 150ms ease;
@@ -137,8 +137,8 @@ html {
 body {
   min-height: 100vh;
   background-image:
-    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at top left, rgba(242, 160, 160, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(127, 205, 187, 0.05) 0%, transparent 50%);
 }
 
 /* ---------- Utility Classes ---------- */
@@ -196,7 +196,7 @@ body {
   padding: 2px 8px;
   font-size: 12px;
   letter-spacing: 2px;
-  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+  box-shadow: 0 1px 3px rgba(214, 92, 92, 0.3);
 }
 
     </style>
@@ -318,13 +318,14 @@ body {
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <!-- 移动端适配 + 可添加到主屏幕 -->
 <link rel="manifest" href="../manifest.json">
-<meta name="theme-color" content="#1F1A10">
+<meta name="theme-color" content="#2d2a26">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script><link rel="stylesheet" href="../assets/theme.css">
+</head>
 <body>
   <div class="app-layout">
     <!-- ========== 左侧卷轴导航 ========== -->
@@ -551,7 +552,7 @@ body {
             <div class="realm-label-cn">总体修为</div>
             <div class="ink-mountain">
               <svg viewBox="0 0 200 50" preserveAspectRatio="none">
-                <path d="M0,50 L0,40 Q20,25 40,35 Q60,15 80,30 Q100,10 120,25 Q140,15 160,30 Q180,20 200,35 L200,50 Z" fill="#1A1A1A"/>
+                <path d="M0,50 L0,40 Q20,25 40,35 Q60,15 80,30 Q100,10 120,25 Q140,15 160,30 Q180,20 200,35 L200,50 Z" fill="#2d2a26"/>
               </svg>
             </div>
           </div>
@@ -561,7 +562,7 @@ body {
             <div class="realm-label-cn">已成关卡</div>
             <div class="ink-mountain">
               <svg viewBox="0 0 200 50" preserveAspectRatio="none">
-                <path d="M0,50 L0,42 Q30,30 50,38 Q70,20 90,32 Q110,18 130,28 Q150,22 170,35 Q185,28 200,40 L200,50 Z" fill="#1A1A1A"/>
+                <path d="M0,50 L0,42 Q30,30 50,38 Q70,20 90,32 Q110,18 130,28 Q150,22 170,35 Q185,28 200,40 L200,50 Z" fill="#2d2a26"/>
               </svg>
             </div>
           </div>
@@ -571,7 +572,7 @@ body {
             <div class="realm-label-cn">余日可期</div>
             <div class="ink-mountain">
               <svg viewBox="0 0 200 50" preserveAspectRatio="none">
-                <path d="M0,50 L0,38 Q25,28 45,35 Q65,18 85,30 Q105,12 125,26 Q150,16 175,32 Q190,26 200,38 L200,50 Z" fill="#1A1A1A"/>
+                <path d="M0,50 L0,38 Q25,28 45,35 Q65,18 85,30 Q105,12 125,26 Q150,16 175,32 Q190,26 200,38 L200,50 Z" fill="#2d2a26"/>
               </svg>
             </div>
           </div>
@@ -581,7 +582,7 @@ body {
             <div class="realm-label-cn">心魔风险</div>
             <div class="ink-mountain">
               <svg viewBox="0 0 200 50" preserveAspectRatio="none">
-                <path d="M0,50 L0,45 Q20,35 40,40 Q60,28 80,36 Q100,22 120,32 Q145,25 165,38 Q180,32 200,42 L200,50 Z" fill="#1A1A1A"/>
+                <path d="M0,50 L0,45 Q20,35 40,40 Q60,28 80,36 Q100,22 120,32 Q145,25 165,38 Q180,32 200,42 L200,50 Z" fill="#2d2a26"/>
               </svg>
             </div>
           </div>
@@ -880,21 +881,21 @@ body {
   --xuan-paper-light: #F7F1E3;
 
   /* 墨色 */
-  --ink-black: #1A1A1A;
-  --ink-deep: #2D2D2D;
+  --ink-black: #2d2a26;
+  --ink-deep: #3d3a36;
   --ink-medium: #4A4A4A;
   --ink-light: #7A7A7A;
   --ink-faint: #A8A8A8;
   --ink-pale: #D4CFC4;
 
   /* 描金 */
-  --gold-primary: #B8860B;
+  --gold-primary: #d67b7b;
   --gold-light: #D4A84B;
-  --gold-faint: #E8C97A;
+  --gold-faint: #f7c4c4;
   --gold-pale: #F5DFA3;
 
   /* 朱砂印章 */
-  --cinnabar: #C23A2B;
+  --cinnabar: #e88383;
   --cinnabar-deep: #9B2C20;
   --cinnabar-light: #D45443;
 
@@ -934,8 +935,8 @@ body {
   min-height: 100vh;
   background-color: var(--xuan-paper);
   background-image:
-    radial-gradient(ellipse at 20% 30%, rgba(184, 134, 11, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(194, 58, 43, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 30%, rgba(214, 123, 123, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(232, 131, 131, 0.03) 0%, transparent 50%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   background-blend-mode: multiply;
   position: relative;
@@ -983,7 +984,7 @@ body::before {
   left: 0;
   bottom: 0;
   z-index: 10;
-  box-shadow: 3px 0 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 3px 0 12px rgba(45, 42, 38, 0.06);
 }
 
 .sidebar::before {
@@ -1131,12 +1132,12 @@ body::before {
 }
 
 .nav-item:hover {
-  background: rgba(184, 134, 11, 0.08);
+  background: rgba(214, 123, 123, 0.08);
   color: var(--ink-black);
 }
 
 .nav-item.active {
-  background: rgba(26, 26, 26, 0.06);
+  background: rgba(45, 42, 38, 0.06);
   color: var(--ink-black);
   font-weight: 700;
   border-left-color: var(--ink-black);
@@ -1179,7 +1180,7 @@ body::before {
 }
 
 .user-profile:hover {
-  background: rgba(184, 134, 11, 0.06);
+  background: rgba(214, 123, 123, 0.06);
 }
 
 .user-avatar {
@@ -1426,16 +1427,16 @@ body::before {
   height: 24px;
   background: linear-gradient(180deg,
     #D4A84B 0%,
-    #B8860B 25%,
-    #8B6914 50%,
-    #B8860B 75%,
+    #d67b7b 25%,
+    #d67b7b 50%,
+    #d67b7b 75%,
     #D4A84B 100%
   );
   border-radius: 4px;
   box-shadow:
     inset 0 1px 2px rgba(255, 255, 255, 0.3),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
-    0 2px 4px rgba(0, 0, 0, 0.15);
+    inset 0 -1px 2px rgba(45, 42, 38, 0.2),
+    0 2px 4px rgba(45, 42, 38, 0.15);
 }
 
 .scroll-rod-end.left {
@@ -1455,7 +1456,7 @@ body::before {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #F5DFA3, #B8860B);
+  background: radial-gradient(circle at 30% 30%, #F5DFA3, #d67b7b);
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
@@ -1465,11 +1466,11 @@ body::before {
   margin-top: 4px;
   background: linear-gradient(180deg,
     #C9A961 0%,
-    #B8860B 50%,
-    #8B6914 100%
+    #d67b7b 50%,
+    #d67b7b 100%
   );
   border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(45, 42, 38, 0.1);
 }
 
 /* 卷轴主体 */
@@ -1480,8 +1481,8 @@ body::before {
   padding: var(--space-10) var(--space-12);
   position: relative;
   box-shadow:
-    inset 12px 0 20px -12px rgba(0, 0, 0, 0.06),
-    inset -12px 0 20px -12px rgba(0, 0, 0, 0.06);
+    inset 12px 0 20px -12px rgba(45, 42, 38, 0.06),
+    inset -12px 0 20px -12px rgba(45, 42, 38, 0.06);
 }
 
 .scroll-body::before {
@@ -1524,7 +1525,7 @@ body::before {
   width: 56px;
   height: 56px;
   border: 3px solid var(--cinnabar);
-  background: rgba(194, 58, 43, 0.08);
+  background: rgba(232, 131, 131, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1665,7 +1666,7 @@ body::before {
 
 .realm-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 20px rgba(45, 42, 38, 0.08);
   border-color: var(--gold-light);
 }
 
@@ -1814,7 +1815,7 @@ body::before {
 }
 
 .kr-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px rgba(45, 42, 38, 0.06);
   border-color: var(--ink-light);
 }
 
@@ -1882,7 +1883,7 @@ body::before {
 .kr-status-tag.in-progress {
   border: 1px solid var(--ink-medium);
   color: var(--ink-medium);
-  background: rgba(26, 26, 26, 0.03);
+  background: rgba(45, 42, 38, 0.03);
 }
 
 .kr-status-tag.in-progress .status-dot {
@@ -1987,7 +1988,7 @@ body::before {
   height: 12px;
   background: var(--ink-black);
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(26, 26, 26, 0.3);
+  box-shadow: 0 0 8px rgba(45, 42, 38, 0.3);
 }
 
 .kr-card.completed .ink-progress-fill {
@@ -2001,7 +2002,7 @@ body::before {
 
 .kr-card.completed .ink-progress-fill::after {
   background: var(--gold-primary);
-  box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
+  box-shadow: 0 0 8px rgba(214, 123, 123, 0.5);
 }
 
 /* 关卡底部 */
@@ -2152,7 +2153,7 @@ body::before {
 
 .review-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 18px rgba(45, 42, 38, 0.06);
   border-color: var(--gold-light);
 }
 
@@ -2403,12 +2404,12 @@ body::before {
       if (old && old.parentNode) old.parentNode.removeChild(old);
       var box = document.createElement('div');
       box.id = 'kr-ask';
-      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:99999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:20px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;min-width:260px;max-width:86vw;';
-      box.innerHTML = '<div style="font-size:15px;margin-bottom:10px;color:#1f1a10;">' + esc(title) + '</div>'
-        + '<input id="kr-ask-input" value="' + String(value == null ? '' : value).replace(/"/g, '&quot;') + '" style="width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #d9cbae;border-radius:6px;font-family:inherit;background:#fff;" />'
+      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:99999;background:#faf9f7;border:1px solid #f7c4c4;border-radius:12px;padding:20px;box-shadow:0 16px 40px rgba(45, 42, 38, .3);font-family:"STKaiti","KaiTi",serif;min-width:260px;max-width:86vw;';
+      box.innerHTML = '<div style="font-size:15px;margin-bottom:10px;color:#2d2a26;">' + esc(title) + '</div>'
+        + '<input id="kr-ask-input" value="' + String(value == null ? '' : value).replace(/"/g, '&quot;') + '" style="width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #f0efeb;border-radius:6px;font-family:inherit;background:#fff;" />'
         + '<div style="margin-top:14px;display:flex;justify-content:flex-end;gap:10px;">'
-        + '<button type="button" data-a="cancel" style="border:none;background:none;cursor:pointer;font-family:inherit;color:#8a7a5e;font-size:14px;">取消</button>'
-        + '<button type="button" data-a="ok" style="border:none;border-radius:6px;padding:8px 18px;background:#1f1a10;color:#f7ecd0;cursor:pointer;font-family:inherit;font-size:14px;">确定</button>'
+        + '<button type="button" data-a="cancel" style="border:none;background:none;cursor:pointer;font-family:inherit;color:#6b6864;font-size:14px;">取消</button>'
+        + '<button type="button" data-a="ok" style="border:none;border-radius:6px;padding:8px 18px;background:#2d2a26;color:#fde2e2;cursor:pointer;font-family:inherit;font-size:14px;">确定</button>'
         + '</div>';
       document.body.appendChild(box);
       var input = box.querySelector('#kr-ask-input');
@@ -2438,22 +2439,22 @@ body::before {
       if (old) old.parentNode.removeChild(old);
       var box = document.createElement('div');
       box.id = 'kr-info';
-      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:20px 22px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;min-width:280px;max-width:86vw;';
+      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf9f7;border:1px solid #f7c4c4;border-radius:12px;padding:20px 22px;box-shadow:0 16px 40px rgba(45, 42, 38, .3);font-family:"STKaiti","KaiTi",serif;min-width:280px;max-width:86vw;';
       var rows = (current.keyResults || []).map(function (kk, idx) {
         var pp = Math.max(0, Math.min(100, kk.progress || 0));
         var mark = pp >= 100 ? '✓' : (pp > 0 ? '◐' : '○');
-        var color = pp >= 100 ? '#2d6a4f' : (pp > 0 ? '#8b6914' : '#a89880');
+        var color = pp >= 100 ? '#5bb3a0' : (pp > 0 ? '#d67b7b' : '#a8a39c');
         return '<div style="display:flex;justify-content:space-between;gap:12px;' + (idx === i ? 'font-weight:600;' : '') + '">'
           + '<span style="color:' + color + ';">' + mark + ' KR' + (idx + 1) + ' · ' + esc(kk.title) + '</span>'
           + '<span>' + pp + '%</span></div>';
       }).join('');
-      box.innerHTML = '<div style="font-size:16px;color:#1f1a10;margin-bottom:4px;letter-spacing:1px;">KR' + (i + 1) + ' · ' + esc(k.title) + '</div>'
-        + '<div style="font-size:12px;color:#8a7a5e;margin-bottom:10px;">所属目标：' + esc(current.title || '') + '</div>'
-        + '<div style="font-size:14px;color:#362e1f;line-height:1.9;">状态：' + (done ? '已圆满' : (p > 0 ? '修行中' : '未开始')) + '　当前进度：' + p + '%<br>'
-        + '<span style="color:#2d6a4f;">已完成 ' + p + '%</span>　<span style="color:#c23a2b;">待推进 ' + (100 - p) + '%</span></div>'
-        + '<div style="margin-top:12px;font-size:12px;color:#8b6914;">本目标各关卡完成情况（✓ 已完成 / ◐ 进行中 / ○ 未开始）</div>'
-        + '<div style="font-size:13px;color:#362e1f;line-height:1.95;margin-top:4px;">' + rows + '</div>'
-        + '<div style="margin-top:16px;text-align:right;"><button type="button" data-close="1" style="border:1px solid #e0d8cc;background:#fff;border-radius:6px;padding:7px 16px;cursor:pointer;font-family:inherit;color:#362e1f;">知道了</button></div>';
+      box.innerHTML = '<div style="font-size:16px;color:#2d2a26;margin-bottom:4px;letter-spacing:1px;">KR' + (i + 1) + ' · ' + esc(k.title) + '</div>'
+        + '<div style="font-size:12px;color:#6b6864;margin-bottom:10px;">所属目标：' + esc(current.title || '') + '</div>'
+        + '<div style="font-size:14px;color:#3d3a36;line-height:1.9;">状态：' + (done ? '已圆满' : (p > 0 ? '修行中' : '未开始')) + '　当前进度：' + p + '%<br>'
+        + '<span style="color:#5bb3a0;">已完成 ' + p + '%</span>　<span style="color:#e88383;">待推进 ' + (100 - p) + '%</span></div>'
+        + '<div style="margin-top:12px;font-size:12px;color:#d67b7b;">本目标各关卡完成情况（✓ 已完成 / ◐ 进行中 / ○ 未开始）</div>'
+        + '<div style="font-size:13px;color:#3d3a36;line-height:1.95;margin-top:4px;">' + rows + '</div>'
+        + '<div style="margin-top:16px;text-align:right;"><button type="button" data-close="1" style="border:1px solid #e8e6e1;background:#fff;border-radius:6px;padding:7px 16px;cursor:pointer;font-family:inherit;color:#3d3a36;">知道了</button></div>';
       document.body.appendChild(box);
       box.addEventListener('click', function (e) { if (e.target.getAttribute('data-close')) box.parentNode.removeChild(box); });
     }
@@ -2500,13 +2501,14 @@ body::before {
 <script src="../assets/pet.js"></script>
 <style>
   /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
-  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(139,105,20,.35) transparent; }
+  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(214, 123, 123, .35) transparent; }
   .sidebar-nav::-webkit-scrollbar { width: 6px; }
   .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
-  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
-  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(214, 123, 123, .35); border-radius: 3px; }
+  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(214, 123, 123, .6); }
 </style>
 <script src="../assets/voice.js"></script>
 <script src="../assets/mobile.js"></script>
+<link rel="stylesheet" href="../assets/theme-ink-override.css">
 </body>
 </html>

@@ -12,55 +12,55 @@
 
 :root {
   /* ---------- Ink Palette ---------- */
-  --okr-ink-50: #faf8f5;
-  --okr-ink-100: #f0ebe3;
-  --okr-ink-200: #e0d8cc;
-  --okr-ink-300: #c9bda8;
-  --okr-ink-400: #a89880;
-  --okr-ink-500: #8a7a5e;
-  --okr-ink-600: #6b5d44;
-  --okr-ink-700: #4f4430;
-  --okr-ink-800: #362e1f;
-  --okr-ink-900: #1f1a10;
+  --okr-ink-50: #faf9f7;
+  --okr-ink-100: #f2f1ed;
+  --okr-ink-200: #e8e6e1;
+  --okr-ink-300: #d8d5ce;
+  --okr-ink-400: #a8a39c;
+  --okr-ink-500: #6b6864;
+  --okr-ink-600: #5a5753;
+  --okr-ink-700: #4d4a46;
+  --okr-ink-800: #3d3a36;
+  --okr-ink-900: #2d2a26;
 
   /* ---------- Rice Paper (宣纸) ---------- */
-  --okr-paper-light: #f7f2e8;
-  --okr-paper: #ede4d3;
-  --okr-paper-dark: #d9cbae;
+  --okr-paper-light: #faf9f7;
+  --okr-paper: #f0efeb;
+  --okr-paper-dark: #f0efeb;
 
   /* ---------- Cyan Ink (青黛) ---------- */
-  --okr-cyan-100: #e8f1f0;
-  --okr-cyan-300: #7fb3ad;
-  --okr-cyan-500: #3d7a74;
-  --okr-cyan-700: #244f4b;
-  --okr-cyan-900: #122b29;
+  --okr-cyan-100: #e8f6f2;
+  --okr-cyan-300: #a8ddd0;
+  --okr-cyan-500: #7fcdbb;
+  --okr-cyan-700: #4a9d8c;
+  --okr-cyan-900: #2d6a5f;
 
   /* ---------- Gold Accent (描金) ---------- */
-  --okr-gold-100: #f7ecd0;
-  --okr-gold-300: #e8c97a;
-  --okr-gold-500: #c9a227;
-  --okr-gold-700: #8b6914;
-  --okr-gold-900: #5c4508;
+  --okr-gold-100: #fde2e2;
+  --okr-gold-300: #f7c4c4;
+  --okr-gold-500: #f2a0a0;
+  --okr-gold-700: #d67b7b;
+  --okr-gold-900: #d65c5c;
 
   /* ---------- Vermilion (朱砂) ---------- */
-  --okr-vermilion: #c0392b;
-  --okr-vermilion-light: #e74c3c;
-  --okr-vermilion-dark: #922b21;
+  --okr-vermilion: #e88383;
+  --okr-vermilion-light: #e88383;
+  --okr-vermilion-dark: #d65c5c;
 
   /* ---------- State Colors ---------- */
-  --okr-state-success: #2d6a4f;
-  --okr-state-success-bg: #d8f3dc;
-  --okr-state-warning: #b07d1e;
-  --okr-state-warning-bg: #fef3c7;
-  --okr-state-error: #922b21;
+  --okr-state-success: #5bb3a0;
+  --okr-state-success-bg: #e8f6f2;
+  --okr-state-warning: #d67b7b;
+  --okr-state-warning-bg: #fde2e2;
+  --okr-state-error: #d65c5c;
   --okr-state-error-bg: #fde2e2;
 
   /* ---------- Semantic Aliases ---------- */
   --okr-background: var(--okr-paper-light);
   --okr-foreground: var(--okr-ink-900);
-  --okr-card: #fdfbf5;
+  --okr-card: #ffffff;
   --okr-card-foreground: var(--okr-ink-900);
-  --okr-popover: #fdfbf5;
+  --okr-popover: #ffffff;
   --okr-popover-foreground: var(--okr-ink-900);
   --okr-primary: var(--okr-ink-800);
   --okr-primary-foreground: var(--okr-paper-light);
@@ -106,10 +106,10 @@
   --okr-space-16: 64px;
 
   /* ---------- Shadow (subtle ink wash) ---------- */
-  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
-  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
-  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
-  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+  --okr-shadow-sm: 0 1px 3px 0 rgba(45, 42, 38, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(45, 42, 38, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(45, 42, 38, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(45, 42, 38, 0.12);
 
   /* ---------- Transition ---------- */
   --okr-transition-fast: 150ms ease;
@@ -137,8 +137,8 @@ html {
 body {
   min-height: 100vh;
   background-image:
-    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at top left, rgba(242, 160, 160, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(127, 205, 187, 0.05) 0%, transparent 50%);
 }
 
 /* ---------- Utility Classes ---------- */
@@ -196,7 +196,7 @@ body {
   padding: 2px 8px;
   font-size: 12px;
   letter-spacing: 2px;
-  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+  box-shadow: 0 1px 3px rgba(214, 92, 92, 0.3);
 }
 
     </style>
@@ -317,22 +317,23 @@ body {
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <!-- 移动端适配 + 可添加到主屏幕 -->
 <link rel="manifest" href="../manifest.json">
-<meta name="theme-color" content="#1F1A10">
+<meta name="theme-color" content="#2d2a26">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script><link rel="stylesheet" href="../assets/theme.css">
+</head>
 <body>
 
 <!-- 水墨晕染装饰 SVG -->
 <svg class="ink-wash-decoration ink-wash-top" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="inkWash1" cx="30%" cy="30%" r="60%">
-      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.15"/>
-      <stop offset="50%" stop-color="#1f1a10" stop-opacity="0.05"/>
-      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#2d2a26" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#2d2a26" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#2d2a26" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <ellipse cx="180" cy="120" rx="160" ry="100" fill="url(#inkWash1)"/>
@@ -342,17 +343,17 @@ body {
 <svg class="ink-wash-decoration ink-wash-bottom" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="inkWash2" cx="60%" cy="70%" r="50%">
-      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.12"/>
-      <stop offset="60%" stop-color="#1f1a10" stop-opacity="0.04"/>
-      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#2d2a26" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#2d2a26" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#2d2a26" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <ellipse cx="300" cy="250" rx="200" ry="80" fill="url(#inkWash2)"/>
 </svg>
 
 <svg class="mountain-footer" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0,80 L0,60 Q100,30 200,50 T400,20 T600,45 T800,15 T1000,40 T1200,25 T1440,50 L1440,80 Z" fill="#1f1a10"/>
-  <path d="M0,80 L0,70 Q150,50 300,65 T600,55 T900,70 T1200,60 T1440,72 L1440,80 Z" fill="#1f1a10" opacity="0.6"/>
+  <path d="M0,80 L0,60 Q100,30 200,50 T400,20 T600,45 T800,15 T1000,40 T1200,25 T1440,50 L1440,80 Z" fill="#2d2a26"/>
+  <path d="M0,80 L0,70 Q150,50 300,65 T600,55 T900,70 T1200,60 T1440,72 L1440,80 Z" fill="#2d2a26" opacity="0.6"/>
 </svg>
 
 <!-- ========== 顶部状态栏 ========== -->
@@ -388,8 +389,8 @@ body {
 
         <div class="brush-divider">
             <svg viewBox="0 0 200 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10,8 Q50,2 100,8 T190,8" stroke="#1f1a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
-                <path d="M20,10 Q60,6 100,10 T180,10" stroke="#c9a227" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M10,8 Q50,2 100,8 T190,8" stroke="#2d2a26" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
+                <path d="M20,10 Q60,6 100,10 T180,10" stroke="#f2a0a0" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.3"/>
             </svg>
         </div>
 
@@ -480,7 +481,7 @@ body {
     .annotate-new {
       --paper: #F7F2EA;
       --paper-2: #FDFBF7;
-      --line: #E0D8CC;
+      --line: #e8e6e1;
       --line-2: #D9D3C8;
       --ink: #3C3A36;
       --ink-soft: #6E685F;
@@ -564,7 +565,7 @@ body {
       border: none; background: transparent; color: var(--ink-faint);
       font-size: 14px; cursor: pointer; padding: 2px 6px; border-radius: 6px;
     }
-    .note-del:hover { background: #F3EDE4; color: #922b21; }
+    .note-del:hover { background: #F3EDE4; color: #d65c5c; }
 
     .quick-input {
       position: fixed; left: 0; right: 0; bottom: 0;
@@ -588,7 +589,7 @@ body {
 
     /* 模态 */
     .modal-mask {
-      position: fixed; inset: 0; background: rgba(26,22,14,.4);
+      position: fixed; inset: 0; background: rgba(45, 42, 38, .4);
       display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 80;
     }
     .modal-mask[hidden] { display: none; }
@@ -609,7 +610,7 @@ body {
     .mbtn { padding: 9px 18px; border-radius: 8px; font-size: 14px; cursor: pointer; border: 0.5px solid var(--line-2); background: #fff; color: var(--ink); font-family: inherit; }
     .mbtn.primary { background: var(--btn-dark); color: var(--paper); border-color: var(--btn-dark); }
     .ocr-hint { font-size: 12px; color: var(--ink-faint); margin-top: 8px; }
-    .rec-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #c0392b; margin-right: 6px; animation: pulse 1s infinite; }
+    .rec-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #e88383; margin-right: 6px; animation: pulse 1s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
     @media (max-width: 900px) {
       .quick-input { bottom: 64px; padding-left: 16px; padding-right: 16px; }
@@ -837,9 +838,9 @@ body {
 
     // 颜色映射
     const colorMap = {
-        cinnabar: '#c0392b',
-        gold: '#c9a227',
-        ink: '#1f1a10'
+        cinnabar: '#e88383',
+        gold: '#f2a0a0',
+        ink: '#2d2a26'
     };
 
     const typeNames = {
@@ -1472,7 +1473,7 @@ body {
         circle.setAttribute('cy', ly);
         circle.setAttribute('r', 10);
         circle.setAttribute('fill', color);
-        circle.setAttribute('stroke', '#fdfbf5');
+        circle.setAttribute('stroke', '#ffffff');
         circle.setAttribute('stroke-width', 1.5);
         g.appendChild(circle);
 
@@ -1507,8 +1508,8 @@ body {
         circle.setAttribute('cx', x);
         circle.setAttribute('cy', y);
         circle.setAttribute('r', radius);
-        circle.setAttribute('fill', '#c0392b');
-        circle.setAttribute('stroke', '#fdfbf5');
+        circle.setAttribute('fill', '#e88383');
+        circle.setAttribute('stroke', '#ffffff');
         circle.setAttribute('stroke-width', 2);
         g.appendChild(circle);
 
@@ -1579,7 +1580,7 @@ body {
             text.setAttribute('font-family', '"STKaiti", "KaiTi", "楷体", serif');
             text.setAttribute('font-weight', '600');
             text.setAttribute('paint-order', 'stroke');
-            text.setAttribute('stroke', 'rgba(253,251,245,0.9)');
+            text.setAttribute('stroke', 'rgba(255, 255, 255, 0.9)');
             text.setAttribute('stroke-width', '3');
             text.setAttribute('stroke-linejoin', 'round');
             text.textContent = txt;
@@ -1735,7 +1736,7 @@ body {
                 text.setAttribute('font-family', '"STKaiti", "KaiTi", "楷体", serif');
                 text.setAttribute('font-weight', '600');
                 text.setAttribute('paint-order', 'stroke');
-                text.setAttribute('stroke', 'rgba(253,251,245,0.9)');
+                text.setAttribute('stroke', 'rgba(255, 255, 255, 0.9)');
                 text.setAttribute('stroke-width', '3');
                 text.setAttribute('stroke-linejoin', 'round');
                 text.textContent = anno.data.content;
@@ -1776,8 +1777,8 @@ body {
                 circle.setAttribute('cx', anno.data.x);
                 circle.setAttribute('cy', anno.data.y);
                 circle.setAttribute('r', anno.data.radius);
-                circle.setAttribute('fill', '#c0392b');
-                circle.setAttribute('stroke', '#fdfbf5');
+                circle.setAttribute('fill', '#e88383');
+                circle.setAttribute('stroke', '#ffffff');
                 circle.setAttribute('stroke-width', 2);
                 g.appendChild(circle);
 
@@ -1972,7 +1973,7 @@ body {
                     ctx.font = `600 ${16 + anno.lineWidth * 2}px "STKaiti", "KaiTi", "楷体", serif`;
                     ctx.textBaseline = 'alphabetic';
                     // 文字描边
-                    ctx.strokeStyle = 'rgba(253,251,245,0.9)';
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
                     ctx.lineWidth = 4;
                     ctx.strokeText(anno.data.content, anno.data.x, anno.data.y);
                     ctx.fillStyle = color;
@@ -1999,9 +2000,9 @@ body {
                     ctx.setLineDash([]);
                     ctx.beginPath();
                     ctx.arc(anno.data.x, anno.data.y, anno.data.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = '#c0392b';
+                    ctx.fillStyle = '#e88383';
                     ctx.fill();
-                    ctx.strokeStyle = '#fdfbf5';
+                    ctx.strokeStyle = '#ffffff';
                     ctx.lineWidth = 2;
                     ctx.stroke();
                     ctx.fillStyle = '#fff';
@@ -2082,7 +2083,7 @@ body {
         ctx.arc(x, y, 10, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
-        ctx.strokeStyle = '#fdfbf5';
+        ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1.5;
         ctx.stroke();
         ctx.fillStyle = '#fff';
@@ -2220,18 +2221,18 @@ body {
    ============================================ */
 
 :root {
-  --ink-paper: #f7f2e8;
-  --ink-paper-light: #fdfbf5;
+  --ink-paper: #faf9f7;
+  --ink-paper-light: #ffffff;
   --ink-paper-dark: #ede6d6;
   --ink-100: #e8e2d5;
   --ink-300: #a89f8e;
-  --ink-500: #5c554a;
+  --ink-500: #5a5753;
   --ink-700: #3a3328;
-  --ink-900: #1f1a10;
-  --ink-gold: #c9a227;
+  --ink-900: #2d2a26;
+  --ink-gold: #f2a0a0;
   --ink-gold-light: #e0c158;
-  --ink-gold-dark: #a8851a;
-  --ink-cinnabar: #c0392b;
+  --ink-gold-dark: #d67b7b;
+  --ink-cinnabar: #e88383;
   --ink-cinnabar-light: #d65445;
   --ink-cinnabar-dark: #9b2d20;
   --bg-page: var(--ink-paper);
@@ -2239,15 +2240,15 @@ body {
   --text-primary: var(--ink-900);
   --text-secondary: var(--ink-500);
   --text-muted: var(--ink-300);
-  --border-ink: rgba(31, 26, 16, 0.15);
-  --border-ink-strong: rgba(31, 26, 16, 0.3);
+  --border-ink: rgba(45, 42, 38, 0.15);
+  --border-ink-strong: rgba(45, 42, 38, 0.3);
   --font-serif: "STSong", "SimSun", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
   --font-kai: "STKaiti", "KaiTi", "楷体", "Noto Serif SC", serif;
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  --shadow-ink: 0 2px 12px rgba(31, 26, 16, 0.06);
-  --shadow-ink-lg: 0 8px 24px rgba(31, 26, 16, 0.08);
+  --shadow-ink: 0 2px 12px rgba(45, 42, 38, 0.06);
+  --shadow-ink-lg: 0 8px 24px rgba(45, 42, 38, 0.08);
 }
 
 * {
@@ -2279,9 +2280,9 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(31, 26, 16, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(31, 26, 16, 0.025) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.02) 0%, transparent 60%);
+    radial-gradient(ellipse at 20% 30%, rgba(45, 42, 38, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(45, 42, 38, 0.025) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(242, 160, 160, 0.02) 0%, transparent 60%);
 }
 
 /* 水墨晕染装饰 */
@@ -2322,7 +2323,7 @@ body::before {
   position: absolute;
   bottom: -2px; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(31, 26, 16, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(45, 42, 38, 0.1), transparent);
 }
 .topbar-left { display: flex; align-items: center; gap: 16px; }
 .seal-logo {
@@ -2334,12 +2335,12 @@ body::before {
   font-family: var(--font-kai);
   font-size: 18px; font-weight: bold;
   position: relative;
-  box-shadow: 0 1px 3px rgba(192, 57, 43, 0.3);
+  box-shadow: 0 1px 3px rgba(232, 131, 131, 0.3);
 }
 .seal-logo::before {
   content: "";
   position: absolute; inset: 2px;
-  border: 1px solid rgba(253, 251, 245, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 2px;
 }
 .topbar-brand {
@@ -2422,7 +2423,7 @@ body::before {
   position: absolute;
   top: 0; right: -1px; bottom: 0;
   width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(31, 26, 16, 0.08), transparent);
+  background: linear-gradient(180deg, transparent, rgba(45, 42, 38, 0.08), transparent);
 }
 .sidebar-header {
   padding: 28px 24px 20px;
@@ -2517,7 +2518,7 @@ body::before {
   letter-spacing: 0.05em;
 }
 .nav-item:hover {
-  background: rgba(31, 26, 16, 0.04);
+  background: rgba(45, 42, 38, 0.04);
   color: var(--ink-700);
 }
 .nav-item.active {
@@ -2676,7 +2677,7 @@ body::before {
 .tool-btn.active svg { stroke: var(--ink-gold-light); }
 .tool-btn.danger:hover {
   border-color: var(--ink-cinnabar);
-  background: rgba(192, 57, 43, 0.05);
+  background: rgba(232, 131, 131, 0.05);
 }
 .tool-btn.danger:hover svg { stroke: var(--ink-cinnabar); }
 .tool-btn:disabled {
@@ -2776,7 +2777,7 @@ body::before {
   position: relative;
 }
 .upload-area.drag-over {
-  background: rgba(201, 162, 39, 0.08);
+  background: rgba(242, 160, 160, 0.08);
 }
 .upload-icon {
   width: 80px; height: 80px;
@@ -2854,7 +2855,7 @@ body::before {
 .text-annotation-input {
   position: absolute;
   border: 1px dashed var(--ink-gold);
-  background: rgba(253, 251, 245, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   padding: 4px 8px;
   font-family: var(--font-kai);
   font-size: 14px;
@@ -2888,7 +2889,7 @@ body::before {
   align-items: center;
   justify-content: space-between;
   position: relative;
-  background: linear-gradient(180deg, rgba(31, 26, 16, 0.02), transparent);
+  background: linear-gradient(180deg, rgba(45, 42, 38, 0.02), transparent);
 }
 .panel-title {
   font-family: var(--font-kai);
@@ -2933,7 +2934,7 @@ body::before {
 .annotation-item.active {
   border-color: var(--ink-900);
   background: var(--ink-paper-light);
-  box-shadow: 0 0 0 2px rgba(31, 26, 16, 0.1);
+  box-shadow: 0 0 0 2px rgba(45, 42, 38, 0.1);
 }
 .anno-item-header {
   display: flex;
@@ -2970,7 +2971,7 @@ body::before {
   border-radius: var(--radius-sm);
 }
 .annotation-item:hover .anno-delete { opacity: 1; }
-.anno-delete:hover { background: rgba(192, 57, 43, 0.1); }
+.anno-delete:hover { background: rgba(232, 131, 131, 0.1); }
 .anno-delete svg {
   width: 14px; height: 14px;
   stroke: var(--ink-300);
@@ -3081,7 +3082,7 @@ body::before {
 
 /* 选中状态金色光晕 */
 .annotate-svg .annotation-group.selected .annotation-shape {
-  filter: drop-shadow(0 0 4px rgba(201, 162, 39, 0.8)) drop-shadow(0 0 8px rgba(201, 162, 39, 0.4));
+  filter: drop-shadow(0 0 4px rgba(242, 160, 160, 0.8)) drop-shadow(0 0 8px rgba(242, 160, 160, 0.4));
 }
 
 /* 序号标注特殊样式 */
@@ -3095,7 +3096,7 @@ body::before {
   user-select: none;
 }
 .template-panel .template-header:hover {
-  background: linear-gradient(180deg, rgba(31, 26, 16, 0.04), transparent);
+  background: linear-gradient(180deg, rgba(45, 42, 38, 0.04), transparent);
 }
 .template-toggle-icon {
   width: 18px;
@@ -3187,11 +3188,11 @@ body::before {
 <script src="../assets/pet.js"></script>
 <style>
   /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
-  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(139,105,20,.35) transparent; }
+  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(214, 123, 123, .35) transparent; }
   .sidebar-nav::-webkit-scrollbar { width: 6px; }
   .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
-  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
-  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(214, 123, 123, .35); border-radius: 3px; }
+  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(214, 123, 123, .6); }
 </style>
 
 <!-- ========== 识图取字（书本 / 照片 / 截图 → 文字）========== -->
@@ -3200,34 +3201,34 @@ body::before {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   margin: 0 0 16px;
   padding: 16px 20px;
-  background: var(--ink-paper-light, #faf6ec);
-  border: 1.5px solid var(--ink-2, #d9cbae);
-  border-left: 4px solid #8b6914;
+  background: var(--ink-paper-light, #faf9f7);
+  border: 1.5px solid var(--ink-2, #f0efeb);
+  border-left: 4px solid #d67b7b;
   border-radius: 8px;
   font-family: "STKaiti","KaiTi",serif;
 }
-.quick-capture-title { font-size: 17px; color: #1f1a10; letter-spacing: 2px; }
-.quick-capture-desc { margin-top: 4px; font-size: 12.5px; color: #8a7a5e; }
+.quick-capture-title { font-size: 17px; color: #2d2a26; letter-spacing: 2px; }
+.quick-capture-desc { margin-top: 4px; font-size: 12.5px; color: #6b6864; }
 .quick-capture-btn {
   flex-shrink: 0;
   padding: 9px 24px; border: none; border-radius: 6px; cursor: pointer;
-  background: #1f1a10; color: #f7ecd0;
+  background: #2d2a26; color: #fde2e2;
   font-family: inherit; font-size: 14px; letter-spacing: 1px;
 }
 .quick-capture-btn:hover { filter: brightness(1.15); }
 .ocr-overlay {
   position: fixed; inset: 0; z-index: 60;
-  background: rgba(26, 22, 14, .45);
+  background: rgba(45, 42, 38, .45);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
 .ocr-overlay[hidden] { display: none; }
 .ocr-modal {
   width: 100%; max-width: 720px; max-height: 92vh; overflow: auto;
-  background: var(--ink-paper-light, #faf6ec);
-  border: 1.5px solid var(--ink-2, #d9cbae);
+  background: var(--ink-paper-light, #faf9f7);
+  border: 1.5px solid var(--ink-2, #f0efeb);
   border-radius: 10px;
-  box-shadow: 0 24px 60px rgba(20, 16, 8, .38);
+  box-shadow: 0 24px 60px rgba(45, 42, 38, .38);
   font-family: var(--font-song, serif);
 }
 .ocr-head {
@@ -3235,70 +3236,70 @@ body::before {
   padding: 18px 22px 14px;
   border-bottom: 1px dashed var(--ink-4, #e0d6c2);
 }
-.ocr-title { font-size: 19px; letter-spacing: 3px; color: var(--ink-1, #1f1a10); }
-.ocr-sub { margin-top: 5px; font-size: 12px; color: var(--ink-3, #8a7a5e); }
+.ocr-title { font-size: 19px; letter-spacing: 3px; color: var(--ink-1, #2d2a26); }
+.ocr-sub { margin-top: 5px; font-size: 12px; color: var(--ink-3, #6b6864); }
 .ocr-close {
   border: none; background: none; cursor: pointer;
-  font-size: 24px; line-height: 1; color: var(--ink-3, #8a7a5e);
+  font-size: 24px; line-height: 1; color: var(--ink-3, #6b6864);
 }
 .ocr-body { padding: 18px 22px 22px; }
 .ocr-drop {
-  border: 1.5px dashed var(--ink-4, #d9cbae);
+  border: 1.5px dashed var(--ink-4, #f0efeb);
   border-radius: 8px;
   padding: 22px 16px;
   text-align: center;
-  background: rgba(245, 239, 227, .6);
+  background: rgba(250, 249, 247, .6);
   transition: all .15s ease;
 }
-.ocr-drop.over { border-color: #8b6914; background: rgba(232, 201, 122, .18); }
+.ocr-drop.over { border-color: #d67b7b; background: rgba(247, 196, 196, .18); }
 .ocr-drop-icon { font-size: 30px; }
 .ocr-drop-text { margin-top: 6px; font-size: 14px; color: var(--ink-2, #4a4133); }
 .ocr-drop-actions { margin-top: 10px; display: flex; gap: 10px; justify-content: center; }
-.ocr-drop-hint { margin-top: 9px; font-size: 11px; color: var(--ink-4, #b8b0a0); }
+.ocr-drop-hint { margin-top: 9px; font-size: 11px; color: var(--ink-4, #b0aaa2); }
 .ocr-drop-hint kbd {
-  padding: 1px 5px; border: 1px solid var(--ink-4, #d9cbae);
+  padding: 1px 5px; border: 1px solid var(--ink-4, #f0efeb);
   border-radius: 3px; background: #fff; font-size: 11px;
 }
 .ocr-mini-btn {
   padding: 6px 15px; font-family: inherit; font-size: 13px;
-  color: var(--ink-1, #1f1a10); background: #fff;
-  border: 1px solid var(--ink-3, #8a7a5e); border-radius: 6px; cursor: pointer;
+  color: var(--ink-1, #2d2a26); background: #fff;
+  border: 1px solid var(--ink-3, #6b6864); border-radius: 6px; cursor: pointer;
 }
-.ocr-mini-btn:hover { background: var(--ink-1, #1f1a10); color: #f7ecd0; }
-.ocr-mini-btn.danger { color: #a8341f; border-color: #d8b3a8; }
+.ocr-mini-btn:hover { background: var(--ink-1, #2d2a26); color: #fde2e2; }
+.ocr-mini-btn.danger { color: #d65c5c; border-color: #d8b3a8; }
 .ocr-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 .ocr-thumb {
   position: relative; width: 86px; height: 86px; border-radius: 6px;
-  overflow: hidden; border: 1px solid var(--ink-4, #d9cbae); background: #fff;
+  overflow: hidden; border: 1px solid var(--ink-4, #f0efeb); background: #fff;
 }
 .ocr-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ocr-thumb button {
   position: absolute; top: 2px; right: 2px;
   width: 20px; height: 20px; border: none; border-radius: 50%;
-  background: rgba(26, 22, 14, .62); color: #fff; cursor: pointer;
+  background: rgba(45, 42, 38, .62); color: #fff; cursor: pointer;
   font-size: 13px; line-height: 18px; padding: 0;
 }
 .ocr-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
 .ocr-main-btn {
   padding: 9px 22px; font-family: inherit; font-size: 14px; letter-spacing: 1px;
-  color: #f7ecd0; background: var(--ink-1, #1f1a10);
+  color: #fde2e2; background: var(--ink-1, #2d2a26);
   border: none; border-radius: 6px; cursor: pointer;
 }
 .ocr-main-btn:disabled { opacity: .55; cursor: default; }
-.ocr-status { font-size: 12px; color: var(--ink-3, #8a7a5e); }
+.ocr-status { font-size: 12px; color: var(--ink-3, #6b6864); }
 .ocr-result-wrap { position: relative; margin-top: 14px; }
 .ocr-result {
   width: 100%; min-height: 150px; box-sizing: border-box;
   padding: 12px 46px 12px 12px;
   font-family: inherit; font-size: 14px; line-height: 1.75;
-  color: var(--ink-1, #1f1a10); background: #fff;
-  border: 1px solid var(--ink-4, #d9cbae); border-radius: 8px; resize: vertical;
+  color: var(--ink-1, #2d2a26); background: #fff;
+  border: 1px solid var(--ink-4, #f0efeb); border-radius: 8px; resize: vertical;
 }
-.ocr-result:focus { outline: none; border-color: #8b6914; }
+.ocr-result:focus { outline: none; border-color: #d67b7b; }
 .ocr-voice {
   position: absolute; top: 8px; right: 8px;
   width: 32px; height: 32px; padding: 0;
-  border: 1px solid var(--ink-4, #d9cbae); border-radius: 50%;
+  border: 1px solid var(--ink-4, #f0efeb); border-radius: 50%;
   background: #fff; cursor: pointer; font-size: 15px;
 }
 .ocr-voice.listening { background: #e11d48; border-color: #e11d48; color: #fff; }
@@ -3626,5 +3627,6 @@ body::before {
 })();
 </script>
 <script src="../assets/mobile.js"></script>
+<link rel="stylesheet" href="../assets/theme-ink-override.css">
 </body>
 </html>

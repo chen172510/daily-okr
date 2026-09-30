@@ -12,55 +12,55 @@
 
 :root {
   /* ---------- Ink Palette ---------- */
-  --okr-ink-50: #faf8f5;
-  --okr-ink-100: #f0ebe3;
-  --okr-ink-200: #e0d8cc;
-  --okr-ink-300: #c9bda8;
-  --okr-ink-400: #a89880;
-  --okr-ink-500: #8a7a5e;
-  --okr-ink-600: #6b5d44;
-  --okr-ink-700: #4f4430;
-  --okr-ink-800: #362e1f;
-  --okr-ink-900: #1f1a10;
+  --okr-ink-50: #faf9f7;
+  --okr-ink-100: #f2f1ed;
+  --okr-ink-200: #e8e6e1;
+  --okr-ink-300: #d8d5ce;
+  --okr-ink-400: #a8a39c;
+  --okr-ink-500: #6b6864;
+  --okr-ink-600: #5a5753;
+  --okr-ink-700: #4d4a46;
+  --okr-ink-800: #3d3a36;
+  --okr-ink-900: #2d2a26;
 
   /* ---------- Rice Paper (宣纸) ---------- */
-  --okr-paper-light: #f7f2e8;
-  --okr-paper: #ede4d3;
-  --okr-paper-dark: #d9cbae;
+  --okr-paper-light: #faf9f7;
+  --okr-paper: #f0efeb;
+  --okr-paper-dark: #f0efeb;
 
   /* ---------- Cyan Ink (青黛) ---------- */
-  --okr-cyan-100: #e8f1f0;
-  --okr-cyan-300: #7fb3ad;
-  --okr-cyan-500: #3d7a74;
-  --okr-cyan-700: #244f4b;
-  --okr-cyan-900: #122b29;
+  --okr-cyan-100: #e8f6f2;
+  --okr-cyan-300: #a8ddd0;
+  --okr-cyan-500: #7fcdbb;
+  --okr-cyan-700: #4a9d8c;
+  --okr-cyan-900: #2d6a5f;
 
   /* ---------- Gold Accent (描金) ---------- */
-  --okr-gold-100: #f7ecd0;
-  --okr-gold-300: #e8c97a;
-  --okr-gold-500: #c9a227;
-  --okr-gold-700: #8b6914;
-  --okr-gold-900: #5c4508;
+  --okr-gold-100: #fde2e2;
+  --okr-gold-300: #f7c4c4;
+  --okr-gold-500: #f2a0a0;
+  --okr-gold-700: #d67b7b;
+  --okr-gold-900: #d65c5c;
 
   /* ---------- Vermilion (朱砂) ---------- */
-  --okr-vermilion: #c0392b;
-  --okr-vermilion-light: #e74c3c;
-  --okr-vermilion-dark: #922b21;
+  --okr-vermilion: #e88383;
+  --okr-vermilion-light: #e88383;
+  --okr-vermilion-dark: #d65c5c;
 
   /* ---------- State Colors ---------- */
-  --okr-state-success: #2d6a4f;
-  --okr-state-success-bg: #d8f3dc;
-  --okr-state-warning: #b07d1e;
-  --okr-state-warning-bg: #fef3c7;
-  --okr-state-error: #922b21;
+  --okr-state-success: #5bb3a0;
+  --okr-state-success-bg: #e8f6f2;
+  --okr-state-warning: #d67b7b;
+  --okr-state-warning-bg: #fde2e2;
+  --okr-state-error: #d65c5c;
   --okr-state-error-bg: #fde2e2;
 
   /* ---------- Semantic Aliases ---------- */
   --okr-background: var(--okr-paper-light);
   --okr-foreground: var(--okr-ink-900);
-  --okr-card: #fdfbf5;
+  --okr-card: #ffffff;
   --okr-card-foreground: var(--okr-ink-900);
-  --okr-popover: #fdfbf5;
+  --okr-popover: #ffffff;
   --okr-popover-foreground: var(--okr-ink-900);
   --okr-primary: var(--okr-ink-800);
   --okr-primary-foreground: var(--okr-paper-light);
@@ -106,10 +106,10 @@
   --okr-space-16: 64px;
 
   /* ---------- Shadow (subtle ink wash) ---------- */
-  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
-  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
-  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
-  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+  --okr-shadow-sm: 0 1px 3px 0 rgba(45, 42, 38, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(45, 42, 38, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(45, 42, 38, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(45, 42, 38, 0.12);
 
   /* ---------- Transition ---------- */
   --okr-transition-fast: 150ms ease;
@@ -137,8 +137,8 @@ html {
 body {
   min-height: 100vh;
   background-image:
-    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at top left, rgba(242, 160, 160, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(127, 205, 187, 0.05) 0%, transparent 50%);
 }
 
 /* ---------- Utility Classes ---------- */
@@ -196,7 +196,7 @@ body {
   padding: 2px 8px;
   font-size: 12px;
   letter-spacing: 2px;
-  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+  box-shadow: 0 1px 3px rgba(214, 92, 92, 0.3);
 }
 
     </style>
@@ -318,13 +318,14 @@ body {
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <!-- 移动端适配 + 可添加到主屏幕 -->
 <link rel="manifest" href="../manifest.json">
-<meta name="theme-color" content="#1F1A10">
+<meta name="theme-color" content="#2d2a26">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script><link rel="stylesheet" href="../assets/theme.css">
+</head>
 <body>
   <div class="app-layout">
     <!-- ========== 左侧玉简导航 ========== -->
@@ -847,35 +848,35 @@ body {
    ============================================ */
 
 :root {
-  --ink-paper: #F5EFE3;
+  --ink-paper: #faf9f7;
   --ink-paper-dark: #EDE5D3;
-  --ink-paper-light: #FAF6EC;
+  --ink-paper-light: #faf9f7;
   
-  --ink-black: #1A1A1A;
-  --ink-charcoal: #2D2D2D;
-  --ink-grey: #5A5A5A;
+  --ink-black: #2d2a26;
+  --ink-charcoal: #3d3a36;
+  --ink-grey: #5a5753;
   --ink-light-grey: #8B8B8B;
-  --ink-faint: #B8B0A0;
+  --ink-faint: #b0aaa2;
   
-  --gold-primary: #B8860B;
+  --gold-primary: #d67b7b;
   --gold-light: #DAA520;
-  --gold-faint: #E8D5A3;
-  --gold-bg: rgba(184, 134, 11, 0.08);
+  --gold-faint: #f7c4c4;
+  --gold-bg: rgba(214, 123, 123, 0.08);
   
-  --cinnabar: #C23A2B;
+  --cinnabar: #e88383;
   --cinnabar-dark: #9B2C20;
   --cinnabar-light: #D95445;
-  --cinnabar-bg: rgba(194, 58, 43, 0.08);
+  --cinnabar-bg: rgba(232, 131, 131, 0.08);
   
-  --jade-green: #4A7C59;
+  --jade-green: #5bb3a0;
   --jade-light: #6B9B7A;
   
   --font-song: 'SimSun', 'STSong', 'Songti SC', 'Noto Serif SC', 'Source Han Serif SC', serif;
   --font-kai: 'STKaiti', 'KaiTi', 'Kaiti SC', '楷体', '华文楷体', serif;
   
-  --ink-shadow-sm: 0 2px 8px rgba(26, 26, 26, 0.06);
-  --ink-shadow-md: 0 4px 16px rgba(26, 26, 26, 0.08);
-  --ink-shadow-lg: 0 8px 32px rgba(26, 26, 26, 0.1);
+  --ink-shadow-sm: 0 2px 8px rgba(45, 42, 38, 0.06);
+  --ink-shadow-md: 0 4px 16px rgba(45, 42, 38, 0.08);
+  --ink-shadow-lg: 0 8px 32px rgba(45, 42, 38, 0.1);
   
   --ink-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -899,8 +900,8 @@ body {
   min-height: 100vh;
   background-color: var(--ink-paper);
   background-image: 
-    radial-gradient(ellipse at 20% 30%, rgba(184, 134, 11, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(194, 58, 43, 0.02) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 30%, rgba(214, 123, 123, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(232, 131, 131, 0.02) 0%, transparent 50%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   min-width: 1200px;
 }
@@ -928,7 +929,7 @@ body {
   left: 0;
   bottom: 0;
   z-index: 100;
-  box-shadow: 2px 0 12px rgba(26, 26, 26, 0.04);
+  box-shadow: 2px 0 12px rgba(45, 42, 38, 0.04);
 }
 
 .sidebar::before {
@@ -1024,7 +1025,7 @@ body {
   margin-top: 10px;
   padding: 4px 12px;
   background: var(--cinnabar-bg);
-  border: 1px solid rgba(194, 58, 43, 0.2);
+  border: 1px solid rgba(232, 131, 131, 0.2);
   border-radius: 2px;
   font-size: 11px;
   color: var(--cinnabar);
@@ -1190,7 +1191,7 @@ body {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--gold-faint);
-  background: rgba(245, 239, 227, 0.85);
+  background: rgba(250, 249, 247, 0.85);
   backdrop-filter: blur(8px);
 }
 
@@ -1379,7 +1380,7 @@ body {
   letter-spacing: 12px;
   line-height: 1.2;
   margin-bottom: 8px;
-  text-shadow: 2px 2px 0 rgba(184, 134, 11, 0.1);
+  text-shadow: 2px 2px 0 rgba(214, 123, 123, 0.1);
 }
 
 .page-subtitle {
@@ -1443,7 +1444,7 @@ body {
   border-color: var(--gold-primary);
   border-width: 2px;
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(184, 134, 11, 0.15);
+  box-shadow: 0 8px 20px rgba(214, 123, 123, 0.15);
   background: #fffdf7;
 }
 
@@ -1560,7 +1561,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.15);
+  box-shadow: 0 2px 8px rgba(214, 123, 123, 0.15);
 }
 
 .keeper-detail {
@@ -1607,8 +1608,8 @@ body {
     repeating-linear-gradient(
       transparent,
       transparent 28px,
-      rgba(184, 134, 11, 0.08) 28px,
-      rgba(184, 134, 11, 0.08) 29px
+      rgba(214, 123, 123, 0.08) 28px,
+      rgba(214, 123, 123, 0.08) 29px
     );
   background-position: 0 20px;
 }
@@ -1673,7 +1674,7 @@ body {
 .msg-keeper .msg-bubble {
   background: #fffdf7;
   border: 1px solid var(--gold-faint);
-  box-shadow: 0 2px 6px rgba(26, 26, 26, 0.04);
+  box-shadow: 0 2px 6px rgba(45, 42, 38, 0.04);
 }
 
 .msg-user .msg-bubble {
@@ -1762,7 +1763,7 @@ body {
   border-radius: 4px;
   background: var(--ink-paper);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.08);
+  box-shadow: 0 2px 8px rgba(214, 123, 123, 0.08);
 }
 
 .input-wrapper::before {
@@ -1854,7 +1855,7 @@ body {
   content: '';
   position: absolute;
   inset: 2px;
-  border: 1px solid rgba(250, 246, 236, 0.3);
+  border: 1px solid rgba(250, 249, 247, 0.3);
   border-radius: 2px;
   pointer-events: none;
 }
@@ -2028,11 +2029,11 @@ body {
 <script src="../assets/pet.js"></script>
 <style>
 /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
-  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(139,105,20,.35) transparent; }
+  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(214, 123, 123, .35) transparent; }
   .sidebar-nav::-webkit-scrollbar { width: 6px; }
   .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
-  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
-  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(214, 123, 123, .35); border-radius: 3px; }
+  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(214, 123, 123, .6); }
 </style>
 <script src="../assets/voice.js"></script>
 <style>
@@ -2040,15 +2041,15 @@ body {
 .chat-mode-bar {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   margin: 0 0 10px; padding: 7px 12px;
-  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #8a7a5e;
-  background: #f7f2e8; border: 1px dashed #ded4c2; border-radius: 6px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #6b6864;
+  background: #faf9f7; border: 1px dashed #e8e6e1; border-radius: 6px;
 }
 .chat-mode-bar .mode-tag {
-  padding: 2px 9px; border-radius: 12px; border: 1px solid #ded4c2; background: #fff; color: #6b5d44;
+  padding: 2px 9px; border-radius: 12px; border: 1px solid #e8e6e1; background: #fff; color: #5a5753;
 }
-.chat-mode-bar .mode-tag.live { border-color: rgba(45,106,79,.45); background: rgba(45,106,79,.10); color: #245239; }
-.msg-thinking .msg-content { color: #b0a48c; }
-.chat-hint-line { margin-top: 6px; font-size: 11.5px; color: #b0a48c; text-align: center; }
+.chat-mode-bar .mode-tag.live { border-color: rgba(91, 179, 160, .45); background: rgba(91, 179, 160, .10); color: #245239; }
+.msg-thinking .msg-content { color: #a8a39c; }
+.chat-hint-line { margin-top: 6px; font-size: 11.5px; color: #a8a39c; text-align: center; }
 </style>
 <script>
 /* ============================================
@@ -2271,5 +2272,6 @@ body {
 })();
 </script>
 <script src="../assets/mobile.js"></script>
+<link rel="stylesheet" href="../assets/theme-ink-override.css">
 </body>
 </html>

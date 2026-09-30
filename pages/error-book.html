@@ -12,55 +12,55 @@
 
 :root {
   /* ---------- Ink Palette ---------- */
-  --okr-ink-50: #faf8f5;
-  --okr-ink-100: #f0ebe3;
-  --okr-ink-200: #e0d8cc;
-  --okr-ink-300: #c9bda8;
-  --okr-ink-400: #a89880;
-  --okr-ink-500: #8a7a5e;
-  --okr-ink-600: #6b5d44;
-  --okr-ink-700: #4f4430;
-  --okr-ink-800: #362e1f;
-  --okr-ink-900: #1f1a10;
+  --okr-ink-50: #faf9f7;
+  --okr-ink-100: #f2f1ed;
+  --okr-ink-200: #e8e6e1;
+  --okr-ink-300: #d8d5ce;
+  --okr-ink-400: #a8a39c;
+  --okr-ink-500: #6b6864;
+  --okr-ink-600: #5a5753;
+  --okr-ink-700: #4d4a46;
+  --okr-ink-800: #3d3a36;
+  --okr-ink-900: #2d2a26;
 
   /* ---------- Rice Paper (宣纸) ---------- */
-  --okr-paper-light: #f7f2e8;
-  --okr-paper: #ede4d3;
-  --okr-paper-dark: #d9cbae;
+  --okr-paper-light: #faf9f7;
+  --okr-paper: #f0efeb;
+  --okr-paper-dark: #f0efeb;
 
   /* ---------- Cyan Ink (青黛) ---------- */
-  --okr-cyan-100: #e8f1f0;
-  --okr-cyan-300: #7fb3ad;
-  --okr-cyan-500: #3d7a74;
-  --okr-cyan-700: #244f4b;
-  --okr-cyan-900: #122b29;
+  --okr-cyan-100: #e8f6f2;
+  --okr-cyan-300: #a8ddd0;
+  --okr-cyan-500: #7fcdbb;
+  --okr-cyan-700: #4a9d8c;
+  --okr-cyan-900: #2d6a5f;
 
   /* ---------- Gold Accent (描金) ---------- */
-  --okr-gold-100: #f7ecd0;
-  --okr-gold-300: #e8c97a;
-  --okr-gold-500: #c9a227;
-  --okr-gold-700: #8b6914;
-  --okr-gold-900: #5c4508;
+  --okr-gold-100: #fde2e2;
+  --okr-gold-300: #f7c4c4;
+  --okr-gold-500: #f2a0a0;
+  --okr-gold-700: #d67b7b;
+  --okr-gold-900: #d65c5c;
 
   /* ---------- Vermilion (朱砂) ---------- */
-  --okr-vermilion: #c0392b;
-  --okr-vermilion-light: #e74c3c;
-  --okr-vermilion-dark: #922b21;
+  --okr-vermilion: #e88383;
+  --okr-vermilion-light: #e88383;
+  --okr-vermilion-dark: #d65c5c;
 
   /* ---------- State Colors ---------- */
-  --okr-state-success: #2d6a4f;
-  --okr-state-success-bg: #d8f3dc;
-  --okr-state-warning: #b07d1e;
-  --okr-state-warning-bg: #fef3c7;
-  --okr-state-error: #922b21;
+  --okr-state-success: #5bb3a0;
+  --okr-state-success-bg: #e8f6f2;
+  --okr-state-warning: #d67b7b;
+  --okr-state-warning-bg: #fde2e2;
+  --okr-state-error: #d65c5c;
   --okr-state-error-bg: #fde2e2;
 
   /* ---------- Semantic Aliases ---------- */
   --okr-background: var(--okr-paper-light);
   --okr-foreground: var(--okr-ink-900);
-  --okr-card: #fdfbf5;
+  --okr-card: #ffffff;
   --okr-card-foreground: var(--okr-ink-900);
-  --okr-popover: #fdfbf5;
+  --okr-popover: #ffffff;
   --okr-popover-foreground: var(--okr-ink-900);
   --okr-primary: var(--okr-ink-800);
   --okr-primary-foreground: var(--okr-paper-light);
@@ -106,10 +106,10 @@
   --okr-space-16: 64px;
 
   /* ---------- Shadow (subtle ink wash) ---------- */
-  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
-  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
-  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
-  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+  --okr-shadow-sm: 0 1px 3px 0 rgba(45, 42, 38, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(45, 42, 38, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(45, 42, 38, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(45, 42, 38, 0.12);
 
   /* ---------- Transition ---------- */
   --okr-transition-fast: 150ms ease;
@@ -137,8 +137,8 @@ html {
 body {
   min-height: 100vh;
   background-image:
-    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at top left, rgba(242, 160, 160, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(127, 205, 187, 0.05) 0%, transparent 50%);
 }
 
 /* ---------- Utility Classes ---------- */
@@ -196,7 +196,7 @@ body {
   padding: 2px 8px;
   font-size: 12px;
   letter-spacing: 2px;
-  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+  box-shadow: 0 1px 3px rgba(214, 92, 92, 0.3);
 }
 
     </style>
@@ -316,13 +316,14 @@ body {
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <!-- 移动端适配 + 可添加到主屏幕 -->
 <link rel="manifest" href="../manifest.json">
-<meta name="theme-color" content="#1F1A10">
+<meta name="theme-color" content="#2d2a26">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script><link rel="stylesheet" href="../assets/theme.css">
+</head>
 <body>
   <div class="app-layout">
     <!-- ========== 左侧玉简导航 ========== -->
@@ -718,12 +719,12 @@ body {
           <div class="form-group">
             <label class="form-label">颜色</label>
             <div class="color-picker" id="colorPicker">
-              <div class="color-option selected" style="background: #7fb3ad;" data-color="#7fb3ad"></div>
-              <div class="color-option" style="background: #e8c97a;" data-color="#e8c97a"></div>
-              <div class="color-option" style="background: #c0392b;" data-color="#c0392b"></div>
+              <div class="color-option selected" style="background: #a8ddd0;" data-color="#a8ddd0"></div>
+              <div class="color-option" style="background: #f7c4c4;" data-color="#f7c4c4"></div>
+              <div class="color-option" style="background: #e88383;" data-color="#e88383"></div>
               <div class="color-option" style="background: #d4841a;" data-color="#d4841a"></div>
-              <div class="color-option" style="background: #8a7a5e;" data-color="#8a7a5e"></div>
-              <div class="color-option" style="background: #6bbf8a;" data-color="#6bbf8a"></div>
+              <div class="color-option" style="background: #6b6864;" data-color="#6b6864"></div>
+              <div class="color-option" style="background: #7fcdbb;" data-color="#7fcdbb"></div>
               <div class="color-option" style="background: #8e7cc3;" data-color="#8e7cc3"></div>
               <div class="color-option" style="background: #e06666;" data-color="#e06666"></div>
             </div>
@@ -746,12 +747,12 @@ const STORAGE_KEY = 'xingxing_error_book';
 
 // 默认分类
 const defaultCategories = [
-  { id: 'c1', name: '思维认知', icon: '🧠', color: '#7fb3ad' },
-  { id: 'c2', name: '行为习惯', icon: '⚡', color: '#e8c97a' },
-  { id: 'c3', name: '表达沟通', icon: '💬', color: '#c0392b' },
+  { id: 'c1', name: '思维认知', icon: '🧠', color: '#a8ddd0' },
+  { id: 'c2', name: '行为习惯', icon: '⚡', color: '#f7c4c4' },
+  { id: 'c3', name: '表达沟通', icon: '💬', color: '#e88383' },
   { id: 'c4', name: '人际情绪', icon: '❤️', color: '#d4841a' },
-  { id: 'c5', name: '学习方法', icon: '📚', color: '#8a7a5e' },
-  { id: 'c6', name: '时间管理', icon: '⏰', color: '#6bbf8a' },
+  { id: 'c5', name: '学习方法', icon: '📚', color: '#6b6864' },
+  { id: 'c6', name: '时间管理', icon: '⏰', color: '#7fcdbb' },
 ];
 
 // 默认错题数据
@@ -903,7 +904,7 @@ let state = {
   lastSelectCategoryId: '',   // 「添加错题」下拉里记住上次选的分类
   currentSort: 'severity',
   selectedEmoji: '🧠',
-  selectedColor: '#7fb3ad',
+  selectedColor: '#a8ddd0',
   editingCategoryId: null
 };
 
@@ -944,7 +945,7 @@ function normalizeErrorData(raw) {
       id: c.id,
       name: c.name || '未命名分类',
       icon: c.icon || '📌',
-      color: c.color || '#8a7a5e'
+      color: c.color || '#6b6864'
     })),
     errorItems: (Array.isArray(data.errorItems) ? data.errorItems : []).map(normalizeErrorItem).filter(Boolean)
   };
@@ -1623,7 +1624,7 @@ function openAddCategory() {
   document.getElementById('categoryModalTitle').textContent = '新建分类';
   document.getElementById('categoryName').value = '';
   state.selectedEmoji = '🧠';
-  state.selectedColor = '#7fb3ad';
+  state.selectedColor = '#a8ddd0';
   updateEmojiPicker();
   updateColorPicker();
   openModal('categoryModal');
@@ -1639,7 +1640,7 @@ function editCategory(id) {
   document.getElementById('categoryModalTitle').textContent = '编辑分类';
   document.getElementById('categoryName').value = cat.name;
   state.selectedEmoji = cat.icon || '🧠';
-  state.selectedColor = cat.color || '#7fb3ad';
+  state.selectedColor = cat.color || '#a8ddd0';
   updateEmojiPicker();
   updateColorPicker();
   openModal('categoryModal');
@@ -1894,37 +1895,37 @@ document.addEventListener('DOMContentLoaded', init);
 
 :root {
   /* 宣纸底色 */
-  --ink-paper: #F5EFE3;
+  --ink-paper: #faf9f7;
   --ink-paper-dark: #EDE5D3;
-  --ink-paper-light: #FAF6EC;
+  --ink-paper-light: #faf9f7;
   
   /* 墨色系列 */
-  --ink-black: #1A1A1A;
-  --ink-charcoal: #2D2D2D;
-  --ink-grey: #5A5A5A;
+  --ink-black: #2d2a26;
+  --ink-charcoal: #3d3a36;
+  --ink-grey: #5a5753;
   --ink-light-grey: #8B8B8B;
-  --ink-faint: #B8B0A0;
+  --ink-faint: #b0aaa2;
   
   /* 描金 */
-  --gold-primary: #B8860B;
+  --gold-primary: #d67b7b;
   --gold-light: #DAA520;
-  --gold-faint: #E8D5A3;
-  --gold-bg: rgba(184, 134, 11, 0.08);
+  --gold-faint: #f7c4c4;
+  --gold-bg: rgba(214, 123, 123, 0.08);
   
   /* 朱砂 */
-  --cinnabar: #C23A2B;
+  --cinnabar: #e88383;
   --cinnabar-dark: #9B2C20;
   --cinnabar-light: #D95445;
-  --cinnabar-bg: rgba(194, 58, 43, 0.08);
+  --cinnabar-bg: rgba(232, 131, 131, 0.08);
   
   /* 青绿 */
-  --jade-green: #4A7C59;
+  --jade-green: #5bb3a0;
   --jade-light: #6B9B7A;
-  --jade-bg: rgba(74, 124, 89, 0.08);
+  --jade-bg: rgba(91, 179, 160, 0.08);
   
   /* 石青 */
-  --cyan-stone: #7fb3ad;
-  --cyan-stone-dark: #3d7a74;
+  --cyan-stone: #a8ddd0;
+  --cyan-stone-dark: #7fcdbb;
   
   /* 橙色 */
   --orange-warm: #d4841a;
@@ -1935,9 +1936,9 @@ document.addEventListener('DOMContentLoaded', init);
   --font-kai: 'STKaiti', 'KaiTi', 'Kaiti SC', '楷体', '华文楷体', serif;
   
   /* 阴影 */
-  --ink-shadow-sm: 0 2px 8px rgba(26, 26, 26, 0.06);
-  --ink-shadow-md: 0 4px 16px rgba(26, 26, 26, 0.08);
-  --ink-shadow-lg: 0 8px 32px rgba(26, 26, 26, 0.1);
+  --ink-shadow-sm: 0 2px 8px rgba(45, 42, 38, 0.06);
+  --ink-shadow-md: 0 4px 16px rgba(45, 42, 38, 0.08);
+  --ink-shadow-lg: 0 8px 32px rgba(45, 42, 38, 0.1);
   
   /* 过渡 */
   --ink-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -1962,8 +1963,8 @@ body {
   min-height: 100vh;
   background-color: var(--ink-paper);
   background-image: 
-    radial-gradient(ellipse at 20% 30%, rgba(184, 134, 11, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(194, 58, 43, 0.02) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 30%, rgba(214, 123, 123, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(232, 131, 131, 0.02) 0%, transparent 50%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
@@ -2003,7 +2004,7 @@ input, textarea, select {
   left: 0;
   bottom: 0;
   z-index: 100;
-  box-shadow: 2px 0 12px rgba(26, 26, 26, 0.04);
+  box-shadow: 2px 0 12px rgba(45, 42, 38, 0.04);
 }
 
 .sidebar::before {
@@ -2099,7 +2100,7 @@ input, textarea, select {
   margin-top: 10px;
   padding: 4px 12px;
   background: var(--cinnabar-bg);
-  border: 1px solid rgba(194, 58, 43, 0.2);
+  border: 1px solid rgba(232, 131, 131, 0.2);
   border-radius: 2px;
   font-size: 11px;
   color: var(--cinnabar);
@@ -2259,7 +2260,7 @@ input, textarea, select {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--gold-faint);
-  background: rgba(245, 239, 227, 0.85);
+  background: rgba(250, 249, 247, 0.85);
   backdrop-filter: blur(8px);
 }
 
@@ -2474,8 +2475,8 @@ input, textarea, select {
   font-size: 12px; line-height: 1; padding: 3px 5px;
   color: var(--ink-light-grey); border-radius: 4px;
 }
-.cat-tool-btn:hover { background: rgba(139,105,20,.14); color: var(--gold-primary); }
-.cat-tool-btn.danger:hover { background: rgba(168,52,31,.12); color: #a8341f; }
+.cat-tool-btn:hover { background: rgba(214, 123, 123, .14); color: var(--gold-primary); }
+.cat-tool-btn.danger:hover { background: rgba(214, 92, 92, .12); color: #d65c5c; }
 
 .add-category-btn {
   margin: 8px;
@@ -2585,7 +2586,7 @@ input, textarea, select {
 /* 状态样式 */
 .error-card.status-critical {
   border-color: var(--cinnabar);
-  background: linear-gradient(135deg, var(--ink-paper-light) 0%, rgba(194, 58, 43, 0.04) 100%);
+  background: linear-gradient(135deg, var(--ink-paper-light) 0%, rgba(232, 131, 131, 0.04) 100%);
 }
 
 .error-card.status-critical::before {
@@ -2594,7 +2595,7 @@ input, textarea, select {
 
 .error-card.status-warning {
   border-color: var(--gold-primary);
-  background: linear-gradient(135deg, var(--ink-paper-light) 0%, rgba(184, 134, 11, 0.04) 100%);
+  background: linear-gradient(135deg, var(--ink-paper-light) 0%, rgba(214, 123, 123, 0.04) 100%);
 }
 
 .error-card.status-warning::before {
@@ -2603,7 +2604,7 @@ input, textarea, select {
 
 .error-card.status-normal {
   border-color: var(--jade-light);
-  background: linear-gradient(135deg, var(--ink-paper-light) 0%, rgba(74, 124, 89, 0.03) 100%);
+  background: linear-gradient(135deg, var(--ink-paper-light) 0%, rgba(91, 179, 160, 0.03) 100%);
 }
 
 .error-card.status-normal::before {
@@ -2653,19 +2654,19 @@ input, textarea, select {
 .status-critical .error-count-badge {
   background: var(--cinnabar-bg);
   color: var(--cinnabar);
-  border: 1px solid rgba(194, 58, 43, 0.3);
+  border: 1px solid rgba(232, 131, 131, 0.3);
 }
 
 .status-warning .error-count-badge {
   background: var(--gold-bg);
   color: var(--gold-primary);
-  border: 1px solid rgba(184, 134, 11, 0.3);
+  border: 1px solid rgba(214, 123, 123, 0.3);
 }
 
 .status-normal .error-count-badge {
   background: var(--jade-bg);
   color: var(--jade-green);
-  border: 1px solid rgba(74, 124, 89, 0.3);
+  border: 1px solid rgba(91, 179, 160, 0.3);
 }
 
 .status-mastered .error-count-badge {
@@ -2681,26 +2682,26 @@ input, textarea, select {
   justify-content: center;
   width: 22px;
   height: 22px;
-  background: linear-gradient(135deg, #f7ecd0, #e8c97a, #c9a227);
-  color: #5c4508;
+  background: linear-gradient(135deg, #fde2e2, #f7c4c4, #f2a0a0);
+  color: #d65c5c;
   border-radius: 50%;
   font-size: 11px;
   font-weight: 700;
   font-family: var(--font-kai);
-  border: 1.5px solid #c9a227;
-  box-shadow: 0 2px 6px rgba(201, 162, 39, 0.35);
+  border: 1.5px solid #f2a0a0;
+  box-shadow: 0 2px 6px rgba(242, 160, 160, 0.35);
   animation: badge-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
 }
 
 @keyframes badge-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 2px 6px rgba(201, 162, 39, 0.35); }
-  50% { transform: scale(1.08); box-shadow: 0 3px 10px rgba(201, 162, 39, 0.5); }
+  0%, 100% { transform: scale(1); box-shadow: 0 2px 6px rgba(242, 160, 160, 0.35); }
+  50% { transform: scale(1.08); box-shadow: 0 3px 10px rgba(242, 160, 160, 0.5); }
 }
 
 .error-card.is-new {
-  border-color: var(--gold-primary, #c9a227);
-  box-shadow: 0 2px 12px rgba(201, 162, 39, 0.15);
+  border-color: var(--gold-primary, #f2a0a0);
+  box-shadow: 0 2px 12px rgba(242, 160, 160, 0.15);
 }
 
 /* 今日新增提示条 */
@@ -2709,7 +2710,7 @@ input, textarea, select {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  background: linear-gradient(135deg, #fde2e2, #fde68a);
   border: 1px solid #f59e0b;
   border-radius: 6px;
   margin-bottom: 16px;
@@ -3099,7 +3100,7 @@ input, textarea, select {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(26, 26, 26, 0.5);
+  background: rgba(45, 42, 38, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3360,19 +3361,19 @@ input, textarea, select {
 .detail-status-tag.critical {
   background: var(--cinnabar-bg);
   color: var(--cinnabar);
-  border: 1px solid rgba(194, 58, 43, 0.3);
+  border: 1px solid rgba(232, 131, 131, 0.3);
 }
 
 .detail-status-tag.warning {
   background: var(--gold-bg);
   color: var(--gold-primary);
-  border: 1px solid rgba(184, 134, 11, 0.3);
+  border: 1px solid rgba(214, 123, 123, 0.3);
 }
 
 .detail-status-tag.normal {
   background: var(--jade-bg);
   color: var(--jade-green);
-  border: 1px solid rgba(74, 124, 89, 0.3);
+  border: 1px solid rgba(91, 179, 160, 0.3);
 }
 
 .detail-status-tag.mastered {
@@ -3820,7 +3821,7 @@ input, textarea, select {
     bottom: 0;
     z-index: 50;
     width: 280px;
-    box-shadow: -4px 0 16px rgba(26, 26, 26, 0.1);
+    box-shadow: -4px 0 16px rgba(45, 42, 38, 0.1);
   }
 }
 
@@ -3955,13 +3956,14 @@ input, textarea, select {
 <script src="../assets/pet.js"></script>
 <style>
   /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
-  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(139,105,20,.35) transparent; }
+  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(214, 123, 123, .35) transparent; }
   .sidebar-nav::-webkit-scrollbar { width: 6px; }
   .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
-  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
-  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(214, 123, 123, .35); border-radius: 3px; }
+  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(214, 123, 123, .6); }
 </style>
 <script src="../assets/voice.js"></script>
 <script src="../assets/mobile.js"></script>
+<link rel="stylesheet" href="../assets/theme-ink-override.css">
 </body>
 </html>

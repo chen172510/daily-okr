@@ -1,0 +1,64 @@
+/* ============================================
+   行醒 XingXing - 国风变量 → 现代清新 覆盖层
+   加载顺序晚于各页面 body 内的 :root，故覆盖生效
+   ============================================ */
+
+:root {
+  /* 宣纸底 → 浅灰白 */
+  --ink-paper: #faf9f7;
+  --ink-paper-light: #ffffff;
+  --ink-paper-dark: #f0efeb;
+
+  /* 完整墨色阶 → 中性灰（在白底上有足够对比度） */
+  --ink-50:  #faf9f7;
+  --ink-100: #f2f1ed;
+  --ink-200: #e8e6e1;
+  --ink-300: #d8d5ce;
+  --ink-400: #a8a39c;
+  --ink-500: #6b6864;
+  --ink-600: #5a5753;
+  --ink-700: #4d4a46;
+  --ink-800: #3d3a36;
+  --ink-900: #2d2a26;
+
+  /* 描金 → 珊瑚粉 */
+  --ink-gold: #f2a0a0;
+  --ink-gold-light: #f7c4c4;
+  --ink-gold-dark: #d67b7b;
+
+  /* 朱砂 → 柔和红 */
+  --ink-cinnabar: #e88383;
+  --ink-cinnabar-light: #f2a0a0;
+  --ink-cinnabar-dark: #d65c5c;
+
+  /* 边框 / 阴影 → 柔和 */
+  --border-ink: #eceae6;
+  --border-ink-strong: #d8d5ce;
+  --shadow-ink: 0 2px 8px rgba(45, 42, 38, 0.04);
+  --shadow-ink-lg: 0 8px 28px rgba(45, 42, 38, 0.08);
+
+  /* 语义别名 */
+  --bg-page: var(--ink-paper);
+  --bg-card: var(--ink-paper-light);
+  --bg-ink: var(--ink-900);
+  --text-primary: var(--ink-900);
+  --text-secondary: var(--ink-500);
+  --text-muted: var(--ink-400);
+}
+
+/* ---------- 隐藏国风装饰元素 ---------- */
+.ink-wash-decoration,
+.mountain-footer,
+.cloud-decoration,
+.flame-decoration,
+.star-twinkle {
+  display: none !important;
+}
+
+/* brush-divider 改为现代细线 */
+.brush-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-ink), transparent);
+  border: none;
+}
+.brush-divider svg { display: none !important; }

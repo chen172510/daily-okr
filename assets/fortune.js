@@ -73,14 +73,14 @@
     if (old) { old.parentNode.removeChild(old); return; }
     var box = document.createElement('div');
     box.id = 'xx-zodiac-picker';
-    box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:12px;padding:18px;box-shadow:0 16px 40px rgba(20,16,8,.3);font-family:"STKaiti","KaiTi",serif;max-width:340px;width:88vw;';
-    box.innerHTML = '<div style="font-size:15px;margin-bottom:12px;color:#1f1a10;letter-spacing:1px;">选择你的星座</div>'
+    box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf9f7;border:1px solid #f7c4c4;border-radius:12px;padding:18px;box-shadow:0 16px 40px rgba(45, 42, 38, .3);font-family:"STKaiti","KaiTi",serif;max-width:340px;width:88vw;';
+    box.innerHTML = '<div style="font-size:15px;margin-bottom:12px;color:#2d2a26;letter-spacing:1px;">选择你的星座</div>'
       + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">'
       + ZODIACS.map(function (z) {
-          return '<button type="button" data-z="' + z.n + '" style="padding:8px 4px;border:1px solid #e0d8cc;border-radius:6px;background:#fff;cursor:pointer;font-family:inherit;font-size:13px;color:#362e1f;">' + z.n + '</button>';
+          return '<button type="button" data-z="' + z.n + '" style="padding:8px 4px;border:1px solid #e8e6e1;border-radius:6px;background:#fff;cursor:pointer;font-family:inherit;font-size:13px;color:#3d3a36;">' + z.n + '</button>';
         }).join('')
       + '</div>'
-      + '<div style="margin-top:12px;text-align:right;"><button type="button" data-close="1" style="border:none;background:none;cursor:pointer;font-family:inherit;color:#8a7a5e;font-size:13px;">关闭</button></div>';
+      + '<div style="margin-top:12px;text-align:right;"><button type="button" data-close="1" style="border:none;background:none;cursor:pointer;font-family:inherit;color:#6b6864;font-size:13px;">关闭</button></div>';
     document.body.appendChild(box);
     box.addEventListener('click', function (e) {
       var t = e.target;

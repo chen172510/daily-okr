@@ -12,55 +12,55 @@
 
 :root {
   /* ---------- Ink Palette ---------- */
-  --okr-ink-50: #faf8f5;
-  --okr-ink-100: #f0ebe3;
-  --okr-ink-200: #e0d8cc;
-  --okr-ink-300: #c9bda8;
-  --okr-ink-400: #a89880;
-  --okr-ink-500: #8a7a5e;
-  --okr-ink-600: #6b5d44;
-  --okr-ink-700: #4f4430;
-  --okr-ink-800: #362e1f;
-  --okr-ink-900: #1f1a10;
+  --okr-ink-50: #faf9f7;
+  --okr-ink-100: #f2f1ed;
+  --okr-ink-200: #e8e6e1;
+  --okr-ink-300: #d8d5ce;
+  --okr-ink-400: #a8a39c;
+  --okr-ink-500: #6b6864;
+  --okr-ink-600: #5a5753;
+  --okr-ink-700: #4d4a46;
+  --okr-ink-800: #3d3a36;
+  --okr-ink-900: #2d2a26;
 
   /* ---------- Rice Paper (宣纸) ---------- */
-  --okr-paper-light: #f7f2e8;
-  --okr-paper: #ede4d3;
-  --okr-paper-dark: #d9cbae;
+  --okr-paper-light: #faf9f7;
+  --okr-paper: #f0efeb;
+  --okr-paper-dark: #f0efeb;
 
   /* ---------- Cyan Ink (青黛) ---------- */
-  --okr-cyan-100: #e8f1f0;
-  --okr-cyan-300: #7fb3ad;
-  --okr-cyan-500: #3d7a74;
-  --okr-cyan-700: #244f4b;
-  --okr-cyan-900: #122b29;
+  --okr-cyan-100: #e8f6f2;
+  --okr-cyan-300: #a8ddd0;
+  --okr-cyan-500: #7fcdbb;
+  --okr-cyan-700: #4a9d8c;
+  --okr-cyan-900: #2d6a5f;
 
   /* ---------- Gold Accent (描金) ---------- */
-  --okr-gold-100: #f7ecd0;
-  --okr-gold-300: #e8c97a;
-  --okr-gold-500: #c9a227;
-  --okr-gold-700: #8b6914;
-  --okr-gold-900: #5c4508;
+  --okr-gold-100: #fde2e2;
+  --okr-gold-300: #f7c4c4;
+  --okr-gold-500: #f2a0a0;
+  --okr-gold-700: #d67b7b;
+  --okr-gold-900: #d65c5c;
 
   /* ---------- Vermilion (朱砂) ---------- */
-  --okr-vermilion: #c0392b;
-  --okr-vermilion-light: #e74c3c;
-  --okr-vermilion-dark: #922b21;
+  --okr-vermilion: #e88383;
+  --okr-vermilion-light: #e88383;
+  --okr-vermilion-dark: #d65c5c;
 
   /* ---------- State Colors ---------- */
-  --okr-state-success: #2d6a4f;
-  --okr-state-success-bg: #d8f3dc;
-  --okr-state-warning: #b07d1e;
-  --okr-state-warning-bg: #fef3c7;
-  --okr-state-error: #922b21;
+  --okr-state-success: #5bb3a0;
+  --okr-state-success-bg: #e8f6f2;
+  --okr-state-warning: #d67b7b;
+  --okr-state-warning-bg: #fde2e2;
+  --okr-state-error: #d65c5c;
   --okr-state-error-bg: #fde2e2;
 
   /* ---------- Semantic Aliases ---------- */
   --okr-background: var(--okr-paper-light);
   --okr-foreground: var(--okr-ink-900);
-  --okr-card: #fdfbf5;
+  --okr-card: #ffffff;
   --okr-card-foreground: var(--okr-ink-900);
-  --okr-popover: #fdfbf5;
+  --okr-popover: #ffffff;
   --okr-popover-foreground: var(--okr-ink-900);
   --okr-primary: var(--okr-ink-800);
   --okr-primary-foreground: var(--okr-paper-light);
@@ -106,10 +106,10 @@
   --okr-space-16: 64px;
 
   /* ---------- Shadow (subtle ink wash) ---------- */
-  --okr-shadow-sm: 0 1px 3px 0 rgba(31, 26, 16, 0.06);
-  --okr-shadow-md: 0 4px 8px -2px rgba(31, 26, 16, 0.08);
-  --okr-shadow-lg: 0 8px 16px -4px rgba(31, 26, 16, 0.1);
-  --okr-shadow-xl: 0 16px 32px -8px rgba(31, 26, 16, 0.12);
+  --okr-shadow-sm: 0 1px 3px 0 rgba(45, 42, 38, 0.06);
+  --okr-shadow-md: 0 4px 8px -2px rgba(45, 42, 38, 0.08);
+  --okr-shadow-lg: 0 8px 16px -4px rgba(45, 42, 38, 0.1);
+  --okr-shadow-xl: 0 16px 32px -8px rgba(45, 42, 38, 0.12);
 
   /* ---------- Transition ---------- */
   --okr-transition-fast: 150ms ease;
@@ -137,8 +137,8 @@ html {
 body {
   min-height: 100vh;
   background-image:
-    radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at top left, rgba(242, 160, 160, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(127, 205, 187, 0.05) 0%, transparent 50%);
 }
 
 /* ---------- Utility Classes ---------- */
@@ -196,7 +196,7 @@ body {
   padding: 2px 8px;
   font-size: 12px;
   letter-spacing: 2px;
-  box-shadow: 0 1px 3px rgba(146, 43, 33, 0.3);
+  box-shadow: 0 1px 3px rgba(214, 92, 92, 0.3);
 }
 
     </style>
@@ -318,22 +318,23 @@ body {
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <!-- 移动端适配 + 可添加到主屏幕 -->
 <link rel="manifest" href="../manifest.json">
-<meta name="theme-color" content="#1F1A10">
+<meta name="theme-color" content="#2d2a26">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="行醒">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script></head>
+<link rel="stylesheet" href="../assets/mobile.css"><script src="../assets/mobile-viewport.js"></script><link rel="stylesheet" href="../assets/theme.css">
+</head>
 <body>
 
 <!-- 水墨晕染装饰 SVG -->
 <svg class="ink-wash-decoration ink-wash-top" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="inkWash1" cx="30%" cy="30%" r="60%">
-      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.15"/>
-      <stop offset="50%" stop-color="#1f1a10" stop-opacity="0.05"/>
-      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#2d2a26" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#2d2a26" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#2d2a26" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <ellipse cx="180" cy="120" rx="160" ry="100" fill="url(#inkWash1)"/>
@@ -343,9 +344,9 @@ body {
 <svg class="ink-wash-decoration ink-wash-bottom" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="inkWash2" cx="60%" cy="70%" r="50%">
-      <stop offset="0%" stop-color="#1f1a10" stop-opacity="0.12"/>
-      <stop offset="60%" stop-color="#1f1a10" stop-opacity="0.04"/>
-      <stop offset="100%" stop-color="#1f1a10" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#2d2a26" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#2d2a26" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#2d2a26" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <ellipse cx="300" cy="250" rx="200" ry="80" fill="url(#inkWash2)"/>
@@ -353,8 +354,8 @@ body {
 
 <!-- 底部山脉剪影 -->
 <svg class="mountain-footer" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0,80 L0,60 Q100,30 200,50 T400,20 T600,45 T800,15 T1000,40 T1200,25 T1440,50 L1440,80 Z" fill="#1f1a10"/>
-  <path d="M0,80 L0,70 Q150,50 300,65 T600,55 T900,70 T1200,60 T1440,72 L1440,80 Z" fill="#1f1a10" opacity="0.6"/>
+  <path d="M0,80 L0,60 Q100,30 200,50 T400,20 T600,45 T800,15 T1000,40 T1200,25 T1440,50 L1440,80 Z" fill="#2d2a26"/>
+  <path d="M0,80 L0,70 Q150,50 300,65 T600,55 T900,70 T1200,60 T1440,72 L1440,80 Z" fill="#2d2a26" opacity="0.6"/>
 </svg>
 
 <!-- ========== 顶部状态栏 ========== -->
@@ -438,8 +439,8 @@ body {
         <!-- 毛笔笔触分割线 -->
         <div class="brush-divider">
             <svg viewBox="0 0 200 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10,8 Q50,2 100,8 T190,8" stroke="#1f1a10" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
-                <path d="M20,10 Q60,6 100,10 T180,10" stroke="#c9a227" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.3"/>
+                <path d="M10,8 Q50,2 100,8 T190,8" stroke="#2d2a26" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.2"/>
+                <path d="M20,10 Q60,6 100,10 T180,10" stroke="#f2a0a0" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.3"/>
             </svg>
         </div>
 
@@ -544,9 +545,9 @@ body {
                         <svg class="ring-svg-sm" viewBox="0 0 120 120">
                             <defs>
                                 <linearGradient id="energyGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#e8c97a"/>
-                                    <stop offset="50%" stop-color="#c9a227"/>
-                                    <stop offset="100%" stop-color="#8b6914"/>
+                                    <stop offset="0%" stop-color="#f7c4c4"/>
+                                    <stop offset="50%" stop-color="#f2a0a0"/>
+                                    <stop offset="100%" stop-color="#d67b7b"/>
                                 </linearGradient>
                             </defs>
                             <circle class="ring-bg-outer" cx="60" cy="60" r="50"/>
@@ -568,9 +569,9 @@ body {
                         <svg class="ring-svg-sm" viewBox="0 0 120 120">
                             <defs>
                                 <linearGradient id="stateGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#e74c3c"/>
-                                    <stop offset="50%" stop-color="#c0392b"/>
-                                    <stop offset="100%" stop-color="#922b21"/>
+                                    <stop offset="0%" stop-color="#e88383"/>
+                                    <stop offset="50%" stop-color="#e88383"/>
+                                    <stop offset="100%" stop-color="#d65c5c"/>
                                 </linearGradient>
                             </defs>
                             <circle class="ring-bg-outer" cx="60" cy="60" r="50"/>
@@ -592,9 +593,9 @@ body {
                         <svg class="ring-svg-sm" viewBox="0 0 120 120">
                             <defs>
                                 <linearGradient id="mentalGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#7fb3ad"/>
-                                    <stop offset="50%" stop-color="#3d7a74"/>
-                                    <stop offset="100%" stop-color="#244f4b"/>
+                                    <stop offset="0%" stop-color="#a8ddd0"/>
+                                    <stop offset="50%" stop-color="#7fcdbb"/>
+                                    <stop offset="100%" stop-color="#4a9d8c"/>
                                 </linearGradient>
                             </defs>
                             <circle class="ring-bg-outer" cx="60" cy="60" r="50"/>
@@ -616,7 +617,7 @@ body {
                         <svg class="ring-svg-sm" viewBox="0 0 120 120">
                             <defs>
                                 <linearGradient id="physicalGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#6bbf8a"/>
+                                    <stop offset="0%" stop-color="#7fcdbb"/>
                                     <stop offset="50%" stop-color="#3d8b5e"/>
                                     <stop offset="100%" stop-color="#2a5f3f"/>
                                 </linearGradient>
@@ -703,18 +704,18 @@ body {
                     <svg class="energy-curve" viewBox="0 0 600 60" preserveAspectRatio="none">
                         <defs>
                             <linearGradient id="curveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#c9a227" stop-opacity="0.25"/>
-                                <stop offset="100%" stop-color="#c9a227" stop-opacity="0.03"/>
+                                <stop offset="0%" stop-color="#f2a0a0" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="#f2a0a0" stop-opacity="0.03"/>
                             </linearGradient>
                             <linearGradient id="lowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#c0392b" stop-opacity="0.15"/>
-                                <stop offset="100%" stop-color="#c0392b" stop-opacity="0.02"/>
+                                <stop offset="0%" stop-color="#e88383" stop-opacity="0.15"/>
+                                <stop offset="100%" stop-color="#e88383" stop-opacity="0.02"/>
                             </linearGradient>
                         </defs>
                         <path d="M240,35 Q300,40 360,35 L360,60 L240,60 Z" fill="url(#lowGradient)"/>
                         <path d="M60,30 Q120,15 240,15 L240,60 L60,60 Z" fill="url(#curveGradient)" opacity="0.8"/>
                         <path d="M0,50 Q60,30 120,20 T240,15 T360,35 T480,25 T600,45" 
-                              fill="none" stroke="#c9a227" stroke-width="1.5" stroke-linecap="round"/>
+                              fill="none" stroke="#f2a0a0" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                     <!-- 时间节点 -->
                     <div class="day-nodes">
@@ -1167,12 +1168,12 @@ body {
                 <svg viewBox="0 0 700 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" id="weeklyChartSvg">
                     <defs>
                         <linearGradient id="barGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#362e1f"/>
-                            <stop offset="100%" stop-color="#6b5d44"/>
+                            <stop offset="0%" stop-color="#3d3a36"/>
+                            <stop offset="100%" stop-color="#5a5753"/>
                         </linearGradient>
                         <linearGradient id="barGoldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#e8c97a"/>
-                            <stop offset="100%" stop-color="#c9a227"/>
+                            <stop offset="0%" stop-color="#f7c4c4"/>
+                            <stop offset="100%" stop-color="#f2a0a0"/>
                         </linearGradient>
                         <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
                             <feGaussianBlur stdDeviation="2" result="blur"/>
@@ -1183,7 +1184,7 @@ body {
                         </filter>
                     </defs>
                     <!-- Y轴刻度线 -->
-                    <g class="chart-grid" stroke="#e0d8cc" stroke-width="0.5" stroke-dasharray="3,3">
+                    <g class="chart-grid" stroke="#e8e6e1" stroke-width="0.5" stroke-dasharray="3,3">
                         <line x1="40" y1="20" x2="660" y2="20"/>
                         <line x1="40" y1="50" x2="660" y2="50"/>
                         <line x1="40" y1="80" x2="660" y2="80"/>
@@ -1191,7 +1192,7 @@ body {
                         <line x1="40" y1="130" x2="660" y2="130"/>
                     </g>
                     <!-- Y轴标签 -->
-                    <g class="chart-y-labels" fill="#a89880" font-size="10" font-family="STKaiti, KaiTi, serif">
+                    <g class="chart-y-labels" fill="#a8a39c" font-size="10" font-family="STKaiti, KaiTi, serif">
                         <text x="35" y="24" text-anchor="end">100%</text>
                         <text x="35" y="54" text-anchor="end">80%</text>
                         <text x="35" y="84" text-anchor="end">60%</text>
@@ -1205,7 +1206,7 @@ body {
                     <!-- 精力折线（始终显示） -->
                     <g id="energyLine" class="energy-line"></g>
                     <!-- X轴标签 -->
-                    <g id="chartXLabels" fill="#8a7a5e" font-size="10" font-family="STKaiti, KaiTi, serif">
+                    <g id="chartXLabels" fill="#6b6864" font-size="10" font-family="STKaiti, KaiTi, serif">
                     </g>
                 </svg>
             </div>
@@ -2198,7 +2199,7 @@ function updateEnergyCurve() {
   areaD += ' L' + points[points.length - 1].x + ',' + h + ' Z';
   
   // 更新曲线
-  const curvePath = svg.querySelector('path[stroke="#c9a227"]');
+  const curvePath = svg.querySelector('path[stroke="#f2a0a0"]');
   if (curvePath) {
     curvePath.setAttribute('d', pathD);
   }
@@ -2442,7 +2443,7 @@ function renderWeeklyChart() {
       return `
         <g class="${isToday ? 'bar-today' : ''}" data-day="${day.day}">
           <rect x="${x}" y="${y}" width="${barWidth}" height="${height}" rx="2" fill="${fill}"/>
-          <text class="bar-label" x="${x + barWidth/2}" y="${labelY}" text-anchor="middle" fill="${isToday ? '#c9a227' : 'var(--okr-ink-700)'}">${labelText}</text>
+          <text class="bar-label" x="${x + barWidth/2}" y="${labelY}" text-anchor="middle" fill="${isToday ? '#f2a0a0' : 'var(--okr-ink-700)'}">${labelText}</text>
         </g>
       `;
     }).join('');
@@ -2475,7 +2476,7 @@ function renderWeeklyChart() {
 
     const circles = points.map((p, i) => {
       const r = p.today ? 4 : 3;
-      const strokeColor = p.today ? '#c9a227' : '#c0392b';
+      const strokeColor = p.today ? '#f2a0a0' : '#e88383';
       return `<circle cx="${p.x}" cy="${p.y}" r="${r}" stroke="${strokeColor}"/>`;
     }).join('');
 
@@ -2489,8 +2490,8 @@ function renderWeeklyChart() {
       const x = startX + i * barGap + barWidth / 2;
       const isToday = day.today;
       return `
-        <text x="${x}" y="148" text-anchor="middle" fill="${isToday ? '#c9a227' : '#8a7a5e'}" font-weight="${isToday ? '700' : '400'}">${day.day.replace('周', '')}</text>
-        <text x="${x}" y="158" text-anchor="middle" fill="#a89880" font-size="9">${day.date}</text>
+        <text x="${x}" y="148" text-anchor="middle" fill="${isToday ? '#f2a0a0' : '#6b6864'}" font-weight="${isToday ? '700' : '400'}">${day.day.replace('周', '')}</text>
+        <text x="${x}" y="158" text-anchor="middle" fill="#a8a39c" font-size="9">${day.date}</text>
       `;
     }).join('');
   }
@@ -2789,24 +2790,24 @@ function setTheme(theme) {
         html.classList.remove('light');
         // 深色主题变量
         document.documentElement.style.setProperty('--bg-page', '#2a2518');
-        document.documentElement.style.setProperty('--ink-paper', '#362e1f');
+        document.documentElement.style.setProperty('--ink-paper', '#3d3a36');
         document.documentElement.style.setProperty('--ink-paper-light', '#3d3524');
-        document.documentElement.style.setProperty('--text-primary', '#f0ebe3');
-        document.documentElement.style.setProperty('--text-secondary', '#c9bda8');
-        document.documentElement.style.setProperty('--border-ink', 'rgba(240, 235, 227, 0.15)');
-        document.documentElement.style.setProperty('--border-ink-strong', 'rgba(240, 235, 227, 0.3)');
+        document.documentElement.style.setProperty('--text-primary', '#f2f1ed');
+        document.documentElement.style.setProperty('--text-secondary', '#d8d5ce');
+        document.documentElement.style.setProperty('--border-ink', 'rgba(242, 241, 237, 0.15)');
+        document.documentElement.style.setProperty('--border-ink-strong', 'rgba(242, 241, 237, 0.3)');
         document.getElementById('themeDarkLabel').classList.add('active');
         document.getElementById('themeLightLabel').classList.remove('active');
     } else {
         html.classList.add('light');
         html.classList.remove('dark');
-        document.documentElement.style.setProperty('--bg-page', '#f7f2e8');
-        document.documentElement.style.setProperty('--ink-paper', '#ede4d3');
-        document.documentElement.style.setProperty('--ink-paper-light', '#fdfbf5');
-        document.documentElement.style.setProperty('--text-primary', '#1f1a10');
-        document.documentElement.style.setProperty('--text-secondary', '#5c554a');
-        document.documentElement.style.setProperty('--border-ink', 'rgba(31, 26, 16, 0.15)');
-        document.documentElement.style.setProperty('--border-ink-strong', 'rgba(31, 26, 16, 0.3)');
+        document.documentElement.style.setProperty('--bg-page', '#faf9f7');
+        document.documentElement.style.setProperty('--ink-paper', '#f0efeb');
+        document.documentElement.style.setProperty('--ink-paper-light', '#ffffff');
+        document.documentElement.style.setProperty('--text-primary', '#2d2a26');
+        document.documentElement.style.setProperty('--text-secondary', '#5a5753');
+        document.documentElement.style.setProperty('--border-ink', 'rgba(45, 42, 38, 0.15)');
+        document.documentElement.style.setProperty('--border-ink-strong', 'rgba(45, 42, 38, 0.3)');
         document.getElementById('themeLightLabel').classList.add('active');
         document.getElementById('themeDarkLabel').classList.remove('active');
     }
@@ -2910,22 +2911,22 @@ document.addEventListener('keydown', function(e) {
 /* ---------- 设计令牌 ---------- */
 :root {
   /* 宣纸底色 */
-  --ink-paper: #f7f2e8;
-  --ink-paper-light: #fdfbf5;
+  --ink-paper: #faf9f7;
+  --ink-paper-light: #ffffff;
   --ink-paper-dark: #ede6d6;
 
   /* 墨色阶 */
   --ink-100: #e8e2d5;
   --ink-300: #a89f8e;
-  --ink-500: #5c554a;
+  --ink-500: #5a5753;
   --ink-700: #3a3328;
-  --ink-900: #1f1a10;
+  --ink-900: #2d2a26;
 
   /* 点缀色 */
-  --ink-gold: #c9a227;
+  --ink-gold: #f2a0a0;
   --ink-gold-light: #e0c158;
-  --ink-gold-dark: #a8851a;
-  --ink-cinnabar: #c0392b;
+  --ink-gold-dark: #d67b7b;
+  --ink-cinnabar: #e88383;
   --ink-cinnabar-light: #d65445;
   --ink-cinnabar-dark: #9b2d20;
 
@@ -2936,8 +2937,8 @@ document.addEventListener('keydown', function(e) {
   --text-primary: var(--ink-900);
   --text-secondary: var(--ink-500);
   --text-muted: var(--ink-300);
-  --border-ink: rgba(31, 26, 16, 0.15);
-  --border-ink-strong: rgba(31, 26, 16, 0.3);
+  --border-ink: rgba(45, 42, 38, 0.15);
+  --border-ink-strong: rgba(45, 42, 38, 0.3);
 
   /* 字体 */
   --font-serif: "STSong", "SimSun", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
@@ -2949,8 +2950,8 @@ document.addEventListener('keydown', function(e) {
   --radius-lg: 12px;
 
   /* 阴影 */
-  --shadow-ink: 0 2px 12px rgba(31, 26, 16, 0.06);
-  --shadow-ink-lg: 0 8px 24px rgba(31, 26, 16, 0.08);
+  --shadow-ink: 0 2px 12px rgba(45, 42, 38, 0.06);
+  --shadow-ink-lg: 0 8px 24px rgba(45, 42, 38, 0.08);
 }
 
 /* ---------- 基础样式 ---------- */
@@ -2984,9 +2985,9 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(31, 26, 16, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(31, 26, 16, 0.025) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 50%, rgba(201, 162, 39, 0.02) 0%, transparent 60%);
+    radial-gradient(ellipse at 20% 30%, rgba(45, 42, 38, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(45, 42, 38, 0.025) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(242, 160, 160, 0.02) 0%, transparent 60%);
 }
 
 /* 水墨晕染装饰 */
@@ -3034,7 +3035,7 @@ body::before {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(31, 26, 16, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(45, 42, 38, 0.1), transparent);
 }
 
 .topbar-left {
@@ -3058,14 +3059,14 @@ body::before {
   font-weight: bold;
   letter-spacing: 0;
   position: relative;
-  box-shadow: 0 1px 3px rgba(192, 57, 43, 0.3);
+  box-shadow: 0 1px 3px rgba(232, 131, 131, 0.3);
 }
 
 .seal-logo::before {
   content: "";
   position: absolute;
   inset: 2px;
-  border: 1px solid rgba(253, 251, 245, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 2px;
 }
 
@@ -3129,7 +3130,7 @@ body::before {
 }
 
 .streak-badge {
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  background: linear-gradient(135deg, #fde2e2, #fde68a);
   color: #92400e;
   border: 1px solid #f59e0b;
 }
@@ -3154,14 +3155,14 @@ body::before {
 }
 
 .points-badge {
-  background: linear-gradient(135deg, #f7ecd0, #e8c97a);
-  color: #5c4508;
-  border: 1px solid #c9a227;
+  background: linear-gradient(135deg, #fde2e2, #f7c4c4);
+  color: #d65c5c;
+  border: 1px solid #f2a0a0;
 }
 
 .points-badge:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.3);
+  box-shadow: 0 2px 8px rgba(242, 160, 160, 0.3);
 }
 
 .points-icon {
@@ -3275,7 +3276,7 @@ body::before {
   right: -1px;
   bottom: 0;
   width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(31, 26, 16, 0.08), transparent);
+  background: linear-gradient(180deg, transparent, rgba(45, 42, 38, 0.08), transparent);
 }
 
 /* 修行录标题 */
@@ -3434,7 +3435,7 @@ body::before {
 }
 
 .nav-item:hover {
-  background: rgba(31, 26, 16, 0.04);
+  background: rgba(45, 42, 38, 0.04);
   color: var(--ink-700);
 }
 
@@ -3569,7 +3570,7 @@ body::before {
   right: 0;
   width: 120px;
   height: 120px;
-  background: radial-gradient(circle at top right, rgba(31, 26, 16, 0.03), transparent 70%);
+  background: radial-gradient(circle at top right, rgba(45, 42, 38, 0.03), transparent 70%);
   pointer-events: none;
 }
 
@@ -3713,7 +3714,7 @@ body::before {
   align-items: center;
   justify-content: space-between;
   position: relative;
-  background: linear-gradient(180deg, rgba(31, 26, 16, 0.02), transparent);
+  background: linear-gradient(180deg, rgba(45, 42, 38, 0.02), transparent);
 }
 
 .scroll-header::before,
@@ -3826,7 +3827,7 @@ body::before {
 }
 
 .todo-item:hover {
-  background: rgba(31, 26, 16, 0.02);
+  background: rgba(45, 42, 38, 0.02);
 }
 
 /* 圆形勾选框 */
@@ -3902,9 +3903,9 @@ body::before {
 }
 
 .todo-category.priority {
-  background: rgba(192, 57, 43, 0.08);
+  background: rgba(232, 131, 131, 0.08);
   color: var(--ink-cinnabar);
-  border-color: rgba(192, 57, 43, 0.2);
+  border-color: rgba(232, 131, 131, 0.2);
 }
 
 .todo-time {
@@ -3936,7 +3937,7 @@ body::before {
 }
 
 .todo-delete:hover {
-  background: rgba(192, 57, 43, 0.08);
+  background: rgba(232, 131, 131, 0.08);
 }
 
 .todo-delete svg {
@@ -3995,7 +3996,7 @@ body::before {
   padding: 3px 10px;
   border: 1px solid var(--ink-gold);
   border-radius: 2px;
-  background: rgba(201, 162, 39, 0.05);
+  background: rgba(242, 160, 160, 0.05);
 }
 
 .vitality-title {
@@ -4235,7 +4236,7 @@ body::before {
   white-space: nowrap;
   letter-spacing: 0.05em;
   pointer-events: none;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(45, 42, 38, 0.2);
 }
 
 /* 当前时间指示线 */
@@ -4257,7 +4258,7 @@ body::before {
   transform: translateX(-50%);
   width: 2px;
   background: linear-gradient(180deg, var(--ink-gold-light), var(--ink-gold));
-  box-shadow: 0 0 8px rgba(201, 162, 39, 0.5);
+  box-shadow: 0 0 8px rgba(242, 160, 160, 0.5);
 }
 
 .timeline-now-dot {
@@ -4269,14 +4270,14 @@ body::before {
   height: 8px;
   border-radius: 50%;
   background: var(--ink-gold);
-  box-shadow: 0 0 6px rgba(201, 162, 39, 0.6), 0 0 0 2px rgba(201, 162, 39, 0.2);
+  box-shadow: 0 0 6px rgba(242, 160, 160, 0.6), 0 0 0 2px rgba(242, 160, 160, 0.2);
   animation: pulse-gold 2s ease-in-out infinite;
   z-index: 2;
 }
 
 @keyframes pulse-gold {
-  0%, 100% { box-shadow: 0 0 8px rgba(201, 162, 39, 0.6), 0 0 0 3px rgba(201, 162, 39, 0.2); }
-  50% { box-shadow: 0 0 12px rgba(201, 162, 39, 0.8), 0 0 0 6px rgba(201, 162, 39, 0.1); }
+  0%, 100% { box-shadow: 0 0 8px rgba(242, 160, 160, 0.6), 0 0 0 3px rgba(242, 160, 160, 0.2); }
+  50% { box-shadow: 0 0 12px rgba(242, 160, 160, 0.8), 0 0 0 6px rgba(242, 160, 160, 0.1); }
 }
 
 /* Tooltip */
@@ -4350,8 +4351,8 @@ body::before {
   align-items: center;
   gap: 12px;
   padding: 14px 20px;
-  background: linear-gradient(90deg, rgba(201, 162, 39, 0.08), rgba(61, 122, 116, 0.06));
-  border: 1px solid rgba(201, 162, 39, 0.2);
+  background: linear-gradient(90deg, rgba(242, 160, 160, 0.08), rgba(127, 205, 187, 0.06));
+  border: 1px solid rgba(242, 160, 160, 0.2);
   border-radius: var(--radius-md);
   position: relative;
 }
@@ -4411,7 +4412,7 @@ body::before {
   left: 0;
   right: 0;
   height: 60px;
-  background: linear-gradient(0deg, rgba(31, 26, 16, 0.03), transparent);
+  background: linear-gradient(0deg, rgba(45, 42, 38, 0.03), transparent);
   pointer-events: none;
 }
 
@@ -4500,7 +4501,7 @@ body::before {
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(180deg, rgba(253, 251, 245, 0.3), transparent);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
   border-radius: 4px 4px 0 0;
 }
 
@@ -4510,11 +4511,11 @@ body::before {
 
 .chart-bar-group.today .chart-bar {
   background: linear-gradient(180deg, var(--ink-gold-light), var(--ink-gold-dark));
-  box-shadow: 0 0 12px rgba(201, 162, 39, 0.3);
+  box-shadow: 0 0 12px rgba(242, 160, 160, 0.3);
 }
 
 .chart-bar-group.today .chart-bar::after {
-  background: linear-gradient(180deg, rgba(253, 251, 245, 0.5), transparent);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
 }
 
 .chart-day-label {
@@ -4774,7 +4775,7 @@ body::before {
 
 .sidebar-user:hover {
   border-color: var(--ink-gold);
-  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.15);
+  box-shadow: 0 2px 8px rgba(242, 160, 160, 0.15);
 }
 
 /* 行星容器 */
@@ -4809,11 +4810,11 @@ body::before {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ffd97a 0%, #e9b94a 35%, #c9a227 70%, #a8851a 100%);
+  background: linear-gradient(135deg, #ffd97a 0%, #e9b94a 35%, #f2a0a0 70%, #d67b7b 100%);
   box-shadow: 
-    inset -4px -4px 8px rgba(0,0,0,0.2),
+    inset -4px -4px 8px rgba(45, 42, 38, 0.2),
     inset 2px 2px 6px rgba(255,255,255,0.35),
-    0 2px 10px rgba(201, 162, 39, 0.5);
+    0 2px 10px rgba(242, 160, 160, 0.5);
   overflow: hidden;
   z-index: 2;
 }
@@ -4830,7 +4831,7 @@ body::before {
   left: 15%;
   width: 12px;
   height: 6px;
-  background: #8b6914;
+  background: #d67b7b;
   border-radius: 50%;
   transform: rotate(-15deg);
   opacity: 0.35;
@@ -4841,7 +4842,7 @@ body::before {
   right: 10%;
   width: 10px;
   height: 5px;
-  background: #a8851a;
+  background: #d67b7b;
   border-radius: 50%;
   transform: rotate(20deg);
   opacity: 0.3;
@@ -4880,7 +4881,7 @@ body::before {
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, 
     rgba(255,230,150,0.3) 0%, 
-    rgba(201,162,39,0.1) 50%, 
+    rgba(242, 160, 160, 0.1) 50%, 
     transparent 70%);
   pointer-events: none;
 }
@@ -4909,7 +4910,7 @@ body::before {
   transform: translate(-50%, -50%);
   width: 42px;
   height: 42px;
-  border: 2px solid rgba(201, 162, 39, 0.7);
+  border: 2px solid rgba(242, 160, 160, 0.7);
   border-radius: 50%;
   box-sizing: border-box;
 }
@@ -4921,7 +4922,7 @@ body::before {
   transform: translate(-50%, -50%);
   width: 48px;
   height: 48px;
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  border: 1px solid rgba(242, 160, 160, 0.35);
   border-radius: 50%;
   box-sizing: border-box;
 }
@@ -4951,7 +4952,7 @@ body::before {
   height: 5px;
   background: linear-gradient(135deg, #e8e0cc, #c4b89a);
   border-radius: 50%;
-  box-shadow: 0 0 3px rgba(201, 162, 39, 0.4);
+  box-shadow: 0 0 3px rgba(242, 160, 160, 0.4);
 }
 
 /* 星星点缀 */
@@ -5060,7 +5061,7 @@ body::before {
 .settings-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(31, 26, 16, 0.5);
+  background: rgba(45, 42, 38, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5083,7 +5084,7 @@ body::before {
   max-width: 480px;
   max-height: 85vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(31, 26, 16, 0.2);
+  box-shadow: 0 20px 60px rgba(45, 42, 38, 0.2);
   transform: translateY(20px) scale(0.95);
   transition: transform 0.3s ease;
   position: relative;
@@ -5124,7 +5125,7 @@ body::before {
 }
 
 .settings-close:hover {
-  background: rgba(192, 57, 43, 0.1);
+  background: rgba(232, 131, 131, 0.1);
 }
 
 .settings-close svg {
@@ -5173,7 +5174,7 @@ body::before {
   font-weight: 700;
   color: #fff;
   border: 3px solid var(--ink-paper-light);
-  box-shadow: 0 2px 8px rgba(31, 26, 16, 0.15);
+  box-shadow: 0 2px 8px rgba(45, 42, 38, 0.15);
   overflow: hidden;
 }
 
@@ -5307,7 +5308,7 @@ body::before {
 
 .settings-radio.active {
   border-color: var(--ink-gold);
-  background: var(--ink-gold-100, #f7ecd0);
+  background: var(--ink-gold-100, #fde2e2);
   color: var(--ink-gold-dark);
 }
 
@@ -5358,12 +5359,12 @@ body::before {
   cursor: pointer;
   transition: all 0.2s ease;
   letter-spacing: 0.2em;
-  box-shadow: 0 2px 8px rgba(31, 26, 16, 0.15);
+  box-shadow: 0 2px 8px rgba(45, 42, 38, 0.15);
 }
 
 .settings-save-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(31, 26, 16, 0.2);
+  box-shadow: 0 4px 12px rgba(45, 42, 38, 0.2);
 }
 
 /* ---------- 云雾装饰 ---------- */
@@ -5663,7 +5664,7 @@ body::before {
   font-size: 13px;
 }
 .position-row.highlight {
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.08), transparent);
+  background: linear-gradient(135deg, rgba(242, 160, 160, 0.08), transparent);
   padding: 8px 12px;
   border-radius: var(--okr-radius-md);
   margin: 0 -12px;
@@ -5794,9 +5795,9 @@ body::before {
   gap: 10px;
   padding: 14px 20px;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.05), rgba(61, 122, 116, 0.05));
+  background: linear-gradient(135deg, rgba(242, 160, 160, 0.05), rgba(127, 205, 187, 0.05));
   border-radius: var(--okr-radius-md);
-  border: 1px solid rgba(201, 162, 39, 0.15);
+  border: 1px solid rgba(242, 160, 160, 0.15);
 }
 
 .encouragement-icon {
@@ -5927,23 +5928,23 @@ body::before {
   border-radius: 50%;
   background: var(--okr-ink-400);
   border: 2px solid var(--okr-card);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(45, 42, 38, 0.1);
   z-index: 2;
 }
-.node-dot.sleep { background: #4f4430; }
-.node-dot.wake { background: #e8c97a; }
+.node-dot.sleep { background: #4d4a46; }
+.node-dot.wake { background: #f7c4c4; }
 .node-dot.peak { background: var(--okr-gold-500); width: 12px; height: 12px; }
-.node-dot.work { background: #3d7a74; }
-.node-dot.meal { background: #e67e22; }
+.node-dot.work { background: #7fcdbb; }
+.node-dot.meal { background: #e9987a; }
 .node-dot.low { background: var(--okr-vermilion); }
-.node-dot.sport { background: #c0392b; }
-.node-dot.review { background: #2d6a4f; }
+.node-dot.sport { background: #e88383; }
+.node-dot.review { background: #5bb3a0; }
 
 .day-node.peak .node-dot {
-  box-shadow: 0 0 8px rgba(201, 162, 39, 0.5);
+  box-shadow: 0 0 8px rgba(242, 160, 160, 0.5);
 }
 .day-node.low .node-dot {
-  box-shadow: 0 0 6px rgba(192, 57, 43, 0.4);
+  box-shadow: 0 0 6px rgba(232, 131, 131, 0.4);
 }
 
 .node-label {
@@ -5969,7 +5970,7 @@ body::before {
   bottom: 0;
   width: 2px;
   background: linear-gradient(180deg, var(--okr-gold-500), var(--okr-gold-300));
-  box-shadow: 0 0 6px rgba(201, 162, 39, 0.5);
+  box-shadow: 0 0 6px rgba(242, 160, 160, 0.5);
 }
 .now-dot-gold {
   position: absolute;
@@ -5980,7 +5981,7 @@ body::before {
   height: 10px;
   border-radius: 50%;
   background: var(--okr-gold-500);
-  box-shadow: 0 0 8px rgba(201, 162, 39, 0.6);
+  box-shadow: 0 0 8px rgba(242, 160, 160, 0.6);
 }
 
 .timeline-labels {
@@ -6054,10 +6055,10 @@ body::before {
   transition: width 0.6s ease;
 }
 .leak-bar.outer {
-  background: linear-gradient(90deg, #3d7a74, #7fb3ad);
+  background: linear-gradient(90deg, #7fcdbb, #a8ddd0);
 }
 .leak-bar.inner {
-  background: linear-gradient(90deg, #c0392b, #e74c3c);
+  background: linear-gradient(90deg, #e88383, #e88383);
 }
 .leak-value {
   width: 24px;
@@ -6079,12 +6080,12 @@ body::before {
   line-height: 1.5;
 }
 .leak-alert {
-  background: rgba(201, 162, 39, 0.08);
+  background: rgba(242, 160, 160, 0.08);
   color: var(--okr-gold-700);
   margin-bottom: 8px;
 }
 .leak-suggestion {
-  background: rgba(61, 122, 116, 0.06);
+  background: rgba(127, 205, 187, 0.06);
   color: var(--okr-cyan-700);
 }
 .alert-icon, .suggestion-icon {
@@ -6143,7 +6144,7 @@ body::before {
   gap: 8px;
   margin-bottom: 16px;
   padding: 8px 12px;
-  background: rgba(61, 122, 116, 0.06);
+  background: rgba(127, 205, 187, 0.06);
   border-radius: var(--okr-radius-md);
 }
 
@@ -6251,7 +6252,7 @@ body::before {
 
 .drain-event-severity.moderate {
   color: #92400e;
-  background: #fef3c7;
+  background: #fde2e2;
 }
 
 .drain-event-severity.heavy {
@@ -6285,7 +6286,7 @@ body::before {
 }
 
 .drain-event-bar.external {
-  background: linear-gradient(90deg, #f39c12, #e74c3c, #c0392b);
+  background: linear-gradient(90deg, #f39c12, #e88383, #e88383);
 }
 
 .drain-event-bar.internal {
@@ -6322,7 +6323,7 @@ body::before {
 .drain-total-summary {
   margin-top: 12px;
   padding: 10px 12px;
-  background: rgba(61, 122, 116, 0.05);
+  background: rgba(127, 205, 187, 0.05);
   border-radius: var(--okr-radius-md);
   border: 1px dashed var(--okr-ink-200);
 }
@@ -6355,7 +6356,7 @@ body::before {
 .drain-total-bar-fill {
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, #6bbf8a, #c9a227, #e74c3c);
+  background: linear-gradient(90deg, #7fcdbb, #f2a0a0, #e88383);
   transition: width 0.5s ease;
 }
 
@@ -6379,7 +6380,7 @@ body::before {
 }
 
 .drain-total-dot.external {
-  background: #e74c3c;
+  background: #e88383;
 }
 
 .drain-total-dot.internal {
@@ -6387,7 +6388,7 @@ body::before {
 }
 
 .drain-total-dot.recovery {
-  background: #6bbf8a;
+  background: #7fcdbb;
 }
 
 /* ========== 智能充电配方系统 ========== */
@@ -6463,7 +6464,7 @@ body::before {
 }
 .charge-recommend-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.15);
+  box-shadow: 0 4px 12px rgba(242, 160, 160, 0.15);
   border-color: var(--okr-gold-500);
 }
 .charge-recommend-match-badge {
@@ -6507,7 +6508,7 @@ body::before {
   color: var(--okr-ink-400);
   line-height: 1.4;
   padding: 4px 6px;
-  background: rgba(201, 162, 39, 0.08);
+  background: rgba(242, 160, 160, 0.08);
   border-radius: var(--okr-radius-sm);
   margin-top: 4px;
 }
@@ -6567,9 +6568,9 @@ body::before {
 .charge-today-progress {
   margin-bottom: 12px;
   padding: 10px 12px;
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.06), rgba(61, 122, 116, 0.04));
+  background: linear-gradient(135deg, rgba(242, 160, 160, 0.06), rgba(127, 205, 187, 0.04));
   border-radius: var(--okr-radius-md);
-  border: 1px solid rgba(201, 162, 39, 0.15);
+  border: 1px solid rgba(242, 160, 160, 0.15);
 }
 .charge-today-progress-header {
   display: flex;
@@ -6667,7 +6668,7 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(31, 26, 16, 0.5);
+  background: rgba(45, 42, 38, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6818,7 +6819,7 @@ body::before {
 }
 .charge-input:focus {
   border-color: var(--okr-gold-400);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+  box-shadow: 0 0 0 3px rgba(242, 160, 160, 0.1);
 }
 .charge-textarea {
   width: 100%;
@@ -6836,7 +6837,7 @@ body::before {
 }
 .charge-textarea:focus {
   border-color: var(--okr-gold-400);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+  box-shadow: 0 0 0 3px rgba(242, 160, 160, 0.1);
 }
 
 /* 状态滑块 */
@@ -6880,7 +6881,7 @@ body::before {
   background: var(--okr-gold-500);
   cursor: pointer;
   border: 2px solid #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(45, 42, 38, 0.2);
 }
 .charge-slider::-moz-range-thumb {
   width: 16px;
@@ -6889,7 +6890,7 @@ body::before {
   background: var(--okr-gold-500);
   cursor: pointer;
   border: 2px solid #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(45, 42, 38, 0.2);
 }
 .charge-slider-value {
   font-size: 12px;
@@ -7039,11 +7040,11 @@ body::before {
   font-family: var(--okr-font-display);
   letter-spacing: 0.1em;
   transition: all var(--okr-transition-base);
-  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.25);
+  box-shadow: 0 2px 8px rgba(232, 131, 131, 0.25);
 }
 .charge-save-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.35);
+  box-shadow: 0 4px 12px rgba(232, 131, 131, 0.35);
 }
 .charge-save-btn:active {
   transform: translateY(0);
@@ -7412,7 +7413,7 @@ body::before {
 
 .last-week-bars rect {
   fill: none;
-  stroke: #c9bda8;
+  stroke: #d8d5ce;
   stroke-width: 1.5;
   stroke-dasharray: 3, 3;
   opacity: 0.7;
@@ -7430,12 +7431,12 @@ body::before {
 }
 
 .current-week-bars .bar-today rect {
-  filter: drop-shadow(0 0 4px rgba(201, 162, 39, 0.4));
+  filter: drop-shadow(0 0 4px rgba(242, 160, 160, 0.4));
 }
 
 .energy-line path {
   fill: none;
-  stroke: #c0392b;
+  stroke: #e88383;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -7443,13 +7444,13 @@ body::before {
 }
 
 .energy-line circle {
-  fill: #fdfbf5;
-  stroke: #c0392b;
+  fill: #ffffff;
+  stroke: #e88383;
   stroke-width: 1.5;
 }
 
 .energy-line circle.today-dot {
-  stroke: #c9a227;
+  stroke: #f2a0a0;
   stroke-width: 2;
   r: 4;
 }
@@ -7476,12 +7477,12 @@ body::before {
 }
 
 .legend-dot.bar-dot {
-  background: linear-gradient(180deg, #362e1f, #6b5d44);
+  background: linear-gradient(180deg, #3d3a36, #5a5753);
 }
 
 .legend-dot.line-dot {
   background: transparent;
-  border: 2px solid #c0392b;
+  border: 2px solid #e88383;
   border-radius: 50%;
   width: 8px;
   height: 8px;
@@ -7489,7 +7490,7 @@ body::before {
 
 .legend-dot.dash-dot {
   background: transparent;
-  border: 1.5px dashed #c9bda8;
+  border: 1.5px dashed #d8d5ce;
 }
 
 .trend-summary-cards {
@@ -7622,7 +7623,7 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(31, 26, 16, 0.5);
+  background: rgba(45, 42, 38, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7724,7 +7725,7 @@ body::before {
 .chrono-option.selected {
   border-color: var(--okr-gold-500);
   background: var(--okr-gold-100);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  box-shadow: 0 0 0 3px rgba(242, 160, 160, 0.15);
 }
 
 .chrono-option-icon {
@@ -7884,7 +7885,7 @@ body::before {
     left: 0;
     right: 0;
     height: 56px;
-    background: rgba(247, 242, 232, 0.92);
+    background: rgba(250, 249, 247, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: none;
@@ -7948,18 +7949,18 @@ body::before {
     min-height: 100vh;
     background: var(--okr-paper-light);
     background-image:
-      radial-gradient(ellipse at top left, rgba(201, 162, 39, 0.05) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(61, 122, 116, 0.06) 0%, transparent 50%);
+      radial-gradient(ellipse at top left, rgba(242, 160, 160, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(127, 205, 187, 0.06) 0%, transparent 50%);
     box-sizing: border-box;
   }
 
   /* --- 今日状态大卡 --- */
   .mh-status-card {
-    background: linear-gradient(145deg, #fdfbf5 0%, #f5efe0 100%);
+    background: linear-gradient(145deg, #ffffff 0%, #f5efe0 100%);
     border-radius: 20px;
     padding: 28px 24px 24px;
     margin-bottom: 20px;
-    box-shadow: 0 8px 24px rgba(31, 26, 16, 0.06), 0 2px 6px rgba(31, 26, 16, 0.04);
+    box-shadow: 0 8px 24px rgba(45, 42, 38, 0.06), 0 2px 6px rgba(45, 42, 38, 0.04);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
@@ -7975,7 +7976,7 @@ body::before {
     right: 0;
     width: 120px;
     height: 120px;
-    background: radial-gradient(circle, rgba(201, 162, 39, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(242, 160, 160, 0.08) 0%, transparent 70%);
     border-radius: 50%;
     transform: translate(30%, -30%);
   }
@@ -8025,16 +8026,16 @@ body::before {
     transition: width 0.6s ease;
   }
   .mh-bar-gold {
-    background: linear-gradient(90deg, #e8c97a, #c9a227);
+    background: linear-gradient(90deg, #f7c4c4, #f2a0a0);
   }
   .mh-bar-vermilion {
-    background: linear-gradient(90deg, #e74c3c, #c0392b);
+    background: linear-gradient(90deg, #e88383, #e88383);
   }
   .mh-bar-cyan {
-    background: linear-gradient(90deg, #7fb3ad, #3d7a74);
+    background: linear-gradient(90deg, #a8ddd0, #7fcdbb);
   }
   .mh-bar-green {
-    background: linear-gradient(90deg, #6bbf8a, #3d8b5e);
+    background: linear-gradient(90deg, #7fcdbb, #3d8b5e);
   }
   .mh-bar-value {
     font-size: 13px;
@@ -8055,7 +8056,7 @@ body::before {
   .mh-primary-btn {
     width: 100%;
     height: 56px;
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 50%, #922b21 100%);
+    background: linear-gradient(135deg, #e88383 0%, #e88383 50%, #d65c5c 100%);
     color: #fff;
     border: none;
     border-radius: 14px;
@@ -8064,16 +8065,16 @@ body::before {
     font-family: var(--okr-font-display);
     letter-spacing: 0.15em;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.3);
+    box-shadow: 0 6px 20px rgba(232, 131, 131, 0.3);
     transition: all 0.2s ease;
     margin-bottom: 10px;
   }
   .mh-primary-btn:active {
     transform: scale(0.98);
-    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.25);
+    box-shadow: 0 3px 12px rgba(232, 131, 131, 0.25);
   }
   .mh-btn-text {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 2px rgba(45, 42, 38, 0.15);
   }
   .mh-action-sub {
     font-size: 12px;
@@ -8099,10 +8100,10 @@ body::before {
     margin-bottom: 20px;
   }
   .mh-quick-card {
-    background: #fdfbf5;
+    background: #ffffff;
     border-radius: 16px;
     padding: 18px 16px;
-    box-shadow: 0 2px 8px rgba(31, 26, 16, 0.05);
+    box-shadow: 0 2px 8px rgba(45, 42, 38, 0.05);
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -8112,7 +8113,7 @@ body::before {
   }
   .mh-quick-card:active {
     transform: scale(0.96);
-    background: #f7f2e8;
+    background: #faf9f7;
   }
   .mh-quick-icon {
     font-size: 28px;
@@ -8472,7 +8473,7 @@ body::before {
   .mobile-topbar {
     height: 48px;
     padding: 0 12px;
-    background: rgba(247, 242, 232, 0.95);
+    background: rgba(250, 249, 247, 0.95);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
@@ -8652,11 +8653,11 @@ body::before {
 
   /* --- 青蛙任务卡片（移动端突出展示） --- */
   .mobile-frog-card {
-    background: linear-gradient(135deg, #fdfbf5 0%, #f7ecd0 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #fde2e2 100%);
     border-radius: var(--okr-radius-xl);
     border: 1px solid var(--okr-gold-300);
     padding: 16px;
-    box-shadow: 0 4px 16px rgba(201, 162, 39, 0.12);
+    box-shadow: 0 4px 16px rgba(242, 160, 160, 0.12);
     position: relative;
     overflow: hidden;
   }
@@ -8695,7 +8696,7 @@ body::before {
     width: 28px;
     height: 28px;
     border: none;
-    background: rgba(201, 162, 39, 0.1);
+    background: rgba(242, 160, 160, 0.1);
     border-radius: var(--okr-radius-sm);
     cursor: pointer;
     display: flex;
@@ -8976,7 +8977,7 @@ body::before {
 
   .mobile-reflection-btn.done {
     border-color: var(--okr-gold-300);
-    background: linear-gradient(135deg, #fdfbf5 0%, #f7ecd0 50%);
+    background: linear-gradient(135deg, #ffffff 0%, #fde2e2 50%);
   }
 
   .mobile-reflection-btn.pending {
@@ -9100,10 +9101,10 @@ body::before {
   /* --- 底部 Tabbar 增强 --- */
   .mobile-tabbar {
     height: 58px;
-    background: rgba(247, 242, 232, 0.98);
+    background: rgba(250, 249, 247, 0.98);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 -2px 10px rgba(31, 26, 16, 0.06);
+    box-shadow: 0 -2px 10px rgba(45, 42, 38, 0.06);
     padding-bottom: calc(env(safe-area-inset-bottom) + 2px);
   }
 
@@ -9141,7 +9142,7 @@ body::before {
     justify-content: center;
     color: #fff;
     margin-top: -16px;
-    box-shadow: 0 4px 12px rgba(192, 57, 43, 0.35);
+    box-shadow: 0 4px 12px rgba(232, 131, 131, 0.35);
     border: 2px solid var(--okr-paper-light);
   }
 
@@ -9368,17 +9369,17 @@ body::before {
   const ACTIVITIES = {
     sleep:     { name: '睡眠',     color: '#2c3e50', energy: 0.15,  state: 0.12, perMin: true },
     nap:       { name: '午睡',     color: '#5dade2', energy: 0.27,  state: 0.33, perMin: true },
-    meal:      { name: '吃饭',     color: '#e67e22', energy: 0.20,  state: 0.05, perMin: true },
+    meal:      { name: '吃饭',     color: '#e9987a', energy: 0.20,  state: 0.05, perMin: true },
     deepFocus: { name: '深度专注', color: '#2c3e50', energy: -0.80, state: -0.10, perMin: true },
-    midFocus:  { name: '中度专注', color: '#3d7a74', energy: -0.60, state: -0.08, perMin: true },
-    lightFocus:{ name: '轻度用脑', color: '#6b5d44', energy: -0.30, state: -0.03, perMin: true },
-    lecture:   { name: '上课听讲', color: '#4f4430', energy: -0.40, state: -0.05, perMin: true },
-    rest:      { name: '休息',     color: '#e8c97a', energy: 0.17,  state: 0.10, perMin: true },
-    workout:   { name: '健身',     color: '#c0392b', energy: -0.50, state: 0.25, perMin: true },
-    phone:     { name: '刷手机',   color: '#a89880', energy: -0.15, state: -0.12, perMin: true },
-    review:    { name: '复盘省身', color: '#2d6a4f', energy: -0.25, state: 0.15, perMin: true },
-    idle:      { name: '自由时间', color: '#c9bda8', energy: -0.05, state: 0.02, perMin: true },
-    apple:     { name: '苹果',     color: '#e74c3c', energy: 3,     state: 1,    perMin: false },
+    midFocus:  { name: '中度专注', color: '#7fcdbb', energy: -0.60, state: -0.08, perMin: true },
+    lightFocus:{ name: '轻度用脑', color: '#5a5753', energy: -0.30, state: -0.03, perMin: true },
+    lecture:   { name: '上课听讲', color: '#4d4a46', energy: -0.40, state: -0.05, perMin: true },
+    rest:      { name: '休息',     color: '#f7c4c4', energy: 0.17,  state: 0.10, perMin: true },
+    workout:   { name: '健身',     color: '#e88383', energy: -0.50, state: 0.25, perMin: true },
+    phone:     { name: '刷手机',   color: '#a8a39c', energy: -0.15, state: -0.12, perMin: true },
+    review:    { name: '复盘省身', color: '#5bb3a0', energy: -0.25, state: 0.15, perMin: true },
+    idle:      { name: '自由时间', color: '#d8d5ce', energy: -0.05, state: 0.02, perMin: true },
+    apple:     { name: '苹果',     color: '#e88383', energy: 3,     state: 1,    perMin: false },
   };
 
   // ---------- 默认每日时间表（大学生场景） ----------
@@ -11451,11 +11452,11 @@ body::before {
   function getLevelColor(value) {
     const idx = getLevelIndex(value);
     const colors = {
-      5: { from: '#6bbf8a', to: '#2a5f3f' },    // 翠绿
-      4: { from: '#e8c97a', to: '#8b6914' },    // 金色
-      3: { from: '#a89880', to: '#4f4430' },    // 墨色
+      5: { from: '#7fcdbb', to: '#2a5f3f' },    // 翠绿
+      4: { from: '#f7c4c4', to: '#d67b7b' },    // 金色
+      3: { from: '#a8a39c', to: '#4d4a46' },    // 墨色
       2: { from: '#f0a040', to: '#d4841a' },    // 橙色
-      1: { from: '#e74c3c', to: '#922b21' },    // 朱砂
+      1: { from: '#e88383', to: '#d65c5c' },    // 朱砂
     };
     return colors[idx];
   }
@@ -12240,11 +12241,11 @@ body::before {
 <script src="../assets/pet.js"></script>
 <style>
   /* 侧栏可滚动（小屏幕也能看到底部的"设置"） */
-  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(139,105,20,.35) transparent; }
+  .sidebar-nav { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(214, 123, 123, .35) transparent; }
   .sidebar-nav::-webkit-scrollbar { width: 6px; }
   .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
-  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(139,105,20,.35); border-radius: 3px; }
-  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(139,105,20,.6); }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(214, 123, 123, .35); border-radius: 3px; }
+  .sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(214, 123, 123, .6); }
 </style>
 <script src="../assets/voice.js"></script>
 <style>
@@ -12252,36 +12253,36 @@ body::before {
 .drain-event-time {
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
   margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(184,176,160,.6);
-  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #8a7a5e;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #6b6864;
 }
 .drain-time-label { letter-spacing: .2em; }
 .drain-time-input {
-  font-family: inherit; font-size: 12px; color: #3a3226;
-  padding: 2px 6px; border: 1px solid #ded4c2; border-radius: 5px; background: #fff;
+  font-family: inherit; font-size: 12px; color: #4d4a46;
+  padding: 2px 6px; border: 1px solid #e8e6e1; border-radius: 5px; background: #fff;
   width: 92px;
 }
-.drain-time-input:focus { outline: none; border-color: #8b6914; }
-.drain-time-sep { color: #b8b0a0; }
-.drain-time-hint { color: #b0a48c; }
+.drain-time-input:focus { outline: none; border-color: #d67b7b; }
+.drain-time-sep { color: #b0aaa2; }
+.drain-time-hint { color: #a8a39c; }
 
 .charge-decay-tip {
   margin: 10px 0 2px; padding: 9px 12px;
-  background: rgba(232,201,122,.16); border-left: 3px solid #8b6914; border-radius: 4px;
-  font-family: "STKaiti","KaiTi",serif; font-size: 12.5px; color: #6b5d44; line-height: 1.6;
+  background: rgba(247, 196, 196, .16); border-left: 3px solid #d67b7b; border-radius: 4px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12.5px; color: #5a5753; line-height: 1.6;
 }
 .charge-decay-example {
   margin-top: 10px; padding: 10px 12px;
-  background: #f7f2e8; border: 1px dashed #ded4c2; border-radius: 6px;
-  font-family: "STKaiti","KaiTi",serif; font-size: 12.5px; color: #5a4a32; line-height: 1.7;
+  background: #faf9f7; border: 1px dashed #e8e6e1; border-radius: 6px;
+  font-family: "STKaiti","KaiTi",serif; font-size: 12.5px; color: #4d4a46; line-height: 1.7;
 }
-.charge-decay-example-title { color: #8b6914; margin-bottom: 4px; }
-.charge-decay-example-body { color: #6b5d44; }
+.charge-decay-example-title { color: #d67b7b; margin-bottom: 4px; }
+.charge-decay-example-body { color: #5a5753; }
 .charge-quick-btn { position: relative; }
-.charge-quick-btn.has-used { border-color: rgba(139,105,20,.55); }
+.charge-quick-btn.has-used { border-color: rgba(214, 123, 123, .55); }
 .charge-quick-count {
   position: absolute; top: -6px; right: -6px;
   min-width: 17px; height: 17px; padding: 0 4px;
-  border-radius: 9px; background: #8b6914; color: #f7ecd0;
+  border-radius: 9px; background: #d67b7b; color: #fde2e2;
   font-size: 11px; line-height: 17px; text-align: center;
 }
 
@@ -12290,27 +12291,27 @@ body::before {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   margin: 4px 0 12px;
   padding: 14px 18px;
-  background: var(--ink-paper-light, #faf6ec);
-  border: 1.5px solid var(--ink-2, #d9cbae);
-  border-left: 4px solid #a8341f;
+  background: var(--ink-paper-light, #faf9f7);
+  border: 1.5px solid var(--ink-2, #f0efeb);
+  border-left: 4px solid #d65c5c;
   border-radius: 8px;
   font-family: "STKaiti","KaiTi",serif;
 }
-.now-task-label { font-size: 11px; letter-spacing: .3em; color: #8a7a5e; }
-.now-task-name { font-size: 19px; color: #1f1a10; margin-top: 3px; letter-spacing: 1px; }
-.now-task-meta { font-size: 12px; color: #8a7a5e; margin-top: 4px; }
+.now-task-label { font-size: 11px; letter-spacing: .3em; color: #6b6864; }
+.now-task-name { font-size: 19px; color: #2d2a26; margin-top: 3px; letter-spacing: 1px; }
+.now-task-meta { font-size: 12px; color: #6b6864; margin-top: 4px; }
 .now-task-actions { display: flex; gap: 8px; flex-shrink: 0; }
 .now-task-btn {
   font-family: inherit; font-size: 13px; padding: 6px 16px;
   border-radius: 20px; cursor: pointer; text-decoration: none;
-  border: 1px solid #d9cbae; background: #fff; color: #5a4a32;
+  border: 1px solid #f0efeb; background: #fff; color: #4d4a46;
 }
-.now-task-btn.start { background: #1f1a10; color: #f7ecd0; border-color: #1f1a10; }
-.now-task-btn.done { background: #2d6a4f; color: #f2f7f2; border-color: #2d6a4f; }
-.now-task-btn.blocked { color: #8b6914; border-color: rgba(139,105,20,.5); }
-.now-task-btn.ghost { color: #8a7a5e; }
+.now-task-btn.start { background: #2d2a26; color: #fde2e2; border-color: #2d2a26; }
+.now-task-btn.done { background: #5bb3a0; color: #f2f7f2; border-color: #5bb3a0; }
+.now-task-btn.blocked { color: #d67b7b; border-color: rgba(214, 123, 123, .5); }
+.now-task-btn.ghost { color: #6b6864; }
 .now-task-btn:hover { filter: brightness(1.08); }
-.day-usage-line { font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #8a7a5e; margin-bottom: 8px; }
+.day-usage-line { font-family: "STKaiti","KaiTi",serif; font-size: 12px; color: #6b6864; margin-bottom: 8px; }
 .day-real-track { position: relative; height: 46px; margin: 0 0 6px; }
 .day-real-bar {
   position: absolute; top: 6px; height: 34px; border-radius: 5px;
@@ -12319,8 +12320,8 @@ body::before {
   overflow: hidden; white-space: nowrap;
   border: 1px solid transparent; box-sizing: border-box;
 }
-.day-real-bar.plan { border-style: dashed; border-color: #b8b0a0; background: rgba(245,239,227,.9); color: #5a4a32; }
-.day-real-empty { font-family: "STKaiti","KaiTi",serif; font-size: 13px; color: #8a7a5e; padding: 12px 0; }
+.day-real-bar.plan { border-style: dashed; border-color: #b0aaa2; background: rgba(250, 249, 247, .9); color: #4d4a46; }
+.day-real-empty { font-family: "STKaiti","KaiTi",serif; font-size: 13px; color: #6b6864; padding: 12px 0; }
 </style>
 <script>
 /* ============ 今日行醒：读每日计划 + 状态联动 ============ */
@@ -12397,7 +12398,7 @@ body::before {
     var nowMin = T.nowMinutes();
     if (nowMin >= from && nowMin <= to) {
       var line = document.createElement('div');
-      line.style.cssText = 'position:absolute;top:0;bottom:0;width:2px;background:#a8341f;left:' + pos(nowMin) + '%;';
+      line.style.cssText = 'position:absolute;top:0;bottom:0;width:2px;background:#d65c5c;left:' + pos(nowMin) + '%;';
       track.appendChild(line);
     }
   }
@@ -12428,5 +12429,6 @@ body::before {
 })();
 </script>
 <script src="../assets/mobile.js"></script>
+<link rel="stylesheet" href="../assets/theme-ink-override.css">
 </body>
 </html>

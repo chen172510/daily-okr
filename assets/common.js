@@ -641,7 +641,7 @@
           z-index: 99999;
           opacity: 0;
           transition: all 0.3s ease;
-          box-shadow: 0 4px 16px rgba(31, 26, 16, 0.15);
+          box-shadow: 0 4px 16px rgba(45, 42, 38, 0.15);
           max-width: 90vw;
           text-align: center;
         }
@@ -650,24 +650,24 @@
           transform: translateX(-50%) translateY(0);
         }
         .xx-toast-info {
-          background: linear-gradient(135deg, #fdfbf5, #f7f2e8);
-          color: #362e1f;
-          border: 1px solid #e0d8cc;
+          background: linear-gradient(135deg, #ffffff, #faf9f7);
+          color: #3d3a36;
+          border: 1px solid #e8e6e1;
         }
         .xx-toast-gold {
-          background: linear-gradient(135deg, #f7ecd0, #e8c97a);
-          color: #5c4508;
-          border: 1px solid #c9a227;
+          background: linear-gradient(135deg, #fde2e2, #f7c4c4);
+          color: #d65c5c;
+          border: 1px solid #f2a0a0;
         }
         .xx-toast-success {
-          background: linear-gradient(135deg, #d8f3dc, #b7e4c7);
-          color: #2d6a4f;
-          border: 1px solid #2d6a4f;
+          background: linear-gradient(135deg, #e8f6f2, #b7e4c7);
+          color: #5bb3a0;
+          border: 1px solid #5bb3a0;
         }
         .xx-toast-warning {
-          background: linear-gradient(135deg, #fef3c7, #fde68a);
-          color: #b07d1e;
-          border: 1px solid #b07d1e;
+          background: linear-gradient(135deg, #fde2e2, #fde68a);
+          color: #d67b7b;
+          border: 1px solid #d67b7b;
         }
         .xx-toast a {
           color: inherit;

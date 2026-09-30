@@ -191,8 +191,8 @@
     for (let i = 0; i <= 4; i++) {
       const y = padding.top + (i / 4) * chartH;
       const val = maxVal - (i / 4) * valRange;
-      gridLines += `<line x1="${padding.left}" y1="${y}" x2="${w - padding.right}" y2="${y}" stroke="#e0d8cc" stroke-width="0.5" stroke-dasharray="3,3"/>`;
-      gridLines += `<text x="${padding.left - 5}" y="${y + 3}" text-anchor="end" fill="#a89880" font-size="10">${Math.round(val)}%</text>`;
+      gridLines += `<line x1="${padding.left}" y1="${y}" x2="${w - padding.right}" y2="${y}" stroke="#e8e6e1" stroke-width="0.5" stroke-dasharray="3,3"/>`;
+      gridLines += `<text x="${padding.left - 5}" y="${y + 3}" text-anchor="end" fill="#a8a39c" font-size="10">${Math.round(val)}%</text>`;
     }
 
     // 柱状图（每日新增错题数，作为背景）
@@ -202,13 +202,13 @@
       const x = padding.left + (i / (days.length - 1)) * chartW - 8;
       const barH = (d.errorCount / maxErrors) * (chartH * 0.3);
       const y = padding.top + chartH - barH;
-      bars += `<rect x="${x}" y="${y}" width="16" height="${barH}" rx="3" fill="#e8c97a" opacity="0.3"/>`;
+      bars += `<rect x="${x}" y="${y}" width="16" height="${barH}" rx="3" fill="#f7c4c4" opacity="0.3"/>`;
     });
 
     // 数据点
     let dots = '';
     points.forEach(p => {
-      dots += `<circle cx="${p.x}" cy="${p.y}" r="4" fill="#c9a227" stroke="#fff" stroke-width="2">
+      dots += `<circle cx="${p.x}" cy="${p.y}" r="4" fill="#f2a0a0" stroke="#fff" stroke-width="2">
         <title>${p.date} · 掌握度 ${p.mastery}% · 新增 ${p.errorCount} 题</title>
       </circle>`;
     });
@@ -216,14 +216,14 @@
     return `
       <defs>
         <linearGradient id="trendAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#c9a227" stop-opacity="0.2"/>
-          <stop offset="100%" stop-color="#c9a227" stop-opacity="0.02"/>
+          <stop offset="0%" stop-color="#f2a0a0" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#f2a0a0" stop-opacity="0.02"/>
         </linearGradient>
       </defs>
       ${gridLines}
       ${bars}
       <path d="${areaD}" fill="url(#trendAreaGrad)"/>
-      <path d="${pathD}" fill="none" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/>
+      <path d="${pathD}" fill="none" stroke="#f2a0a0" stroke-width="2" stroke-linecap="round"/>
       ${dots}
     `;
   }
@@ -412,10 +412,10 @@
     // 如果没有分类，添加预置分类
     if (!data.categories || data.categories.length === 0) {
       data.categories = [
-        { id: 'c1', name: '思维认知', icon: '🧠', color: '#7fb3ad' },
-        { id: 'c2', name: '行为习惯', icon: '⚡', color: '#e8c97a' },
-        { id: 'c3', name: '表达沟通', icon: '💬', color: '#c0392b' },
-        { id: 'c4', name: '人际情绪', icon: '❤️', color: '#e67e22' },
+        { id: 'c1', name: '思维认知', icon: '🧠', color: '#a8ddd0' },
+        { id: 'c2', name: '行为习惯', icon: '⚡', color: '#f7c4c4' },
+        { id: 'c3', name: '表达沟通', icon: '💬', color: '#e88383' },
+        { id: 'c4', name: '人际情绪', icon: '❤️', color: '#e9987a' },
         { id: 'c5', name: '学习方法', icon: '📚', color: '#8e44ad' },
         { id: 'c6', name: '时间管理', icon: '⏰', color: '#27ae60' },
       ];

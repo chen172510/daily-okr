@@ -93,7 +93,7 @@
         if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
         b = document.createElement('span');
         b.className = 'xx-badge';
-        b.style.cssText = 'position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:#e11d48;color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #faf6ec;font-family:sans-serif;cursor:pointer;z-index:5;';
+        b.style.cssText = 'position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:#e11d48;color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #faf9f7;font-family:sans-serif;cursor:pointer;z-index:5;';
         b.addEventListener('click', function (e) { e.stopPropagation(); setBadge(0); });
         el.appendChild(b);
       }
@@ -104,13 +104,13 @@
 
   function row(label, value, attr, options) {
     if (options) {
-      return '<label style="display:block;margin:10px 0 4px;font-size:13px;color:#5a5a5a;">' + label + '</label>'
-        + '<select data-f="' + attr + '" style="width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #d9cbae;border-radius:6px;font-family:inherit;background:#fff;">'
+      return '<label style="display:block;margin:10px 0 4px;font-size:13px;color:#5a5753;">' + label + '</label>'
+        + '<select data-f="' + attr + '" style="width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #f0efeb;border-radius:6px;font-family:inherit;background:#fff;">'
         + options.map(function (o, i) { return '<option value="' + o + '"' + (o === value ? ' selected' : '') + '>' + o + '</option>'; }).join('')
         + '</select>';
     }
-    return '<label style="display:block;margin:10px 0 4px;font-size:13px;color:#5a5a5a;">' + label + '</label>'
-      + '<input data-f="' + attr + '" value="' + String(value || '').replace(/"/g, '&quot;') + '" style="width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #d9cbae;border-radius:6px;font-family:inherit;background:#fff;" />';
+    return '<label style="display:block;margin:10px 0 4px;font-size:13px;color:#5a5753;">' + label + '</label>'
+      + '<input data-f="' + attr + '" value="' + String(value || '').replace(/"/g, '&quot;') + '" style="width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #f0efeb;border-radius:6px;font-family:inherit;background:#fff;" />';
   }
 
   function open() {
@@ -121,15 +121,15 @@
     var levelIndex = typeof p.levelIndex === 'number' ? p.levelIndex : 0;
     var box = document.createElement('div');
     box.id = 'xx-profile-modal';
-    box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf6ec;border:1px solid #e8d5a3;border-radius:14px;padding:22px;box-shadow:0 20px 50px rgba(20,16,8,.35);font-family:"STKaiti","KaiTi",serif;width:88vw;max-width:420px;max-height:86vh;overflow:auto;';
+    box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#faf9f7;border:1px solid #f7c4c4;border-radius:14px;padding:22px;box-shadow:0 20px 50px rgba(45, 42, 38, .35);font-family:"STKaiti","KaiTi",serif;width:88vw;max-width:420px;max-height:86vh;overflow:auto;';
     box.innerHTML =
-        '<div style="font-size:18px;color:#1f1a10;letter-spacing:2px;margin-bottom:6px;">个人档案</div>'
-      + '<div style="font-size:12px;color:#8a7a5e;margin-bottom:12px;">这些信息用于昵称、头像与等级展示</div>'
+        '<div style="font-size:18px;color:#2d2a26;letter-spacing:2px;margin-bottom:6px;">个人档案</div>'
+      + '<div style="font-size:12px;color:#6b6864;margin-bottom:12px;">这些信息用于昵称、头像与等级展示</div>'
       + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:6px;">'
-      +   '<div id="xx-avatar-preview" style="width:56px;height:56px;border-radius:50%;background:#1f1a10;color:#f7ecd0;display:flex;align-items:center;justify-content:center;font-size:22px;background-size:cover;background-position:center;flex-shrink:0;">' + (p.avatar && p.avatar.indexOf('data:') === 0 ? '' : (p.avatar || '行')) + '</div>'
-      +   '<div style="font-size:13px;color:#362e1f;">'
-      +     '<div><label style="cursor:pointer;color:#8b6914;text-decoration:underline;">上传头像<input type="file" id="xx-avatar-file" accept="image/*" style="display:none;" /></label></div>'
-      +     '<div style="margin-top:6px;">或填写一个字的头像：<input data-f="avatarText" value="' + ((p.avatar && p.avatar.indexOf('data:') === 0) ? '' : (p.avatar || '')) + '" maxlength="2" style="width:48px;padding:4px 6px;border:1px solid #d9cbae;border-radius:6px;font-family:inherit;" /></div>'
+      +   '<div id="xx-avatar-preview" style="width:56px;height:56px;border-radius:50%;background:#2d2a26;color:#fde2e2;display:flex;align-items:center;justify-content:center;font-size:22px;background-size:cover;background-position:center;flex-shrink:0;">' + (p.avatar && p.avatar.indexOf('data:') === 0 ? '' : (p.avatar || '行')) + '</div>'
+      +   '<div style="font-size:13px;color:#3d3a36;">'
+      +     '<div><label style="cursor:pointer;color:#d67b7b;text-decoration:underline;">上传头像<input type="file" id="xx-avatar-file" accept="image/*" style="display:none;" /></label></div>'
+      +     '<div style="margin-top:6px;">或填写一个字的头像：<input data-f="avatarText" value="' + ((p.avatar && p.avatar.indexOf('data:') === 0) ? '' : (p.avatar || '')) + '" maxlength="2" style="width:48px;padding:4px 6px;border:1px solid #f0efeb;border-radius:6px;font-family:inherit;" /></div>'
       +   '</div>'
       + '</div>'
       + row('昵称', p.nickname || '', 'nickname')
@@ -138,10 +138,10 @@
       + row('等级体系', (LEVELS[p.levelSystem || 'xianxia'] || LEVELS.xianxia).name, 'levelSystem', Object.keys(LEVELS).map(function (k) { return LEVELS[k].name; }))
       + row('等级方式', isAuto(p) ? '按活跃自动升级' : '手动选择', 'levelMode', ['手动选择', '按活跃自动升级'])
       + row('当前等级（按行填写自定义等级）', custom || '', 'customLevels')
-      + '<div id="xx-level-table" style="margin-top:14px;font-size:13px;color:#362e1f;line-height:1.9;background:#f0ebe3;border-radius:8px;padding:12px;"></div>'
+      + '<div id="xx-level-table" style="margin-top:14px;font-size:13px;color:#3d3a36;line-height:1.9;background:#f2f1ed;border-radius:8px;padding:12px;"></div>'
       + '<div style="margin-top:16px;display:flex;justify-content:space-between;gap:10px;">'
-      +   '<button type="button" data-x="close" style="border:none;background:none;cursor:pointer;font-family:inherit;color:#8a7a5e;font-size:14px;">取消</button>'
-      +   '<button type="button" data-x="save" style="border:none;border-radius:6px;padding:9px 22px;background:#1f1a10;color:#f7ecd0;cursor:pointer;font-family:inherit;font-size:14px;">保存</button>'
+      +   '<button type="button" data-x="close" style="border:none;background:none;cursor:pointer;font-family:inherit;color:#6b6864;font-size:14px;">取消</button>'
+      +   '<button type="button" data-x="save" style="border:none;border-radius:6px;padding:9px 22px;background:#2d2a26;color:#fde2e2;cursor:pointer;font-family:inherit;font-size:14px;">保存</button>'
       + '</div>';
     document.body.appendChild(box);
 
@@ -160,9 +160,9 @@
       var head = auto
         ? sel.value + ' · 按活跃自动升级（累计活跃 ' + activityScore() + '，每 3 次升一级，还差 ' + ((3 - activityScore() % 3) % 3 || 3) + ' 次）'
         : sel.value + ' · 点一下选中当前等级';
-      var html = '<div style="color:#8b6914;margin-bottom:6px;">' + head + '</div>';
+      var html = '<div style="color:#d67b7b;margin-bottom:6px;">' + head + '</div>';
       html += list.map(function (t, i) {
-        return '<div data-idx="' + i + '" style="padding:5px 8px;border-radius:6px;cursor:' + (auto ? 'default' : 'pointer') + ';' + (i === levelIndex ? 'background:#1f1a10;color:#f7ecd0;' : '') + '">' + (i + 1) + '. ' + t + '</div>';
+        return '<div data-idx="' + i + '" style="padding:5px 8px;border-radius:6px;cursor:' + (auto ? 'default' : 'pointer') + ';' + (i === levelIndex ? 'background:#2d2a26;color:#fde2e2;' : '') + '">' + (i + 1) + '. ' + t + '</div>';
       }).join('');
       box.querySelector('#xx-level-table').innerHTML = html;
       if (!auto) {

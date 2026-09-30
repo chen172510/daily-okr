@@ -82,8 +82,8 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #c9a227;
-      border: 2px solid #fdfbf5;
+      background: #f2a0a0;
+      border: 2px solid #ffffff;
       z-index: 2;
     `;
     userAvatar.style.position = 'relative';
@@ -95,19 +95,19 @@
       if (!dot) return;
       switch (status) {
         case 'syncing':
-          dot.style.background = '#c9a227';
+          dot.style.background = '#f2a0a0';
           dot.style.animation = 'pulse 1s infinite';
           break;
         case 'synced':
-          dot.style.background = '#2d6a4f';
+          dot.style.background = '#5bb3a0';
           dot.style.animation = 'none';
           break;
         case 'error':
-          dot.style.background = '#922b21';
+          dot.style.background = '#d65c5c';
           dot.style.animation = 'none';
           break;
         default:
-          dot.style.background = '#8a7a5e';
+          dot.style.background = '#6b6864';
           dot.style.animation = 'none';
       }
     }

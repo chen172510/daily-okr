@@ -16,8 +16,8 @@
       var tip = document.createElement('div');
       tip.id = 'xx-edge-tip';
       tip.style.cssText = 'position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:9998;max-width:92vw;'
-        + 'background:#1f1a10;color:#f7ecd0;padding:10px 14px;border-radius:10px;font-family:"STKaiti","KaiTi",serif;'
-        + 'font-size:13px;box-shadow:0 10px 26px rgba(0,0,0,.32);display:flex;align-items:center;gap:10px;';
+        + 'background:#2d2a26;color:#fde2e2;padding:10px 14px;border-radius:10px;font-family:"STKaiti","KaiTi",serif;'
+        + 'font-size:13px;box-shadow:0 10px 26px rgba(45, 42, 38, .32);display:flex;align-items:center;gap:10px;';
       var span = document.createElement('span');
       span.textContent = isEdge ? '还是连不上？检查一下系统的麦克风权限。' : '国内 Chrome 连不上谷歌的语音服务，换 Edge 就能用：';
       tip.appendChild(span);
@@ -25,13 +25,13 @@
         var a = document.createElement('a');
         a.textContent = '用 Edge 打开这个页面';
         a.setAttribute('href', 'microsoft-edge:' + location.href);
-        a.style.cssText = 'color:#e8c97a;text-decoration:underline;cursor:pointer;white-space:nowrap;';
+        a.style.cssText = 'color:#f7c4c4;text-decoration:underline;cursor:pointer;white-space:nowrap;';
         tip.appendChild(a);
       }
       var close = document.createElement('button');
       close.textContent = '×';
       close.setAttribute('type', 'button');
-      close.style.cssText = 'border:none;background:none;color:#b8b0a0;font-size:16px;cursor:pointer;line-height:1;';
+      close.style.cssText = 'border:none;background:none;color:#b0aaa2;font-size:16px;cursor:pointer;line-height:1;';
       close.onclick = function () { tip.remove(); };
       tip.appendChild(close);
       document.body.appendChild(tip);

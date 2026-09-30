@@ -446,7 +446,7 @@ const LIGHT_KEEPERS = [
     style: '温和坚定，循循善诱，喜欢讲道理，一板一眼，常以"我少年时"开头',
     signature: '遇事不决，可问春风。',
     knowledge: ['心理学', '伦理学', '成长型思维', '正念'],
-    color: '#8b6914'
+    color: '#d67b7b'
   },
   {
     id: 'ning-yao',
@@ -456,7 +456,7 @@ const LIGHT_KEEPERS = [
     style: '干脆利落，直来直去，不绕弯子，话不多但句句戳心',
     signature: '我宁姚的道理，就是我的剑。',
     knowledge: ['认知行为', '决断力', '边界感'],
-    color: '#c9a227'
+    color: '#f2a0a0'
   },
   {
     id: 'wen-sheng',
@@ -466,7 +466,7 @@ const LIGHT_KEEPERS = [
     style: '博学多识，旁征博引，喜欢用比喻和典故，循循然善诱人',
     signature: '道之所存，师之所存也。',
     knowledge: ['哲学', '逻辑学', '历史', '教育学'],
-    color: '#6b5d44'
+    color: '#5a5753'
   },
   {
     id: 'a-liang',
@@ -476,7 +476,7 @@ const LIGHT_KEEPERS = [
     style: '洒脱不羁，嬉笑怒骂皆成文章，用最轻松的语气讲最深刻的道理',
     signature: '好人就该有好报，不是吗？',
     knowledge: ['博弈论', '社会心理学', '人生智慧'],
-    color: '#3d7a74'
+    color: '#7fcdbb'
   },
   {
     id: 'wu-zhi-hong',
@@ -506,7 +506,7 @@ const LIGHT_KEEPERS = [
     style: '严谨逻辑，概念清晰，善于拆解谬误，构建论证',
     signature: '未经审视的人生不值得过。',
     knowledge: ['逻辑学', '批判性思维', '哲学分析'],
-    color: '#2d6a4f'
+    color: '#5bb3a0'
   },
   {
     id: 'li-chun-gang',
@@ -516,7 +516,7 @@ const LIGHT_KEEPERS = [
     style: '豪迈通透，大道至简，一句话点破万种玄机',
     signature: '天不生我李淳罡，剑道万古如长夜。',
     knowledge: ['境界提升', '心学', '顿悟'],
-    color: '#922b21'
+    color: '#d65c5c'
   }
 ];
 

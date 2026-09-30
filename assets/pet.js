@@ -20,7 +20,7 @@
     },
     blindfold: {
       left: '36%', top: '30%', width: '34%',
-      svg: '<svg viewBox="0 0 80 24"><path d="M2 13 q38 -10 76 0" stroke="' + INK + '" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M2 13 q38 -10 76 0" stroke="#5a5a5a" stroke-width="1.6" fill="none"/></svg>'
+      svg: '<svg viewBox="0 0 80 24"><path d="M2 13 q38 -10 76 0" stroke="' + INK + '" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M2 13 q38 -10 76 0" stroke="#5a5753" stroke-width="1.6" fill="none"/></svg>'
     },
     party: {
       left: '36%', top: '1%', width: '22%',
@@ -36,7 +36,7 @@
     },
     cola: {
       left: '68%', top: '60%', width: '16%',
-      svg: '<svg viewBox="0 0 40 70"><rect x="6" y="8" width="28" height="54" rx="8" fill="#c0392b"/><rect x="6" y="26" width="28" height="16" fill="#fff"/><rect x="10" y="2" width="20" height="8" rx="3" fill="#8a8a8a"/><text x="20" y="38" font-size="10" text-anchor="middle" fill="#c0392b" font-family="sans-serif">可乐</text></svg>'
+      svg: '<svg viewBox="0 0 40 70"><rect x="6" y="8" width="28" height="54" rx="8" fill="#e88383"/><rect x="6" y="26" width="28" height="16" fill="#fff"/><rect x="10" y="2" width="20" height="8" rx="3" fill="#8a8a8a"/><text x="20" y="38" font-size="10" text-anchor="middle" fill="#e88383" font-family="sans-serif">可乐</text></svg>'
     },
     book: {
       left: '2%', top: '60%', width: '28%',

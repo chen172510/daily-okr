@@ -1,0 +1,314 @@
+/* ============================================
+   行醒 XingXing - Global Design Tokens
+   Style: Modern Soft / App Store 清新风
+   ============================================ */
+
+:root {
+  /* ---------- Background & Surface ---------- */
+  --xx-bg: #f5f5f0;
+  --xx-bg-elevated: #faf9f7;
+  --xx-surface: #ffffff;
+  --xx-surface-2: #faf9f7;
+
+  /* ---------- Text Scale ---------- */
+  --xx-text: #2d2a26;
+  --xx-text-2: #6b6864;
+  --xx-text-3: #a8a39c;
+
+  /* ---------- Brand Accents ---------- */
+  --xx-coral: #f2a0a0;
+  --xx-coral-light: #ffe8e8;
+  --xx-coral-soft: rgba(242, 160, 160, 0.12);
+  --xx-coral-dark: #d67b7b;
+
+  --xx-mint: #7fcdbb;
+  --xx-mint-light: #e6f5f1;
+  --xx-mint-soft: rgba(127, 205, 187, 0.12);
+  --xx-mint-dark: #5fb3a3;
+
+  --xx-blue: #8bb8e8;
+  --xx-blue-light: #e8f1fa;
+  --xx-blue-soft: rgba(139, 184, 232, 0.12);
+
+  --xx-yellow: #f5d78e;
+  --xx-yellow-light: #fcf4df;
+  --xx-yellow-soft: rgba(245, 215, 142, 0.12);
+
+  --xx-lavender: #b8b3e0;
+  --xx-lavender-light: #eeedf7;
+
+  /* ---------- State Colors ---------- */
+  --xx-success: #5fb3a3;
+  --xx-success-bg: #e6f5f1;
+  --xx-warning: #f0b95d;
+  --xx-warning-bg: #fcf4df;
+  --xx-error: #e88383;
+  --xx-error-bg: #ffe8e8;
+
+  /* ---------- Legacy-compatible aliases (okr-*) ---------- */
+  --okr-ink-50: #faf9f7;
+  --okr-ink-100: #f2f1ed;
+  --okr-ink-200: #e8e6e1;
+  --okr-ink-300: #a8a39c;
+  --okr-ink-400: #a8a39c;
+  --okr-ink-500: #6b6864;
+  --okr-ink-600: #6b6864;
+  --okr-ink-700: #4d4a46;
+  --okr-ink-800: #3d3a36;
+  --okr-ink-900: #2d2a26;
+
+  --okr-paper-light: var(--xx-bg);
+  --okr-paper: var(--xx-bg-elevated);
+  --okr-paper-dark: #ebe9e3;
+
+  --okr-cyan-100: var(--xx-mint-light);
+  --okr-cyan-300: #a3ded1;
+  --okr-cyan-500: var(--xx-mint);
+  --okr-cyan-700: var(--xx-mint-dark);
+  --okr-cyan-900: #3d7a6e;
+
+  --okr-gold-100: var(--xx-coral-light);
+  --okr-gold-200: #fbdada;
+  --okr-gold-300: #f7c4c4;
+  --okr-gold-400: var(--xx-coral);
+  --okr-gold-500: var(--xx-coral);
+  --okr-gold-600: var(--xx-coral-dark);
+  --okr-gold-700: var(--xx-coral-dark);
+  --okr-gold-900: #b35f5f;
+
+  --okr-vermilion: var(--xx-error);
+  --okr-vermilion-light: #f2a0a0;
+  --okr-vermilion-dark: #d65c5c;
+
+  --okr-state-success: var(--xx-success);
+  --okr-state-success-bg: var(--xx-success-bg);
+  --okr-state-warning: var(--xx-warning);
+  --okr-state-warning-bg: var(--xx-warning-bg);
+  --okr-state-error: var(--xx-error);
+  --okr-state-error-bg: var(--xx-error-bg);
+
+  /* ---------- Semantic Aliases ---------- */
+  --okr-background: var(--xx-bg);
+  --okr-foreground: var(--xx-text);
+  --okr-card: var(--xx-surface);
+  --okr-card-foreground: var(--xx-text);
+  --okr-popover: var(--xx-surface);
+  --okr-popover-foreground: var(--xx-text);
+  --okr-primary: var(--xx-coral);
+  --okr-primary-foreground: #ffffff;
+  --okr-muted: var(--xx-bg-elevated);
+  --okr-muted-foreground: var(--xx-text-2);
+  --okr-destructive: var(--xx-error);
+  --okr-destructive-foreground: #ffffff;
+  --okr-border: var(--xx-border);
+  --okr-input: var(--xx-input);
+  --okr-ring: var(--xx-ring);
+
+  --xx-border: #eceae6;
+  --xx-input: #eceae6;
+  --xx-ring: rgba(242, 160, 160, 0.4);
+
+  /* ---------- Radius Scale ---------- */
+  --okr-radius-sm: 8px;
+  --okr-radius-md: 12px;
+  --okr-radius-lg: 16px;
+  --okr-radius-xl: 24px;
+  --okr-radius-full: 9999px;
+
+  /* ---------- Typography ---------- */
+  --okr-font-sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', 'Hiragino Sans GB', sans-serif;
+  --okr-font-display: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  --okr-font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+
+  --okr-text-xs: 11px;
+  --okr-text-sm: 13px;
+  --okr-text-base: 15px;
+  --okr-text-lg: 17px;
+  --okr-text-xl: 20px;
+  --okr-text-2xl: 26px;
+  --okr-text-3xl: 32px;
+  --okr-text-4xl: 42px;
+
+  /* ---------- Spacing ---------- */
+  --okr-space-1: 4px;
+  --okr-space-2: 8px;
+  --okr-space-3: 12px;
+  --okr-space-4: 16px;
+  --okr-space-5: 20px;
+  --okr-space-6: 24px;
+  --okr-space-8: 32px;
+  --okr-space-10: 40px;
+  --okr-space-12: 48px;
+  --okr-space-16: 64px;
+
+  /* ---------- Shadow ---------- */
+  --okr-shadow-sm: 0 2px 8px rgba(45, 42, 38, 0.04);
+  --okr-shadow-md: 0 4px 16px rgba(45, 42, 38, 0.06);
+  --okr-shadow-lg: 0 8px 28px rgba(45, 42, 38, 0.08);
+  --okr-shadow-xl: 0 16px 40px rgba(45, 42, 38, 0.10);
+
+  /* ---------- Transition ---------- */
+  --okr-transition-fast: 150ms ease;
+  --okr-transition-base: 250ms ease;
+  --okr-transition-slow: 400ms ease;
+}
+
+/* ---------- Base Styles ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--okr-font-sans);
+  font-size: var(--okr-text-base);
+  line-height: 1.6;
+  color: var(--okr-foreground);
+  background-color: var(--okr-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(242, 160, 160, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 20%, rgba(127, 205, 187, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 100%, rgba(245, 215, 142, 0.05) 0%, transparent 40%),
+    var(--okr-background);
+}
+
+/* ---------- Utility Classes ---------- */
+.text-primary { color: var(--okr-primary); }
+.text-muted { color: var(--okr-muted-foreground); }
+.text-gold { color: var(--okr-gold-500); }
+.text-vermilion { color: var(--okr-vermilion); }
+.text-ink-light { color: var(--okr-ink-500); }
+
+.bg-primary { background-color: var(--okr-primary); }
+.bg-card { background-color: var(--okr-card); }
+.bg-paper { background-color: var(--okr-paper); }
+.bg-muted { background-color: var(--okr-muted); }
+
+.border-default { border-color: var(--okr-border); }
+.border-gold { border-color: var(--okr-gold-300); }
+.border-ink { border-color: var(--okr-ink-400); }
+
+.rounded-sm { border-radius: var(--okr-radius-sm); }
+.rounded-md { border-radius: var(--okr-radius-md); }
+.rounded-lg { border-radius: var(--okr-radius-lg); }
+.rounded-xl { border-radius: var(--okr-radius-xl); }
+.rounded-full { border-radius: var(--okr-radius-full); }
+
+.shadow-sm { box-shadow: var(--okr-shadow-sm); }
+.shadow-md { box-shadow: var(--okr-shadow-md); }
+.shadow-lg { box-shadow: var(--okr-shadow-lg); }
+
+.transition { transition: all var(--okr-transition-base); }
+.transition-fast { transition: all var(--okr-transition-fast); }
+
+/* ---------- Modern decorative helpers ---------- */
+.ink-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--okr-border), transparent);
+  border: none;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, var(--xx-coral-light), var(--xx-coral), var(--xx-coral-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--xx-coral);
+  color: #fff;
+  font-family: var(--okr-font-display);
+  font-weight: 600;
+  border-radius: var(--okr-radius-md);
+  padding: 2px 8px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  box-shadow: var(--okr-shadow-sm);
+}
+
+/* ---------- Tailwind Semantic Token Fallback ---------- */
+.bg-background { background-color: var(--okr-background); }
+.text-background { color: var(--okr-background); }
+.border-background { border-color: var(--okr-background); }
+.ring-background { --tw-ring-color: var(--okr-background); }
+
+.bg-foreground { background-color: var(--okr-foreground); }
+.text-foreground { color: var(--okr-foreground); }
+.border-foreground { border-color: var(--okr-foreground); }
+.ring-foreground { --tw-ring-color: var(--okr-foreground); }
+
+.bg-card { background-color: var(--okr-card); }
+.text-card { color: var(--okr-card); }
+.border-card { border-color: var(--okr-card); }
+.ring-card { --tw-ring-color: var(--okr-card); }
+
+.bg-card-foreground { background-color: var(--okr-card-foreground); }
+.text-card-foreground { color: var(--okr-card-foreground); }
+.border-card-foreground { border-color: var(--okr-card-foreground); }
+.ring-card-foreground { --tw-ring-color: var(--okr-card-foreground); }
+
+.bg-popover { background-color: var(--okr-popover); }
+.text-popover { color: var(--okr-popover); }
+.border-popover { border-color: var(--okr-popover); }
+.ring-popover { --tw-ring-color: var(--okr-popover); }
+
+.bg-popover-foreground { background-color: var(--okr-popover-foreground); }
+.text-popover-foreground { color: var(--okr-popover-foreground); }
+.border-popover-foreground { border-color: var(--okr-popover-foreground); }
+.ring-popover-foreground { --tw-ring-color: var(--okr-popover-foreground); }
+
+.bg-primary { background-color: var(--okr-primary); }
+.text-primary { color: var(--okr-primary); }
+.border-primary { border-color: var(--okr-primary); }
+.ring-primary { --tw-ring-color: var(--okr-primary); }
+
+.bg-primary-foreground { background-color: var(--okr-primary-foreground); }
+.text-primary-foreground { color: var(--okr-primary-foreground); }
+.border-primary-foreground { border-color: var(--okr-primary-foreground); }
+.ring-primary-foreground { --tw-ring-color: var(--okr-primary-foreground); }
+
+.bg-muted { background-color: var(--okr-muted); }
+.text-muted { color: var(--okr-muted); }
+.border-muted { border-color: var(--okr-muted); }
+.ring-muted { --tw-ring-color: var(--okr-muted); }
+
+.bg-muted-foreground { background-color: var(--okr-muted-foreground); }
+.text-muted-foreground { color: var(--okr-muted-foreground); }
+.border-muted-foreground { border-color: var(--okr-muted-foreground); }
+.ring-muted-foreground { --tw-ring-color: var(--okr-muted-foreground); }
+
+.bg-destructive { background-color: var(--okr-destructive); }
+.text-destructive { color: var(--okr-destructive); }
+.border-destructive { border-color: var(--okr-destructive); }
+.ring-destructive { --tw-ring-color: var(--okr-destructive); }
+
+.bg-destructive-foreground { background-color: var(--okr-destructive-foreground); }
+.text-destructive-foreground { color: var(--okr-destructive-foreground); }
+.border-destructive-foreground { border-color: var(--okr-destructive-foreground); }
+.ring-destructive-foreground { --tw-ring-color: var(--okr-destructive-foreground); }
+
+.bg-border { background-color: var(--okr-border); }
+.text-border { color: var(--okr-border); }
+.border-border { border-color: var(--okr-border); }
+.ring-border { --tw-ring-color: var(--okr-border); }
+
+.bg-input { background-color: var(--okr-input); }
+.text-input { color: var(--okr-input); }
+.border-input { border-color: var(--okr-input); }
+.ring-input { --tw-ring-color: var(--okr-input); }
+
+.bg-ring { background-color: var(--okr-ring); }
+.text-ring { color: var(--okr-ring); }
+.border-ring { border-color: var(--okr-ring); }
+.ring-ring { --tw-ring-color: var(--okr-ring); }

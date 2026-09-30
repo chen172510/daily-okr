@@ -1232,8 +1232,8 @@ window.xxIsMobileView = window.xxIsMobileView || function () {
     });
     coreGradient.appendChild(make('stop', { offset: '0%', 'stop-color': '#fffdf5', 'stop-opacity': '.98' }));
     coreGradient.appendChild(make('stop', { offset: '34%', 'stop-color': '#f5d39b', 'stop-opacity': '.84' }));
-    coreGradient.appendChild(make('stop', { offset: '68%', 'stop-color': '#e8a94e', 'stop-opacity': '.48' }));
-    coreGradient.appendChild(make('stop', { offset: '100%', 'stop-color': '#e8a94e', 'stop-opacity': '0' }));
+    coreGradient.appendChild(make('stop', { offset: '68%', 'stop-color': '#f2a0a0', 'stop-opacity': '.48' }));
+    coreGradient.appendChild(make('stop', { offset: '100%', 'stop-color': '#f2a0a0', 'stop-opacity': '0' }));
     defs.appendChild(coreGradient);
   }
 
@@ -1560,7 +1560,7 @@ window.xxIsMobileView = window.xxIsMobileView || function () {
   var STAR_KEY = 'xingxing_theme_stars';
   var ACTIVE_STAR_KEY = 'xingxing_active_theme_star';
   var AI_CLASSIFY_KEY = 'xingxing_ai_classify';
-  var STAR_PALETTE = ['#E8A94E', '#C45C48', '#6FB6C9', '#5C8C77', '#4E6FA8', '#C08A4E', '#9AA6BC'];
+  var STAR_PALETTE = ['#f2a0a0', '#C45C48', '#6FB6C9', '#5C8C77', '#4E6FA8', '#C08A4E', '#9AA6BC'];
 
   function readStars() {
     var list = null;
@@ -1570,7 +1570,7 @@ window.xxIsMobileView = window.xxIsMobileView || function () {
     } catch (e) {}
     if (!list) {
       list = [
-        { id: 'career', name: '就业', accent: '#E8A94E' },
+        { id: 'career', name: '就业', accent: '#f2a0a0' },
         { id: 'study', name: '学习', accent: '#6FB6C9' },
         { id: 'health', name: '健康', accent: '#5C8C77' }
       ];
@@ -1606,7 +1606,7 @@ window.xxIsMobileView = window.xxIsMobileView || function () {
       button.type = 'button';
       button.className = 'xx-planet-theme' + (star.name === activeStar ? ' on' : '');
       button.textContent = star.name;
-      if (star.name === activeStar) button.style.background = star.accent || '#E8A94E';
+      if (star.name === activeStar) button.style.background = star.accent || '#f2a0a0';
       button.addEventListener('click', function () {
         activeStar = star.name;
         try { localStorage.setItem(ACTIVE_STAR_KEY, activeStar); } catch (e) {}
@@ -1654,8 +1654,8 @@ window.xxIsMobileView = window.xxIsMobileView || function () {
     coreSub.textContent = '主题星体';
     var stops = svg.querySelectorAll('#xx-planet-core-gradient stop');
     if (stops.length >= 3) {
-      stops[1].setAttribute('stop-color', star.accent || '#E8A94E');
-      stops[2].setAttribute('stop-color', star.accent || '#E8A94E');
+      stops[1].setAttribute('stop-color', star.accent || '#f2a0a0');
+      stops[2].setAttribute('stop-color', star.accent || '#f2a0a0');
     }
   }
 
