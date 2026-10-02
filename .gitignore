@@ -62,3 +62,15 @@ fix-nav.js
 *.xlsx
 *副本*
 *- 副本.*
+
+# 部署与本地入口文件
+*.url
+
+# 临时备份/损坏文件，避免误提交到公开仓库
+*.broken*
+*.before-*
+
+# 大体积字体/视频素材，不入公开仓库
+*.ttf
+docs/video/
+docs/shots-video/

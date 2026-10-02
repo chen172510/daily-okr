@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: xingxing-server
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: AI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
