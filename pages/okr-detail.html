@@ -2284,8 +2284,45 @@ body::before {
       if (!Array.isArray(krs)) return [];
       return krs.map(function(k) {
         if (typeof k === 'string') return { title: k, progress: 0 };
-        return { title: (k && k.title) || '', progress: (k && typeof k.progress === 'number') ? k.progress : 0 };
+        return {
+          title: (k && k.title) || '',
+          progress: (k && typeof k.progress === 'number') ? k.progress : 0,
+          target: (k && typeof k.target === 'number') ? k.target : null,
+          current: (k && typeof k.current === 'number') ? k.current : null,
+          unit: (k && k.unit) || ''
+        };
       });
+    }
+
+    // 从标题解析目标数量，例如 "记录 100 个错题" -> {target:100, unit:"个错题"}
+    function parseTargetFromTitle(title) {
+      if (!title) return null;
+      var m = title.match(/(\d+(?:\.\d+)?)\s*([个本套章节页分小时天次件条项])/);
+      if (!m) return null;
+      return { target: parseFloat(m[1]), unit: m[2] };
+    }
+
+    function getKrTarget(k) {
+      if (k && typeof k.target === 'number') return { target: k.target, unit: k.unit || '' };
+      var parsed = parseTargetFromTitle(k && k.title);
+      if (parsed) return parsed;
+      return null;
+    }
+
+    function computeCurrent(k, p) {
+      var t = getKrTarget(k);
+      if (!t) return null;
+      if (typeof k.current === 'number') return k.current;
+      return Math.round(t.target * p / 100);
+    }
+
+    function formatKrProgress(k, p) {
+      var t = getKrTarget(k);
+      var cur = computeCurrent(k, p);
+      if (t && cur !== null) {
+        return '已完成 <b>' + cur + '</b> / <b>' + t.target + '</b> ' + t.unit;
+      }
+      return '完成度 <b>' + p + '%</b>';
     }
 
     function writeAll(list) {
@@ -2342,10 +2379,12 @@ body::before {
       krList.innerHTML = krs.map(function(k, i) {
         var p = Math.max(0, Math.min(100, k.progress || 0));
         var done = p >= 100;
+        var targetInfo = getKrTarget(k);
+        var concrete = formatKrProgress(k, p);
         return '<div class="kr-card">'
           + '<div class="kr-header"><div class="kr-title-group">'
           + '<h3 class="kr-title">KR' + (i + 1) + ' · ' + esc(k.title) + '</h3>'
-          + '<p class="kr-description">关键结果 ' + (i + 1) + '</p></div>'
+          + '<p class="kr-description">' + concrete + '</p></div>'
           + '<span class="kr-status-tag ' + (done ? 'done' : 'in-progress') + '" data-info="' + i + '" style="cursor:pointer;" title="点击查看任务信息"><span class="status-dot"></span>' + (done ? '已圆满' : '修行中') + '</span></div>'
           + '<div class="kr-progress-section" data-info="' + i + '" style="cursor:pointer;" title="点击查看已完成 / 未完成"><div class="kr-progress-numbers">'
           + '<span class="kr-progress-current">' + p + '%</span>'
@@ -2353,7 +2392,7 @@ body::before {
           + '<span class="kr-progress-percent">' + (done ? '已圆满' : '进行中') + '</span>'
           + '</div><div class="ink-progress-bar"><div class="ink-progress-track"></div>'
           + '<div class="ink-progress-fill" style="width:' + p + '%"></div></div></div>'
-          + '<div class="kr-footer"><span class="kr-last-update">推进任务条</span>'
+          + '<div class="kr-footer"><span class="kr-last-update">' + (targetInfo ? '目标 ' + targetInfo.target + ' ' + targetInfo.unit : '未设具体数量') + '</span>'
           + '<button class="btn-update-kr" type="button" data-adv="' + i + '">精进 +10%</button>'
           + '<button class="btn-update-kr" type="button" data-set="' + i + '">设定进度</button></div></div>';
       }).join('');
@@ -2379,7 +2418,12 @@ body::before {
     function advance(i) {
       var krs = current.keyResults;
       if (!krs || !krs[i]) return;
-      krs[i].progress = Math.min(100, (krs[i].progress || 0) + 10);
+      var k = krs[i];
+      k.progress = Math.min(100, (k.progress || 0) + 10);
+      var t = getKrTarget(k);
+      if (t) {
+        k.current = Math.round(t.target * k.progress / 100);
+      }
       save();
       render();
       if (App && App.showToast) App.showToast('已精进一关 +10%', 'success', 1500);
@@ -2388,14 +2432,27 @@ body::before {
     function setProgress(i) {
       var k = current.keyResults[i];
       if (!k) return;
-      askInput('设置「' + k.title + '」的进度（0 - 100）', k.progress || 0, function (v) {
-        var n = parseInt(v, 10);
-        if (isNaN(n)) { if (App && App.showToast) App.showToast('请输入 0 - 100 的数字', 'warning', 1600); return; }
-        k.progress = Math.max(0, Math.min(100, n));
-        save();
-        render();
-        if (App && App.showToast) App.showToast('进度已更新为 ' + k.progress + '%', 'success', 1500);
-      });
+      var t = getKrTarget(k);
+      if (t) {
+        askInput('设置「' + k.title + '」的当前完成量（单位：' + t.unit + '）', typeof k.current === 'number' ? k.current : Math.round(t.target * (k.progress || 0) / 100), function (v) {
+          var n = parseFloat(v);
+          if (isNaN(n)) { if (App && App.showToast) App.showToast('请输入有效数字', 'warning', 1600); return; }
+          k.current = Math.max(0, Math.min(t.target, n));
+          k.progress = Math.round(k.current / t.target * 100);
+          save();
+          render();
+          if (App && App.showToast) App.showToast('已更新为 ' + k.current + ' / ' + t.target + ' ' + t.unit, 'success', 1500);
+        });
+      } else {
+        askInput('设置「' + k.title + '」的进度（0 - 100）', k.progress || 0, function (v) {
+          var n = parseInt(v, 10);
+          if (isNaN(n)) { if (App && App.showToast) App.showToast('请输入 0 - 100 的数字', 'warning', 1600); return; }
+          k.progress = Math.max(0, Math.min(100, n));
+          save();
+          render();
+          if (App && App.showToast) App.showToast('进度已更新为 ' + k.progress + '%', 'success', 1500);
+        });
+      }
     }
 
     // 页面内输入框（内嵌浏览器会拦截原生 prompt/alert）
@@ -2510,5 +2567,6 @@ body::before {
 <script src="../assets/voice.js"></script>
 <script src="../assets/mobile.js"></script>
 <link rel="stylesheet" href="../assets/theme-ink-override.css">
+<link rel="stylesheet" href="../assets/theme-warm-overlay.css">
 </body>
 </html>

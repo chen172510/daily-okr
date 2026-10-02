@@ -13,6 +13,16 @@ window.xxIsMobileView = window.xxIsMobileView || function () {
   }
 };
 
+/* 手机端统一隐藏滚动条，保留手指滚动能力。 */
+(function () {
+  'use strict';
+  if (!window.xxIsMobileView || !window.xxIsMobileView()) return;
+  var style = document.createElement('style');
+  style.textContent = 'html,body{scrollbar-width:none!important;-ms-overflow-style:none!important}'
+    + 'html::-webkit-scrollbar,body::-webkit-scrollbar,.phone::-webkit-scrollbar,.rv-body::-webkit-scrollbar,.rv-sheet::-webkit-scrollbar,.ds-body::-webkit-scrollbar,.ds-sheet::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}';
+  document.head.appendChild(style);
+})();
+
 /* 高清手机若被浏览器按 1200px 桌面视口打开，页面内联的 768px 手机断点会失效。
    这里只在内存中提升这些断点，不修改源文件、不刷新页面。 */
 (function () {
@@ -142,6 +152,10 @@ window.xxIsMobileView = window.xxIsMobileView || function () {
 
   function build() {
     var here = location.pathname.split('/').pop() || 'dashboard.html';
+    if (here === 'dashboard.html') {
+      document.body.classList.add('xx-dashboard-page');
+      return;
+    }
     var nav = document.createElement('nav');
     nav.className = 'xx-mobile-nav';
     nav.innerHTML = ITEMS.map(function (it) {

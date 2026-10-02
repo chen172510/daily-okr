@@ -1256,42 +1256,62 @@ body {
         </section>
     </main>
 
+    <!-- 移动端顶部栏 -->
+    <header class="mobile-topbar">
+        <div class="mobile-topbar-left">
+            <h1 class="mh-greeting"><span id="mhGreetingText">下午好</span>，<span id="mhGreetingName">刘饮</span> <span class="mh-greeting-icon" id="mhGreetingIcon">☀️</span></h1>
+            <p class="mh-date" id="mhDateText">周五 · 10月2日</p>
+        </div>
+        <div class="mobile-topbar-right">
+            <a href="profile.html" class="mh-avatar" id="mhAvatarBtn">我</a>
+        </div>
+    </header>
+
     <!-- 移动端首页内容（app风格） -->
     <div class="mobile-home-content">
-        <!-- 今日状态大卡 -->
-        <div class="mh-status-card" onclick="openVitalityDetail()">
-            <div class="mh-status-encouragement">
-                <p class="mh-encourage-text" id="mhEncourageText">今日精神尚可，稳扎稳打便好</p>
+        <!-- 连续复盘 -->
+        <div class="mh-streak-card" onclick="openStreakDetail()">
+            <div class="mh-streak-ring">
+                <svg viewBox="0 0 100 100">
+                    <circle class="mh-ring-bg" cx="50" cy="50" r="42"/>
+                    <circle class="mh-ring-fill" id="mhStreakRingFill" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"/>
+                </svg>
+                <div class="mh-streak-ring-text">
+                    <span class="mh-streak-ring-num" id="mhStreakRingNum">0</span>
+                    <span class="mh-streak-ring-unit">天</span>
+                </div>
             </div>
-            <div class="mh-status-bars">
-                <div class="mh-bar-row">
-                    <span class="mh-bar-label">精力</span>
-                    <div class="mh-bar-track">
-                        <div class="mh-bar-fill mh-bar-gold" id="mhBarEnergy" style="width: 72%"></div>
-                    </div>
-                    <span class="mh-bar-value" id="mhValueEnergy">72%</span>
-                </div>
-                <div class="mh-bar-row">
-                    <span class="mh-bar-label">状态</span>
-                    <div class="mh-bar-track">
-                        <div class="mh-bar-fill mh-bar-vermilion" id="mhBarState" style="width: 85%"></div>
-                    </div>
-                    <span class="mh-bar-value" id="mhValueState">85%</span>
-                </div>
-                <div class="mh-bar-row">
-                    <span class="mh-bar-label">精神</span>
-                    <div class="mh-bar-track">
-                        <div class="mh-bar-fill mh-bar-cyan" id="mhBarMental" style="width: 64%"></div>
-                    </div>
-                    <span class="mh-bar-value" id="mhValueMental">64%</span>
-                </div>
-                <div class="mh-bar-row">
-                    <span class="mh-bar-label">身体</span>
-                    <div class="mh-bar-track">
-                        <div class="mh-bar-fill mh-bar-green" id="mhBarPhysical" style="width: 75%"></div>
-                    </div>
-                    <span class="mh-bar-value" id="mhValuePhysical">75%</span>
-                </div>
+            <div class="mh-streak-info">
+                <div class="mh-streak-title">连续复盘 <span class="mh-streak-fire">🔥</span></div>
+                <div class="mh-streak-sub" id="mhStreakMonthText">本月已坚持 0 / 30 天</div>
+                <div class="mh-streak-badge-hint" id="mhStreakBadgeHint">再稳 30 天，解锁「自律学徒」徽章</div>
+            </div>
+        </div>
+
+        <!-- 今日鼓励语 -->
+        <p class="mh-encourage-line" id="mhEncourageText">今日神采奕奕，去做那件难的事</p>
+
+        <!-- 今日状态 2x2 -->
+        <div class="mh-metrics-grid">
+            <div class="mh-metric-cell" data-type="energy">
+                <div class="mh-metric-top"><span class="mh-metric-label">精力</span><span class="mh-metric-icon">⏱</span></div>
+                <div class="mh-metric-value" id="mhMetricEnergy">85%</div>
+                <div class="mh-metric-bar"><div class="mh-metric-fill" id="mhMetricFillEnergy" style="width: 85%"></div></div>
+            </div>
+            <div class="mh-metric-cell" data-type="state">
+                <div class="mh-metric-top"><span class="mh-metric-label">状态</span><span class="mh-metric-icon">◎</span></div>
+                <div class="mh-metric-value" id="mhMetricState">75%</div>
+                <div class="mh-metric-bar"><div class="mh-metric-fill" id="mhMetricFillState" style="width: 75%"></div></div>
+            </div>
+            <div class="mh-metric-cell" data-type="mental">
+                <div class="mh-metric-top"><span class="mh-metric-label">精神</span><span class="mh-metric-icon">☆</span></div>
+                <div class="mh-metric-value" id="mhMetricMental">80%</div>
+                <div class="mh-metric-bar"><div class="mh-metric-fill" id="mhMetricFillMental" style="width: 80%"></div></div>
+            </div>
+            <div class="mh-metric-cell" data-type="physical">
+                <div class="mh-metric-top"><span class="mh-metric-label">身体</span><span class="mh-metric-icon">☾</span></div>
+                <div class="mh-metric-value" id="mhMetricPhysical">75%</div>
+                <div class="mh-metric-bar"><div class="mh-metric-fill" id="mhMetricFillPhysical" style="width: 75%"></div></div>
             </div>
         </div>
 
@@ -1310,35 +1330,35 @@ body {
         <!-- 快捷入口 2x2 网格 -->
         <div class="mh-quick-grid">
                 <div class="mh-quick-card" onclick="if(window.xxEnergyStation){xxEnergyStation();}">
-                    <div class="mh-quick-icon">🔋</div>
+                    <div class="mh-quick-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#c98a6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 10h6"/><path d="M9 14h4"/></svg></div>
                     <div class="mh-quick-info">
                         <div class="mh-quick-title">能量观测站</div>
                         <div class="mh-quick-desc">内外耗 · 能量都去哪了</div>
                     </div>
                 </div>
                 <div class="mh-quick-card" onclick="if(window.xxChargeStation){xxChargeStation();}">
-                    <div class="mh-quick-icon">⚡</div>
+                    <div class="mh-quick-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#5b9bd5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                     <div class="mh-quick-info">
                         <div class="mh-quick-title">快速充电</div>
                         <div class="mh-quick-desc">能量补给站 · 一键打卡</div>
                     </div>
                 </div>
                 <div class="mh-quick-card" onclick="if(window.xxCognitive){xxCognitive();}">
-                    <div class="mh-quick-icon">🧠</div>
+                    <div class="mh-quick-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#d67b7b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 0 1 9 9c0 4.97-4.03 9-9 9s-9-4.03-9-9a9 9 0 0 1 9-9z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
                     <div class="mh-quick-info">
                         <div class="mh-quick-title">认知重构</div>
                         <div class="mh-quick-desc">换个角度看那件事</div>
                     </div>
                 </div>
                 <div class="mh-quick-card" onclick="window.location.href='resources.html'">
-                    <div class="mh-quick-icon">📚</div>
+                    <div class="mh-quick-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#5bb3a0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
                     <div class="mh-quick-info">
                         <div class="mh-quick-title">知识库</div>
-                        <div class="mh-quick-desc">昨天存的经济学笔记</div>
+                        <div class="mh-quick-desc">错题本 · 笔记随手查</div>
                     </div>
                 </div>
                 <div class="mh-quick-card" onclick="window.location.href='annotate.html'">
-                    <div class="mh-quick-icon">📷</div>
+                    <div class="mh-quick-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#8a8077" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
                     <div class="mh-quick-info">
                         <div class="mh-quick-title">速记助理</div>
                         <div class="mh-quick-desc">拍照取字 · 书本截图变文字</div>
@@ -1350,25 +1370,6 @@ body {
         <div class="mh-bottom-space"></div>
     </div>
 
-    <!-- 移动端顶部栏 -->
-    <header class="mobile-topbar">
-        <div class="mobile-topbar-left">
-            <span class="mh-brand">行醒</span>
-        </div>
-        <div class="mobile-topbar-right">
-            <span class="mh-top-streak" onclick="openSettings()">
-                <span class="streak-fire">🔥</span>
-                <span id="mhStreakNum">3</span>
-            </span>
-            <button class="mobile-settings-btn" onclick="openSettings()">
-                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-            </button>
-        </div>
-    </header>
-
     <!-- 移动端底部 tabbar（3个） -->
     <nav class="mobile-tabbar">
         <a href="dashboard.html" class="tab-item active">
@@ -1376,7 +1377,7 @@ body {
             <span class="tab-label">首页</span>
         </a>
         <a href="review.html" class="tab-item tab-center">
-            <span class="tab-icon tab-center-icon">📝</span>
+            <span class="tab-icon tab-center-icon">+</span>
             <span class="tab-label">复盘</span>
         </a>
         <a href="#" class="tab-item" onclick="openSettings(); return false;">
@@ -1711,6 +1712,39 @@ body {
                 <div class="factors-title">影响因素</div>
                 <div class="factors-list" id="ringDetailFactors"></div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- 连续复盘详情弹窗 -->
+<div class="detail-overlay" id="streakDetailModal" onclick="if(event.target===this) closeStreakDetail()">
+    <div class="detail-modal streak-detail-modal">
+        <div class="detail-modal-header">
+            <h3 class="detail-modal-title">🔥 连续复盘</h3>
+            <button class="detail-modal-close" onclick="closeStreakDetail()">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="detail-modal-body">
+            <div class="streak-detail-value-row">
+                <div class="streak-detail-big-value" id="streakDetailDays">0</div>
+                <div class="streak-detail-unit">天</div>
+            </div>
+            <div class="streak-detail-sub">已连续复盘</div>
+            <div class="streak-detail-ring-wrap">
+                <svg class="streak-detail-ring" viewBox="0 0 100 100">
+                    <circle class="streak-ring-bg" cx="50" cy="50" r="42"/>
+                    <circle class="streak-ring-fill" id="streakDetailRingFill" cx="50" cy="50" r="42" transform="rotate(-90 50 50)"/>
+                </svg>
+                <div class="streak-detail-ring-text">
+                    <div class="streak-detail-ring-num" id="streakDetailMonthDays">0</div>
+                    <div class="streak-detail-ring-label">/ 30 天</div>
+                </div>
+            </div>
+            <div class="streak-detail-badge" id="streakDetailBadge">再稳 30 天，解锁「自律学徒」徽章</div>
+            <p class="streak-detail-desc">每日复盘是和自己对话的仪式。坚持本身，就是最踏实的成长。</p>
         </div>
     </div>
 </div>
@@ -7873,18 +7907,19 @@ body::before {
   .mobile-home-content { display: block !important; }
 
   .app-layout {
-    padding-top: 0;
+    padding-top: calc(64px + max(16px, env(safe-area-inset-top)) + 12px);
     padding-bottom: 0;
     min-height: 100vh;
   }
 
-  /* --- 移动端顶部栏（简化版） --- */
+  /* --- 移动端顶部栏：问候 + 日期 + 头像 --- */
   .mobile-topbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 56px;
+    height: auto;
+    min-height: 64px;
     background: rgba(250, 249, 247, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -7892,60 +7927,61 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: max(16px, env(safe-area-inset-top)) 20px 12px;
     z-index: 100;
   }
   .mobile-topbar-left {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
   }
-  .mh-brand {
+  .mh-greeting {
     font-family: var(--okr-font-display);
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
     color: var(--okr-ink-800);
-    letter-spacing: 0.15em;
+    margin: 0;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mh-greeting-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+  .mh-date {
+    font-size: 12px;
+    color: var(--okr-ink-500);
+    margin: 0;
   }
   .mobile-topbar-right {
     display: flex;
     align-items: center;
-    gap: 12px;
   }
-  .mh-top-streak {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--okr-ink-700);
-    font-family: var(--okr-font-display);
-    cursor: pointer;
-  }
-  .mh-top-streak .streak-fire {
-    font-size: 16px;
-  }
-  .mobile-settings-btn {
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
+  .mh-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c98a6e 0%, #b87a5d 100%);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--okr-ink-600);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(201, 138, 110, 0.3);
+    -webkit-tap-highlight-color: transparent;
   }
-  .mobile-settings-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor;
-    stroke-width: 1.5;
-    fill: none;
+  .mh-brand, .mh-top-streak, .mobile-settings-btn {
+    display: none;
   }
 
   /* --- 移动端首页内容容器 --- */
   .mobile-home-content {
-    padding: 72px 20px 0;
+    padding: 16px 20px 90px;
     min-height: 100vh;
     background: var(--okr-paper-light);
     background-image:
@@ -7955,97 +7991,151 @@ body::before {
   }
 
   /* --- 今日状态大卡 --- */
-  .mh-status-card {
-    background: linear-gradient(145deg, #ffffff 0%, #f5efe0 100%);
-    border-radius: 20px;
-    padding: 28px 24px 24px;
-    margin-bottom: 20px;
+  /* --- 连续复盘卡 --- */
+  .mh-streak-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f7f0e6 100%);
+    border-radius: 22px;
+    padding: 22px;
+    margin-bottom: 14px;
     box-shadow: 0 8px 24px rgba(45, 42, 38, 0.06), 0 2px 6px rgba(45, 42, 38, 0.04);
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  .mh-status-card:active {
-    transform: scale(0.98);
-  }
-  .mh-status-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(242, 160, 160, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: translate(30%, -30%);
-  }
-  .mh-status-encouragement {
-    text-align: center;
-    margin-bottom: 24px;
-    padding: 8px 0 20px;
-    border-bottom: 1px solid rgba(201, 189, 168, 0.3);
-    position: relative;
-  }
-  .mh-encourage-text {
-    font-family: var(--okr-font-display);
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--okr-ink-800);
-    line-height: 1.6;
-    letter-spacing: 0.05em;
-  }
-  .mh-status-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .mh-bar-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 18px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .mh-bar-label {
+  .mh-streak-card:active {
+    transform: scale(0.98);
+  }
+  .mh-streak-ring {
+    position: relative;
+    width: 86px;
+    height: 86px;
+    flex-shrink: 0;
+  }
+  .mh-streak-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .mh-streak-ring circle {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+  }
+  .mh-ring-bg {
+    stroke: rgba(201, 138, 110, 0.12);
+  }
+  .mh-ring-fill {
+    stroke: #c98a6e;
+    transition: stroke-dashoffset 0.8s ease;
+  }
+  .mh-streak-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--okr-ink-700);
+  }
+  .mh-streak-ring-num {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .mh-streak-ring-unit {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .mh-streak-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .mh-streak-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--okr-ink-800);
+    font-family: var(--okr-font-display);
+  }
+  .mh-streak-fire {
+    font-size: 15px;
+  }
+  .mh-streak-sub {
+    font-size: 13px;
+    color: var(--okr-ink-600);
+  }
+  .mh-streak-badge-hint {
+    font-size: 11px;
+    color: var(--okr-gold-600, #c98a6e);
+  }
+
+  /* --- 今日鼓励语 --- */
+  .mh-encourage-line {
+    font-family: var(--okr-font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--okr-ink-800);
+    margin: 0 0 16px;
+    padding: 2px 2px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  /* --- 状态指标 2x2 --- */
+  .mh-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .mh-metric-cell {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(45, 42, 38, 0.05);
+    border: 1px solid rgba(201, 189, 168, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mh-metric-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mh-metric-label {
     font-size: 13px;
     color: var(--okr-ink-600);
     font-family: var(--okr-font-display);
-    width: 36px;
-    flex-shrink: 0;
-    letter-spacing: 0.1em;
   }
-  .mh-bar-track {
-    flex: 1;
-    height: 6px;
+  .mh-metric-icon {
+    font-size: 14px;
+    color: var(--okr-ink-400);
+  }
+  .mh-metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--okr-ink-800);
+    font-variant-numeric: tabular-nums;
+  }
+  .mh-metric-bar {
+    height: 5px;
     background: var(--okr-ink-100);
     border-radius: 3px;
     overflow: hidden;
   }
-  .mh-bar-fill {
+  .mh-metric-fill {
     height: 100%;
     border-radius: 3px;
     transition: width 0.6s ease;
   }
-  .mh-bar-gold {
-    background: linear-gradient(90deg, #f7c4c4, #f2a0a0);
-  }
-  .mh-bar-vermilion {
-    background: linear-gradient(90deg, #e88383, #e88383);
-  }
-  .mh-bar-cyan {
-    background: linear-gradient(90deg, #a8ddd0, #7fcdbb);
-  }
-  .mh-bar-green {
-    background: linear-gradient(90deg, #7fcdbb, #3d8b5e);
-  }
-  .mh-bar-value {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--okr-ink-700);
-    width: 40px;
-    text-align: right;
-    flex-shrink: 0;
-    font-variant-numeric: tabular-nums;
-  }
+  .mh-metric-cell[data-type="energy"] .mh-metric-fill { background: linear-gradient(90deg, #e8b4a0, #c98a6e); }
+  .mh-metric-cell[data-type="state"] .mh-metric-fill { background: linear-gradient(90deg, #e88383, #d65c5c); }
+  .mh-metric-cell[data-type="mental"] .mh-metric-fill { background: linear-gradient(90deg, #a8c8e8, #7aa8d8); }
+  .mh-metric-cell[data-type="physical"] .mh-metric-fill { background: linear-gradient(90deg, #a8ddd0, #7fcdbb); }
 
   /* --- 今日核心动作卡 --- */
   .mh-action-card {
@@ -8055,23 +8145,23 @@ body::before {
   }
   .mh-primary-btn {
     width: 100%;
-    height: 56px;
-    background: linear-gradient(135deg, #e88383 0%, #e88383 50%, #d65c5c 100%);
+    height: 52px;
+    background: linear-gradient(135deg, #c98a6e 0%, #b87a5d 100%);
     color: #fff;
     border: none;
     border-radius: 14px;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
     font-family: var(--okr-font-display);
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(232, 131, 131, 0.3);
+    box-shadow: 0 6px 18px rgba(201, 138, 110, 0.32);
     transition: all 0.2s ease;
     margin-bottom: 10px;
   }
   .mh-primary-btn:active {
     transform: scale(0.98);
-    box-shadow: 0 3px 12px rgba(232, 131, 131, 0.25);
+    box-shadow: 0 3px 10px rgba(201, 138, 110, 0.28);
   }
   .mh-btn-text {
     text-shadow: 0 1px 2px rgba(45, 42, 38, 0.15);
@@ -8116,8 +8206,11 @@ body::before {
     background: #faf9f7;
   }
   .mh-quick-icon {
-    font-size: 28px;
-    line-height: 1;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .mh-quick-info {
     display: flex;
@@ -8471,11 +8564,17 @@ body::before {
 
   /* --- 顶部状态栏精简 --- */
   .mobile-topbar {
-    height: 48px;
-    padding: 0 12px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    min-height: 64px;
+    padding: max(16px, env(safe-area-inset-top)) 12px 12px;
     background: rgba(250, 249, 247, 0.95);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    z-index: 100;
   }
 
   .mobile-seal {
@@ -9131,7 +9230,7 @@ body::before {
     position: relative;
   }
 
-  .tab-center-icon {
+  .tab-item.tab-center .tab-center-icon {
     font-size: 26px;
     background: linear-gradient(135deg, var(--okr-vermilion-light), var(--okr-vermilion));
     width: 44px;
@@ -9140,7 +9239,7 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #fff !important;
     margin-top: -16px;
     box-shadow: 0 4px 12px rgba(232, 131, 131, 0.35);
     border: 2px solid var(--okr-paper-light);
@@ -9189,6 +9288,97 @@ body::before {
     background: var(--okr-ink-200);
     border-radius: 2px;
     margin: 10px auto 0;
+  }
+
+  /* 连续复盘详情弹窗 */
+  .streak-detail-modal .detail-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px 20px 28px;
+  }
+  .streak-detail-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .streak-detail-big-value {
+    font-size: 56px;
+    font-weight: 700;
+    color: #c98a6e;
+    line-height: 1;
+    font-family: var(--okr-font-display);
+  }
+  .streak-detail-unit {
+    font-size: 18px;
+    color: var(--okr-ink-600);
+    font-weight: 600;
+  }
+  .streak-detail-sub {
+    font-size: 13px;
+    color: var(--okr-ink-500);
+    margin-top: 6px;
+    margin-bottom: 22px;
+  }
+  .streak-detail-ring-wrap {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin-bottom: 18px;
+  }
+  .streak-detail-ring {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .streak-detail-ring circle {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+  }
+  .streak-detail-ring .streak-ring-bg {
+    stroke: rgba(201, 138, 110, 0.12);
+  }
+  .streak-detail-ring .streak-ring-fill {
+    stroke: #c98a6e;
+    stroke-dasharray: 264;
+    stroke-dashoffset: 264;
+    transition: stroke-dashoffset 0.8s ease;
+  }
+  .streak-detail-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--okr-ink-700);
+  }
+  .streak-detail-ring-num {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .streak-detail-ring-label {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .streak-detail-badge {
+    font-size: 13px;
+    color: var(--okr-gold-600, #c98a6e);
+    background: rgba(201, 138, 110, 0.08);
+    padding: 8px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .streak-detail-desc {
+    font-size: 13px;
+    color: var(--okr-ink-500);
+    line-height: 1.6;
+    max-width: 280px;
+    margin: 0;
   }
 
   .chrono-overlay {
@@ -9279,10 +9469,19 @@ body::before {
     font-size: 14px;
   }
 
-  .tab-center-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 22px;
+  .tab-item.tab-center .tab-center-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 26px;
+    background: linear-gradient(135deg, var(--okr-vermilion-light), var(--okr-vermilion));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff !important;
+    margin-top: -16px;
+    box-shadow: 0 4px 12px rgba(232, 131, 131, 0.35);
+    border: 2px solid var(--okr-paper-light);
   }
 }
 
@@ -12134,6 +12333,40 @@ body::before {
     return '先把手里的事放下，好吗';
   }
 
+  function getGreetingByHour() {
+    var now = new Date();
+    var h = now.getHours();
+    var m = now.getMinutes();
+    var t = h + m / 60;
+    if (t >= 4.5 && t < 11.5) return { text: '早上好', icon: '☀️' };
+    if (t >= 11.5 && t < 13) return { text: '中午好', icon: '🌤️' };
+    if (t >= 13 && t < 18.5) return { text: '下午好', icon: '⛅' };
+    return { text: '晚上好', icon: '🌙' };
+  }
+
+  function formatTodayDate() {
+    var days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    var now = new Date();
+    return days[now.getDay()] + ' · ' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+  }
+
+  function updateMobileGreeting() {
+    var g = getGreetingByHour();
+    var textEl = document.getElementById('mhGreetingText');
+    var iconEl = document.getElementById('mhGreetingIcon');
+    var dateEl = document.getElementById('mhDateText');
+    var nameEl = document.getElementById('mhGreetingName');
+    var avatarEl = document.getElementById('mhAvatarBtn');
+
+    if (textEl) textEl.textContent = g.text;
+    if (iconEl) iconEl.textContent = g.icon;
+    if (dateEl) dateEl.textContent = formatTodayDate();
+
+    var nickname = (typeof settings !== 'undefined' && settings.nickname) ? settings.nickname : '刘饮';
+    if (nameEl) nameEl.textContent = nickname;
+    if (avatarEl) avatarEl.textContent = nickname.charAt(0);
+  }
+
   function updateMobileHomeStatus() {
     if (typeof App === 'undefined') return;
 
@@ -12143,27 +12376,44 @@ body::before {
     var mental = App.getMental();
     var physical = App.getPhysical();
 
-    // 更新进度条
+    // 更新旧版进度条（若还存在）
     var barEnergy = document.getElementById('mhBarEnergy');
     var barState = document.getElementById('mhBarState');
     var barMental = document.getElementById('mhBarMental');
     var barPhysical = document.getElementById('mhBarPhysical');
-
     if (barEnergy) barEnergy.style.width = energy + '%';
     if (barState) barState.style.width = state + '%';
     if (barMental) barMental.style.width = mental + '%';
     if (barPhysical) barPhysical.style.width = physical + '%';
 
-    // 更新数值
+    // 更新旧版数值（若还存在）
     var valEnergy = document.getElementById('mhValueEnergy');
     var valState = document.getElementById('mhValueState');
     var valMental = document.getElementById('mhValueMental');
     var valPhysical = document.getElementById('mhValuePhysical');
-
     if (valEnergy) valEnergy.textContent = Math.round(energy) + '%';
     if (valState) valState.textContent = Math.round(state) + '%';
     if (valMental) valMental.textContent = Math.round(mental) + '%';
     if (valPhysical) valPhysical.textContent = Math.round(physical) + '%';
+
+    // 更新新版 2x2 指标网格
+    var metricEnergy = document.getElementById('mhMetricEnergy');
+    var metricState = document.getElementById('mhMetricState');
+    var metricMental = document.getElementById('mhMetricMental');
+    var metricPhysical = document.getElementById('mhMetricPhysical');
+    if (metricEnergy) metricEnergy.textContent = Math.round(energy) + '%';
+    if (metricState) metricState.textContent = Math.round(state) + '%';
+    if (metricMental) metricMental.textContent = Math.round(mental) + '%';
+    if (metricPhysical) metricPhysical.textContent = Math.round(physical) + '%';
+
+    var fillEnergy = document.getElementById('mhMetricFillEnergy');
+    var fillState = document.getElementById('mhMetricFillState');
+    var fillMental = document.getElementById('mhMetricFillMental');
+    var fillPhysical = document.getElementById('mhMetricFillPhysical');
+    if (fillEnergy) fillEnergy.style.width = energy + '%';
+    if (fillState) fillState.style.width = state + '%';
+    if (fillMental) fillMental.style.width = mental + '%';
+    if (fillPhysical) fillPhysical.style.width = physical + '%';
 
     // 更新鼓励语
     var encourageEl = document.getElementById('mhEncourageText');
@@ -12177,6 +12427,31 @@ body::before {
     var streakTextEl = document.getElementById('mhStreakText');
     if (streakNumEl) streakNumEl.textContent = streak;
     if (streakTextEl) streakTextEl.textContent = '已连续 ' + streak + ' 天';
+
+    // 更新新版连续复盘环形区
+    var ringNum = document.getElementById('mhStreakRingNum');
+    var ringFill = document.getElementById('mhStreakRingFill');
+    if (ringNum) ringNum.textContent = streak;
+    if (ringFill) {
+      var circumference = 264;
+      var progress = Math.min(streak / 30, 1);
+      ringFill.style.strokeDashoffset = circumference * (1 - progress);
+    }
+    var monthText = document.getElementById('mhStreakMonthText');
+    if (monthText) monthText.textContent = '本月已坚持 ' + Math.min(streak, 30) + ' / 30 天';
+    var badgeHint = document.getElementById('mhStreakBadgeHint');
+    if (badgeHint) {
+      var badges = [
+        { days: 30, name: '自律学徒' },
+        { days: 60, name: '知行合一' },
+        { days: 100, name: '日日不断' }
+      ];
+      var next = badges.find(function (b) { return streak < b.days; }) || badges[badges.length - 1];
+      var diff = next.days - streak;
+      badgeHint.textContent = diff > 0
+        ? '再稳 ' + diff + ' 天，解锁「' + next.name + '」徽章'
+        : '已解锁「' + next.name + '」徽章';
+    }
 
     // 更新错题数
     var errorDesc = document.getElementById('mhErrorDesc');
@@ -12200,11 +12475,53 @@ body::before {
     }
   };
 
+  // 打开连续复盘详情弹窗
+  window.openStreakDetail = function() {
+    const modal = document.getElementById('streakDetailModal');
+    if (!modal) return;
+
+    const streak = (typeof App !== 'undefined' && App.getStreak) ? App.getStreak() : 0;
+    const monthDays = Math.min(streak, 30);
+    const circumference = 264;
+    const progress = Math.min(streak / 30, 1);
+
+    const daysEl = document.getElementById('streakDetailDays');
+    const monthDaysEl = document.getElementById('streakDetailMonthDays');
+    const fillEl = document.getElementById('streakDetailRingFill');
+    const badgeEl = document.getElementById('streakDetailBadge');
+
+    if (daysEl) daysEl.textContent = streak;
+    if (monthDaysEl) monthDaysEl.textContent = monthDays;
+    if (fillEl) fillEl.style.strokeDashoffset = circumference * (1 - progress);
+
+    if (badgeEl) {
+      const badges = [
+        { days: 30, name: '自律学徒' },
+        { days: 60, name: '知行合一' },
+        { days: 100, name: '日日不断' }
+      ];
+      const next = badges.find(function (b) { return streak < b.days; }) || badges[badges.length - 1];
+      const diff = next.days - streak;
+      badgeEl.textContent = diff > 0
+        ? '再稳 ' + diff + ' 天，解锁「' + next.name + '」徽章'
+        : '已解锁「' + next.name + '」徽章';
+    }
+
+    modal.classList.add('show');
+  };
+
+  // 关闭连续复盘详情弹窗
+  window.closeStreakDetail = function() {
+    const modal = document.getElementById('streakDetailModal');
+    if (modal) modal.classList.remove('show');
+  };
+
   // 初始化移动端首页
   function initMobileHome() {
     if (window.innerWidth > 768) return;
     if (!document.querySelector('.mobile-home-content')) return;
 
+    updateMobileGreeting();
     updateMobileHomeStatus();
 
     // 监听状态变化事件
@@ -12430,5 +12747,6 @@ body::before {
 </script>
 <script src="../assets/mobile.js"></script>
 <link rel="stylesheet" href="../assets/theme-ink-override.css">
+<link rel="stylesheet" href="../assets/theme-warm-overlay.css">
 </body>
 </html>

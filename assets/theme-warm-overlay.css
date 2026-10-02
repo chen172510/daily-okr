@@ -1,0 +1,99 @@
+/* 行醒 · 暖陶土手绘风 overlay
+   仅通过覆盖设计变量实现，不动任何 HTML 结构 / JS 逻辑。
+   所有变量带 !important，以压过 theme.css / theme-ink-override.css / 运行时 setProperty。 */
+
+:root {
+  /* 文字 / 中性 —— 暖棕灰（替换原国风/中性灰） */
+  --okr-ink-50: #faf7f2 !important;
+  --okr-ink-100: #f1ebe2 !important;
+  --okr-ink-200: #e8e0d5 !important;
+  --okr-ink-300: #d8cdc0 !important;
+  --okr-ink-400: #a89a8a !important;
+  --okr-ink-500: #857869 !important;
+  --okr-ink-600: #6b5f53 !important;
+  --okr-ink-700: #5a4f45 !important;
+  --okr-ink-800: #4a4038 !important;
+  --okr-ink-900: #3d342c !important;
+
+  /* 宣纸底 —— 米白 */
+  --okr-paper-light: #faf7f2 !important;
+  --okr-paper: #f3ede4 !important;
+  --okr-paper-dark: #ece4d8 !important;
+
+  /* 主强调（原描金珊瑚粉 → 暖陶土） */
+  --okr-gold-100: #f5ebe4 !important;
+  --okr-gold-200: #f0ddd0 !important;
+  --okr-gold-300: #e3c3b3 !important;
+  --okr-gold-400: #d6a890 !important;
+  --okr-gold-500: #c98a6e !important;
+  --okr-gold-600: #b5734f !important;
+  --okr-gold-700: #a8714f !important;
+  --okr-gold-900: #7a4f36 !important;
+
+  /* 次强调（原青黛薄荷绿 → 鼠尾草绿） */
+  --okr-cyan-100: #e6efe9 !important;
+  --okr-cyan-300: #b3c9bc !important;
+  --okr-cyan-500: #7fa08c !important;
+  --okr-cyan-700: #5b7d68 !important;
+  --okr-cyan-900: #3e5a49 !important;
+
+  /* 覆盖 mobile.css 媒体查询块里的强调变量（珊瑚粉 → 暖陶土） */
+  --gold-primary: #c98a6e !important;
+  --gold-light: #d6a890 !important;
+  --gold-faint: #ecd8c7 !important;
+  --gold-bg: rgba(201,138,110,0.10) !important;
+  --okr-ring: #c98a6e !important;
+  --okr-vermilion: #c98a6e !important;
+  --okr-vermilion-light: #d6a890 !important;
+  --okr-vermilion-dark: #a8714f !important;
+  --cinnabar: #c98a6e !important;
+  --cinnabar-dark: #a8714f !important;
+  --cinnabar-light: #d6a890 !important;
+  --mobile-orange: #c98a6e !important;
+  --mobile-orange-strong: #a8714f !important;
+  --mobile-orange-soft: #f0ddd0 !important;
+  --okr-background: #f3ede4 !important;
+  --okr-card: #faf7f2 !important;
+  --okr-card-foreground: #3d342c !important;
+  --okr-popover: #faf7f2 !important;
+  --okr-popover-foreground: #3d342c !important;
+  --okr-muted: #f3ede4 !important;
+  --okr-muted-foreground: #857869 !important;
+  --okr-border: #e8e0d5 !important;
+  --okr-input: #e8e0d5 !important;
+  --okr-primary: #c98a6e !important;
+  --okr-destructive: #c98a6e !important;
+
+  /* 运行时 JS 设置的纸底，也压掉 */
+  --ink-paper: #f3ede4 !important;
+  --ink-paper-light: #faf7f2 !important;
+  --ink-50: #faf7f2 !important;
+  --ink-100: #f1ebe2 !important;
+  --ink-200: #e8e0d5 !important;
+  --ink-300: #d8cdc0 !important;
+  --ink-400: #a89a8a !important;
+  --ink-500: #857869 !important;
+  --ink-600: #6b5f53 !important;
+  --ink-700: #5a4f45 !important;
+  --ink-800: #4a4038 !important;
+  --ink-900: #3d342c !important;
+
+  /* 更大圆角 */
+  --okr-radius-sm: 10px !important;
+  --okr-radius-md: 14px !important;
+  --okr-radius-lg: 18px !important;
+  --okr-radius-xl: 24px !important;
+
+  /* 柔和暖阴影 */
+  --okr-shadow-sm: 0 1px 3px rgba(122,79,54,0.06) !important;
+  --okr-shadow-md: 0 4px 16px rgba(122,79,54,0.08) !important;
+  --okr-shadow-lg: 0 12px 36px rgba(122,79,54,0.10) !important;
+  --shadow-ink: 0 4px 16px rgba(122,79,54,0.08) !important;
+  --shadow-ink-lg: 0 12px 36px rgba(122,79,54,0.10) !important;
+}
+
+/* 页面纸底：直接锁死，压过运行时 JS 的 inline --bg-page */
+html, body {
+  background-color: #f3ede4 !important;
+}
+

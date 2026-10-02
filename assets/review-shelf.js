@@ -8,13 +8,22 @@
   'use strict';
   if (!window.xxIsMobileView || !window.xxIsMobileView()) return;
 
+  var ICONS = {
+    action:  '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c98a6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>',
+    graph:   '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c98a6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>',
+    diary:   '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c98a6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>',
+    wins:    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c98a6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+    habits:  '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c98a6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+    history: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c98a6e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>'
+  };
+
   var BOOKS = [
-    { key: 'action',  icon: '📖', name: '今日行动', desc: '今天做了什么' },
-    { key: 'graph',   icon: '🕸️', name: '事务脉络', desc: '因果与关联' },
-    { key: 'diary',   icon: '📓', name: '备忘录',   desc: '三省与问题' },
-    { key: 'wins',    icon: '🏅', name: '小胜利',   desc: '今天赢在哪' },
-    { key: 'habits',  icon: '🔁', name: '习惯打卡', desc: '连续多少天' },
-    { key: 'history', icon: '📅', name: '往昔省身', desc: '翻翻以前' }
+    { key: 'action',  icon: ICONS.action,  name: '今日行动', desc: '今天做了什么' },
+    { key: 'graph',   icon: ICONS.graph,   name: '事务脉络', desc: '因果与关联' },
+    { key: 'diary',   icon: ICONS.diary,   name: '备忘录',   desc: '三省与问题' },
+    { key: 'wins',    icon: ICONS.wins,    name: '小胜利',   desc: '今天赢在哪' },
+    { key: 'habits',  icon: ICONS.habits,  name: '习惯打卡', desc: '连续多少天' },
+    { key: 'history', icon: ICONS.history, name: '往昔省身', desc: '翻翻以前' }
   ];
 
   var STATUS = {
@@ -195,7 +204,7 @@
       if (!book) return;
       restoreMoved();
       sheetBody.innerHTML = '';
-      sheetTitle.textContent = book.icon + ' ' + book.name;
+      sheetTitle.innerHTML = book.icon + '<span>' + book.name + '</span>';
 
       if (key === 'action') {
         sheetBody.innerHTML = renderAction();
